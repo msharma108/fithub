@@ -61,6 +61,21 @@
     		<version>1.2</version>
 		</dependency>
 		
+	<!-- JSP dependency -->	
+		 <dependency>
+        	<groupId>org.apache.tomcat.embed</groupId>
+        	<artifactId>tomcat-embed-jasper</artifactId>
+        	<scope>provided</scope>
+    	</dependency>
+		
+		<!-- HikariCP dependency -->
+		<dependency>
+    		<groupId>com.zaxxer</groupId>
+    		<artifactId>HikariCP</artifactId>
+    		
+		</dependency>
+		
+		
 	</dependencies>
 
 

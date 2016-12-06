@@ -65,15 +65,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean deleteUserByUsername(String username) {
+	public boolean deleteUserByUsername(String userName) {
 
 		boolean isUserDeleted = true;
-		LOG.debug("Attempting to delete user having userName={}", username);
+		LOG.debug("Attempting to delete user having userName={}", userName);
 		try {
-			userRepository.delete(username);
+			userRepository.deleteByUserName(userName);
 			return isUserDeleted;
 		} catch (IllegalArgumentException exception) {
-			LOG.debug("User with userName={} can't be deleted as they dont exist in the database", username);
+			LOG.debug("User with userName={} can't be deleted as they dont exist in the database", userName);
 			isUserDeleted = false;
 			return isUserDeleted;
 		}
