@@ -50,10 +50,11 @@ public interface UserService {
 	 * Method checks the existing role of the user and switches it to the other
 	 * alternative role
 	 * 
+	 * @param user
 	 * @param userName
 	 * @return boolean
 	 */
-	boolean changeRole(String userName);
+	boolean changeRole(User user, String userName);
 
 	/**
 	 * Method gets a list of all the users in the database

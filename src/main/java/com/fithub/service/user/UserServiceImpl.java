@@ -80,11 +80,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean changeRole(String userName) throws NoSuchElementException {
+	public boolean changeRole(User user, String userName) throws NoSuchElementException {
 
 		boolean isRoleChanged = false;
 
-		User user = getUserByUsername(userName);
 		if (!user.equals(null)) {
 			// Checking for users current role and switching the role
 			if (user.getRole().equals(UserRole.ADMIN.getRoleAsString())) {
