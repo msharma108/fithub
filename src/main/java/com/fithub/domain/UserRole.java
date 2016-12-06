@@ -6,7 +6,7 @@ package com.fithub.domain;
  */
 public enum UserRole {
 
-	CUSTOMER("Customer"), ADMIN("Admin");
+	CUSTOMER("CUSTOMER"), ADMIN("ADMIN");
 
 	private final String role;
 
