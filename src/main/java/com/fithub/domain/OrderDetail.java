@@ -3,33 +3,32 @@ package com.fithub.domain;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the order_detail database table.
  * 
  */
 @Entity
-@Table(name="order_detail")
-@NamedQuery(name="OrderDetail.findAll", query="SELECT o FROM OrderDetail o")
+@Table(name = "order_detail")
+@NamedQuery(name = "OrderDetail.findAll", query = "SELECT o FROM OrderDetail o")
 public class OrderDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="order_detail_id", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "order_detail_id", unique = true, nullable = false)
 	private int orderDetailId;
 
-	@Column(name="product_quantity")
+	@Column(name = "product_quantity")
 	private int productQuantity;
 
-	//bi-directional many-to-one association to Product
+	// bi-directional many-to-one association to Product
 	@ManyToOne
-	@JoinColumn(name="product_id", nullable=false)
+	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
-	//bi-directional many-to-one association to SalesOrder
+	// bi-directional many-to-one association to SalesOrder
 	@ManyToOne
-	@JoinColumn(name="sales_order_id", nullable=false)
+	@JoinColumn(name = "sales_order_id", nullable = false)
 	private SalesOrder salesOrder;
 
 	public OrderDetail() {

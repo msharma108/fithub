@@ -5,71 +5,70 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the user database table.
  * 
  */
 @Entity
-@Table(name="user")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+@Table(name = "user")
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="user_id", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id", unique = true, nullable = false)
 	private int userId;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String address;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String city;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String country;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="date_of_birth", nullable=false)
+	@Column(name = "date_of_birth", nullable = false)
 	private Date dateOfBirth;
 
-	@Column(nullable=false, length=45)
+	@Column(nullable = false, length = 45)
 	private String email;
 
-	@Column(nullable=false, length=45)
+	@Column(nullable = false, length = 45)
 	private String name;
 
-	@Column(nullable=false, length=60)
+	@Column(nullable = false, length = 60)
 	private String password;
 
-	@Column(name="payment_mode", length=1)
+	@Column(name = "payment_mode", length = 1)
 	private String paymentMode;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String phone;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String province;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="registration_date")
+	@Column(name = "registration_date")
 	private Date registrationDate;
 
-	@Column(nullable=false, length=1)
+	@Column(nullable = false, length = 1)
 	private String role;
 
-	@Column(length=1)
+	@Column(length = 1)
 	private String sex;
 
-	@Column(name="user_name", nullable=false, length=45)
+	@Column(name = "user_name", nullable = false, length = 45)
 	private String userName;
 
-	@Column(length=7)
+	@Column(length = 7)
 	private String zipcode;
 
-	//bi-directional many-to-one association to SalesOrder
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to SalesOrder
+	@OneToMany(mappedBy = "user")
 	private List<SalesOrder> salesOrders;
 
 	public User() {

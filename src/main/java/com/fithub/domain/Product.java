@@ -5,66 +5,65 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the product database table.
  * 
  */
 @Entity
-@Table(name="product")
-@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
+@Table(name = "product")
+@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="product_id", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "product_id", unique = true, nullable = false)
 	private int productId;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="expiry_date")
+	@Column(name = "expiry_date")
 	private Date expiryDate;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String flavor;
 
 	@Lob
 	private String ldesc;
 
 	@Lob
-	@Column(name="main_image")
+	@Column(name = "main_image")
 	private byte[] mainImage;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="manufacture_date")
+	@Column(name = "manufacture_date")
 	private Date manufactureDate;
 
-	@Column(length=100)
+	@Column(length = 100)
 	private String name;
 
 	private float price;
 
 	private int quantity;
 
-	@Column(length=1)
+	@Column(length = 1)
 	private String rating;
 
-	@Column(length=300)
+	@Column(length = 300)
 	private String sdesc;
 
 	@Lob
-	@Column(name="thumb_image")
+	@Column(name = "thumb_image")
 	private byte[] thumbImage;
 
 	private float weight;
 
-	//bi-directional many-to-one association to OrderDetail
-	@OneToMany(mappedBy="product")
+	// bi-directional many-to-one association to OrderDetail
+	@OneToMany(mappedBy = "product")
 	private List<OrderDetail> orderDetails;
 
-	//bi-directional many-to-one association to ProductCategory
+	// bi-directional many-to-one association to ProductCategory
 	@ManyToOne
-	@JoinColumn(name="category_id", nullable=false)
+	@JoinColumn(name = "category_id", nullable = false)
 	private ProductCategory productCategory;
 
 	public Product() {

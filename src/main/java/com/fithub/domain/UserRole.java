@@ -5,20 +5,17 @@ package com.fithub.domain;
  * 
  */
 public enum UserRole {
-	
-	CUSTOMER("Customer"),
-	ADMIN("Admin");
-	
+
+	CUSTOMER("Customer"), ADMIN("Admin");
+
 	private final String role;
-	
-	 UserRole(String aRole)
-	{
-		this.role = aRole;
+
+	UserRole(String role) {
+		this.role = role;
 	}
 
-	public String getRole() {
+	public String getRoleAsString() {
 		return role;
 	}
- 
 
 }

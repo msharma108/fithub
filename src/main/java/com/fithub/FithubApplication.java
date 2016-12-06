@@ -1,5 +1,9 @@
 package com.fithub;
 
+/**
+ * Entry point for the Spring boot application
+ *
+ */
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
