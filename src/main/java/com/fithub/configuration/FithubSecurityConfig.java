@@ -21,9 +21,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class FithubSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(FithubSecurityConfig.class);
-
-	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	public FithubSecurityConfig(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
