@@ -61,6 +61,12 @@
     		<version>1.2</version>
 		</dependency>
 		
+		<!-- Spring security taglib dependency -->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-taglibs</artifactId>
+    	</dependency>
+		
 	<!-- JSP dependency -->	
 		 <dependency>
         	<groupId>org.apache.tomcat.embed</groupId>

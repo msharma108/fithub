@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+      <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+      <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
@@ -51,9 +53,16 @@
 		   <li class="nav-item">
 			 <a class="nav-link" href="#">About us</a>
 		   </li>
+		   <sec:authorize access="isAnonymous()">
 		   <li class="nav-item">
-		   <a class="nav-link" href="#register"   data-toggle="modal">Register</a>
+		   <a class="nav-link" href="<c:url value="/registerUser"/>" data-toggle="modal">Register</a>
 		   </li>
+		   </sec:authorize>
+		   <sec:authorize url="/admin">
+		   	<li class="nav-item">
+		   <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/registerUser"/>">Register</a>
+		   </li>
+		   </sec:authorize>
 		  </ul>
   	
 		  <form class="navbar-form navbar-right" role="form">
@@ -204,9 +213,22 @@
     </div>
 	<!-- end of footer -->
 	
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../../js/jquery-3.1.1.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    
+    
+    $(document).ready(function(){ 
+    	console.log( "ready!" );
+    	if ( ${showRegister} == 1)
+    		{
+	        $('#register').modal('show');
+    		}
+    });
+    </script>
+	
+
   </body>
 </html>
