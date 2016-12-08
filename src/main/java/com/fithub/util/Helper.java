@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.fithub.util;
 
 import java.sql.Timestamp;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.fithub.validator.user;
 
 import org.slf4j.Logger;
