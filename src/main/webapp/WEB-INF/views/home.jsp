@@ -60,7 +60,7 @@
 		   </sec:authorize>
 		   <sec:authorize url="/admin">
 		   	<li class="nav-item">
-		   <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/links"/>">Register</a>
+		   <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/registerUser"/>">Register</a>
 		   </li>
 		   </sec:authorize>
 		  </ul>
