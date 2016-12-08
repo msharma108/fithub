@@ -1,9 +1,10 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.*;
 
 /**
  * The persistent class for the user database table.
@@ -36,8 +37,11 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 45)
 	private String email;
 
-	@Column(nullable = false, length = 45)
-	private String name;
+	@Column(name = "family_name", nullable = false, length = 45)
+	private String familyName;
+
+	@Column(name = "given_name", nullable = false, length = 45)
+	private String givenName;
 
 	@Column(nullable = false, length = 60)
 	private String password;
@@ -51,8 +55,8 @@ public class User implements Serializable {
 	@Column(length = 45)
 	private String province;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "registration_date")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "registration_date", nullable = false)
 	private Date registrationDate;
 
 	@Column(nullable = false, length = 1)
@@ -122,12 +126,20 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getFamilyName() {
+		return this.familyName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFamilyName(String familyName) {
+		this.familyName = familyName;
+	}
+
+	public String getGivenName() {
+		return this.givenName;
+	}
+
+	public void setGivenName(String givenName) {
+		this.givenName = givenName;
 	}
 
 	public String getPassword() {

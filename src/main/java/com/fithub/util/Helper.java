@@ -26,7 +26,8 @@ public class Helper {
 		user.setCountry(userDTO.getCountry());
 		user.setDateOfBirth(userDTO.getDateOfBirth());
 		user.setEmail(userDTO.getEmail());
-		user.setName(userDTO.getFullName());
+		user.setFamilyName(userDTO.getFamilyName());
+		user.setGivenName(userDTO.getGivenName());
 		user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
 		user.setPaymentMode(userDTO.getPaymentMode());
 		user.setPhone(userDTO.getPhone());
