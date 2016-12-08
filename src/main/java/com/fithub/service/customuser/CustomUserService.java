@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.fithub.service.authenticateduser;
+package com.fithub.service.customuser;
 
 import java.util.NoSuchElementException;
 
