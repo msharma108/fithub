@@ -16,7 +16,6 @@ import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
 import com.fithub.repository.user.UserRepository;
-import com.fithub.util.Helper;
 
 /**
  * Implementation of UserService Interface
@@ -28,11 +27,13 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 	private final UserRepository userRepository;
+	private final UserTasksHelperService userTasksHelperService;
 
 	// Constructor dependency Injection for UserRepository
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository, UserTasksHelperService userTasksHelperService) {
 		this.userRepository = userRepository;
+		this.userTasksHelperService = userTasksHelperService;
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
 		LOG.debug("Creating user having userName={}", userDTO.getUserName());
 		User user = new User();
-		Helper.createUserFromUserDTO(user, userDTO);
+		userTasksHelperService.createUserFromUserDTO(user, userDTO);
 		return userRepository.save(user);
 	}
 

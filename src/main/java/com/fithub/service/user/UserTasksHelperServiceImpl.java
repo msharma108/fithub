@@ -1,21 +1,24 @@
-
-package com.fithub.util;
+package com.fithub.service.user;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.fithub.domain.CustomUser;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
+import com.fithub.domain.UserRole;
 
-/**
- * Helper class containing helper methods
- *
- */
-public class Helper {
+public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 
-	public static User createUserFromUserDTO(User user, UserDTO userDTO) {
+	private static final Logger LOG = LoggerFactory.getLogger(UserTasksHelperServiceImpl.class);
+
+	@Override
+	public User createUserFromUserDTO(User user, UserDTO userDTO) {
+		LOG.debug("Preparing user={} from user transfer object", userDTO.getUserName());
 
 		Timestamp registrationDateTime = new Timestamp(new Date().getTime());
 
@@ -37,7 +40,19 @@ public class Helper {
 		user.setZipcode(userDTO.getZipcode());
 
 		return user;
+	}
 
+	@Override
+	public boolean canAccessUser(CustomUser customUser, String userName) {
+		LOG.debug("Checking if the logged in user={} has access to={}", customUser.getUserName(), userName);
+
+		if (customUser != null && (customUser.getUsername().equals(userName)
+				|| (customUser.getRole().equals(UserRole.ADMIN.getRoleAsString())))) {
+			LOG.debug("User={} can access user={}", customUser.getUsername(), userName);
+			return true;
+		}
+
+		return false;
 	}
 
 }
