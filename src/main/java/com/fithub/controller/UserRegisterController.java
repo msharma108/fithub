@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -36,14 +37,11 @@ public class UserRegisterController {
 	// User Service needed for interfacing with DB through DAO
 	private final UserService userService;
 	private final UserRegisterValidator userRegisterValidator;
-	private Authentication authentication;
 
 	@Autowired
-	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService,
-			Authentication authentication) {
+	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService) {
 		this.userRegisterValidator = userRegisterValidator;
 		this.userService = userService;
-		this.authentication = authentication;
 	}
 
 	@InitBinder("userDTO")
@@ -57,14 +55,15 @@ public class UserRegisterController {
 	 * @param model
 	 * @return registration view
 	 */
-	@GetMapping(value = { "/registerUser", "/admin/registerUser" })
-	public String getRegisterPage(Model model) {
+	@GetMapping(value = { "/userRegister", "/admin/userRegister" })
+	public String getUserRegisterPage(Model model) {
 		LOG.debug("Displaying User Registration page");
 		UserDTO userDTO = new UserDTO();
 		model.addAttribute("userDTO", userDTO);
 		// showRegisterForm is used to show/hide register modal on UI using JS
 		model.addAttribute("showRegister", 1);
-		return "canvas";
+		// #Change this to registration page
+		return "home";
 	}
 
 	/**
@@ -79,8 +78,9 @@ public class UserRegisterController {
 	 */
 	@PostMapping(value = { "/userRegister", "/admin/userRegister" })
 	public String submitUserRegisterPage(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, Authentication authentication) {
 		LOG.debug("Attempting to register user", userDTO.getUserName());
+
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page
@@ -90,23 +90,23 @@ public class UserRegisterController {
 		LOG.debug("Registration successful, heading to the jsp");
 
 		// used to check login success on the canvas page
-		redirectAttributes.addFlashAttribute("registerUserSuccess", "enabled");
+		redirectAttributes.addFlashAttribute("userRegisterSuccess", "enabled");
 		if (authentication.isAuthenticated())
-			return "redirect:/admin/registerUserSuccess";
+			return "redirect:/admin/userRegisterSuccess";
 		else
-			return "redirect:/registerUserSuccess";
+			return "redirect:/userRegisterSuccess";
 
 	}
 
-	@GetMapping(value = { "/registerUserSuccess", "/admin/registerUserSuccess" })
-	public String getRegisterUserSuccessPage(HttpServletRequest request) {
+	@RequestMapping(value = { "/userRegisterSuccess", "/admin/userRegisterSuccess" })
+	public String getUserRegisterSuccessPage(HttpServletRequest request) {
 
 		// Preventing problem with page refresh in case of flash attribute
 		// Reference:
 		// http://www.tikalk.com/redirectattributes-new-feature-spring-mvc-31/
 		Map<String, ?> checkMap = RequestContextUtils.getInputFlashMap(request);
 		if (checkMap != null)
-			return "canvas";
+			return "user/userRegisterSuccess";
 		else
 			return "home";
 	}

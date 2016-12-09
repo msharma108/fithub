@@ -6,12 +6,14 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.fithub.domain.CustomUser;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
 
+@Service
 public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserTasksHelperServiceImpl.class);

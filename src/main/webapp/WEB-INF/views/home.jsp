@@ -55,12 +55,12 @@
 		   </li>
 		   <sec:authorize access="isAnonymous()">
 		   <li class="nav-item">
-		   <a class="nav-link" href="<c:url value="/registerUser"/>" data-toggle="modal">Register</a>
+		   <a class="nav-link" href="<c:url value="/userRegister"/>" data-toggle="modal">Register</a>
 		   </li>
 		   </sec:authorize>
 		   <sec:authorize url="/admin">
 		   	<li class="nav-item">
-		   <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/registerUser"/>">Register</a>
+		   <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/userRegister"/>">Register</a>
 		   </li>
 		   </sec:authorize>
 		  </ul>

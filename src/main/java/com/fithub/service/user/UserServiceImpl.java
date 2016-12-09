@@ -37,10 +37,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUserById(Long userId) {
+	public User getUserById(Long userId) throws IllegalArgumentException {
 		LOG.debug("Retreive user having userId={}", userId);
 		User user = userRepository.findOne(userId);
-		if (!user.equals(null))
+		if (user != null)
 			return user;
 		else
 			throw new NoSuchElementException(String.format("UserId=%d not found", userId));
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUsername(String userName) {
 		LOG.debug("Retreive user having userName={}", userName);
 		User user = userRepository.findOneByUserName(userName);
-		if (!user.equals(null))
+		if (user != null)
 			return user;
 		else
 			throw new NoSuchElementException((String.format("Username=%s not found", userName)));
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
 		boolean isRoleChanged = false;
 
-		if (!user.equals(null)) {
+		if (user != null) {
 			// Checking for users current role and switching the role
 			if (user.getRole().equals(UserRole.ADMIN.getRoleAsString())) {
 				user.setRole(UserRole.CUSTOMER.getRoleAsString());
