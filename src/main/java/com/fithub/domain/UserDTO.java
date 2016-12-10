@@ -1,14 +1,10 @@
 package com.fithub.domain;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Data Transfer Object class for user registrations
@@ -29,10 +25,8 @@ public class UserDTO {
 	@NotEmpty
 	private String country;
 
-	@Past
-	@DateTimeFormat(pattern = "YYYY/MM/DD")
 	@NotNull
-	private Date dateOfBirth;
+	private String dateOfBirth;
 
 	@Email
 	@NotEmpty
@@ -70,6 +64,8 @@ public class UserDTO {
 	@NotEmpty
 	private String zipcode;
 
+	private boolean isEditable = false;
+
 	public String getUserName() {
 		return userName;
 	}
@@ -102,11 +98,11 @@ public class UserDTO {
 		this.country = country;
 	}
 
-	public Date getDateOfBirth() {
+	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -196,6 +192,14 @@ public class UserDTO {
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+
+	public boolean getIsEditable() {
+		return isEditable;
+	}
+
+	public void setIsEditable(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 
 }

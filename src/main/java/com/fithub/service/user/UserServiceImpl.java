@@ -50,10 +50,8 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUsername(String userName) {
 		LOG.debug("Retreive user having userName={}", userName);
 		User user = userRepository.findOneByUserName(userName);
-		if (user != null)
-			return user;
-		else
-			throw new NoSuchElementException((String.format("Username=%s not found", userName)));
+		return user;
+
 	}
 
 	@Override
@@ -61,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
 		LOG.debug("Creating user having userName={}", userDTO.getUserName());
 		User user = new User();
-		userTasksHelperService.createUserFromUserDTO(user, userDTO);
+		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
 		return userRepository.save(user);
 	}
 

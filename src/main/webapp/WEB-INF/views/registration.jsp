@@ -7,7 +7,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
-    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -42,16 +41,27 @@
         <div class="col-lg-12 well">
           <fieldset class="form-group">
           <legend>Please enter your information below</legend>
-	        <form:form modelAttribute="userDTO" method="POST" enctype="utf8">
+          
+          <!-- Form action variable value based on user role starts here -->
+          <sec:authorize access="isAnonymous()">
+          <c:url var="userSave" value="/userSave"/>
+          </sec:authorize>
+         <sec:authorize access="hasRole('ADMIN')">
+         <c:url var="userSave" value="/admin/userSave"/>
+         </sec:authorize>
+           <!-- Form action variable value based on user role ends here -->
+	        <form:form modelAttribute="userDTO" method="POST" action="${userSave}">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
                        <form:label path="givenName">Given Name: </form:label><br>
                        <form:input class="form-control" path="givenName" id="givenNameId" />
+                       <form:errors  path="givenName"/>
                   </div>
                   <div class="col-sm-4">
                        <form:label path="familyName">Family Name: </form:label><br>
                        <form:input class="form-control" path="familyName" id="familyNameId" />
+                       <form:errors  path="familyName"/>
                   </div>
                 </div>
               </div>
@@ -62,14 +72,16 @@
                        <form:label path="sex">Gender:</form:label><br>
 			           <form:select class="form-control" path="sex" id="sexId">
 			          <form:option value=""></form:option>
-			           <form:option value="m">Male</form:option>
-			           <form:option value="f">Female</form:option>
-			           <form:option value="o">Other</form:option>
+			           <form:option value="MALE">MALE</form:option>
+			           <form:option value="FEMALE">FEMALE</form:option>
+			           <form:option value="UNDISCLOSED">UNDISCLOSED</form:option>
+			           <form:errors  path="sex"/>
 			           </form:select>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="dateOfBirth">Date Of Birth:</form:label><br>
 			           <form:input class="form-control" path="dateOfBirth" id="dateOfBirthId" />
+			           <form:errors  path="dateOfBirth"/>
                   </div>
                 </div>
               </div>
@@ -79,10 +91,12 @@
                   <div class="col-sm-4 form-group">
 			           <form:label path="address">Address:</form:label><br>
 			           <form:input class="form-control" path="address" id="addressId" />
+			           <form:errors  path="address"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="city">City:</form:label><br>
 			           <form:input class="form-control" path="city" id="cityId" />
+			           <form:errors  path="city"/>
                   </div>
                 </div>
               </div>
@@ -92,6 +106,7 @@
                   <div class="col-sm-4 form-group">
 			           <form:label path="province">Province:</form:label><br>
 			           <form:input class="form-control" path="province" id="provinceId" />
+			           <form:errors  path="province"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="country">Country:</form:label><br>
@@ -99,6 +114,7 @@
 			           <form:option value=""></form:option>
 			           <form:option value="can">Canada</form:option>
 			           <form:option value="usa">USA</form:option>
+			           <form:errors  path="country"/>
 			           </form:select>
                   </div>
                 </div>
@@ -109,10 +125,12 @@
                   <div class="col-sm-4 form-group">
 			           <form:label path="zipcode">Zip/Postal code:</form:label><br>
 			           <form:input class="form-control" path="zipcode" id="zipcodeId" />
+			           <form:errors  path="zipcode"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="phone">Phone:</form:label><br>
 			           <form:input class="form-control" type="tel" path="phone" id="phoneId" />
+			           <form:errors  path="phone"/>
                   </div>
                 </div>
               </div>
@@ -122,10 +140,12 @@
                   <div class="col-sm-4 form-group">
 			           <form:label path="email">Email:</form:label><br>
 			           <form:input class="form-control" type="email" path="email" id="emailId" />
+			           <form:errors  path="email"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="userName">UserName:</form:label><br>
 			           <form:input class="form-control" path="userName" id="userNameId" />
+			           <form:errors  path="userName"/>
                   </div>
                 </div>
                 </div>
@@ -135,6 +155,7 @@
                   <div class="col-sm-4 form-group">
 			           <form:label path="password" >Password:</form:label><br>
 			           <form:input class="form-control" type="password" path="password" id="passwordId" />
+			           <form:errors  path="password"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="repeatPassword">Repeat Password:</form:label><br>
@@ -157,7 +178,7 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-4 form-group">
-                       <input class="btn btn-success" type="submit" value="Save" />
+                       <input class="btn btn-success" type="submit" name="userRegister" id="userRegister" value="Save" />
                   </div>
                 </div> 
               </div>

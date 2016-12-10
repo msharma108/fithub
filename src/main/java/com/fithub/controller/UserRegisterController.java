@@ -45,7 +45,7 @@ public class UserRegisterController {
 	}
 
 	@InitBinder("userDTO")
-	protected void initBinder(final WebDataBinder binder) {
+	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(userRegisterValidator);
 	}
 
@@ -63,7 +63,7 @@ public class UserRegisterController {
 		// showRegisterForm is used to show/hide register modal on UI using JS
 		model.addAttribute("showRegister", 1);
 		// #Change this to registration page
-		return "home";
+		return "registration";
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class UserRegisterController {
 	 * @param result
 	 * @return view based on results
 	 */
-	@PostMapping(value = { "/userRegister", "/admin/userRegister" })
+	@PostMapping(value = { "/userSave", "/admin/userSave" }, params = "userRegister")
 	public String submitUserRegisterPage(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		LOG.debug("Attempting to register user", userDTO.getUserName());
@@ -84,7 +84,7 @@ public class UserRegisterController {
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page
-			return "canvas";
+			return "registration";
 		}
 		userService.createUser(userDTO);
 		LOG.debug("Registration successful, heading to the jsp");

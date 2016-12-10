@@ -4,7 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the user database table.
@@ -62,7 +71,7 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 1)
 	private String role;
 
-	@Column(length = 1)
+	@Column(length = 20)
 	private String sex;
 
 	@Column(name = "user_name", nullable = false, length = 45)
