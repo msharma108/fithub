@@ -37,7 +37,36 @@
 
 
 	<!-- contents start here -->
-	Welcome to FitHub
+	<div class="container-fluid">
+      <h1 class="well">Login Form</h1>
+        <div class="col-lg-12 well">
+	        <form:form modelAttribute="userDTO" method="POST" enctype="utf8">
+ 
+              <div class="col-sm-12">    
+                <div class="form-group row">
+                  <div class="col-sm-4 form-group">
+			           <form:label path="userName">UserName:</form:label><br>
+			           <form:input class="form-control" path="userName" id="userNameId" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-4 form-group">
+			           <form:label path="password" >Password:</form:label><br>
+			           <form:input class="form-control" type="password" path="password" id="passwordId" />
+                  </div>
+                </div>
+                </div>
+            
+                <div class="row">
+                  <div class="col-sm-4 form-group">
+                       <input class="btn btn-success" type="submit" value="Sign In" />
+                  </div>
+                </div> 
+              <br><br>
+              
+            </form:form>
+        </div>
+      </div> 
     
 	<!-- contents end here -->
 	 
