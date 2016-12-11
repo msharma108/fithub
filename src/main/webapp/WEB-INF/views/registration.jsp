@@ -12,16 +12,17 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>FitHub.com</title>
 
-    <!-- Bootstrap -->
-    <!-- link rel="stylesheet" href="../../css/bootstrap.min.css" -->
-    <link href="<c:url value="../../css/bootstrap.min.css" />" rel="stylesheet">
 	<!-- Font Awesome -->
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<!-- JQuery -->
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
 	<!-- custom -->
 	<link rel="stylesheet" href="../../css/style.css"  >
+	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
-	
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,19 +30,22 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<script>
+$(function() {
+  $("#dateOfBirthId").datepicker({
+	  format: "mm/dd/yyyy" 
+  });
+});
+</script>
   </head>
   <body>
 <%@ include file="header.jsp" %>
-
-
 	<!-- contents start here -->
-	<div class="container-fluid">
-      <h1 class="well">Registration Form</h1>
-        <div class="col-lg-12 well">
-          <fieldset class="form-group">
-          <legend>Please enter your information below</legend>
-          
+<div class="container-fluid">
+        
+  <div class="panel panel-primary" style="border: 2px solid maroon">
+    <div class="panel-heading" style="color: white; background-color: maroon;"><b>REGISTRATION INFO</b></div>
+     <div class="panel-body" style="background-color: #C1E1A6;"> 
           <!-- Form action variable value based on user role starts here -->
           <sec:authorize access="isAnonymous()">
           <c:url var="userSave" value="/userSave"/>
@@ -50,18 +54,18 @@
          <c:url var="userSave" value="/admin/userSave"/>
          </sec:authorize>
            <!-- Form action variable value based on user role ends here -->
-	        <form:form modelAttribute="userDTO" method="POST" action="${userSave}">
+	        <form:form modelAttribute="userDTO" method="POST" action="${userSave}" style="color: green;">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
-                       <form:label path="givenName">Given Name: </form:label><br>
-                       <form:input class="form-control" path="givenName" id="givenNameId" />
-                       <form:errors  path="givenName"/>
+                       <form:label path="givenName">Given Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
+                       <form:input class="form-control" path="givenName" id="givenNameId" placeHolder= "Enter Given names" />
+                       <form:errors  path="givenName" style="color: red;"/>
                   </div>
                   <div class="col-sm-4">
-                       <form:label path="familyName">Family Name: </form:label><br>
-                       <form:input class="form-control" path="familyName" id="familyNameId" />
-                       <form:errors  path="familyName"/>
+                       <form:label path="familyName">Family Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
+                       <form:input class="form-control" path="familyName" id="familyNameId" placeHolder= "Enter family name" />
+                       <form:errors  path="familyName" style="color: red;"/>
                   </div>
                 </div>
               </div>
@@ -69,19 +73,39 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-                       <form:label path="sex">Gender:</form:label><br>
+                       <form:label path="sex">Gender:<span class="glyphicon glyphicon-user"> </span></form:label><br>
 			           <form:select class="form-control" path="sex" id="sexId">
-			          <form:option value=""></form:option>
+			          <form:option value="">--- Select ---</form:option>
 			           <form:option value="MALE">MALE</form:option>
 			           <form:option value="FEMALE">FEMALE</form:option>
 			           <form:option value="UNDISCLOSED">UNDISCLOSED</form:option>
-			           <form:errors  path="sex"/>
+			           <form:errors  path="sex" style="color: red;"/>
 			           </form:select>
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="dateOfBirth">Date Of Birth:</form:label><br>
-			           <form:input class="form-control" path="dateOfBirth" id="dateOfBirthId" />
-			           <form:errors  path="dateOfBirth"/>
+			           <form:label path="dateOfBirth">Date Of Birth:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
+			           <form:input class="form-control" path="dateOfBirth" id="dateOfBirthId" placeHolder= "Enter date of birth"  />
+			           <form:errors  path="dateOfBirth" style="color: red;"/>
+                  </div>
+                </div>
+              </div>
+              <script>
+              $('#dateOfBirthId input').click(function(event){
+            	   $('#dateOfBirthId ').data("DateTimePicker").show();
+            	});
+              </script>
+              
+              <div class="col-sm-12">    
+                <div class="form-group row">
+                  <div class="col-sm-4 form-group">
+			           <form:label path="address">Address:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:input class="form-control" path="address" id="addressId" placeHolder= "Enter Streen number and street name"  />
+			           <form:errors  path="address" style="color: red;"/>
+                  </div>
+                  <div class="col-sm-4 form-group">
+			           <form:label path="city">City:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:input class="form-control" path="city" id="cityId" placeHolder= "Enter City"  />
+			           <form:errors  path="city" style="color: red;"/>
                   </div>
                 </div>
               </div>
@@ -89,32 +113,17 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="address">Address:</form:label><br>
-			           <form:input class="form-control" path="address" id="addressId" />
-			           <form:errors  path="address"/>
+			           <form:label path="province">Province:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:input class="form-control" path="province" id="provinceId" placeHolder= "Enter Province"  />
+			           <form:errors  path="province" style="color: red;"/>
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="city">City:</form:label><br>
-			           <form:input class="form-control" path="city" id="cityId" />
-			           <form:errors  path="city"/>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="col-sm-12">    
-                <div class="form-group row">
-                  <div class="col-sm-4 form-group">
-			           <form:label path="province">Province:</form:label><br>
-			           <form:input class="form-control" path="province" id="provinceId" />
-			           <form:errors  path="province"/>
-                  </div>
-                  <div class="col-sm-4 form-group">
-			           <form:label path="country">Country:</form:label><br>
-			           <form:select class="form-control input-medium bfh-countries" data-country="US" path="country" id="countryId">
-			           <form:option value=""></form:option>
+			           <form:label path="country">Country:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:select class="form-control input-medium bfh-countries" data-country="US" path="country" id="countryId"  >
+			           <form:option value="">--- Select ---</form:option>
 			           <form:option value="can">Canada</form:option>
 			           <form:option value="usa">USA</form:option>
-			           <form:errors  path="country"/>
+			           <form:errors  path="country" style="color: red;"/>
 			           </form:select>
                   </div>
                 </div>
@@ -123,43 +132,14 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="zipcode">Zip/Postal code:</form:label><br>
-			           <form:input class="form-control" path="zipcode" id="zipcodeId" />
-			           <form:errors  path="zipcode"/>
+			           <form:label path="zipcode">Zip/Postal code:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:input class="form-control" path="zipcode" id="zipcodeId" placeHolder= "Enter Zip/postal code"  />
+			           <form:errors  path="zipcode" style="color: red;"/>
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="phone">Phone:</form:label><br>
-			           <form:input class="form-control" type="tel" path="phone" id="phoneId" />
-			           <form:errors  path="phone"/>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="col-sm-12">    
-                <div class="form-group row">
-                  <div class="col-sm-4 form-group">
-			           <form:label path="email">Email:</form:label><br>
-			           <form:input class="form-control" type="email" path="email" id="emailId" />
-			           <form:errors  path="email"/>
-                  </div>
-                  <div class="col-sm-4 form-group">
-			           <form:label path="userName">UserName:</form:label><br>
-			           <form:input class="form-control" path="userName" id="userNameId" />
-			           <form:errors  path="userName"/>
-                  </div>
-                </div>
-                </div>
-              
-              <div class="col-sm-12">    
-                <div class="form-group row">
-                  <div class="col-sm-4 form-group">
-			           <form:label path="password" >Password:</form:label><br>
-			           <form:input class="form-control" type="password" path="password" id="passwordId" />
-			           <form:errors  path="password"/>
-                  </div>
-                  <div class="col-sm-4 form-group">
-			           <form:label path="repeatPassword">Repeat Password:</form:label><br>
-			           <form:input class="form-control" type="password" path="repeatPassword" id="repeatPasswordId" />
+			           <form:label path="phone">Phone:<span class="glyphicon glyphicon-phone"> </span></form:label><br>
+			           <form:input class="form-control" type="tel" path="phone" id="phoneId" placeHolder= "Enter Phone number" />
+			           <form:errors  path="phone" style="color: red;"/>
                   </div>
                 </div>
               </div>
@@ -167,34 +147,68 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			          <form:label path="paymentMode">Payment Mode:</form:label><br>
+			           <form:label path="email">Email:<span class="glyphicon glyphicon-envelope"></span></form:label><br>
+			           <form:input class="form-control" type="email" path="email" id="emailId" placeHolder= "Enter email address"  />
+			           <form:errors  path="email" style="color: red;"/>
+                  </div>
+                  <div class="col-sm-4 form-group">
+			           <form:label path="userName">UserName:<span class="glyphicon glyphicon-user"> </span></form:label><br>
+			           <form:input class="form-control" path="userName" id="userNameId" placeHolder= "Choose an username"  />
+			           <form:errors  path="userName" style="color: red;"/>
+                  </div>
+                </div>
+                </div>
+              
+              <div class="col-sm-12">    
+                <div class="form-group row">
+                  <div class="col-sm-4 form-group">
+			           <form:label path="password" >Password:<span class="glyphicon glyphicon-lock"></span></form:label><br>
+			           <form:input class="form-control" type="password" path="password" id="passwordId" placeHolder= "Choose password"  />
+			           <form:errors  path="password" style="color: red;"/>
+                  </div>
+                  <div class="col-sm-4 form-group">
+			           <form:label path="repeatPassword">Repeat Password:<span class="glyphicon glyphicon-lock"></span></form:label><br>
+			           <form:input class="form-control" type="password" path="repeatPassword" id="repeatPasswordId" placeHolder= "Re-enter password"  />
+			           <form:errors  path="repeatPassword" style="color: red;"/>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-sm-12">    
+                <div class="form-group row">
+                  <div class="col-sm-4 form-group">
+			          <form:label path="paymentMode">Payment Mode:<span class="glyphicon glyphicon-credit-card"></span></form:label><br>
 			          <form:select class="form-control" path="paymentMode" id="paymentModeId">
-			          <form:option value=""></form:option>
+			          <form:option value="">--- Select ---</form:option>
 			          <form:option value="debit">Debit</form:option>
 			          <form:option value="credit">Credit</form:option>
 			          <form:option value="paypal">Paypal</form:option>
+			           <form:errors  path="paymentMode" style="color: red;"/>
 			          </form:select>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm-4 form-group">
-                       <input class="btn btn-success" type="submit" name="userRegister" id="userRegister" value="Save" />
+              </div>
+              
+              <div class="col-sm-12"> 
+                <div class="form-group row">
+                  <div class="col-sm-8 form-group">
+                       <!-- input class="btn btn-primary btn-block" type="submit" name="userRegister" id="userRegister" value="Submit" /-->
+                       <button type="submit" class="btn btn-primary btn-block" name="userRegister" id="userRegister"  ><i class="glyphicon glyphicon-pencil"></i> Register</button>
                   </div>
                 </div> 
               </div>
-              <br><br>
-              
+			<br><br>              
             </form:form>
-          </fieldset>
+          </div>
+          <div class="panel-footer" style="color: white; background-color: maroon;"></div>
         </div>
-    
-	</div>
+        <br><br><br><br><br><br>
+  </div>
 	<!-- contents end here -->
 	 
 <%@ include file="footer.jsp" %>
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../../js/jquery-3.1.1.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../../js/bootstrap.min.js"></script>
 

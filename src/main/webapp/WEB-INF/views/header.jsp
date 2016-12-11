@@ -8,30 +8,30 @@
          </div>
 		  <ul class="nav navbar-nav">
 		   <li class="nav-item">
-			 <a class="nav-link" href="home.jsp">Home</a>
+			 <a class="nav-link" href="home.jsp"><span class="glyphicon glyphicon-home"> </span> Home</a>
 		   </li>
 		   <li class="nav-item">
-			 <a class="nav-link" href="#">Products</a>
+			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Products</a>
 		   </li>
 		   <li class="nav-item">
-			 <a class="nav-link" href="#">Contact us</a>
+			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact us</a>
 		   </li>
 		   <li class="nav-item">
-			 <a class="nav-link" href="#">About us</a>
+			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-info-sign"></span> About us</a>
 		   </li>
 		   <sec:authorize access="isAnonymous()">
 		   <li class="nav-item">
-		     <a class="nav-link" href="<c:url value="/userRegister"/>" >Register</a>
+		     <a class="nav-link" href="<c:url value="/userRegister"/>" ><span class="glyphicon glyphicon-pencil"></span> Register</a>
 		   </li>
 		   </sec:authorize>
 		   <sec:authorize url="/admin">
 		   	<li class="nav-item">
-		      <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/userRegister"/>">Register</a>
+		      <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register</a>
 		   </li>
 		   </sec:authorize>
 		   <sec:authorize access="isAnonymous()">
 		   <li class="nav-item">
-			 <a class="nav-link" href="<c:url value="/login"/>">Sign In</a>
+			 <a class="nav-link" href="<c:url value="/login"/>"><span class="glyphicon glyphicon-log-in"></span> Sign In</a>
 		   </li>
 		   </sec:authorize>
 		   <sec:authorize access="isAuthenticated()">
