@@ -66,6 +66,12 @@ public class UserDTO {
 
 	private boolean isEditable = false;
 
+	// Represents currently logged in User's username
+	private String loggedInUserName;
+
+	// Represents currently logged in User's role
+	private String loggedInUserUserRole = "CUSTOMER";
+
 	public String getUserName() {
 		return userName;
 	}
@@ -198,8 +204,24 @@ public class UserDTO {
 		return isEditable;
 	}
 
-	public void setIsEditable(boolean isEditable) {
+	public void setEditable(boolean isEditable) {
 		this.isEditable = isEditable;
+	}
+
+	public String getLoggedInUserName() {
+		return loggedInUserName;
+	}
+
+	public void setLoggedInUserName(String loggedInUserName) {
+		this.loggedInUserName = loggedInUserName;
+	}
+
+	public String getLoggedInUserUserRole() {
+		return loggedInUserUserRole;
+	}
+
+	public void setLoggedInUserUserRole(String loggedInUserUserRole) {
+		this.loggedInUserUserRole = loggedInUserUserRole;
 	}
 
 }

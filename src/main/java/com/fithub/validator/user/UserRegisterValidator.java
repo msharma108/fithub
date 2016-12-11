@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 
 import com.fithub.domain.UserDTO;
 import com.fithub.service.user.UserService;
@@ -16,7 +15,7 @@ import com.fithub.service.user.UserService;
  */
 
 @Component
-public class UserRegisterValidator implements Validator {
+public class UserRegisterValidator extends UserValidator {
 
 	private final UserService userService;
 	private static final Logger LOG = LoggerFactory.getLogger(UserRegisterValidator.class);
@@ -24,19 +23,6 @@ public class UserRegisterValidator implements Validator {
 	@Autowired
 	public UserRegisterValidator(UserService userService) {
 		this.userService = userService;
-	}
-
-	/**
-	 * Method Returns true if the passed object can validate the given class's
-	 * object
-	 * 
-	 * @param classToBeValidated
-	 * @return boolean
-	 */
-	@Override
-	public boolean supports(Class<?> validator) {
-		LOG.debug("Attempting to check if {} is supported", validator.getSimpleName());
-		return validator.isAssignableFrom(UserDTO.class);
 	}
 
 	/**
@@ -48,25 +34,10 @@ public class UserRegisterValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object userDTOBeingValidated, Errors errors) {
-		LOG.debug("Initiating validation of userDTO supplied");
+		LOG.debug("Initiating validation of userDTO supplied by UserRegisterValidator");
 		UserDTO userDTO = (UserDTO) userDTOBeingValidated;
-		validateUserName(userDTO, errors);
+		validateUserNameDoesNotExist(userDTO, errors);
 		validatePasswords(userDTO, errors);
-	}
-
-	/**
-	 * Method populates the errors if the passwords entered in the user register
-	 * form don't match
-	 * 
-	 * @param userDTO
-	 * @param errors
-	 */
-	private void validatePasswords(UserDTO userDTO, Errors errors) {
-		LOG.debug("Validating if the supplied passwords match");
-		if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
-			errors.rejectValue("password", "password.mismatch");
-		}
-
 	}
 
 	/**
@@ -76,8 +47,8 @@ public class UserRegisterValidator implements Validator {
 	 * @param userDTO
 	 * @param errors
 	 */
-	private void validateUserName(UserDTO userDTO, Errors errors) {
-		LOG.debug("Validating username");
+	private void validateUserNameDoesNotExist(UserDTO userDTO, Errors errors) {
+		LOG.debug("Validating the entered username={} is not already in use", userDTO.getUserName());
 		if ((userService.getUserByUsername(userDTO.getUserName()) != null)) {
 			errors.rejectValue("userName", "userName.exists");
 		}

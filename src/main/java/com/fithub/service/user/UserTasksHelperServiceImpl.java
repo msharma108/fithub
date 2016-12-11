@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,12 +60,7 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		return false;
 	}
 
-	/**
-	 * Method formats provided date in yy/mm/dd format
-	 * 
-	 * @param dateToBeFormatted
-	 * @return date
-	 */
+	@Override
 	public Date dateFormatter(String dateToBeFormatted) {
 		// Reference :
 		// http://www.mkyong.com/java/java-date-and-calendar-examples/
@@ -77,6 +73,19 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 			LOG.debug("Error parsing date={}", dateToBeFormatted);
 		}
 		return date;
+	}
+
+	@Override
+	public String getLoggedInUserName(Authentication authentication) {
+
+		CustomUser loggedInUser = (CustomUser) authentication.getPrincipal();
+		return loggedInUser.getUserName();
+	}
+
+	@Override
+	public String getLoggedInUserUserRole(Authentication authentication) {
+		CustomUser loggedInUser = (CustomUser) authentication.getPrincipal();
+		return loggedInUser.getRole();
 	}
 
 }

@@ -1,5 +1,9 @@
 package com.fithub.service.user;
 
+import java.util.Date;
+
+import org.springframework.security.core.Authentication;
+
 import com.fithub.domain.CustomUser;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
@@ -30,5 +34,31 @@ public interface UserTasksHelperService {
 	 * @return true if canAccessUser else false
 	 */
 	boolean canAccessUser(CustomUser customUser, String userName);
+
+	/**
+	 * Method formats provided date in "yy/mm/dd" format
+	 * 
+	 * @param dateToBeFormatted
+	 * @return Formatted date
+	 */
+	Date dateFormatter(String dateToBeFormatted);
+
+	/**
+	 * Method returns the logged in user's userName
+	 * 
+	 * @param authentication
+	 *            Spring Security object encapsulating the logged in user
+	 * @return userName Logged in user's userName
+	 */
+	String getLoggedInUserName(Authentication authentication);
+
+	/**
+	 * Method returns the logged in user's authority
+	 * 
+	 * @param authentication
+	 *            Spring Security object encapsulating the logged in user
+	 * @return role Role of the logged in user
+	 */
+	String getLoggedInUserUserRole(Authentication authentication);
 
 }

@@ -8,6 +8,7 @@ import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.fithub.domain.UserDTO;
 import com.fithub.service.user.UserService;
 import com.fithub.validator.user.UserRegisterValidator;
+import com.fithub.validator.user.UserValidator;
 
 /**
  * Controller for handling user registrations
@@ -36,9 +38,11 @@ public class UserRegisterController {
 
 	// User Service needed for interfacing with DB through DAO
 	private final UserService userService;
-	private final UserRegisterValidator userRegisterValidator;
+	@Qualifier("userRegisterValidator")
+	private final UserValidator userRegisterValidator;
 
 	@Autowired
+
 	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService) {
 		this.userRegisterValidator = userRegisterValidator;
 		this.userService = userService;

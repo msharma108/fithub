@@ -3,43 +3,57 @@ package com.fithub.controller;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.service.user.UserService;
+import com.fithub.service.user.UserTasksHelperService;
+import com.fithub.validator.user.UserValidator;
 
 @Controller
 public class UserTasksController {
 
 	private final UserService userService;
 	private static final Logger LOG = LoggerFactory.getLogger(UserTasksController.class);
-	// private final UserEditValidator userEditValidator;
+	@Qualifier("userEditValidator")
+	private final UserValidator userEditValidator;
+
+	private final UserTasksHelperService userTasksHelperService;
 
 	@Autowired
-	public UserTasksController(UserService userService) {// , UserEditValidator
-															// userEditValidator)
-															// {
+	public UserTasksController(UserService userService, UserValidator userEditValidator,
+			UserTasksHelperService userTasksHelperService) {
 		this.userService = userService;
-		// this.userEditValidator = userEditValidator;
+		this.userEditValidator = userEditValidator;
+		this.userTasksHelperService = userTasksHelperService;
 	}
 
-	// @InitBinder("userDTO")
-	// protected void initBinder(WebDataBinder binder) {
-	// binder.addValidators(userEditValidator);
-	// }
+	@InitBinder("userDTO")
+	protected void initBinder(WebDataBinder binder, UserDTO userDTO, Authentication authentication) {
+		userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
+		userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
+		binder.addValidators(userEditValidator);
+	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(value = { "/admin/viewUsers" })
@@ -111,7 +125,7 @@ public class UserTasksController {
 	public String getUserEditPage(@PathVariable("userName") String userName, @ModelAttribute("userDTO") UserDTO userDTO,
 			Model model) {
 		LOG.debug("Getting editUserPage for user={}", userName);
-		userDTO.setIsEditable(true);
+		userDTO.setEditable(true);
 		model.addAttribute("userDTO", userDTO);
 		// showRegisterForm is used to show/hide register modal on UI using JS
 		model.addAttribute("showRegister", 1);
@@ -132,28 +146,26 @@ public class UserTasksController {
 	// WORK ON THIS NEXT and abstract validator and implementation
 	// The register form will have a submit button with name =editUser but value
 	// as "update". This will only be shown in case of edit.
-	// @PostMapping(value = { "/userSave", "/admin/userSave" }, params =
-	// "editUser")
-	// public String submitUserEditPage(@Valid @ModelAttribute("userDTO")
-	// UserDTO userDTO, BindingResult result,
-	// RedirectAttributes redirectAttributes, Authentication authentication) {
-	// LOG.debug("Attempting to register user", userDTO.getUserName());
-	//
-	// if (result.hasErrors()) {
-	// LOG.debug("Errors in the submitted form");
-	// // return = forward him to the registration form page
-	// return "canvas";
-	// }
-	// userService.createUser(userDTO);
-	// LOG.debug("Registration successful, heading to the jsp");
-	//
-	// // used to check login success on the canvas page
-	// redirectAttributes.addFlashAttribute("userRegisterSuccess", "enabled");
-	// if (authentication.isAuthenticated())
-	// return "redirect:/admin/userRegisterSuccess";
-	// else
-	// return "redirect:/userRegisterSuccess";
-	//
-	// }
+	@PostMapping(value = { "/userSave", "/admin/userSave" }, params = "editUser")
+	public String submitUserEditPage(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
+			RedirectAttributes redirectAttributes, Authentication authentication) {
+		LOG.debug("Attempting to register user", userDTO.getUserName());
+
+		if (result.hasErrors()) {
+			LOG.debug("Errors in the submitted form");
+			// return = forward him to the registration form page
+			return "canvas";
+		}
+		userService.createUser(userDTO);
+		LOG.debug("Registration successful, heading to the jsp");
+
+		// used to check login success on the canvas page
+		redirectAttributes.addFlashAttribute("userRegisterSuccess", "enabled");
+		if (authentication.isAuthenticated())
+			return "redirect:/admin/userRegisterSuccess";
+		else
+			return "redirect:/userRegisterSuccess";
+
+	}
 
 }
