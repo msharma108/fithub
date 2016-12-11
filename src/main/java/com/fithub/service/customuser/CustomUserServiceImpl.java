@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fithub.domain.CustomUser;
 import com.fithub.domain.User;
@@ -21,13 +22,13 @@ import com.fithub.service.user.UserService;
  * mechanism to authenticate a user based on userName
  */
 @Service
-public class CustomUserService implements UserDetailsService {
+public class CustomUserServiceImpl implements UserDetailsService {
 
-	private final static Logger LOG = LoggerFactory.getLogger(CustomUserService.class);
+	private final static Logger LOG = LoggerFactory.getLogger(CustomUserServiceImpl.class);
 	private final UserService userService;
 
 	@Autowired
-	public CustomUserService(UserService userService) {
+	public CustomUserServiceImpl(UserService userService) {
 		this.userService = userService;
 	}
 
@@ -36,6 +37,7 @@ public class CustomUserService implements UserDetailsService {
 	 * 
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String userName) throws NoSuchElementException {
 
 		LOG.debug("User with userName={} is being authenticated", userName);

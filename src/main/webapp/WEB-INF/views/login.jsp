@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
       <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
       <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -7,7 +6,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
-    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -40,19 +38,20 @@
 	<div class="container-fluid">
       <h1 class="well">Login Form</h1>
         <div class="col-lg-12 well">
-	        <form:form modelAttribute="userDTO" method="POST" enctype="utf8">
- 
+	        <form action="/login" method="POST" >
+ 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="userName">UserName:</form:label><br>
-			           <form:input class="form-control" path="userName" id="userNameId" />
+			           <label for="email">UserName</label><br>
+			           <input class="form-control" name="userName" id="userNameId" autofocus required />
+			           
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="password" >Password:</form:label><br>
-			           <form:input class="form-control" type="password" path="password" id="passwordId" />
+			           <label for="password">Password</label><br>
+			           <input class="form-control" type="password" name="password" id="passwordId" required />
                   </div>
                 </div>
                 </div>
@@ -63,8 +62,14 @@
                   </div>
                 </div> 
               <br><br>
+              		<c:if test="${not empty invalidCredentials}">
+				 		<div class="col-sm-4">${invalidCredentials}</div>
+					</c:if>
+					<c:if test="${not empty logoutMessage}">
+						<div class="col-sm-4">${logoutMessage}</div>
+					</c:if>
               
-            </form:form>
+            </form>
         </div>
       </div> 
     

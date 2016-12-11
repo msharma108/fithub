@@ -33,7 +33,7 @@ public class FithubSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		LOG.debug("Role based URL filtering");
         http.authorizeRequests()
-                .antMatchers("/", "/product/**", "/*/login").permitAll()
+                .antMatchers("/", "/product/**", "/*/login", "/logout").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/userRegister").anonymous().antMatchers("/userSave").anonymous()
                 .antMatchers("/admin/userRegister").hasRole("ADMIN")
@@ -41,14 +41,16 @@ public class FithubSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .defaultSuccessUrl("/")
                 .failureUrl("/login?failure")
                 .usernameParameter("userName")
+                .passwordParameter("password")
                 .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .permitAll();
+                .logoutSuccessUrl("/logoutSuccess")
+                .permitAll();;
     }
 	
 	@Override

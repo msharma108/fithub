@@ -1,4 +1,6 @@
 	<!-- start of header -->
+	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <div class="container-fluid">
 	   <div class="navbar navbar-default navbar-fixed-top navbar-fnt navbar-backgrnd" role="navigation">
 		 <div class="navbar-header">
@@ -29,7 +31,18 @@
 		   </sec:authorize>
 		   <sec:authorize access="isAnonymous()">
 		   <li class="nav-item">
-			 <a class="nav-link" href="<c:url value="/userLogin"/>">Sign In</a>
+			 <a class="nav-link" href="<c:url value="/login"/>">Sign In</a>
+		   </li>
+		   </sec:authorize>
+		   <sec:authorize access="isAuthenticated()">
+		   <li class="nav-item">
+		   <c:url var="logout" value="/logout"/>
+				<form action="${logout}" name="logout" method="POST">        
+                  	<div class="col-sm-4 form-group">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                       	<input class="btn btn-success" type="submit" name="logout" id="logout" value="Logout" />
+                  	</div>
+             	</form>
 		   </li>
 		   </sec:authorize>
 		  </ul>
