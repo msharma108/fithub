@@ -46,5 +46,16 @@
 		   </li>
 		   </sec:authorize>
 		  </ul>
+        <div class="col-sm-3  pull-right">
+            <form class="navbar-form" role="search" action="/admin/searchUser" method="POST" >
+                <div class="input-group">
+                    <input id="userNameId" type="text" class="form-control" placeholder="Enter UserName">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Search <i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
        </div>
     </div>

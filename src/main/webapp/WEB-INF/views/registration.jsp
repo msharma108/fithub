@@ -89,11 +89,6 @@ $(function() {
                   </div>
                 </div>
               </div>
-              <script>
-              $('#dateOfBirthId input').click(function(event){
-            	   $('#dateOfBirthId ').data("DateTimePicker").show();
-            	});
-              </script>
               
               <div class="col-sm-12">    
                 <div class="form-group row">
