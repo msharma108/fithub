@@ -57,9 +57,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User createUser(UserDTO userDTO) {
 
-		LOG.debug("Creating user having userName={}", userDTO.getUserName());
+		LOG.debug("Saving user having userName={}", userDTO.getUserName());
 		User user = new User();
 		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
+		user.setRegistrationDate(userTasksHelperService.getCurrentTimeStamp());
 		return userRepository.save(user);
 	}
 
@@ -103,4 +104,17 @@ public class UserServiceImpl implements UserService {
 		LOG.debug("Retrieving the list of all the users");
 		return userRepository.findAll(new Sort("userName"));
 	}
+
+	@Override
+	public User updateUserProfile(UserDTO userDTO) {
+
+		LOG.debug("Attempting to edit user profile of user={} by user={}", userDTO.getUserName(),
+				userDTO.getLoggedInUserName());
+		User user = new User();
+		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
+		user.setProfileEditDate(userTasksHelperService.getCurrentTimeStamp());
+		user.setProfileEditedByUser(userDTO.getLoggedInUserName());
+		return userRepository.save(getUserByUsername(user.getUserName()));
+	}
+
 }

@@ -25,8 +25,6 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 	public User createUserFromUserDTO(User user, UserDTO userDTO) {
 		LOG.debug("Preparing user={} from user transfer object", userDTO.getUserName());
 
-		Timestamp registrationDateTime = new Timestamp(new Date().getTime());
-
 		user.setAddress(userDTO.getAddress());
 		user.setCity(userDTO.getCity());
 		user.setCountry(userDTO.getCountry());
@@ -38,11 +36,11 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		user.setPaymentMode(userDTO.getPaymentMode());
 		user.setPhone(userDTO.getPhone());
 		user.setProvince(userDTO.getProvince());
-		user.setRegistrationDate(registrationDateTime);
 		user.setRole(userDTO.getRole().getRoleAsString());
 		user.setSex(userDTO.getSex());
 		user.setUserName(userDTO.getUserName());
 		user.setZipcode(userDTO.getZipcode());
+		user.setRegistrationDate(userDTO.getRegistrationDate());
 
 		return user;
 	}
@@ -86,6 +84,40 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 	public String getLoggedInUserUserRole(Authentication authentication) {
 		CustomUser loggedInUser = (CustomUser) authentication.getPrincipal();
 		return loggedInUser.getRole();
+	}
+
+	@Override
+	public Timestamp getCurrentTimeStamp() {
+
+		Timestamp timeStamp = new Timestamp(new Date().getTime());
+		return timeStamp;
+	}
+
+	@Override
+	public UserDTO populateUserDTOFromUser(User user) {
+		LOG.debug("Preparing userDTO={} from user object", user.getUserName());
+
+		UserDTO userDTO = new UserDTO();
+		userDTO.setAddress(user.getAddress());
+		userDTO.setCity(user.getCity());
+		userDTO.setCountry(user.getCountry());
+		userDTO.setDateOfBirth(user.getDateOfBirth().toString());
+		userDTO.setEmail(user.getEmail());
+		userDTO.setFamilyName(user.getFamilyName());
+		userDTO.setGivenName(user.getGivenName());
+		userDTO.setPassword(user.getPassword());
+		userDTO.setRepeatPassword(user.getPassword());
+		userDTO.setPaymentMode(user.getPaymentMode());
+		userDTO.setPhone(user.getPhone());
+		userDTO.setProvince(user.getProvince());
+		userDTO.setRole(UserRole.valueOf(user.getRole()));
+		userDTO.setSex(user.getSex());
+		userDTO.setUserName(user.getUserName());
+		userDTO.setZipcode(user.getZipcode());
+		userDTO.setRegistrationDate(user.getRegistrationDate());
+
+		return userDTO;
+
 	}
 
 }

@@ -3,56 +3,40 @@ package com.fithub.controller;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
+import com.fithub.domain.UserRole;
 import com.fithub.service.user.UserService;
 import com.fithub.service.user.UserTasksHelperService;
-import com.fithub.validator.user.UserValidator;
 
 @Controller
+@SessionAttributes("userDTO")
 public class UserTasksController {
 
 	private final UserService userService;
 	private static final Logger LOG = LoggerFactory.getLogger(UserTasksController.class);
-	@Qualifier("userEditValidator")
-	private final UserValidator userEditValidator;
-
 	private final UserTasksHelperService userTasksHelperService;
 
 	@Autowired
-	public UserTasksController(UserService userService, UserValidator userEditValidator,
-			UserTasksHelperService userTasksHelperService) {
+	public UserTasksController(UserService userService, UserTasksHelperService userTasksHelperService) {
 		this.userService = userService;
-		this.userEditValidator = userEditValidator;
 		this.userTasksHelperService = userTasksHelperService;
-	}
-
-	@InitBinder("userDTO")
-	protected void initBinder(WebDataBinder binder, UserDTO userDTO, Authentication authentication) {
-		userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
-		userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
-		binder.addValidators(userEditValidator);
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -85,87 +69,69 @@ public class UserTasksController {
 
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
 	@RequestMapping(value = { "/viewUser/{userName}", "/admin/viewUser/{userName}" })
-	public String getUserProfilePage(@PathVariable("userName") String userName, Model model) {
-		LOG.debug("Retreiving user page for user={}", userName);
+	public String getUserProfilePage(@PathVariable("userName") String userName, Model model,
+			Authentication authentication) {
+		LOG.debug("Retreiving the profile of user={}", userName);
 
 		User user = userService.getUserByUsername(userName);
-		if (user != null)
-			model.addAttribute("userDTO", user);
+		if (user != null) {
+			UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
+			// setting userDTO with currently logged in user's details
+			userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
+			userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
+			model.addAttribute("userDTO", userDTO);
+		}
+
 		else
 			throw new NoSuchElementException((String.format("Username=%s not found", userName)));
-		return "user/userProfile";
+		LOG.debug("Profile page to be invoked");
+		return "profile";
 	}
 
+	// ## Not needed as there will be a user search box
 	// ##This preauthorize I feel can be omitted later as the AntMatchers would
 	// ensure that
 	// Url of pattern /admin cant be reached
-	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = { "/admin/searchUser" })
-	public String getUserSearchPage() {
-		LOG.debug("Getting userSearchPage");
-		return "user/userSearchPage";
-	}
+	// @PreAuthorize("hasAuthority('ADMIN')")
+	// @RequestMapping(value = { "/admin/searchUser" })
+	// public String getUserSearchPage() {
+	// LOG.debug("Getting userSearchPage");
+	// return "user/userSearchPage";
+	// }
 
-	// On the userProfile page, there should be some buttons with form actions
-	// that will re-submit the JSPs model attribute to this controller method.
-	// params="editUser" in the RequestMapping allows one form with multiple
-	// submit buttons to be differentiated.params here would be the same as the
-	// name for the input buttons name attribute
-	// If this doesn't work then, I can have the request forwarded from a
-	// controller method that
-	// takes the username from userProfilePage as Post request with Username as
-	// a request.parameter of the form. That method then takes the username and
-	// modifies the url link and sends it to this method for admin/user in the
-	// required form /admin/userTask/{userName}. And the helper method of
-	// the controller will simply take the /admin/userTask as PostMapping.
-
-	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
-	@RequestMapping(value = { "/userTask/{userName}", "/admin/userTask/{userName}" }, params = "editUser", method = {
-			RequestMethod.GET, RequestMethod.POST })
-	public String getUserEditPage(@PathVariable("userName") String userName, @ModelAttribute("userDTO") UserDTO userDTO,
-			Model model) {
-		LOG.debug("Getting editUserPage for user={}", userName);
-		userDTO.setEditable(true);
-		model.addAttribute("userDTO", userDTO);
-		// showRegisterForm is used to show/hide register modal on UI using JS
-		model.addAttribute("showRegister", 1);
-
-		// Change to registration page
-		return "home";
-	}
-
-	@PostMapping(value = "/admin/userSearch")
-	public String constructUrlForUserTasks(HttpServletRequest request) {
+	@PostMapping(value = { "/viewUser", "/admin/viewUser" })
+	public String constructUrlForUserTasks(HttpServletRequest request, Authentication authentication) {
 		LOG.debug("Reconstructing URL for user operations");
 		String userName = request.getParameter("userName");
-
-		return ("forward:/admin/viewUser/" + userName);
+		if (userName != null) {
+			String reconstructedUrl;
+			// Request routing based on the logged in user's role
+			if (userTasksHelperService.getLoggedInUserUserRole(authentication).equals(UserRole.ADMIN.getRoleAsString()))
+				reconstructedUrl = "/admin/viewUser/" + userName;
+			else
+				reconstructedUrl = "/viewUser/" + userName;
+			return "forward:" + reconstructedUrl;
+		} else
+			throw new NoSuchElementException("Username not supplied,please recheck");
 
 	}
 
-	// WORK ON THIS NEXT and abstract validator and implementation
-	// The register form will have a submit button with name =editUser but value
-	// as "update". This will only be shown in case of edit.
-	@PostMapping(value = { "/userSave", "/admin/userSave" }, params = "editUser")
-	public String submitUserEditPage(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
-			RedirectAttributes redirectAttributes, Authentication authentication) {
-		LOG.debug("Attempting to register user", userDTO.getUserName());
+	// This method will be reached when the delete button on the user profile
+	// page is clicked
 
-		if (result.hasErrors()) {
-			LOG.debug("Errors in the submitted form");
-			// return = forward him to the registration form page
-			return "canvas";
-		}
-		userService.createUser(userDTO);
-		LOG.debug("Registration successful, heading to the jsp");
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/admin/userTask/{userName}", params = "userDelete")
+	public String handleUserDelete(@PathVariable("userName") String userName,
+			@ModelAttribute("userDTO") UserDTO userDTO, RedirectAttributes redirectAttributes) {
+		LOG.debug("Attempting to delete user={}", userDTO.getUserName());
 
-		// used to check login success on the canvas page
-		redirectAttributes.addFlashAttribute("userRegisterSuccess", "enabled");
-		if (authentication.isAuthenticated())
-			return "redirect:/admin/userRegisterSuccess";
-		else
-			return "redirect:/userRegisterSuccess";
+		boolean isUserDelete = userService.deleteUserByUsername(userDTO.getUserName());
 
+		LOG.debug("User was delete successfuly ?={}", isUserDelete);
+
+		redirectAttributes.addFlashAttribute("userDeleteSuccess", "enabled");
+
+		return "redirect:/admin/userSaveSuccess";
 	}
 
 }

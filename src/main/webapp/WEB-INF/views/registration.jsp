@@ -53,13 +53,23 @@ $(document).ready(function() {
 <div class="container-fluid">
         
   <div class="panel panel-primary" style="border: 2px solid maroon">
-    <div class="panel-heading" style="color: white; background-color: maroon;"><b>REGISTRATION INFO</b></div>
+    <c:choose>
+     <c:when test="${userDTO.isEditable == false }">
+      <!-- Show Sign Up Form -->
+    	<div class="panel-heading" style="color: white; background-color: maroon;"><b>REGISTRATION INFO</b></div>
+    </c:when>
+     <c:when test="${userDTO.isEditable == true }">
+      <!-- Show Update Profile Form -->
+    <div class="panel-heading" style="color: white; background-color: maroon;"><b>User Update Form</b></div>
+    </c:when>  
+    </c:choose>
+ 
      <div class="panel-body" style="background-color: #C1E1A6;"> 
           <!-- Form action variable value based on user role starts here -->
-          <sec:authorize access="isAnonymous()">
+          <sec:authorize access="hasAnyRole('CUSTOMER', 'ROLE_ANONYMOUS')">
           <c:url var="userSave" value="/userSave"/>
           </sec:authorize>
-         <sec:authorize access="hasRole('ADMIN')">
+         <sec:authorize access="hasAuthority('ADMIN')">
          <c:url var="userSave" value="/admin/userSave"/>
          </sec:authorize>
            <!-- Form action variable value based on user role ends here -->
@@ -78,6 +88,10 @@ $(document).ready(function() {
                   </div>
                 </div>
               </div>
+              
+            <sec:authorize access="isAuthenticated()">
+         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+         </sec:authorize>
               
               <div class="col-sm-12">    
                 <div class="form-group row">
@@ -192,15 +206,32 @@ $(document).ready(function() {
                   </div>
                 </div>
               </div>
-              
+              <c:choose>
+              <c:when test="${userDTO.isEditable == false }">
+             <!--  Sign Up button for new users -->
               <div class="col-sm-12"> 
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
                        <!-- input class="btn btn-primary btn-block" type="submit" name="userRegister" id="userRegister" value="Submit" /-->
-                       <button type="submit" class="btn btn-primary btn-block" name="userRegister" id="userRegister"  ><i class="glyphicon glyphicon-pencil"></i> Register</button>
+                       <button type="submit" class="btn btn-primary btn-block" name="userRegister" id="userRegister"  ><i class="glyphicon glyphicon-pencil"></i> Sign Up</button>
                   </div>
                 </div> 
               </div>
+              <!--  Sign Up button for new users Ends -->
+              </c:when>
+              <c:when test="${userDTO.isEditable == true }">
+             <!--  Profile Edit button -->  
+               <div class="col-sm-12"> 
+                <div class="form-group row">
+                  <div class="col-sm-8 form-group">
+                       <!-- input class="btn btn-primary btn-block" type="submit" name="userUpdate" id="userUpdate" value="Submit" /-->
+                       <button type="submit" class="btn btn-primary btn-block" name="userUpdate" id="userUpdate"  ><i class="glyphicon glyphicon-pencil"></i> Update Profile</button>
+                  </div>
+                </div> 
+              </div>           
+             <!--  Profile Edit button -->
+             </c:when>
+             </c:choose> 
 			<br><br>              
             </form:form>
           </div>

@@ -26,8 +26,9 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping(value = "/logoutSuccess")
-	public String handleUserLogOut(Model model) {
-		LOG.debug("Logging out");
+	public String handleUserLogout(Model model) {
+
+		LOG.debug("Logging out,handleUserLogout method has been called by FithubSecurityConfig logoutsuccess Url");
 		model.addAttribute("logoutMessage", "You've logged out of FitHub");
 
 		return "login";

@@ -13,9 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,11 +44,6 @@ public class UserRegisterController {
 	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService) {
 		this.userRegisterValidator = userRegisterValidator;
 		this.userService = userService;
-	}
-
-	@InitBinder("userDTO")
-	protected void initBinder(WebDataBinder binder) {
-		binder.addValidators(userRegisterValidator);
 	}
 
 	/**
@@ -85,6 +78,9 @@ public class UserRegisterController {
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		LOG.debug("Attempting to register user", userDTO.getUserName());
 
+		// Invoking User Registration in addition to JSR 303 validation
+		userRegisterValidator.validate(userDTO, result);
+
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page
@@ -96,13 +92,13 @@ public class UserRegisterController {
 		// used to check login success on the canvas page
 		redirectAttributes.addFlashAttribute("userRegisterSuccess", "enabled");
 		if (authentication.isAuthenticated())
-			return "redirect:/admin/userRegisterSuccess";
+			return "redirect:/admin/userSaveSuccess";
 		else
-			return "redirect:/userRegisterSuccess";
+			return "redirect:/userSaveSuccess";
 
 	}
 
-	@RequestMapping(value = { "/userRegisterSuccess", "/admin/userRegisterSuccess" })
+	@RequestMapping(value = { "/userSaveSuccess", "/admin/userSaveSuccess" })
 	public String getUserRegisterSuccessPage(HttpServletRequest request) {
 
 		// Preventing problem with page refresh in case of flash attribute
@@ -110,6 +106,9 @@ public class UserRegisterController {
 		// http://www.tikalk.com/redirectattributes-new-feature-spring-mvc-31/
 		Map<String, ?> checkMap = RequestContextUtils.getInputFlashMap(request);
 		if (checkMap != null)
+
+			// Success Page could be on registration itself
+			// Handles RegisterSuccess and UpdateSuccess
 			return "user/userRegisterSuccess";
 		else
 			return "home";

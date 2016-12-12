@@ -80,6 +80,13 @@ public class User implements Serializable {
 	@Column(length = 7)
 	private String zipcode;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "profile_edit_date")
+	private Date profileEditDate;
+
+	@Column(name = "profile_edited_by_user", length = 45)
+	private String profileEditedByUser;
+
 	// bi-directional many-to-one association to SalesOrder
 	@OneToMany(mappedBy = "user")
 	private List<SalesOrder> salesOrders;
@@ -243,6 +250,22 @@ public class User implements Serializable {
 		salesOrder.setUser(null);
 
 		return salesOrder;
+	}
+
+	public Date getProfileEditDate() {
+		return profileEditDate;
+	}
+
+	public void setProfileEditDate(Date profileEditDate) {
+		this.profileEditDate = profileEditDate;
+	}
+
+	public String getProfileEditedByUser() {
+		return profileEditedByUser;
+	}
+
+	public void setProfileEditedByUser(String profileEditedByUser) {
+		this.profileEditedByUser = profileEditedByUser;
 	}
 
 }

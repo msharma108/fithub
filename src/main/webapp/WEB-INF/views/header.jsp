@@ -8,7 +8,7 @@
          </div>
 		  <ul class="nav navbar-nav">
 		   <li class="nav-item">
-			 <a class="nav-link" href="home.jsp"><span class="glyphicon glyphicon-home"> </span> Home</a>
+			 <a class="nav-link" href="<c:url value="/home"/>" ><span class="glyphicon glyphicon-home"> </span> Home</a>
 		   </li>
 		   <li class="nav-item">
 			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Products</a>
@@ -46,16 +46,19 @@
 		   </li>
 		   </sec:authorize>
 		  </ul>
+		  <c:url var="adminViewUser" value="/admin/viewUser"/>
+		  <sec:authorize access="hasAuthority('ADMIN')">
         <div class="col-sm-3  pull-right">
-            <form class="navbar-form" role="search" action="/admin/searchUser" method="POST" >
+            <form class="navbar-form" role="search" action="${adminViewUser}"method="POST" >
                 <div class="input-group">
-                    <input id="userNameId" type="text" class="form-control" placeholder="Enter UserName">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <input id="userNameId" type="text" name="userName" class="form-control" placeholder="Enter UserName">
+                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="input-group-btn">
                         <button class="btn btn-primary" type="submit">Search <i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
             </form>
         </div>
+        </sec:authorize>
        </div>
     </div>

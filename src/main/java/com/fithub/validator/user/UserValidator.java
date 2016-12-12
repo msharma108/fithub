@@ -2,11 +2,13 @@ package com.fithub.validator.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.fithub.domain.UserDTO;
 
+@Component
 public abstract class UserValidator implements Validator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserValidator.class);
@@ -36,7 +38,7 @@ public abstract class UserValidator implements Validator {
 	protected void validatePasswords(UserDTO userDTO, Errors errors) {
 		LOG.debug("Validating if the supplied passwords match");
 		if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
-			errors.rejectValue("password", "password.mismatch");
+			errors.rejectValue("password", "password.mismatch", "The entered passwords do not match");
 		}
 	}
 

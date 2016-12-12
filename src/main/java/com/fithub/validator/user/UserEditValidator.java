@@ -2,11 +2,13 @@ package com.fithub.validator.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
 
+@Component
 public class UserEditValidator extends UserValidator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserEditValidator.class);

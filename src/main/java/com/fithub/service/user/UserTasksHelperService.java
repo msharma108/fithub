@@ -1,5 +1,6 @@
 package com.fithub.service.user;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import org.springframework.security.core.Authentication;
@@ -60,5 +61,22 @@ public interface UserTasksHelperService {
 	 * @return role Role of the logged in user
 	 */
 	String getLoggedInUserUserRole(Authentication authentication);
+
+	/**
+	 * Method prepares current time in the format of timestamp
+	 * 
+	 * @return current timestamp
+	 */
+	Timestamp getCurrentTimeStamp();
+
+	/**
+	 * Method populates a UserDTO object with the Domain User object in order to
+	 * prevent exposing the domain entity to the presentation tier
+	 * 
+	 * @param user
+	 *            User retrieved from the database
+	 * @return userDTO UserDO presented to the JSP layer
+	 */
+	UserDTO populateUserDTOFromUser(User user);
 
 }

@@ -39,6 +39,8 @@ public class CustomUserServiceImpl implements UserDetailsService {
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String userName) throws NoSuchElementException {
+		// Reference: (For making readOnly transaction)
+		// http://stackoverflow.com/questions/26984481/own-springsecurity-userdetailsservice-dont-load-user-could-not-obtain-transact
 
 		LOG.debug("User with userName={} is being authenticated", userName);
 		User user = userService.getUserByUsername(userName);

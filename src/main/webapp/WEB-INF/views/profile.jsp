@@ -40,17 +40,25 @@
     <div class="panel-heading" style="color: white; background-color: maroon;"><b>Profile INFO</b></div>
      <div class="panel-body" style="background-color: #C1E1A6;"> 
 
-           <!-- Form action variable value based on user role ends here -->
-	        <form:form modelAttribute="userDTO" action="" method="post" style="color: green;">
+           <!-- Form action variable value based on user role-->
+           <sec:authorize access="hasAuthority('ADMIN')">
+           <c:url var="userTask" value="/admin/userTask/${userDTO.userName}"/>
+           </sec:authorize>
+           
+           <sec:authorize access="hasAuthority('CUSTOMER')">
+           <c:url var="userTask" value="/userTask/${userDTO.userName}"/>
+           </sec:authorize>
+           
+	        <form:form modelAttribute="userDTO" action="${userTask}" method="POST" style="color: green;">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
-                       <form:label path="givenName">Given Name:<span class="glyphicon glyphicon-user"> </span> </form:label>
-                       <form:label>${userDTO.givenName}</form:label> 
+                       <form:label path="givenName">Given Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
+                       <form:label path="givenName">${userDTO.givenName}</form:label>
                   </div>
                   <div class="col-sm-4">
-                       <form:label path="familyName">Family Name:<span class="glyphicon glyphicon-user"> </span> </form:label>
-                       <form:label>${userDTO.familyName}</form:label> 
+                       <form:label path="familyName">Family Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
+                       <form:label path="familyName">${userDTO.familyName}</form:label> 
                   </div>
                 </div>
               </div>
@@ -58,12 +66,12 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-                       <form:label path="sex">Gender:<span class="glyphicon glyphicon-user"> </span></form:label>
-                       <form:label>${userDTO.sex}</form:label> 
+                       <form:label path="sex">Gender:<span class="glyphicon glyphicon-user"> </span></form:label><br>
+                       <form:label path="sex">${userDTO.sex}</form:label> 
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="dateOfBirth">Date Of Birth:<span class="glyphicon glyphicon-calendar"> </span></form:label>
-			           <form:label>${userDTO.dateOfBirth}</form:label> 
+			           <form:label path="dateOfBirth">Date Of Birth:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
+			           <form:label path="dateOfBirth">${userDTO.dateOfBirth}</form:label> 
                   </div>
                 </div>
               </div>
@@ -71,12 +79,12 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="address">Address:<span class="glyphicon glyphicon-home"> </span></form:label>
-			           <form:label>${userDTO.address}</form:label> 
+			           <form:label path="address">Address:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:label path="address">${userDTO.address}</form:label> 
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="city">City:<span class="glyphicon glyphicon-home"> </span></form:label>
-			           <form:label>${userDTO.city}</form:label> 
+			           <form:label path="city">City:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:label path="city">${userDTO.city}</form:label> 
                   </div>
                 </div>
               </div>
@@ -84,12 +92,12 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="province">Province:<span class="glyphicon glyphicon-home"> </span></form:label>
-                       <form:label>${userDTO.province}</form:label> 
+			           <form:label path="province">Province:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+                       <form:label path="province">${userDTO.province}</form:label> 
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="country">Country:<span class="glyphicon glyphicon-home"> </span></form:label>
-			           <form:label>${userDTO.country}</form:label>  
+			           <form:label path="country">Country:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:label path="country">${userDTO.country}</form:label>  
                   </div>
                 </div>
               </div>
@@ -97,12 +105,12 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="zipcode">Zip/Postal code:<span class="glyphicon glyphicon-home"> </span></form:label>
-			           <form:label>${userDTO.zipcode}</form:label>  
+			           <form:label path="zipcode">Zip/Postal code:<span class="glyphicon glyphicon-home"> </span></form:label><br>
+			           <form:label path="zipcode">${userDTO.zipcode}</form:label>  
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="phone">Phone:<span class="glyphicon glyphicon-phone"> </span></form:label> 
-			           <form:label>${userDTO.phone}</form:label> 
+			           <form:label path="phone">Phone:<span class="glyphicon glyphicon-phone"> </span></form:label><br>
+			           <form:label path="phone">${userDTO.phone}</form:label> 
                   </div>
                 </div>
               </div>
@@ -110,12 +118,13 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="email">Email:<span class="glyphicon glyphicon-envelope"></span></form:label> 
-			           <form:label>${userDTO.email}</form:label> 
+			           <form:label path="email">Email:<span class="glyphicon glyphicon-envelope"></span></form:label><br>
+			           <form:label path="email">${userDTO.email}</form:label> 
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="userName">UserName:<span class="glyphicon glyphicon-user"> </span></form:label>
-			           <form:label>${userDTO.userName}</form:label> 
+			           <form:label path="userName">UserName:<span class="glyphicon glyphicon-user"> </span></form:label><br>
+			           <form:label path="userName">${userDTO.userName}</form:label> 
+			           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                   </div>
                 </div>
                 </div>
@@ -124,13 +133,14 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			          <form:label path="paymentMode">Payment Mode:<span class="glyphicon glyphicon-credit-card"></span></form:label> 
-                      <form:label>${userDTO.paymentMode}</form:label>
+			          <form:label path="paymentMode">Payment Mode:<span class="glyphicon glyphicon-credit-card"></span></form:label><br>
+                      <form:label path="paymentMode">${userDTO.paymentMode}</form:label>
                   </div>
                 </div>
               </div>
               
-			<br><br>              
+			<br><br> 
+			<button type="submit" class="btn btn-primary btn-block" name="userEdit" id="userEdit"  ><i class="glyphicon glyphicon-pencil"></i> EditTest</button>             
             </form:form>
           </div>
           <div class="panel-footer" style="color: white; background-color: maroon;"></div>

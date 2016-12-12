@@ -50,7 +50,7 @@ public class UserRegisterValidator extends UserValidator {
 	private void validateUserNameDoesNotExist(UserDTO userDTO, Errors errors) {
 		LOG.debug("Validating the entered username={} is not already in use", userDTO.getUserName());
 		if ((userService.getUserByUsername(userDTO.getUserName()) != null)) {
-			errors.rejectValue("userName", "userName.exists");
+			errors.rejectValue("userName", "userName.exists", "UserName already taken, Choose another");
 		}
 	}
 

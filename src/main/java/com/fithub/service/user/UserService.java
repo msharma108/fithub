@@ -63,4 +63,12 @@ public interface UserService {
 	 */
 	List<User> getAllUsers();
 
+	/**
+	 * Method updates a user based on the information filled on user update form
+	 * 
+	 * @param userDTO
+	 * @return updated user
+	 */
+	User updateUserProfile(UserDTO userDTO);
+
 }

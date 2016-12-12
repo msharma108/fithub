@@ -1,5 +1,7 @@
 package com.fithub.domain;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -60,16 +62,18 @@ public class UserDTO {
 
 	private String sex;
 
+	private Date registrationDate;
+
 	@Size(min = 6, max = 6)
 	@NotEmpty
 	private String zipcode;
 
 	private boolean isEditable = false;
 
-	// Represents currently logged in User's username
+	// Represents currently logged in User's userName
 	private String loggedInUserName;
 
-	// Represents currently logged in User's role
+	// Represents currently logged in User's role set to default CUSTOMER
 	private String loggedInUserUserRole = "CUSTOMER";
 
 	public String getUserName() {
@@ -222,6 +226,14 @@ public class UserDTO {
 
 	public void setLoggedInUserUserRole(String loggedInUserUserRole) {
 		this.loggedInUserUserRole = loggedInUserUserRole;
+	}
+
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 }
