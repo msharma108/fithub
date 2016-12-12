@@ -32,14 +32,18 @@
     <![endif]-->
 <script>
 
+
 $(document).ready(function() {
     $.datepicker.setDefaults( $.datepicker.regional["es"] );
     $("#dateOfBirthId").datepicker(
     {
         changeMonth: true,
         changeYear: true,
-        dateFormat: 'yy/mm/dd'
+        dateFormat: 'yy/mm/dd',
+        minDate: "-120Y", 
+        yearRange: "1900:2016" 
     });
+
 });
 </script>
   </head>
