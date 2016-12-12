@@ -65,7 +65,9 @@ public class UserEditController {
 		LOG.debug("Getting editUserPage for user={}", userName);
 
 		userDTO.setEditable(true);
-		model.addAttribute("userDTO", userDTO);
+		// Uncomment the line below this in case I decide to get session using
+		// conventional http session object. userDTO will be added to session during profile load page.
+		// model.addAttribute("userDTO", userDTO);
 		// Change to registration page
 		return "registration";
 	}

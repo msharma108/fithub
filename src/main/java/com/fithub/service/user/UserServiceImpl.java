@@ -112,9 +112,10 @@ public class UserServiceImpl implements UserService {
 				userDTO.getLoggedInUserName());
 		User user = new User();
 		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
+		user = getUserByUsername(user.getUserName());
 		user.setProfileEditDate(userTasksHelperService.getCurrentTimeStamp());
 		user.setProfileEditedByUser(userDTO.getLoggedInUserName());
-		return userRepository.save(getUserByUsername(user.getUserName()));
+		return userRepository.save(user);
 	}
 
 }
