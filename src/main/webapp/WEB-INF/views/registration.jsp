@@ -31,10 +31,15 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 <script>
-$(function() {
-  $("#dateOfBirthId").datepicker({
-	  format: "mm/dd/yyyy" 
-  });
+
+$(document).ready(function() {
+    $.datepicker.setDefaults( $.datepicker.regional["es"] );
+    $("#dateOfBirthId").datepicker(
+    {
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy/mm/dd'
+    });
 });
 </script>
   </head>
