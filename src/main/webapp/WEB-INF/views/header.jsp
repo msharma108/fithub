@@ -43,7 +43,7 @@
 				<form action="${logout}" name="logout" method="POST">        
                   	<div class="col-sm-4 form-group">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                       	<input class="btn btn-success" type="submit" name="logout" id="logout" value="Logout" />
+                       	<button class="btn btn-success" type="submit" name="logout" id="logout" value="Logout">Logout <span class="glyphicon glyphicon-log-out"></span></button> 
                   	</div>
              	</form>
 		   </li>
