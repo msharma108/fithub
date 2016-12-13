@@ -28,7 +28,7 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		user.setAddress(userDTO.getAddress());
 		user.setCity(userDTO.getCity());
 		user.setCountry(userDTO.getCountry());
-		user.setDateOfBirth(dateFormatter(userDTO.getDateOfBirth()));
+		user.setDateOfBirth((userDTO.getDateOfBirth()));
 		user.setEmail(userDTO.getEmail());
 		user.setFamilyName(userDTO.getFamilyName());
 		user.setGivenName(userDTO.getGivenName());
@@ -101,7 +101,7 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		userDTO.setAddress(user.getAddress());
 		userDTO.setCity(user.getCity());
 		userDTO.setCountry(user.getCountry());
-		userDTO.setDateOfBirth(user.getDateOfBirth().toString());
+		userDTO.setDateOfBirth(user.getDateOfBirth());
 		userDTO.setEmail(user.getEmail());
 		userDTO.setFamilyName(user.getFamilyName());
 		userDTO.setGivenName(user.getGivenName());

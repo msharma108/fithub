@@ -28,7 +28,7 @@ public class UserDTO {
 	private String country;
 
 	@NotNull
-	private String dateOfBirth;
+	private Date dateOfBirth;
 
 	@Email
 	@NotEmpty
@@ -108,11 +108,11 @@ public class UserDTO {
 		this.country = country;
 	}
 
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

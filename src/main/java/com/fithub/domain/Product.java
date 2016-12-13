@@ -1,9 +1,22 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the product database table.
@@ -43,9 +56,10 @@ public class Product implements Serializable {
 
 	private float price;
 
-	private int quantity;
+	@Column(name = "stock_quantity")
+	private int stockQuantity = 1;
 
-	@Column(length = 1)
+	@Column(length = 20)
 	private String rating;
 
 	@Column(length = 300)
@@ -56,6 +70,10 @@ public class Product implements Serializable {
 	private byte[] thumbImage;
 
 	private float weight;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "product_update_date")
+	private Date productUpdateDate;
 
 	// bi-directional many-to-one association to OrderDetail
 	@OneToMany(mappedBy = "product")
@@ -133,14 +151,6 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	public int getQuantity() {
-		return this.quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
 	public String getRating() {
 		return this.rating;
 	}
@@ -171,6 +181,22 @@ public class Product implements Serializable {
 
 	public void setWeight(float weight) {
 		this.weight = weight;
+	}
+
+	public int getStockQuantity() {
+		return stockQuantity;
+	}
+
+	public void setStockQuantity(int stockQuantity) {
+		this.stockQuantity = stockQuantity;
+	}
+
+	public Date getProductUpdateDate() {
+		return productUpdateDate;
+	}
+
+	public void setProductUpdateDate(Date productUpdateDate) {
+		this.productUpdateDate = productUpdateDate;
 	}
 
 	public List<OrderDetail> getOrderDetails() {

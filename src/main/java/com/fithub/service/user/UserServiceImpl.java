@@ -111,8 +111,10 @@ public class UserServiceImpl implements UserService {
 		LOG.debug("Attempting to edit user profile of user={} by user={}", userDTO.getUserName(),
 				userDTO.getLoggedInUserName());
 		User user = new User();
+		// Get user using DTO to intimate JPA about update operation as a part
+		// of the transaction
+		user = getUserByUsername(userDTO.getUserName());
 		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
-		user = getUserByUsername(user.getUserName());
 		user.setProfileEditDate(userTasksHelperService.getCurrentTimeStamp());
 		user.setProfileEditedByUser(userDTO.getLoggedInUserName());
 		return userRepository.save(user);
