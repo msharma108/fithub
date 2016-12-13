@@ -20,6 +20,7 @@ USE `fithub` ;
 -- -----------------------------------------------------
 -- Table `fithub`.`user`
 -- -----------------------------------------------------
+Drop Table `fithub`.`user`;
 CREATE TABLE IF NOT EXISTS `fithub`.`user` (
   `user_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
   `user_name` VARCHAR(45) NOT NULL COMMENT '',
@@ -38,17 +39,20 @@ CREATE TABLE IF NOT EXISTS `fithub`.`user` (
   `phone` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
   `payment_mode` ENUM('CREDIT','DEBIT') NULL DEFAULT 'CREDIT' COMMENT '',
   `role` ENUM('CUSTOMER','ADMIN') NOT NULL DEFAULT 'CUSTOMER' COMMENT '',
+  `profile_edit_date` DATETIME NULL DEFAULT NULL COMMENT '',
+  `profile_edited_by_user` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`user_id`)  COMMENT '',
   UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC)  COMMENT '',
   UNIQUE INDEX `email_UNIQUE` (`email` ASC)  COMMENT '')
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 18
 DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
 -- Table `fithub`.`sales_order`
 -- -----------------------------------------------------
+Drop Table `fithub`.`sales_order`;
 CREATE TABLE IF NOT EXISTS `fithub`.`sales_order` (
   `sales_order_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
   `amount` FLOAT NULL DEFAULT '0' COMMENT '',
@@ -81,6 +85,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `fithub`.`product_category`
 -- -----------------------------------------------------
+Drop Table `fithub`.`product_category`;
 CREATE TABLE IF NOT EXISTS `fithub`.`product_category` (
   `product_category_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '',
   `name` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
@@ -93,13 +98,14 @@ COMMENT = 'various categories of products';
 -- -----------------------------------------------------
 -- Table `fithub`.`product`
 -- -----------------------------------------------------
+Drop Table `fithub`.`product`;
 CREATE TABLE IF NOT EXISTS `fithub`.`product` (
   `product_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
   `name` VARCHAR(100) NULL DEFAULT NULL COMMENT '',
   `sdesc` VARCHAR(300) NULL DEFAULT NULL COMMENT '',
   `ldesc` TEXT NULL DEFAULT NULL COMMENT '',
   `price` FLOAT NULL DEFAULT NULL COMMENT '',
-  `quantity` INT(11) NULL DEFAULT NULL COMMENT '',
+  `stock_quantity` INT(11) NULL DEFAULT '0' COMMENT '',
   `category_id` INT(10) NOT NULL COMMENT '',
   `manufacture_date` DATE NULL DEFAULT NULL COMMENT '',
   `expiry_date` DATE NULL DEFAULT NULL COMMENT '',
@@ -108,6 +114,7 @@ CREATE TABLE IF NOT EXISTS `fithub`.`product` (
   `main_image` MEDIUMBLOB NULL DEFAULT NULL COMMENT '',
   `thumb_image` TINYBLOB NULL DEFAULT NULL COMMENT '',
   `flavor` VARCHAR(45) NULL DEFAULT 'Not Applicable' COMMENT '',
+  `product_update_date` DATETIME NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`product_id`)  COMMENT '',
   INDEX `ProductProductCategory_idx` (`category_id` ASC)  COMMENT '',
   CONSTRAINT `FK5cypb0k23bovo3rn1a5jqs6j4`
@@ -126,6 +133,7 @@ COMMENT = 'Product Entity table';
 -- -----------------------------------------------------
 -- Table `fithub`.`order_detail`
 -- -----------------------------------------------------
+Drop Table `fithub`.`order_detail`;
 CREATE TABLE IF NOT EXISTS `fithub`.`order_detail` (
   `order_detail_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
   `sales_order_id` INT(10) NOT NULL COMMENT '',
