@@ -32,7 +32,7 @@
     <![endif]-->
   </head>
   <body>
-<%@ include file="header.jsp" %>
+<jsp:include page="../header.jsp" />
 	<!-- contents start here -->
 <div class="container-fluid">
         
@@ -149,7 +149,7 @@
   </div>
 	<!-- contents end here -->
 	 
-<%@ include file="footer.jsp" %>
+<jsp:include page="../footer.jsp" />
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->

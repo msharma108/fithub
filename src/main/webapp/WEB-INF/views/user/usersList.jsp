@@ -32,7 +32,7 @@
     <![endif]-->
   </head>
   <body>
-<%@ include file="header.jsp" %>
+<jsp:include page="../header.jsp" />
 
 <!-- contents start here -->
 
@@ -60,7 +60,7 @@
                     </tr> 
                   </thead>
                     <tbody>
-                        <c:forEach items="${userList}" var="user">
+                        <c:forEach items="${allUsers}" var="user">
                           <tr>
                             <td align="center">
                              <form action="${user.userName}" method="POST" >
@@ -88,7 +88,7 @@
 
 <!-- contents end here -->
 	 
-<%@ include file="footer.jsp" %>
+<jsp:include page="../footer.jsp" />
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->

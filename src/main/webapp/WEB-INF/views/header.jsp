@@ -24,9 +24,12 @@
 		     <a class="nav-link" href="<c:url value="/userRegister"/>" ><span class="glyphicon glyphicon-pencil"></span> Register</a>
 		   </li>
 		   </sec:authorize>
-		   <sec:authorize url="/admin">
+		   <sec:authorize access="hasAuthority('ADMIN')">
 		   	<li class="nav-item">
-		      <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register</a>
+		      <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register a new user</a>
+		   </li>
+		   	<li class="nav-item">
+		      <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/viewUsers"/>"><span class="glyphicon glyphicon-pencil"></span> View all Users</a>
 		   </li>
 		   </sec:authorize>
 		   <sec:authorize access="isAnonymous()">
