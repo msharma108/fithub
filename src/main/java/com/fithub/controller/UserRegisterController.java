@@ -60,7 +60,7 @@ public class UserRegisterController {
 		// showRegisterForm is used to show/hide register modal on UI using JS
 		model.addAttribute("showRegister", 1);
 		// #Change this to registration page
-		return "registration";
+		return "user/registration";
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class UserRegisterController {
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page
-			return "registration";
+			return "user/registration";
 		}
 		userService.createUser(userDTO);
 		LOG.debug("Registration successful, heading to the jsp");

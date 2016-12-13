@@ -22,7 +22,7 @@ public class AuthenticationController {
 			model.addAttribute("invalidCredentials", "Invalid UserName\\Password provided");
 		}
 
-		return "login";
+		return "user/login";
 	}
 
 	@RequestMapping(value = "/logoutSuccess")
@@ -31,7 +31,7 @@ public class AuthenticationController {
 		LOG.debug("Logging out,handleUserLogout method has been called by FithubSecurityConfig logoutsuccess Url");
 		model.addAttribute("logoutMessage", "You've logged out of FitHub");
 
-		return "login";
+		return "user/login";
 	}
 
 }

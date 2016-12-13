@@ -85,7 +85,7 @@ public class UserTasksController {
 		else
 			throw new NoSuchElementException((String.format("Username=%s not found", userName)));
 		LOG.debug("Profile page to be invoked");
-		return "profile";
+		return "user/profile";
 	}
 
 	// ## Not needed as there will be a user search box

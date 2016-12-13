@@ -66,10 +66,11 @@ public class UserEditController {
 
 		userDTO.setEditable(true);
 		// Uncomment the line below this in case I decide to get session using
-		// conventional http session object. userDTO will be added to session during profile load page.
+		// conventional http session object. userDTO will be added to session
+		// during profile load page.
 		// model.addAttribute("userDTO", userDTO);
 		// Change to registration page
-		return "registration";
+		return "user/registration";
 	}
 
 	// WORK ON THIS NEXT and abstract validator and implementation
@@ -86,7 +87,7 @@ public class UserEditController {
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page
-			return "registration";
+			return "user/registration";
 		}
 		userService.updateUserProfile(userDTO);
 		LOG.debug("User={} profile update successful,profile", userDTO.getUserName());

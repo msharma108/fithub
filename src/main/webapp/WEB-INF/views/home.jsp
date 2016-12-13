@@ -33,7 +33,7 @@
 
   </head>
   <body>
-<jsp:include page="../header.jsp" />
+<jsp:include page="../views/header.jsp" />
 
 
 	<!-- contents start here -->
@@ -41,7 +41,7 @@
     
 	<!-- contents end here -->
 	 
-<jsp:include page="../footer.jsp" />
+<jsp:include page="../views/footer.jsp" />
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../../js/jquery-3.1.1.js"></script>
