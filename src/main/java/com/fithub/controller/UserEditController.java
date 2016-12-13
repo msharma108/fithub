@@ -61,8 +61,11 @@ public class UserEditController {
 	@RequestMapping(value = { "/userTask/{userName}", "/admin/userTask/{userName}" }, params = "userEdit", method = {
 			RequestMethod.GET, RequestMethod.POST })
 	public String getUserEditPage(@PathVariable("userName") String userName, @ModelAttribute("userDTO") UserDTO userDTO,
-			Model model) {
+			Model model, Authentication authentication) {
 		LOG.debug("Getting editUserPage for user={}", userName);
+
+		userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
+		userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
 
 		userDTO.setEditable(true);
 		// Uncomment the line below this in case I decide to get session using

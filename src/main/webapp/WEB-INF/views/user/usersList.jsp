@@ -63,10 +63,16 @@
                         <c:forEach items="${allUsers}" var="user">
                           <tr>
                             <td align="center">
-                             <form action="${user.userName}" method="POST" >
-                              <button class="btn btn-primary" title="View User Details"><i class="glyphicon glyphicon-eye-open"></i></button>
-                              <button class="btn btn-Success" title="Edit User"><i class="glyphicon glyphicon-pencil"></i></button>
-                              <button class="btn btn-danger" title="Delete User"><i class="glyphicon glyphicon-trash"></i></button>
+                            
+                            <!-- Url creation for Admin operations on usersList page  -->
+                            
+                            <c:url var="urlReconstructBasedOnOperation" value="/admin/urlConstructionBasedOnOperation"/>
+                             <form action="${urlReconstructBasedOnOperation}" method="POST" >
+                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                             <input type="hidden" name="userName" value="${user.userName}"/>
+                              <button class="btn btn-primary" title="View User Details" name="userView"><i class="glyphicon glyphicon-eye-open"></i></button>
+                              <button class="btn btn-Success" title="Edit User" name="userEdit"><i class="glyphicon glyphicon-pencil"></i></button>
+                              <button class="btn btn-danger" title="Delete User" name="userDelete"><i class="glyphicon glyphicon-trash"></i></button>
                              </form>
                             </td>
                             <td><c:out value="${user.userName}"/></td>

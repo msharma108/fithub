@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -77,8 +78,9 @@ public class UserTasksController {
 		if (user != null) {
 			UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
 			// setting userDTO with currently logged in user's details
-			userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
-			userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
+			// # IF ANYTHING BREAKS UNCOMMENT FOLLOWING
+			// userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
+			// userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
 			model.addAttribute("userDTO", userDTO);
 		}
 
@@ -99,17 +101,40 @@ public class UserTasksController {
 	// return "user/userSearchPage";
 	// }
 
-	@PostMapping(value = { "/viewUser", "/admin/viewUser" })
-	public String constructUrlForUserTasks(HttpServletRequest request, Authentication authentication) {
+	@PostMapping(value = { "/userView", "/admin/urlConstructionBasedOnOperation" })
+	public String constructUrlForUserTasks(@RequestParam(value = "userView", required = false) String userView,
+			@RequestParam(value = "userEdit", required = false) String userEdit,
+			@RequestParam(value = "userDelete", required = false) String userDelete, HttpServletRequest request,
+			Authentication authentication, Model model) {
 		LOG.debug("Reconstructing URL for user operations");
 		String userName = request.getParameter("userName");
+		String reconstructedUrl = "";
 		if (userName != null) {
-			String reconstructedUrl;
-			// Request routing based on the logged in user's role
-			if (userTasksHelperService.getLoggedInUserUserRole(authentication).equals(UserRole.ADMIN.getRoleAsString()))
-				reconstructedUrl = "/admin/viewUser/" + userName;
-			else
-				reconstructedUrl = "/viewUser/" + userName;
+
+			// Retrieve user by userName and add it to model
+			User user = userService.getUserByUsername(userName);
+			UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
+			model.addAttribute("userDTO", userDTO);
+			if (userView != null) {
+				// Request routing for user profile view based on the logged in
+				// user's role
+				LOG.debug("Inside userView");
+				if (userTasksHelperService.getLoggedInUserUserRole(authentication)
+						.equals(UserRole.ADMIN.getRoleAsString()))
+					reconstructedUrl = "/admin/viewUser/" + userName;
+				else
+					reconstructedUrl = "/viewUser/" + userName;
+
+			}
+			if (userEdit != null) {
+				LOG.debug("Inside editView");
+				reconstructedUrl = "/admin/userTask/" + userName;
+			}
+			if (userDelete != null) {
+				LOG.debug("Inside userDelete");
+				reconstructedUrl = "/admin/userTask/" + userName;
+			}
+			LOG.debug("Reconstructed URL={}", reconstructedUrl);
 			return "forward:" + reconstructedUrl;
 		} else
 			throw new NoSuchElementException("Username not supplied,please recheck");
