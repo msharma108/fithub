@@ -46,35 +46,12 @@ $(document).ready(function() {
 
 });
 
-function openRegistrationModal(){
-    $('#registrationModal').modal();
-}; 
 </script>
   </head>
   <body>
 <jsp:include page="../header.jsp" />
 	<!-- contents start here -->
 <div class="container-fluid">
- 
-  <!-- Modal -->
-  <div class="modal fade" id="registrationModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> User Registration Message</h4>
-        </div>
-        <div class="modal-body">
-          <p>User registration has been completed Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>   
      
   <div class="panel panel-primary" style="border: 2px solid maroon">
     <c:choose>
