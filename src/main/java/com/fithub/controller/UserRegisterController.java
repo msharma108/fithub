@@ -92,14 +92,14 @@ public class UserRegisterController {
 		// used to check login success on the canvas page
 		redirectAttributes.addFlashAttribute("userRegisterSuccess", "enabled");
 		if (authentication.isAuthenticated())
-			return "redirect:/admin/userSaveSuccess";
+			return "redirect:/admin/userTaskSuccess";
 		else
-			return "redirect:/userSaveSuccess";
+			return "redirect:/userTaskSuccess";
 
 	}
 
-	@RequestMapping(value = { "/userSaveSuccess", "/admin/userSaveSuccess" })
-	public String getUserRegisterSuccessPage(HttpServletRequest request) {
+	@RequestMapping(value = { "/userTaskSuccess", "/admin/userTaskSuccess" })
+	public String getUserTaskSuccessPage(HttpServletRequest request) {
 
 		// Preventing problem with page refresh in case of flash attribute
 		// Reference:
@@ -109,7 +109,7 @@ public class UserRegisterController {
 
 			// Success Page could be on registration itself
 			// Handles RegisterSuccess and UpdateSuccess
-			return "user/userRegisterSuccess";
+			return "user/userTaskSuccess";
 		else
 			return "home";
 	}

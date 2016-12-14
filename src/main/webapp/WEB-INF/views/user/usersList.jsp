@@ -70,9 +70,10 @@
                              <form action="${urlReconstructBasedOnOperation}" method="POST" >
                              <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                              <input type="hidden" name="userName" value="${user.userName}"/>
+                             <input type="hidden" name="userRole" value="${user.role}"/>
                               <button class="btn btn-primary" title="View User Details" name="userView"><i class="glyphicon glyphicon-eye-open"></i></button>
                               <button class="btn btn-Success" title="Edit User" name="userEdit"><i class="glyphicon glyphicon-pencil"></i></button>
-                              <button class="btn btn-default" title="Change User Role" name="userRole"><i class="glyphicon glyphicon-retweet"></i></button>
+                              <button class="btn btn-default" title="Change User Role" name="userRoleChange"><i class="glyphicon glyphicon-retweet"></i></button>
                               <button class="btn btn-danger" title="Delete User" name="userDelete"><i class="glyphicon glyphicon-trash"></i></button>
                              </form>
                             </td>

@@ -90,6 +90,8 @@ public class UserEditController {
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page
+			// This can happen only in case of userUpdate as in userRoleChange,
+			// user's input is not involved
 			return "user/registration";
 		}
 		userService.updateUserProfile(userDTO);
@@ -99,9 +101,9 @@ public class UserEditController {
 		redirectAttributes.addFlashAttribute("userUpdateSuccess", "enabled");
 		sessionStatus.setComplete();
 		if (authentication.isAuthenticated())
-			return "redirect:/admin/userSaveSuccess";
+			return "redirect:/admin/userTaskSuccess";
 		else
-			return "redirect:/userSaveSuccess";
+			return "redirect:/userTaskSuccess";
 
 	}
 

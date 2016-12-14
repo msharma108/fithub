@@ -28,12 +28,12 @@ public interface ProductService {
 	Product getProductByProductName(String name);
 
 	/**
-	 * Method creates a product based on the information filled on registration
+	 * Method registers a product based on the information filled on product
 	 * form
 	 * 
 	 * @param userDTO
 	 * @return User
 	 */
-	Product createProduct(ProductDTO productDTO);
+	Product registerProduct(ProductDTO productDTO);
 
 }

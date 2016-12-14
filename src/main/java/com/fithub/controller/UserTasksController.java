@@ -104,7 +104,8 @@ public class UserTasksController {
 	@PostMapping(value = { "/userView", "/admin/urlConstructionBasedOnOperation" })
 	public String constructUrlForUserTasks(@RequestParam(value = "userView", required = false) String userView,
 			@RequestParam(value = "userEdit", required = false) String userEdit,
-			@RequestParam(value = "userDelete", required = false) String userDelete, HttpServletRequest request,
+			@RequestParam(value = "userDelete", required = false) String userDelete,
+			@RequestParam(value = "userRoleChange", required = false) String userRoleChange, HttpServletRequest request,
 			Authentication authentication, Model model) {
 		LOG.debug("Reconstructing URL for user operations");
 		String userName = request.getParameter("userName");
@@ -114,11 +115,11 @@ public class UserTasksController {
 			// Retrieve user by userName and add it to model
 			User user = userService.getUserByUsername(userName);
 			UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
-			model.addAttribute("userDTO", userDTO);
+
 			if (userView != null) {
 				// Request routing for user profile view based on the logged in
 				// user's role
-				LOG.debug("Inside userView");
+				LOG.debug("routing request to userView handler");
 				if (userTasksHelperService.getLoggedInUserUserRole(authentication)
 						.equals(UserRole.ADMIN.getRoleAsString()))
 					reconstructedUrl = "/admin/viewUser/" + userName;
@@ -127,14 +128,21 @@ public class UserTasksController {
 
 			}
 			if (userEdit != null) {
-				LOG.debug("Inside editView");
+				LOG.debug("routing request to userEdit handler");
 				reconstructedUrl = "/admin/userTask/" + userName;
 			}
 			if (userDelete != null) {
-				LOG.debug("Inside userDelete");
+				LOG.debug("routing request to userDelete handler");
 				reconstructedUrl = "/admin/userTask/" + userName;
 			}
+			if (userRoleChange != null) {
+				LOG.debug("routing request to userRole change handler");
+				userDTO.setRole(UserRole.valueOf(request.getParameter("userRole")));
+				reconstructedUrl = "/admin/userRoleChange";
+			}
 			LOG.debug("Reconstructed URL={}", reconstructedUrl);
+			model.addAttribute("userDTO", userDTO);
+
 			return "forward:" + reconstructedUrl;
 		} else
 			throw new NoSuchElementException("Username not supplied,please recheck");
@@ -156,7 +164,22 @@ public class UserTasksController {
 
 		redirectAttributes.addFlashAttribute("userDeleteSuccess", "enabled");
 
-		return "redirect:/admin/userSaveSuccess";
+		return "redirect:/admin/userTaskSuccess";
+	}
+
+	@PostMapping(value = { "/admin/userRoleChange" }, params = "userRoleChange")
+	public String handleUserRoleChange(@ModelAttribute("userDTO") UserDTO userDTO,
+			RedirectAttributes redirectAttributes) {
+		LOG.debug("Attempting to update Role of user={}", userDTO.getUserName());
+
+		userService.updateUserProfile(userDTO);
+		LOG.debug("User={} profile update successful,profile", userDTO.getUserName());
+
+		// used to check update success on the canvas page
+		redirectAttributes.addFlashAttribute("userRoleChangeSuccess", "enabled");
+
+		return "redirect:/admin/userTaskSuccess";
+
 	}
 
 }
