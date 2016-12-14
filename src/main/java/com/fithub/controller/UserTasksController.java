@@ -1,5 +1,6 @@
 package com.fithub.controller;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
@@ -162,7 +164,7 @@ public class UserTasksController {
 
 		LOG.debug("User was delete successfuly ?={}", isUserDelete);
 
-		redirectAttributes.addFlashAttribute("userDeleteSuccess", "enabled");
+		redirectAttributes.addFlashAttribute("userDeleteSuccess", true);
 
 		return "redirect:/admin/userTaskSuccess";
 	}
@@ -176,10 +178,27 @@ public class UserTasksController {
 		LOG.debug("User={} profile update successful,profile", userDTO.getUserName());
 
 		// used to check update success on the canvas page
-		redirectAttributes.addFlashAttribute("userRoleChangeSuccess", "enabled");
+		redirectAttributes.addFlashAttribute("userRoleChangeSuccess", true);
 
 		return "redirect:/admin/userTaskSuccess";
 
+	}
+
+	@RequestMapping(value = { "/userTaskSuccess", "/admin/userTaskSuccess" })
+	public String getUserTaskSuccessPage(HttpServletRequest request) {
+
+		// Preventing problem with page refresh in case of flash attribute
+		// Reference:
+		// http://www.tikalk.com/redirectattributes-new-feature-spring-mvc-31/
+		LOG.debug("Getting Success Page");
+		Map<String, ?> checkMap = RequestContextUtils.getInputFlashMap(request);
+		if (checkMap != null)
+
+			// Success Page could be on registration itself
+			// Handles RegisterSuccess and UpdateSuccess
+			return "user/userTaskSuccess";
+		else
+			return "home";
 	}
 
 }

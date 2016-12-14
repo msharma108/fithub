@@ -21,8 +21,8 @@
 	<!-- custom -->
 	<link rel="stylesheet" href="../../css/style.css"  >
 	<!-- Bootstrap -->
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,12 +30,6 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-<script>
-
-function openProductModal(){
-    $('#UpdateProfileSuccessModal').modal();
-}; 
-</script>
   </head>
   <body>
 <jsp:include page="../header.jsp" />
@@ -64,12 +58,12 @@ function openProductModal(){
  
  
   <!-- Profile update success Modal -->
-  <div class="modal" id="UpdateProfileSuccessModal">
+  <div class="modal" id="userProfileUpdateSuccessModal">
     <div class="modal-dialog">
     
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> Profile</h4>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> Profile Update</h4>
         </div>
         <div class="modal-body">
           <p>User Profile has been updated Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
@@ -102,6 +96,26 @@ function openProductModal(){
     </div>
   </div>
   
+     <!-- User registration success Modal -->
+  <div class="modal fade" id="userRoleChangeSuccessModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> User Role Change</h4>
+        </div>
+        <div class="modal-body">
+          <p>User Role has been changed Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
   
      <!-- User deletion: success Modal -->
   <div class="modal fade" id="userDeletionSuccessModal" role="dialog">
@@ -110,7 +124,7 @@ function openProductModal(){
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> User</h4>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> User Deletion</h4>
         </div>
         <div class="modal-body">
           <p>User has been deleted Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
@@ -127,11 +141,43 @@ function openProductModal(){
  </div>
 	<!-- contents end here -->
 	 
-<jsp:include page="../footer.jsp" />
+	<jsp:include page="../footer.jsp" />
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    
+    
+    $(document).ready(function(){ 
+    	console.log( "ready!" );
+    	if ( ${userRegisterSuccess} == true)
+    		{
+    		 console.log("userRegisterSuccess value",${userRegisterSuccess});
+	        $('#userRegistrationSuccessModal').modal('show');
+    		}
+    	else if ( ${userDeleteSuccess} == true)
+			{
+			 console.log("userDeleteSuccess value",${userRegisterSuccess});
+        	$('#userDeletionSuccessModal').modal('show');
+			}
+    	else if ( ${userRoleChangeSuccess} == true)
+			{
+			 console.log("userRoleChangeSuccess value",${userRegisterSuccess});
+       		 $('#userRoleChangeSuccessModal').modal('show');
+			}
+    	else if ( ${userUpdateSuccess} == true)
+			{
+			 console.log("userUpdateSuccess value",${userRegisterSuccess});
+        	$('#userProfileUpdateSuccessModal').modal('show');
+			} */
+			else
+				{
+				console.log("all false");
+				}
+    });
+    </script>
+	
 
   </body>
 </html>

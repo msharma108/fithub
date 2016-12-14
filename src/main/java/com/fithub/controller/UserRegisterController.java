@@ -1,10 +1,7 @@
 package com.fithub.controller;
 
-import java.util.Map;
-
 import javax.validation.Valid;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.fithub.domain.UserDTO;
 import com.fithub.service.user.UserService;
@@ -58,7 +53,7 @@ public class UserRegisterController {
 		UserDTO userDTO = new UserDTO();
 		model.addAttribute("userDTO", userDTO);
 		// showRegisterForm is used to show/hide register modal on UI using JS
-		model.addAttribute("showRegister", 1);
+		// model.addAttribute("showRegister", 1);
 		// #Change this to registration page
 		return "user/registration";
 	}
@@ -90,27 +85,14 @@ public class UserRegisterController {
 		LOG.debug("Registration successful, heading to the jsp");
 
 		// used to check login success on the canvas page
-		redirectAttributes.addFlashAttribute("userRegisterSuccess", "enabled");
-		if (authentication.isAuthenticated())
+		redirectAttributes.addFlashAttribute("userRegisterSuccess", true);
+
+		// Redirect based on logged in user's role
+		if (authentication != null)
 			return "redirect:/admin/userTaskSuccess";
 		else
 			return "redirect:/userTaskSuccess";
 
 	}
 
-	@RequestMapping(value = { "/userTaskSuccess", "/admin/userTaskSuccess" })
-	public String getUserTaskSuccessPage(HttpServletRequest request) {
-
-		// Preventing problem with page refresh in case of flash attribute
-		// Reference:
-		// http://www.tikalk.com/redirectattributes-new-feature-spring-mvc-31/
-		Map<String, ?> checkMap = RequestContextUtils.getInputFlashMap(request);
-		if (checkMap != null)
-
-			// Success Page could be on registration itself
-			// Handles RegisterSuccess and UpdateSuccess
-			return "user/userTaskSuccess";
-		else
-			return "home";
-	}
 }

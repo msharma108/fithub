@@ -98,7 +98,7 @@ public class UserEditController {
 		LOG.debug("User={} profile update successful,profile", userDTO.getUserName());
 
 		// used to check update success on the canvas page
-		redirectAttributes.addFlashAttribute("userUpdateSuccess", "enabled");
+		redirectAttributes.addFlashAttribute("userUpdateSuccess", true);
 		sessionStatus.setComplete();
 		if (authentication.isAuthenticated())
 			return "redirect:/admin/userTaskSuccess";
