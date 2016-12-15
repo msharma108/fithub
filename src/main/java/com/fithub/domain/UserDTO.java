@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- * Data Transfer Object class for user registrations
+ * Data Transfer Object class for User
  * 
  */
 public class UserDTO {

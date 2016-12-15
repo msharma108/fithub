@@ -35,7 +35,6 @@ public class UserRegisterController {
 	private final UserValidator userRegisterValidator;
 
 	@Autowired
-
 	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService) {
 		this.userRegisterValidator = userRegisterValidator;
 		this.userService = userService;

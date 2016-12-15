@@ -1,8 +1,9 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.*;
+
+import javax.persistence.*;
 
 /**
  * The persistent class for the user database table.
@@ -67,7 +68,7 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 1)
 	private String role;
 
-	@Column(length = 1)
+	@Column(length = 20)
 	private String sex;
 
 	@Column(name = "user_name", nullable = false, length = 45)

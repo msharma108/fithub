@@ -57,6 +57,9 @@
 		   	   <li class="nav-item">
 		         <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register a new user</a>
 		       </li>
+		        <li class="nav-item">
+		         <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/productRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Add Product</a>
+		       </li>
 		   	   <li class="nav-item">
 		         <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/viewUsers"/>"><span class="glyphicon glyphicon-eye-open"></span> View all Users</a>
 		      </li>

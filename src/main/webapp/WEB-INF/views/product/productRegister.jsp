@@ -78,28 +78,25 @@ function openProductModal(){
      
   <div class="panel panel-primary" style="border: 2px solid maroon">
     <c:choose>
-     <c:when test="${product.isEditable == false }">
+     <c:when test="${productDTO.isEditable == false }">
       <!-- Show Add product Form -->
     	<div class="panel-heading" style="color: white; background-color: maroon;"><b>PRODUCT INFO</b></div>
     </c:when>
-     <c:when test="${product.isEditable == true }">
+     <c:when test="${productDTO.isEditable == true }">
       <!-- Show Update product Form -->
     <div class="panel-heading" style="color: white; background-color: maroon;"><b>Product Update Form</b></div>
     </c:when>  
     </c:choose>
      <div class="panel-body" style="background-color: #C1E1A6;"> 
-          <!-- Form action variable value based on user role starts here -->
-         <sec:authorize access="hasAuthority('ADMIN')">
-         <c:url var="userSave" value="/admin/productSave"/>
-         </sec:authorize>
-           <!-- Form action variable value based on user role ends here -->
-	        <form:form modelAttribute="userDTO" method="POST" action="${productSave}" style="color: green;">
+         
+         <c:url var="productSave" value="/admin/productSave"/>
+	        <form:form modelAttribute="productDTO" method="POST" action="${productSave}" style="color: green;">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
-                       <form:label path="name">Product Name:</form:label><br>
-                       <form:input class="form-control" type="text" path="name" id="nameId" placeHolder= "Enter product name" />
-                       <form:errors  path="name" style="color: red;"/>
+                       <form:label path="productName">Product Name:</form:label><br>
+                       <form:input class="form-control" type="text" path="productName" id="productNameId" placeHolder= "Enter product name" />
+                       <form:errors  path="productName" style="color: red;"/>
                   </div>
                   <div class="col-sm-4">
                        <form:label path="ldesc">Description: </form:label><br>
@@ -109,9 +106,7 @@ function openProductModal(){
                 </div>
               </div>
               
-            <sec:authorize access="isAuthenticated()">
          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-         </sec:authorize>
               
               <div class="col-sm-12">    
                 <div class="form-group row">
@@ -172,7 +167,7 @@ function openProductModal(){
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="rating">Rating:</form:label><br>
-			           <form:input class="form-control" type="text" type="tel" path="rating" id="ratingId" placeHolder= "Enter Rating" />
+			           <form:input class="form-control" type="text" path="rating" id="ratingId" placeHolder= "Enter Rating" />
 			           <form:errors  path="rating" style="color: red;"/>
                   </div>
                 </div>
@@ -185,34 +180,30 @@ function openProductModal(){
 			           <form:input class="form-control" type="text" path="sdesc" id="sdescId" placeHolder= "Enter short description"  />
 			           <form:errors  path="sdesc" style="color: red;"/>
                   </div>
-                  <div class="col-sm-4 form-group">
-			           <form:label path="orderDetails">Order Details:</form:label><br>
-			           <form:input class="form-control" type="text" path="orderDetails" id="orderDetailsId" placeHolder= "Order Details"  />
-			           <form:errors  path="orderDetails" style="color: red;"/>
-                  </div>
+
                 </div>
                 </div>
               
               <c:choose>
-              <c:when test="${product.isEditable == false }">
-             <!--  Sign Up button for new users -->
+              <c:when test="${productDTO.isEditable == false }">
+             <!--  New Product -->
               <div class="col-sm-12"> 
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
-                       <!-- input class="btn btn-primary btn-block" type="submit" name="userRegister" id="userRegister" value="Submit" /-->
-                       <button type="submit" class="btn btn-primary btn-block" name="addProduct" id="addProduct"  ><i class="glyphicon glyphicon-plus"></i> Add Product</button>
+                       <!-- input class="btn btn-primary btn-block" type="submit" name="productRegister" id="productRegisterId" value="Submit" /-->
+                       <button type="submit" class="btn btn-primary btn-block" name="productRegister" id="productRegister"  ><i class="glyphicon glyphicon-plus"></i> Add Product</button>
                   </div>
                 </div> 
               </div>
-              <!--  Sign Up button for new users Ends -->
+              <!--  Edit existing product -->
               </c:when>
-              <c:when test="${product.isEditable == true }">
+              <c:when test="${productDTO.isEditable == true }">
              <!--  Profile Edit button -->  
                <div class="col-sm-12"> 
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
-                       <!-- input class="btn btn-primary btn-block" type="submit" name="userUpdate" id="userUpdate" value="Submit" /-->
-                       <button type="submit" class="btn btn-primary btn-block" name="userUpdate" id="userUpdate"  ><i class="glyphicon glyphicon-pencil"></i> Update Product</button>
+                       <!-- input class="btn btn-primary btn-block" type="submit" name="productUpdate" id="productUpdateId" value="Submit" /-->
+                       <button type="submit" class="btn btn-primary btn-block" name="productUpdate" id="productUpdateId"  ><i class="glyphicon glyphicon-pencil"></i> Update Product</button>
                   </div>
                 </div> 
               </div>           

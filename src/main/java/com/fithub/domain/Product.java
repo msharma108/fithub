@@ -1,8 +1,7 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -51,7 +50,7 @@ public class Product implements Serializable {
 	@Column(name = "product_update_date")
 	private Date productUpdateDate;
 
-	@Column(length = 1)
+	@Column(length = 20)
 	private String rating;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -63,6 +62,9 @@ public class Product implements Serializable {
 
 	@Column(name = "stock_quantity")
 	private int stockQuantity;
+
+	@Column(name = "quantity_sold")
+	private int quantitySold;
 
 	@Lob
 	@Column(name = "thumb_image")
@@ -208,6 +210,14 @@ public class Product implements Serializable {
 
 	public void setWeight(float weight) {
 		this.weight = weight;
+	}
+
+	public int getQuantitySold() {
+		return quantitySold;
+	}
+
+	public void setQuantitySold(int quantitySold) {
+		this.quantitySold = quantitySold;
 	}
 
 	public List<OrderDetail> getOrderDetails() {
