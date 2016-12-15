@@ -5,62 +5,63 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
+
 /**
  * The persistent class for the sales_order database table.
  * 
  */
 @Entity
-@Table(name = "sales_order")
-@NamedQuery(name = "SalesOrder.findAll", query = "SELECT s FROM SalesOrder s")
+@Table(name="sales_order")
+@NamedQuery(name="SalesOrder.findAll", query="SELECT s FROM SalesOrder s")
 public class SalesOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "sales_order_id", unique = true, nullable = false)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="sales_order_id", unique=true, nullable=false)
 	private int salesOrderId;
 
-	@Column(length = 100)
+	@Column(length=100)
 	private String address;
 
 	private float amount;
 
-	@Column(length = 50)
+	@Column(length=50)
 	private String city;
 
-	@Column(length = 30)
+	@Column(length=30)
 	private String country;
 
-	@Column(length = 100)
+	@Column(length=100)
 	private String email;
 
-	@Column(name = "order_date")
+	@Column(name="order_date")
 	private Timestamp orderDate;
 
-	@Column(length = 20)
+	@Column(length=20)
 	private String phone;
 
-	@Column(length = 20)
+	@Column(length=20)
 	private String province;
 
-	@Column(name = "shipping_charge")
+	@Column(name="shipping_charge")
 	private float shippingCharge;
 
 	private float tax;
 
-	@Column(name = "tracking_number", length = 80)
+	@Column(name="tracking_number", length=80)
 	private String trackingNumber;
 
-	@Column(length = 20)
+	@Column(length=20)
 	private String zip;
 
-	// bi-directional many-to-one association to OrderDetail
-	@OneToMany(mappedBy = "salesOrder")
+	//bi-directional many-to-one association to OrderDetail
+	@OneToMany(mappedBy="salesOrder")
 	private List<OrderDetail> orderDetails;
 
-	// bi-directional many-to-one association to User
+	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 
 	public SalesOrder() {

@@ -1,6 +1,7 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**

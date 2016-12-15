@@ -17,6 +17,7 @@ import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
 import com.fithub.repository.user.UserRepository;
+import com.fithub.service.time.TimeHelperService;
 
 /**
  * Implementation of UserService Interface
@@ -29,12 +30,15 @@ public class UserServiceImpl implements UserService {
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 	private final UserRepository userRepository;
 	private final UserTasksHelperService userTasksHelperService;
+	private final TimeHelperService timeHelperService;
 
 	// Constructor dependency Injection for UserRepository
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, UserTasksHelperService userTasksHelperService) {
+	public UserServiceImpl(UserRepository userRepository, UserTasksHelperService userTasksHelperService,
+			TimeHelperService timeHelperService) {
 		this.userRepository = userRepository;
 		this.userTasksHelperService = userTasksHelperService;
+		this.timeHelperService = timeHelperService;
 	}
 
 	@Override
@@ -61,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		LOG.debug("Saving user having userName={}", userDTO.getUserName());
 		User user = new User();
 		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
-		user.setRegistrationDate(userTasksHelperService.getCurrentTimeStamp());
+		user.setRegistrationDate(timeHelperService.getCurrentTimeStamp());
 		return userRepository.save(user);
 	}
 
@@ -117,7 +121,7 @@ public class UserServiceImpl implements UserService {
 		// of the transaction
 		user = getUserByUsername(userDTO.getUserName());
 		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
-		user.setProfileEditDate(userTasksHelperService.getCurrentTimeStamp());
+		user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
 		user.setProfileEditedByUser(userDTO.getLoggedInUserName());
 		return userRepository.save(user);
 	}

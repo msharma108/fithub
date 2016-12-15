@@ -1,8 +1,5 @@
 package com.fithub.service.user;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.springframework.security.core.Authentication;
 
 import com.fithub.domain.CustomUser;
@@ -37,14 +34,6 @@ public interface UserTasksHelperService {
 	boolean canAccessUser(CustomUser customUser, String userName);
 
 	/**
-	 * Method formats provided date in "yy/mm/dd" format
-	 * 
-	 * @param dateToBeFormatted
-	 * @return Formatted date
-	 */
-	Date dateFormatter(String dateToBeFormatted);
-
-	/**
 	 * Method returns the logged in user's userName
 	 * 
 	 * @param authentication
@@ -61,13 +50,6 @@ public interface UserTasksHelperService {
 	 * @return role Role of the logged in user
 	 */
 	String getLoggedInUserUserRole(Authentication authentication);
-
-	/**
-	 * Method prepares current time in the format of timestamp
-	 * 
-	 * @return current timestamp
-	 */
-	Timestamp getCurrentTimeStamp();
 
 	/**
 	 * Method populates a UserDTO object with the Domain User object in order to

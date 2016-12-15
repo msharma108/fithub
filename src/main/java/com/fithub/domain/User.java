@@ -1,19 +1,8 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * The persistent class for the user database table.
@@ -61,6 +50,13 @@ public class User implements Serializable {
 	@Column(length = 45)
 	private String phone;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "profile_edit_date")
+	private Date profileEditDate;
+
+	@Column(name = "profile_edited_by_user", length = 45)
+	private String profileEditedByUser;
+
 	@Column(length = 45)
 	private String province;
 
@@ -71,7 +67,7 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 1)
 	private String role;
 
-	@Column(length = 20)
+	@Column(length = 1)
 	private String sex;
 
 	@Column(name = "user_name", nullable = false, length = 45)
@@ -79,13 +75,6 @@ public class User implements Serializable {
 
 	@Column(length = 7)
 	private String zipcode;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "profile_edit_date")
-	private Date profileEditDate;
-
-	@Column(name = "profile_edited_by_user", length = 45)
-	private String profileEditedByUser;
 
 	// bi-directional many-to-one association to SalesOrder
 	@OneToMany(mappedBy = "user")
@@ -182,6 +171,22 @@ public class User implements Serializable {
 		this.phone = phone;
 	}
 
+	public Date getProfileEditDate() {
+		return this.profileEditDate;
+	}
+
+	public void setProfileEditDate(Date profileEditDate) {
+		this.profileEditDate = profileEditDate;
+	}
+
+	public String getProfileEditedByUser() {
+		return this.profileEditedByUser;
+	}
+
+	public void setProfileEditedByUser(String profileEditedByUser) {
+		this.profileEditedByUser = profileEditedByUser;
+	}
+
 	public String getProvince() {
 		return this.province;
 	}
@@ -250,22 +255,6 @@ public class User implements Serializable {
 		salesOrder.setUser(null);
 
 		return salesOrder;
-	}
-
-	public Date getProfileEditDate() {
-		return profileEditDate;
-	}
-
-	public void setProfileEditDate(Date profileEditDate) {
-		this.profileEditDate = profileEditDate;
-	}
-
-	public String getProfileEditedByUser() {
-		return profileEditedByUser;
-	}
-
-	public void setProfileEditedByUser(String profileEditedByUser) {
-		this.profileEditedByUser = profileEditedByUser;
 	}
 
 }

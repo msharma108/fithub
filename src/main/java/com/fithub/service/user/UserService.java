@@ -39,7 +39,7 @@ public interface UserService {
 
 	/**
 	 * Method deletes a user record from the database based on the provided
-	 * userName
+	 * userName and return true as boolean result
 	 * 
 	 * @param userName
 	 * @return boolean

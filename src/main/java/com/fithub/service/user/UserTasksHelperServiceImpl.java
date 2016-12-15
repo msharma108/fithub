@@ -1,10 +1,5 @@
 package com.fithub.service.user;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -59,21 +54,6 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 	}
 
 	@Override
-	public Date dateFormatter(String dateToBeFormatted) {
-		// Reference :
-		// http://www.mkyong.com/java/java-date-and-calendar-examples/
-		Date date = null;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
-
-		try {
-			date = dateFormat.parse(dateToBeFormatted);
-		} catch (ParseException exception) {
-			LOG.debug("Error parsing date={}", dateToBeFormatted);
-		}
-		return date;
-	}
-
-	@Override
 	public String getLoggedInUserName(Authentication authentication) {
 
 		CustomUser loggedInUser = (CustomUser) authentication.getPrincipal();
@@ -84,13 +64,6 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 	public String getLoggedInUserUserRole(Authentication authentication) {
 		CustomUser loggedInUser = (CustomUser) authentication.getPrincipal();
 		return loggedInUser.getRole();
-	}
-
-	@Override
-	public Timestamp getCurrentTimeStamp() {
-
-		Timestamp timeStamp = new Timestamp(new Date().getTime());
-		return timeStamp;
 	}
 
 	@Override

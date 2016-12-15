@@ -4,19 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * The persistent class for the product database table.
@@ -51,29 +39,36 @@ public class Product implements Serializable {
 	@Column(name = "manufacture_date")
 	private Date manufactureDate;
 
-	@Column(length = 100)
-	private String name;
-
 	private float price;
 
-	@Column(name = "stock_quantity")
-	private int stockQuantity = 1;
+	@Column(name = "product_edited_by_user", length = 45)
+	private String productEditedByUser;
 
-	@Column(length = 20)
+	@Column(name = "product_name", nullable = false, length = 100)
+	private String productName;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "product_update_date")
+	private Date productUpdateDate;
+
+	@Column(length = 1)
 	private String rating;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "registration_date", nullable = false)
+	private Date registrationDate;
 
 	@Column(length = 300)
 	private String sdesc;
+
+	@Column(name = "stock_quantity")
+	private int stockQuantity;
 
 	@Lob
 	@Column(name = "thumb_image")
 	private byte[] thumbImage;
 
 	private float weight;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "product_update_date")
-	private Date productUpdateDate;
 
 	// bi-directional many-to-one association to OrderDetail
 	@OneToMany(mappedBy = "product")
@@ -135,20 +130,36 @@ public class Product implements Serializable {
 		this.manufactureDate = manufactureDate;
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public float getPrice() {
 		return this.price;
 	}
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+
+	public String getProductEditedByUser() {
+		return this.productEditedByUser;
+	}
+
+	public void setProductEditedByUser(String productEditedByUser) {
+		this.productEditedByUser = productEditedByUser;
+	}
+
+	public String getProductName() {
+		return this.productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public Date getProductUpdateDate() {
+		return this.productUpdateDate;
+	}
+
+	public void setProductUpdateDate(Date productUpdateDate) {
+		this.productUpdateDate = productUpdateDate;
 	}
 
 	public String getRating() {
@@ -159,12 +170,28 @@ public class Product implements Serializable {
 		this.rating = rating;
 	}
 
+	public Date getRegistrationDate() {
+		return this.registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
 	public String getSdesc() {
 		return this.sdesc;
 	}
 
 	public void setSdesc(String sdesc) {
 		this.sdesc = sdesc;
+	}
+
+	public int getStockQuantity() {
+		return this.stockQuantity;
+	}
+
+	public void setStockQuantity(int stockQuantity) {
+		this.stockQuantity = stockQuantity;
 	}
 
 	public byte[] getThumbImage() {
@@ -181,22 +208,6 @@ public class Product implements Serializable {
 
 	public void setWeight(float weight) {
 		this.weight = weight;
-	}
-
-	public int getStockQuantity() {
-		return stockQuantity;
-	}
-
-	public void setStockQuantity(int stockQuantity) {
-		this.stockQuantity = stockQuantity;
-	}
-
-	public Date getProductUpdateDate() {
-		return productUpdateDate;
-	}
-
-	public void setProductUpdateDate(Date productUpdateDate) {
-		this.productUpdateDate = productUpdateDate;
 	}
 
 	public List<OrderDetail> getOrderDetails() {
