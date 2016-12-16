@@ -90,7 +90,7 @@ function openProductModal(){
      <div class="panel-body" style="background-color: #C1E1A6;"> 
          
          <c:url var="productSave" value="/admin/productSave"/>
-	        <form:form modelAttribute="productDTO" method="POST" action="${productSave}" style="color: green;">
+	        <form:form modelAttribute="productDTO" method="POST" action="${productSave}" style="color: green;" enctype="multipart/form-data">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
@@ -134,6 +134,13 @@ function openProductModal(){
 			           <form:input class="form-control" type="text" path="price" id="priceId" placeHolder= "Enter Price"  />
 			           <form:errors  path="price" style="color: red;"/>
                   </div>
+                  
+                  <div class="col-sm-12">    
+                <div class="form-group row">
+                  <div class="col-sm-4 form-group">thumbImage<br>
+			           <input class="form-control" type="file" name="thumbImage" id="thumbImage" placeHolder= "Thumbnail"  />
+                  </div>
+                  
                   <div class="col-sm-4 form-group">
 			           <form:label path="weight">Weight:</form:label><br>
 			           <form:input class="form-control" type="text" path="weight" id="weightId" placeHolder= "Enter Weight"  />

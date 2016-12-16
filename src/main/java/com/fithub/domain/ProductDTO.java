@@ -25,7 +25,6 @@ public class ProductDTO {
 
 	private String flavor;
 
-	@NotEmpty
 	private float price;
 
 	private byte[] mainImage;
