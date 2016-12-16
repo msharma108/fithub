@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Data Transfer Object class for Product
@@ -50,7 +51,17 @@ public class ProductDTO {
 	@NotNull
 	private int quantitySold;
 
-	private byte[] thumbImage;
+	private MultipartFile thumbImage;
+
+	private byte[] thumbImageAsByteArray;
+
+	public byte[] getThumbImageAsByteArray() {
+		return thumbImageAsByteArray;
+	}
+
+	public void setThumbImageAsByteArray(byte[] thumbImageAsByteArray) {
+		this.thumbImageAsByteArray = thumbImageAsByteArray;
+	}
 
 	private float weight;
 
@@ -160,11 +171,11 @@ public class ProductDTO {
 		this.quantitySold = quantitySold;
 	}
 
-	public byte[] getThumbImage() {
+	public MultipartFile getThumbImage() {
 		return thumbImage;
 	}
 
-	public void setThumbImage(byte[] thumbImage) {
+	public void setThumbImage(MultipartFile thumbImage) {
 		this.thumbImage = thumbImage;
 	}
 

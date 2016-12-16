@@ -75,9 +75,7 @@ public class ProductRegisterController {
 		}
 
 		try {
-			byte[] byteStream = new byte[(int) thumbImage.getSize()];
-			byteStream = thumbImage.getBytes();
-			productDTO.setThumbImage(byteStream);
+			productDTO.setThumbImageAsByteArray(thumbImage.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
