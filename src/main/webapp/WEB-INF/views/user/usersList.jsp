@@ -61,6 +61,7 @@
                   </thead>
                     <tbody>
                         <c:forEach items="${allUsers}" var="user">
+                          <c:if test="${user.isUserDeleted == false}" >
                           <tr>
                             <td align="center">
                             
@@ -83,6 +84,7 @@
                             <td><c:out value="${user.role}"/></td>
                             <td><c:out value="${user.isUserDeleted}"/></td>
                           </tr>
+                         </c:if>
                         </c:forEach>
                     </tbody>
                 </table>
