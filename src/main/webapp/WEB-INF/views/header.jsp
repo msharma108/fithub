@@ -8,6 +8,9 @@
 		  
 		   <sec:authorize access="isAnonymous()">
 		   <li class="nav-item">
+		     Welcome<span class="glyphicon glyphicon-user"></span> Guest!</a>
+		   </li>
+		   <li class="nav-item">
 		     <a class="nav-link" href="<c:url value="/userRegister"/>" ><span class="glyphicon glyphicon-pencil"></span> Sign up</a>
 		   </li>
 		   <li class="nav-item">
@@ -15,8 +18,10 @@
 		   </li>
 		   </sec:authorize>
 		   <sec:authorize access="isAuthenticated()">
+		   <!-- Displaying LoggedIn User's Name and link to profile -->
+		   <<sec:authentication var="loggedInUserName" property="principal.userName" />
 		   <li class="nav-item">
-		      <a href="#ProfileLink">Welcome <span class="glyphicon glyphicon-user"></span> <b>User</b></a>
+		      <a href="<c:url value="/viewUser/${loggedInUserName}"/>">Welcome <span class="glyphicon glyphicon-user"></span> <b><sec:authentication property="principal.userName" /></b></a>
            </li>
 		   <li class="nav-item">
 		   <c:url var="logout" value="/logout"/>
