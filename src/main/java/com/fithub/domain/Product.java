@@ -72,6 +72,9 @@ public class Product implements Serializable {
 
 	private float weight;
 
+	@Column(length = 1)
+	private Boolean isProductDeleted;
+
 	// bi-directional many-to-one association to OrderDetail
 	@OneToMany(mappedBy = "product")
 	private List<OrderDetail> orderDetails;
@@ -206,6 +209,14 @@ public class Product implements Serializable {
 
 	public float getWeight() {
 		return this.weight;
+	}
+
+	public Boolean getIsProductDeleted() {
+		return isProductDeleted;
+	}
+
+	public void setIsProductDeleted(Boolean isProductDeleted) {
+		this.isProductDeleted = isProductDeleted;
 	}
 
 	public void setWeight(float weight) {

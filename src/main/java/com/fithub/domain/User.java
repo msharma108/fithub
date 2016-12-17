@@ -77,6 +77,9 @@ public class User implements Serializable {
 	@Column(length = 7)
 	private String zipcode;
 
+	@Column(length = 1)
+	private Boolean isUserDeleted;
+
 	// bi-directional many-to-one association to SalesOrder
 	@OneToMany(mappedBy = "user")
 	private List<SalesOrder> salesOrders;
@@ -234,6 +237,14 @@ public class User implements Serializable {
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+
+	public Boolean getIsUserDeleted() {
+		return isUserDeleted;
+	}
+
+	public void setIsUserDeleted(Boolean isUserDeleted) {
+		this.isUserDeleted = isUserDeleted;
 	}
 
 	public List<SalesOrder> getSalesOrders() {
