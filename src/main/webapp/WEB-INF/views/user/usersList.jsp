@@ -18,6 +18,8 @@
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 	<!-- custom -->
 	<link rel="stylesheet" href="../../css/style.css"  >
 	<!-- Bootstrap -->
@@ -70,7 +72,7 @@
                              <form action="${urlReconstructBasedOnOperation}" method="POST" >
                              <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                              <input type="hidden" name="userName" value="${user.userName}"/>
-                             <input type="hidden" name="userRole" value="${user.role}"/>
+                             <input type="hidden" name="userRole" id="userRoleHidden" />
                               <button class="btn btn-primary" title="View User Details" name="userView"><i class="glyphicon glyphicon-eye-open"></i></button>
                               <button class="btn btn-Success" title="Edit User" name="userEdit"><i class="glyphicon glyphicon-pencil"></i></button>
                               <button class="btn btn-default" title="Change User Role" name="userRoleChange"><i class="glyphicon glyphicon-retweet"></i></button>
@@ -80,7 +82,21 @@
                             <td><c:out value="${user.userName}"/></td>
                             <td><c:out value="${user.givenName}"/> <c:out value="${user.familyName}"/></td>
                             <td><c:out value="${user.email}"/></td>
-                            <td><c:out value="${user.role}"/></td>
+                            <td> 
+                               <input class ="userRole" id="userRole" data-class="fast" checked type="checkbox"  <c:if test="${user.role == 'ADMIN'}"> data-on= "ADMIN" data-off="CUSTOMER" </c:if> <c:if test="${user.role == 'CUSTOMER'}"> data-on= "CUSTOMER" data-off="ADMIN" </c:if> >
+                               <script>
+  								$(function() {
+    							$('.userRole').bootstrapToggle();
+  								})
+							  </script>
+							  <script>
+							    $(function() {
+							      $('.userRole').change(function() {
+							    	  alert("toggled ");
+							      })
+							    })
+							  </script>
+                            </td>
                           </tr>
                         </c:forEach>
                     </tbody>
