@@ -86,19 +86,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean changeRole(User user, String userName) throws NoSuchElementException {
+	public boolean changeRole(UserDTO userDTO) throws NoSuchElementException {
 
 		boolean isRoleChanged = false;
 
-		if (user != null) {
+		if (userDTO.getRole() != null) {
 			// Checking for users current role and switching the role
-			if (user.getRole().equals(UserRole.ADMIN.getRoleAsString())) {
-				user.setRole(UserRole.CUSTOMER.getRoleAsString());
+			if (userDTO.getRole().equals(UserRole.ADMIN)) {
+				userDTO.setRole(UserRole.CUSTOMER);
 			} else {
-				user.setRole(UserRole.ADMIN.getRoleAsString());
+				userDTO.setRole(UserRole.ADMIN);
 			}
-			userRepository.saveAndFlush(user);
-			LOG.debug("User with userName={} now has the role={}", userName, user.getRole());
+			updateUserProfile(userDTO);
+			LOG.debug("User with userName={} now has the role={}", userDTO.getUserName(), userDTO.getRole());
 			isRoleChanged = true;
 		}
 		return isRoleChanged;

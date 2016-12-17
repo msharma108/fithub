@@ -174,8 +174,8 @@ public class UserTasksController {
 			RedirectAttributes redirectAttributes) {
 		LOG.debug("Attempting to update Role of user={}", userDTO.getUserName());
 
-		userService.updateUserProfile(userDTO);
-		LOG.debug("User={} profile update successful,profile", userDTO.getUserName());
+		userService.changeRole(userDTO);
+		LOG.debug("User={} role changed successfully", userDTO.getUserName());
 
 		// used to check update success on the canvas page
 		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 3);
