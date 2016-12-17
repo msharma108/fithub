@@ -20,7 +20,8 @@ USE `fithub` ;
 -- -----------------------------------------------------
 -- Table `fithub`.`user`
 -- -----------------------------------------------------
-Drop Table `fithub`.`user`;
+DROP TABLE IF EXISTS `fithub`.`user` ;
+
 CREATE TABLE IF NOT EXISTS `fithub`.`user` (
   `user_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
   `user_name` VARCHAR(45) NOT NULL COMMENT '',
@@ -34,16 +35,16 @@ CREATE TABLE IF NOT EXISTS `fithub`.`user` (
   `city` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
   `province` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
   `country` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
-  `zipcode` VARCHAR(7) NULL DEFAULT NULL COMMENT '',
+  `zipcode` VARCHAR(20) NULL DEFAULT NULL COMMENT '',
   `email` VARCHAR(45) NOT NULL COMMENT '',
   `phone` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
-  `payment_mode` ENUM('CREDIT','DEBIT') NULL DEFAULT 'CREDIT' COMMENT '',
+  `payment_mode` ENUM('CREDIT','DEBIT','UNDISCLOSED') NULL DEFAULT 'CREDIT' COMMENT '',
   `role` ENUM('CUSTOMER','ADMIN') NOT NULL DEFAULT 'CUSTOMER' COMMENT '',
   `profile_edit_date` DATETIME NULL DEFAULT NULL COMMENT '',
   `profile_edited_by_user` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
+  `is_user_deleted` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '',
   PRIMARY KEY (`user_id`)  COMMENT '',
-  UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC)  COMMENT '',
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC)  COMMENT '')
+  UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC)  COMMENT '')
 ENGINE = InnoDB
 AUTO_INCREMENT = 18
 DEFAULT CHARACTER SET = utf8;
@@ -52,7 +53,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `fithub`.`sales_order`
 -- -----------------------------------------------------
-Drop Table `fithub`.`sales_order`;
+DROP TABLE IF EXISTS `fithub`.`sales_order` ;
+
 CREATE TABLE IF NOT EXISTS `fithub`.`sales_order` (
   `sales_order_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
   `amount` FLOAT NULL DEFAULT '0' COMMENT '',
@@ -85,12 +87,14 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `fithub`.`product_category`
 -- -----------------------------------------------------
-Drop Table `fithub`.`product_category`;
+DROP TABLE IF EXISTS `fithub`.`product_category` ;
+
 CREATE TABLE IF NOT EXISTS `fithub`.`product_category` (
   `product_category_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '',
-  `name` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
+  `category` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`product_category_id`)  COMMENT '')
 ENGINE = InnoDB
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8
 COMMENT = 'various categories of products';
 
@@ -98,24 +102,30 @@ COMMENT = 'various categories of products';
 -- -----------------------------------------------------
 -- Table `fithub`.`product`
 -- -----------------------------------------------------
-Drop Table `fithub`.`product`;
+DROP TABLE IF EXISTS `fithub`.`product` ;
+
 CREATE TABLE IF NOT EXISTS `fithub`.`product` (
   `product_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
-  `name` VARCHAR(100) NULL DEFAULT NULL COMMENT '',
+  `product_name` VARCHAR(100) NOT NULL COMMENT '',
   `sdesc` VARCHAR(300) NULL DEFAULT NULL COMMENT '',
   `ldesc` TEXT NULL DEFAULT NULL COMMENT '',
   `price` FLOAT NULL DEFAULT NULL COMMENT '',
   `stock_quantity` INT(11) NULL DEFAULT '0' COMMENT '',
-  `category_id` INT(10) NOT NULL COMMENT '',
+  `category_id` INT(11) NOT NULL COMMENT '',
   `manufacture_date` DATE NULL DEFAULT NULL COMMENT '',
   `expiry_date` DATE NULL DEFAULT NULL COMMENT '',
   `rating` ENUM('Bad','Average','Good','Awesome') NULL DEFAULT NULL COMMENT '',
   `weight` FLOAT NULL DEFAULT NULL COMMENT '',
-  `main_image` MEDIUMBLOB NULL DEFAULT NULL COMMENT '',
-  `thumb_image` TINYBLOB NULL DEFAULT NULL COMMENT '',
+  `main_image` LONGBLOB NULL DEFAULT NULL COMMENT '',
+  `thumb_image` LONGBLOB NULL DEFAULT NULL COMMENT '',
   `flavor` VARCHAR(45) NULL DEFAULT 'Not Applicable' COMMENT '',
   `product_update_date` DATETIME NULL DEFAULT NULL COMMENT '',
+  `registration_date` DATETIME NOT NULL COMMENT '',
+  `product_edited_by_user` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
+  `quantity_sold` INT(11) NULL DEFAULT '0' COMMENT '',
+  `is_product_deleted` TINYINT(1) NULL DEFAULT '0' COMMENT '',
   PRIMARY KEY (`product_id`)  COMMENT '',
+  UNIQUE INDEX `product_name_UNIQUE` (`product_name` ASC)  COMMENT '',
   INDEX `ProductProductCategory_idx` (`category_id` ASC)  COMMENT '',
   CONSTRAINT `FK5cypb0k23bovo3rn1a5jqs6j4`
     FOREIGN KEY (`category_id`)
@@ -133,7 +143,8 @@ COMMENT = 'Product Entity table';
 -- -----------------------------------------------------
 -- Table `fithub`.`order_detail`
 -- -----------------------------------------------------
-Drop Table `fithub`.`order_detail`;
+DROP TABLE IF EXISTS `fithub`.`order_detail` ;
+
 CREATE TABLE IF NOT EXISTS `fithub`.`order_detail` (
   `order_detail_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
   `sales_order_id` INT(10) NOT NULL COMMENT '',
