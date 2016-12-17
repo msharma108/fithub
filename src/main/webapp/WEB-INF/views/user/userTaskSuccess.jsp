@@ -150,12 +150,36 @@
     
     
     $(document).ready(function(){ 
+    	
+    	var userRegisterSuccess =1;
+    	var userDeleteSuccess =2;
+    	var userRoleChangeSuccess =3;
+    	var userUpdateSuccess =4;
     	console.log( "ready!" );
-    	if ( ${userRegisterSuccess} == true)
+    	if ( ${userTaskTypeCompleted} == userRegisterSuccess)
     		{
-    		 console.log("userRegisterSuccess value",${userRegisterSuccess});
+    		 console.log("userRegisterSuccess value",typeof(${userTaskTypeCompleted}));
 	        $('#userRegistrationSuccessModal').modal('show');
     		}
+    	else if ( ${userTaskTypeCompleted} == userDeleteSuccess)
+			{
+			 console.log("userDeleteSuccess value",typeof(${userTaskTypeCompleted}));
+        	$('#userDeletionSuccessModal').modal('show');
+			}
+		else if ( ${userTaskTypeCompleted} == userRoleChangeSuccess)
+			{
+			 console.log("userRoleChangeSuccess value",typeof(${userTaskTypeCompleted}));
+       		 $('#userRoleChangeSuccessModal').modal('show');
+			}
+    	else if ( ${userTaskTypeCompleted} == userUpdateSuccess)
+			{
+			 console.log("userUpdateSuccess value",typeof(${userTaskTypeCompleted}));
+        	$('#userProfileUpdateSuccessModal').modal('show');
+			}
+		else
+			{
+				console.log("all false");
+			}
     });
     </script>
 	

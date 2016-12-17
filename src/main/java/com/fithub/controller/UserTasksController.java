@@ -164,7 +164,7 @@ public class UserTasksController {
 
 		LOG.debug("User was delete successfuly ?={}", isUserDelete);
 
-		redirectAttributes.addFlashAttribute("userDeleteSuccess", true);
+		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 2);
 
 		return "redirect:/admin/userTaskSuccess";
 	}
@@ -178,7 +178,7 @@ public class UserTasksController {
 		LOG.debug("User={} profile update successful,profile", userDTO.getUserName());
 
 		// used to check update success on the canvas page
-		redirectAttributes.addFlashAttribute("userRoleChangeSuccess", true);
+		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 3);
 
 		return "redirect:/admin/userTaskSuccess";
 

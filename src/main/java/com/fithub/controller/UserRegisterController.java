@@ -84,7 +84,7 @@ public class UserRegisterController {
 		LOG.debug("Registration successful, heading to the jsp");
 
 		// used to check login success on the canvas page
-		redirectAttributes.addFlashAttribute("userRegisterSuccess", true);
+		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 1);
 
 		// Redirect based on logged in user's role
 		if (authentication != null)
