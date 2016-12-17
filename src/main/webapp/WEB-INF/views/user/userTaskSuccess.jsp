@@ -33,70 +33,132 @@
   </head>
   <body>
 <jsp:include page="../header.jsp" />
- 
+
 	<!-- contents start here -->
 <div class="container-fluid">
-    <div class="row">
-     <c:if test="${userRegisterSuccess == true}">
-        <div class="col-sm-6 col-md-6">
-            <div class="alert alert-success">
-                <span class="glyphicon glyphicon-info-sign"> </span><strong>User Registration Success Message</strong>
-                <hr class="message-inner-separator">
-                <h3>User registration has been completed Successfully.<span class="glyphicon glyphicon-ok"></span></h3>
-            </div>
+
+  <!-- Add product success Modal -->
+  <div class="modal" id="AddProductSuccessModal">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> Product</h4>
         </div>
-     </c:if>
-      
-     <c:if test="${productRegisterSuccess == true}">
-        <div class="col-sm-6 col-md-6">
-            <div class="alert alert-success">
-                <span class="glyphicon glyphicon-info-sign"> </span><strong>Product</strong>
-                <hr class="message-inner-separator">
-                <h3>Product has been added Successfully.<span class="glyphicon glyphicon-ok"></span></h3>
-            </div>
+        <div class="modal-body">
+          <p>Product has been added Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
         </div>
-      </c:if>
-     <c:if test="${userUpdateSuccess == true}">
-        <div class="col-sm-6 col-md-6">
-            <div class="alert alert-success">
-                <span class="glyphicon glyphicon-info-sign"> </span><strong>Profile update</strong>
-                <hr class="message-inner-separator">
-                <h3>User Profile has been updated Successfully. <span class="glyphicon glyphicon-ok"></span></h3>
-            </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
         </div>
-      </c:if>
-      
-     <c:if test="${userRoleChangeSuccess == true}">
-        <div class="col-sm-6 col-md-6">
-            <div class="alert alert-success">
-                <span class="glyphicon glyphicon-info-sign"> </span><strong>User Role Change</strong>
-                <hr class="message-inner-separator">
-                <h3>User Role has been changed Successfully.<span class="glyphicon glyphicon-ok"></span></h3>
-            </div>
-        </div>
-      </c:if>
-      
-     <c:if test="${userDeleteSuccess == true}">
-        <div class="col-sm-6 col-md-6">
-            <div class="alert alert-success">
-                <span class="glyphicon glyphicon-info-sign"> </span><strong>User Deletion</strong>
-                <hr class="message-inner-separator">
-                <h3>User has been deleted Successfully. <span class="glyphicon glyphicon-ok"></span></h3>
-            </div>
-        </div>
-      </c:if>
-      
+      </div>
       
     </div>
-</div>
-
+  </div>   
+ 
+ 
+  <!-- Profile update success Modal -->
+  <div class="modal" id="userProfileUpdateSuccessModal">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> Profile Update</h4>
+        </div>
+        <div class="modal-body">
+          <p>User Profile has been updated Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>   
+     
+   <!-- User registration success Modal -->
+  <div class="modal fade" id="userRegistrationSuccessModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> User Registration</h4>
+        </div>
+        <div class="modal-body">
+          <p>User registration has been completed Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+     <!-- User registration success Modal -->
+  <div class="modal fade" id="userRoleChangeSuccessModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> User Role Change</h4>
+        </div>
+        <div class="modal-body">
+          <p>User Role has been changed Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
+     <!-- User deletion: success Modal -->
+  <div class="modal fade" id="userDeletionSuccessModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> User Deletion</h4>
+        </div>
+        <div class="modal-body">
+          <p>User has been deleted Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
+ </div>
 	<!-- contents end here -->
 	 
 	<jsp:include page="../footer.jsp" />
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    
+    
+    $(document).ready(function(){ 
+    	console.log( "ready!" );
+    	if ( ${userRegisterSuccess} == true)
+    		{
+    		 console.log("userRegisterSuccess value",${userRegisterSuccess});
+	        $('#userRegistrationSuccessModal').modal('show');
+    		}
+    });
+    </script>
+	
 
   </body>
 </html>
