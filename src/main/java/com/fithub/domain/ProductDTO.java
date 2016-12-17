@@ -55,6 +55,8 @@ public class ProductDTO {
 
 	private byte[] thumbImageAsByteArray;
 
+	private transient String base64imageFile;
+
 	public byte[] getThumbImageAsByteArray() {
 		return thumbImageAsByteArray;
 	}
@@ -193,6 +195,14 @@ public class ProductDTO {
 
 	public void setEditable(boolean isEditable) {
 		this.isEditable = isEditable;
+	}
+
+	public String getBase64imageFile() {
+		return base64imageFile;
+	}
+
+	public void setBase64imageFile(String base64imageFile) {
+		this.base64imageFile = base64imageFile;
 	}
 
 }

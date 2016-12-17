@@ -45,7 +45,7 @@
 			 <a class="nav-link" href="<c:url value="/home"/>" ><span class="glyphicon glyphicon-home"> </span> Home</a>
 		   </li>
 		   <li class="nav-item">
-			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Products</a>
+			 <a class="nav-link" href="<c:url value="/viewProducts"/>"><span class="glyphicon glyphicon-shopping-cart"></span> Products</a>
 		   </li>
 		   <li class="nav-item">
 			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact us</a>

@@ -55,14 +55,16 @@
               <div class="panel-body">
               
 			    <!-- start of product  -->
-			    <c:forEach items="${allProducts}" var="product">
+			    <!-- http://stackoverflow.com/questions/4142631/is-it-possible-to-iterate-two-items-simulataneously-using-foreach-in-jstl/4142885#4142885 -->
+			    
+			    <c:forEach items="${allProducts}" var="product" varStatus="status">
 	                <div class = "row">
 					   <div class ="col-md-2 col-xs-12">
-					     <img class="img-responsive"  src="http://placehold.it/400x250/008000/fff" alt=""/>
+					     <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt=""/>
 					   </div>
 					   <div class="col-md-4 col-xs-12">
 					     <h3><c:out value="${product.productName}"/> </h3>
-						 <h4><c:out value="${product.ldesc}"/></h4>
+						 <h4><c:out value="${product.sdesc}"/></h4>
 					   </div>
 					   <div class="col-md-6 col-xs-12">
 					      <button class="btn btn-primary btn-sm pull-right" type="submit" name="shoppingcart" id="shoppingcartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
