@@ -100,7 +100,7 @@ public class UserEditController {
 		// used to check update success on the canvas page
 		redirectAttributes.addFlashAttribute("userUpdateSuccess", true);
 		sessionStatus.setComplete();
-		if (authentication.isAuthenticated())
+		if (userTasksHelperService.isLoggedInUserAdmin(authentication))
 			return "redirect:/admin/userTaskSuccess";
 		else
 			return "redirect:/userTaskSuccess";

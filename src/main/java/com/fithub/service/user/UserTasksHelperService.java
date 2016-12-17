@@ -61,4 +61,13 @@ public interface UserTasksHelperService {
 	 */
 	UserDTO populateUserDTOFromUser(User user);
 
+	/**
+	 * Method returns boolean true if the logged in user's role is Admin
+	 * 
+	 * @param authentication
+	 *            Spring Security authenticatio object
+	 * @return boolean true if the logged in user's role is Admin
+	 */
+	boolean isLoggedInUserAdmin(Authentication authentication);
+
 }

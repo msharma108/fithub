@@ -93,4 +93,13 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 
 	}
 
+	@Override
+	public boolean isLoggedInUserAdmin(Authentication authentication) {
+		CustomUser loggedInUser = (CustomUser) authentication.getPrincipal();
+		if (loggedInUser.getRole().equals(UserRole.ADMIN.getRoleAsString()))
+
+			return true;
+		else
+			return false;
+	}
 }
