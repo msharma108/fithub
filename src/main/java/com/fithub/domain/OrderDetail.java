@@ -43,11 +43,11 @@ public class OrderDetail implements Serializable {
 	public OrderDetail() {
 	}
 
-	public String getOrderDetailId() {
+	public int getOrderDetailId() {
 		return this.orderDetailId;
 	}
 
-	public void setOrderDetailId(String orderDetailId) {
+	public void setOrderDetailId(int orderDetailId) {
 		this.orderDetailId = orderDetailId;
 	}
 
