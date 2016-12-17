@@ -140,8 +140,8 @@ $(document).ready(function() {
 			           <form:label path="country">Country:<span class="glyphicon glyphicon-home"> </span></form:label><br>
 			           <form:select class="form-control input-medium bfh-countries" data-country="US" path="country" id="countryId"  >
 			           <form:option value="">--- Select ---</form:option>
-			           <form:option value="can">Canada</form:option>
-			           <form:option value="usa">USA</form:option>
+			           <form:option value="CANADA">Canada</form:option>
+			           <form:option value="USA">USA</form:option>
 			           <form:errors  path="country" style="color: red;"/>
 			           </form:select>
                   </div>

@@ -77,7 +77,7 @@ public class Product implements Serializable {
 	private List<OrderDetail> orderDetails;
 
 	// bi-directional many-to-one association to ProductCategory
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "category_id", nullable = false)
 	private ProductCategory productCategory;
 

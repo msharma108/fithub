@@ -113,9 +113,9 @@ function openProductModal(){
                   <div class="col-sm-4 form-group">
                        <form:label path="productCategory">Product Category:</form:label><br>
 			           <form:select class="form-control" path="productCategory" id="productCategoryId">
-			           <form:option value="0">--- Select ---</form:option>
-			           <form:option value="1">Protein</form:option>
-			           <form:option value="2">Vitamin</form:option>
+			           <form:option value="Others">--- Select ---</form:option>
+			           <form:option value="Protein">Protein</form:option>
+			           <form:option value="Vitamins">Vitamins</form:option>
 			           <form:errors  path="productCategory" style="color: red;"/>
 			           </form:select>
                   </div>
@@ -173,9 +173,15 @@ function openProductModal(){
 			           <form:errors  path="flavor" style="color: red;"/>
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="rating">Rating:</form:label><br>
-			           <form:input class="form-control" type="text" path="rating" id="ratingId" placeHolder= "Enter Rating" />
+                       <form:label path="rating">Rating:<span class="glyphicon glyphicon-user"> </span></form:label><br>
+			           <form:select class="form-control" path="rating" id="ratingId">
+			          <form:option value="">--- Select ---</form:option>
+			           <form:option value="Bad">Bad</form:option>
+			           <form:option value="Average">Average</form:option>
+			           <form:option value="Good">Good</form:option>
+			           <form:option value="Awesome">Awesome</form:option>
 			           <form:errors  path="rating" style="color: red;"/>
+			           </form:select>
                   </div>
                 </div>
               </div>
