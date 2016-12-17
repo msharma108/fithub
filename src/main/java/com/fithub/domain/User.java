@@ -1,9 +1,19 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the user database table.
@@ -42,10 +52,13 @@ public class User implements Serializable {
 	@Column(name = "given_name", nullable = false, length = 45)
 	private String givenName;
 
+	@Column(name = "is_user_deleted", nullable = false)
+	private boolean isUserDeleted;
+
 	@Column(nullable = false, length = 60)
 	private String password;
 
-	@Column(name = "payment_mode", length = 1)
+	@Column(name = "payment_mode", length = 20)
 	private String paymentMode;
 
 	@Column(length = 45)
@@ -65,7 +78,7 @@ public class User implements Serializable {
 	@Column(name = "registration_date", nullable = false)
 	private Date registrationDate;
 
-	@Column(nullable = false, length = 1)
+	@Column(nullable = false, length = 20)
 	private String role;
 
 	@Column(length = 20)
@@ -74,11 +87,8 @@ public class User implements Serializable {
 	@Column(name = "user_name", nullable = false, length = 45)
 	private String userName;
 
-	@Column(length = 7)
+	@Column(length = 20)
 	private String zipcode;
-
-	@Column(length = 1)
-	private Boolean isUserDeleted;
 
 	// bi-directional many-to-one association to SalesOrder
 	@OneToMany(mappedBy = "user")
@@ -149,6 +159,14 @@ public class User implements Serializable {
 
 	public void setGivenName(String givenName) {
 		this.givenName = givenName;
+	}
+
+	public boolean getIsUserDeleted() {
+		return this.isUserDeleted;
+	}
+
+	public void setIsUserDeleted(boolean isUserDeleted) {
+		this.isUserDeleted = isUserDeleted;
 	}
 
 	public String getPassword() {
@@ -237,14 +255,6 @@ public class User implements Serializable {
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
-	}
-
-	public Boolean getIsUserDeleted() {
-		return isUserDeleted;
-	}
-
-	public void setIsUserDeleted(Boolean isUserDeleted) {
-		this.isUserDeleted = isUserDeleted;
 	}
 
 	public List<SalesOrder> getSalesOrders() {

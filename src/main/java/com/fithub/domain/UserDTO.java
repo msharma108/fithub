@@ -70,6 +70,8 @@ public class UserDTO {
 
 	private boolean isEditable = false;
 
+	private boolean isUserDeleted = false;
+
 	// Represents currently logged in User's userName
 	private String loggedInUserName;
 
@@ -234,6 +236,14 @@ public class UserDTO {
 
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
+	}
+
+	public boolean getIsUserDeleted() {
+		return isUserDeleted;
+	}
+
+	public void setIsUserDeleted(boolean isUserDeleted) {
+		this.isUserDeleted = isUserDeleted;
 	}
 
 }

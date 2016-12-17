@@ -81,6 +81,7 @@
                             <td><c:out value="${user.givenName}"/> <c:out value="${user.familyName}"/></td>
                             <td><c:out value="${user.email}"/></td>
                             <td><c:out value="${user.role}"/></td>
+                            <td><c:out value="${user.isUserDeleted}"/></td>
                           </tr>
                         </c:forEach>
                     </tbody>

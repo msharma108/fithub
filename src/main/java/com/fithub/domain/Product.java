@@ -1,9 +1,22 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the product database table.
@@ -26,6 +39,9 @@ public class Product implements Serializable {
 
 	@Column(length = 45)
 	private String flavor;
+
+	@Column(name = "is_product_deleted")
+	private boolean isProductDeleted;
 
 	@Lob
 	private String ldesc;
@@ -50,6 +66,9 @@ public class Product implements Serializable {
 	@Column(name = "product_update_date")
 	private Date productUpdateDate;
 
+	@Column(name = "quantity_sold")
+	private int quantitySold;
+
 	@Column(length = 20)
 	private String rating;
 
@@ -63,17 +82,11 @@ public class Product implements Serializable {
 	@Column(name = "stock_quantity")
 	private int stockQuantity;
 
-	@Column(name = "quantity_sold")
-	private int quantitySold;
-
 	@Lob
 	@Column(name = "thumb_image")
 	private byte[] thumbImage;
 
 	private float weight;
-
-	@Column(length = 1)
-	private Boolean isProductDeleted;
 
 	// bi-directional many-to-one association to OrderDetail
 	@OneToMany(mappedBy = "product")
@@ -87,11 +100,11 @@ public class Product implements Serializable {
 	public Product() {
 	}
 
-	public int getProductId() {
+	public String getProductId() {
 		return this.productId;
 	}
 
-	public void setProductId(int productId) {
+	public void setProductId(String productId) {
 		this.productId = productId;
 	}
 
@@ -109,6 +122,14 @@ public class Product implements Serializable {
 
 	public void setFlavor(String flavor) {
 		this.flavor = flavor;
+	}
+
+	public boolean getIsProductDeleted() {
+		return this.isProductDeleted;
+	}
+
+	public void setIsProductDeleted(boolean isProductDeleted) {
+		this.isProductDeleted = isProductDeleted;
 	}
 
 	public String getLdesc() {
@@ -167,6 +188,14 @@ public class Product implements Serializable {
 		this.productUpdateDate = productUpdateDate;
 	}
 
+	public int getQuantitySold() {
+		return this.quantitySold;
+	}
+
+	public void setQuantitySold(int quantitySold) {
+		this.quantitySold = quantitySold;
+	}
+
 	public String getRating() {
 		return this.rating;
 	}
@@ -211,24 +240,8 @@ public class Product implements Serializable {
 		return this.weight;
 	}
 
-	public Boolean getIsProductDeleted() {
-		return isProductDeleted;
-	}
-
-	public void setIsProductDeleted(Boolean isProductDeleted) {
-		this.isProductDeleted = isProductDeleted;
-	}
-
 	public void setWeight(float weight) {
 		this.weight = weight;
-	}
-
-	public int getQuantitySold() {
-		return quantitySold;
-	}
-
-	public void setQuantitySold(int quantitySold) {
-		this.quantitySold = quantitySold;
 	}
 
 	public List<OrderDetail> getOrderDetails() {

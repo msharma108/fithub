@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUserById(Long userId) throws IllegalArgumentException {
+	public User getUserById(Integer userId) throws IllegalArgumentException {
 		LOG.debug("Retreive user having userId={}", userId);
 		User user = userRepository.findOne(userId);
 		if (user != null)
@@ -71,15 +71,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean deleteUserByUsername(String userName) {
+	public boolean deleteUserByUsername(UserDTO userDTO) {
 
 		boolean isUserDeleted = true;
-		LOG.debug("Attempting to delete user having userName={}", userName);
+		LOG.debug("Attempting to delete user having userName={}", userDTO.getUserName());
 		try {
-			userRepository.deleteByUserName(userName);
+			User user = getUserByUsername(userDTO.getUserName());
+			user = getUserById(user.getUserId());
+			userDTO = userTasksHelperService.destroyUserDataForDeletion(userDTO);
+			user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
+			user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
+			user.setProfileEditedByUser(userDTO.getLoggedInUserName());
+			user = userRepository.save(user);
 			return isUserDeleted;
 		} catch (IllegalArgumentException exception) {
-			LOG.debug("User with userName={} can't be deleted as they dont exist in the database", userName);
+			LOG.debug("User with userName={} can't be deleted as they dont exist in the database",
+					userDTO.getUserName());
 			isUserDeleted = false;
 			return isUserDeleted;
 		}

@@ -2,6 +2,7 @@ package com.fithub.service.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,17 +11,25 @@ import com.fithub.domain.CustomUser;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
+import com.fithub.service.time.TimeHelperService;
 
 @Service
 public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserTasksHelperServiceImpl.class);
+	private final TimeHelperService timeHelperService;
+
+	@Autowired
+	public UserTasksHelperServiceImpl(TimeHelperService timeHelperService) {
+		this.timeHelperService = timeHelperService;
+	}
 
 	@Override
 	public User createUserFromUserDTO(User user, UserDTO userDTO) {
 		LOG.debug("Preparing user={} from user transfer object", userDTO.getUserName());
 
 		user.setAddress(userDTO.getAddress());
+		user.setIsUserDeleted(userDTO.getIsUserDeleted());
 		user.setCity(userDTO.getCity());
 		user.setCountry(userDTO.getCountry());
 		user.setDateOfBirth((userDTO.getDateOfBirth()));
@@ -101,5 +110,33 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 			return true;
 		else
 			return false;
+	}
+
+	@Override
+	public UserDTO destroyUserDataForDeletion(UserDTO userDTO) {
+
+		final String userDeleted = "User_Deleted";
+		final String userDeletedDummyDate = "1900/10/11";
+		final String userDeletedDummy = "UNDISCLOSED";
+
+		userDTO.setIsUserDeleted(true);
+		userDTO.setAddress(userDeleted);
+		userDTO.setCity(userDeleted);
+		userDTO.setCountry(userDeleted);
+		userDTO.setDateOfBirth(timeHelperService.dateFormatter(userDeletedDummyDate));
+		userDTO.setEmail(userDeleted);
+		userDTO.setFamilyName(userDeleted);
+		userDTO.setGivenName(userDeleted);
+		userDTO.setPassword(userDeleted);
+		userDTO.setRepeatPassword(userDeleted);
+		userDTO.setPaymentMode(userDeletedDummy);
+		userDTO.setPhone(userDeleted);
+		userDTO.setProvince(userDeleted);
+		userDTO.setSex(userDeletedDummy);
+		userDTO.setUserName(userDTO.getUserName().concat(userDeleted));
+		userDTO.setZipcode(userDeleted);
+		userDTO.setRegistrationDate(timeHelperService.dateFormatter(userDeletedDummyDate));
+
+		return userDTO;
 	}
 }

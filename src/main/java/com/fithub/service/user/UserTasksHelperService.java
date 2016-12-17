@@ -70,4 +70,14 @@ public interface UserTasksHelperService {
 	 */
 	boolean isLoggedInUserAdmin(Authentication authentication);
 
+	/**
+	 * Method overwrites user data with dummy data for user deletion at the same
+	 * time ensuring that the record is in the database for audit purposes
+	 * 
+	 * @param userDTO
+	 *            userDTO containing user information to be deleted
+	 * @return userDTO with dummy data
+	 */
+	UserDTO destroyUserDataForDeletion(UserDTO userDTO);
+
 }

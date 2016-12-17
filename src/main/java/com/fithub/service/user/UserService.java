@@ -18,7 +18,7 @@ public interface UserService {
 	 * @param userId
 	 * @return User
 	 */
-	User getUserById(Long userId);
+	User getUserById(Integer userId);
 
 	/**
 	 * Method gets a user based on the provided userName
@@ -38,13 +38,14 @@ public interface UserService {
 	User createUser(UserDTO userDTO);
 
 	/**
-	 * Method deletes a user record from the database based on the provided
-	 * userName and return true as boolean result
+	 * Method simulates a user record deletion in the database based on the
+	 * provided userDTO object. The user record is kept for audit purposed but
+	 * his information is overwritten with dummy data
 	 * 
-	 * @param userName
-	 * @return boolean
+	 * @param userDTO
+	 * @return boolean returns true if the user is marked as deleted
 	 */
-	boolean deleteUserByUsername(String userName);
+	boolean deleteUserByUsername(UserDTO userDTO);
 
 	/**
 	 * Method checks the existing role of the user and switches it to the other
