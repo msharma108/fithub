@@ -102,8 +102,8 @@ public class UserTasksController {
 	// return "user/userSearchPage";
 	// }
 
-	@PostMapping(value = { "/userView", "/admin/urlConstructionBasedOnOperation" })
-	public String constructUrlForUserTasks(@RequestParam(value = "userView", required = false) String userView,
+	@PostMapping(value = { "/admin/urlConstructionBasedOnOperation" })
+	public String constructUrlForAdminUserTasks(@RequestParam(value = "userView", required = false) String userView,
 			@RequestParam(value = "userEdit", required = false) String userEdit,
 			@RequestParam(value = "userDelete", required = false) String userDelete,
 			@RequestParam(value = "userRoleChange", required = false) String userRoleChange, HttpServletRequest request,

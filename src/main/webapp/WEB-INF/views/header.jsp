@@ -101,7 +101,7 @@
                     <input id="userNameId" type="text" name="userName" class="form-control" placeholder="Enter UserName">
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="input-group-btn">
-                        <button class="btn btn-primary" type="submit" name="viewUser">Search <i class="glyphicon glyphicon-search"></i></button>
+                        <button class="btn btn-primary" type="submit" name="userView">Search <i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
             </form>
