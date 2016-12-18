@@ -22,7 +22,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 	}
 
 	@Override
-	public List<ProductCategory> getAllProductCategory() {
+	public List<ProductCategory> getAllProductCategories() {
 		LOG.debug("Retrieving the list of all the product categories");
 		return productCategoryRepository.findAll(new Sort("category"));
 	}

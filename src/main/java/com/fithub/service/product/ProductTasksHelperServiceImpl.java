@@ -34,7 +34,11 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 
 		// Setting Product Category for the product based on the user input
 		ProductCategory productCategory = new ProductCategory();
-		productCategory = productCategoryService.getProductCategoryByCategory(productDTO.getProductCategory());
+		ProductCategory existingProductCategory = productCategoryService
+				.getProductCategoryByCategory(productDTO.getProductCategory());
+
+		if (existingProductCategory != null)
+			productCategory = existingProductCategory;
 
 		productCategory.setCategory(productDTO.getProductCategory());
 		product.setProductCategory(productCategory);

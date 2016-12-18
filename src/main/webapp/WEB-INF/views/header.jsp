@@ -72,8 +72,27 @@
            </li>
 		   </sec:authorize>
 
+			<!-- Display all categories -->
+			
+			<li class="dropdown">
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Product Categories
+             <span class="caret"></span></a>
+             <ul class="dropdown-menu">
+             <c:forEach items="${categoryList}" var="categoryList">
+		   	   <li class="nav-item">
+		         <a class="nav-link" data-toggle="modal" href="<c:url value="/viewProducts/${categoryList.category}"/>"><span class="glyphicon glyphicon-pencil"></span> ${categoryList.category}</a>
+		       </li>
+		       </c:forEach>
+             </ul>
+           </li>
+
+
+
+
+
+
 		  </ul>
-		  <!-- Admin view all users link creation -->
+		  <!-- Admin view user link creation -->
 		  <c:url var="adminViewUser" value="/admin/urlConstructionBasedOnOperation"/>
 		  <sec:authorize access="hasAuthority('ADMIN')">
         <div class="col-sm-3  pull-right">

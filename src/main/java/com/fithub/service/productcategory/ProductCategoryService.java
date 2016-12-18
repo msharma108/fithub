@@ -11,7 +11,7 @@ public interface ProductCategoryService {
 	 * 
 	 * @return List of all the product categories
 	 */
-	List<ProductCategory> getAllProductCategory();
+	List<ProductCategory> getAllProductCategories();
 
 	/**
 	 * Method gets ProductCategory record based on the product category passed

@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fithub.domain.Product;
 import com.fithub.domain.ProductDTO;
@@ -30,19 +30,18 @@ public class ProductTasksController {
 		this.productService = productService;
 	}
 
-	@RequestMapping(value = { "/viewProducts" })
-	public String getAllProductsListPage(
-			@RequestParam(value = "productCategory", required = false) String productCategory, Model model) {
+	@RequestMapping(value = { "/viewProducts", "/viewProducts/{category}" })
+	public String getAllProductsListPage(@PathVariable("category") String category, Model model) {
 		LOG.debug("Attempting to list all the products");
 
 		List<ProductDTO> ListProductDTO = new ArrayList<ProductDTO>();
 		List<Product> productList = new ArrayList<Product>();
-		if (productCategory == null)
+		if (category == null)
 			// Display all products
 			productList = productService.getAllProducts();
 		else
 			// Display products based on provided category
-			productList = productService.getProductsByCategory(productCategory);
+			productList = productService.getProductsByCategory(category);
 
 		// Encoding byte array image received from DB and encoding it for
 		// browser display
