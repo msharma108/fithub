@@ -18,4 +18,13 @@ public interface ProductTasksHelperService {
 	 */
 	Product createProductFromProductDTO(Product product, ProductDTO productDTO);
 
+	/**
+	 * Method populates a productDTO object extracting out details from the
+	 * passed in product parameter
+	 * 
+	 * @param product
+	 * @return productDTO populated with information from the passed product
+	 */
+	ProductDTO populateProductDTOfromProduct(Product product);
+
 }

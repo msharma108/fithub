@@ -72,8 +72,7 @@ public class UserTasksController {
 
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
 	@RequestMapping(value = { "/viewUser/{userName}", "/admin/viewUser/{userName}" })
-	public String getUserProfilePage(@PathVariable("userName") String userName, Model model,
-			Authentication authentication) {
+	public String getUserProfilePage(@PathVariable("userName") String userName, Model model) {
 		LOG.debug("Retreiving the profile of user={}", userName);
 
 		User user = userService.getUserByUsername(userName);
@@ -122,8 +121,7 @@ public class UserTasksController {
 				// Request routing for user profile view based on the logged in
 				// user's role
 				LOG.debug("routing request to userView handler");
-				if (userTasksHelperService.getLoggedInUserUserRole(authentication)
-						.equals(UserRole.ADMIN.getRoleAsString()))
+				if (userTasksHelperService.isLoggedInUserAdmin(authentication))
 					reconstructedUrl = "/admin/viewUser/" + userName;
 				else
 					reconstructedUrl = "/viewUser/" + userName;

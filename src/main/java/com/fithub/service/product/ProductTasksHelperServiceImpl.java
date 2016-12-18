@@ -1,5 +1,7 @@
 package com.fithub.service.product;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.fithub.domain.Product;
@@ -12,6 +14,7 @@ import com.fithub.service.productcategory.ProductCategoryService;
 public class ProductTasksHelperServiceImpl implements ProductTasksHelperService {
 
 	private final ProductCategoryService productCategoryService;
+	private final static Logger LOG = LoggerFactory.getLogger(ProductTasksHelperServiceImpl.class);
 
 	public ProductTasksHelperServiceImpl(ProductCategoryService productCategoryService) {
 		this.productCategoryService = productCategoryService;
@@ -44,6 +47,28 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		product.setProductCategory(productCategory);
 
 		return product;
+	}
+
+	@Override
+	public ProductDTO populateProductDTOfromProduct(Product product) {
+		LOG.debug("Attempting to populate productDTO from product with productName={}", product.getProductName());
+		ProductDTO productDTO = new ProductDTO();
+
+		productDTO.setExpiryDate(product.getExpiryDate());
+		productDTO.setFlavor(product.getFlavor());
+		productDTO.setLdesc(product.getLdesc());
+		productDTO.setManufactureDate(product.getManufactureDate());
+		productDTO.setPrice(product.getPrice());
+		productDTO.setProductName(product.getProductName());
+		productDTO.setQuantitySold(product.getQuantitySold());
+		productDTO.setRating(product.getRating());
+		productDTO.setRegistrationDate(product.getRegistrationDate());
+		productDTO.setWeight(product.getWeight());
+		productDTO.setProductCategory(product.getProductCategory().getCategory());
+		productDTO.setSdesc(product.getSdesc());
+		productDTO.setStockQuantity(product.getStockQuantity());
+
+		return productDTO;
 	}
 
 }
