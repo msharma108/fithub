@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product getProductById(Long productId) throws IllegalArgumentException {
+	public Product getProductById(Integer productId) throws IllegalArgumentException {
 		LOG.debug("Retreive product having productId={}", productId);
 		Product product = productRepository.findOne(productId);
 

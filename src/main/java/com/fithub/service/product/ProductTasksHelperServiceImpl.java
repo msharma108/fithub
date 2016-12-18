@@ -5,10 +5,17 @@ import org.springframework.stereotype.Service;
 import com.fithub.domain.Product;
 import com.fithub.domain.ProductCategory;
 import com.fithub.domain.ProductDTO;
+import com.fithub.service.productcategory.ProductCategoryService;
 
 @Service
 
 public class ProductTasksHelperServiceImpl implements ProductTasksHelperService {
+
+	private final ProductCategoryService productCategoryService;
+
+	public ProductTasksHelperServiceImpl(ProductCategoryService productCategoryService) {
+		this.productCategoryService = productCategoryService;
+	}
 
 	@Override
 	public Product createProductFromProductDTO(Product product, ProductDTO productDTO) {
@@ -27,6 +34,8 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 
 		// Setting Product Category for the product based on the user input
 		ProductCategory productCategory = new ProductCategory();
+		productCategory = productCategoryService.getProductCategoryByCategory(productDTO.getProductCategory());
+
 		productCategory.setCategory(productDTO.getProductCategory());
 		product.setProductCategory(productCategory);
 

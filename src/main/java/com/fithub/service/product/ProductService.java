@@ -20,7 +20,7 @@ public interface ProductService {
 	 * @param productId
 	 * @return Product
 	 */
-	Product getProductById(Long productId);
+	Product getProductById(Integer productId);
 
 	/**
 	 * Method gets a product based on the provided product name

@@ -77,7 +77,7 @@ public class ProductRegisterController {
 		try {
 			productDTO.setThumbImageAsByteArray(thumbImage.getBytes());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			LOG.debug("Problems saving product images");
 			e.printStackTrace();
 		}
 
