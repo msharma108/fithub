@@ -47,7 +47,9 @@
                     <h5> Product List</h5>
                   </div>
 				  <div class="col-md-6">
-                    <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingcart" id="shoppingcartId"  ><span class="glyphicon glyphicon-shopping-cart"></span> </button>
+				  <form>
+                    <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId" formaction= "/shoppingCart/viewCart" ><span class="glyphicon glyphicon-shopping-cart"></span> </button>
+                    </form>
                   </div>
                 </div>
 			  </div>

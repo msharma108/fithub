@@ -1,5 +1,6 @@
 package com.fithub.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -38,10 +39,12 @@ public class ShoppingCartController {
 			RedirectAttributes redirectAttributes) {
 
 		LOG.debug("Attempting to add product={} to the cart", productName);
-		String CartOperationTypeAddProduct = "addProduct";
+		String cartOperationTypeAddProduct = "addToCart";
+		int productQuantityToAddInCart = 1;
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
-		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO, CartOperationTypeAddProduct);
+		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct,
+				productQuantityToAddInCart);
 		session.setAttribute("shoppingCart", shoppingCart);
 
 		// used to check if the product was successfully added to the cart
@@ -53,17 +56,22 @@ public class ShoppingCartController {
 
 	// On clicking minus button in cart, have action
 	// :/constructUrlForProductOperations/{productName} with button name
-	// =removeFromCart
-	@RequestMapping(value = "/removeFromCart/{productName}")
-	public String handleRemoveFromCart(@ModelAttribute("productDTO") ProductDTO productDTO,
-			@PathVariable("productName") String productName, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+	// This is for refresh quantity in cart
+	// Write URL Reconstruction for Refresh or think of logic in Cart itself
+	@RequestMapping(value = "/reduceProductQuantity/{productName}")
+	public String handleReduceProductQuantityInCart(@ModelAttribute("productDTO") ProductDTO productDTO,
+			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
 
-		LOG.debug("Attempting to remove product={} from the cart", productName);
-		String CartOperationTypeRemoveProduct = "removeProduct";
+		LOG.debug("Attempting to reduce product={} quantity in the cart", productName);
+		String cartOperationTypeRefreshProductQuantity = "refreshQuantityInCart";
+		// Get refreshed quantity from request object
+		int productQuantityInCartAfterRefresh = Integer.parseInt(request.getParameter("quantityInCart"));
+
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
-		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO, CartOperationTypeRemoveProduct);
+		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO,
+				cartOperationTypeRefreshProductQuantity, productQuantityInCartAfterRefresh);
 		session.setAttribute("shoppingCart", shoppingCart);
 
 		// used to check if the product was successfully removed from the cart
@@ -73,10 +81,36 @@ public class ShoppingCartController {
 
 	}
 
+	// On clicking minus button in cart, have action
+	// :/constructUrlForProductOperations/{productName} with button name
+	// This is for remove
+	@RequestMapping(value = "/removeFromCart/{productName}")
+	public String handleRemoveFromCart(@ModelAttribute("productDTO") ProductDTO productDTO,
+			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
+
+		LOG.debug("Attempting to reduce product={} quantity in the cart", productName);
+		String cartOperationTypeRemoveProduct = "removeFromCart";
+		// Get refreshed quantity from request object
+		int productQuantityInCartAfterRefresh = 0;
+
+		// Get shoppingCart from session
+		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
+		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO, cartOperationTypeRemoveProduct,
+				productQuantityInCartAfterRefresh);
+		session.setAttribute("shoppingCart", shoppingCart);
+
+		// used to check if the product was successfully removed from the cart
+		redirectAttributes.addFlashAttribute("shoppingCartTaskTypeCompleted", 2);
+
+		return "redirect:/shoppingCart/viewCart";
+
+	}
+
 	@RequestMapping(value = "/viewCart")
 	public String getShoppingCartPage() {
 		LOG.debug("Getting ShoppingCart Page");
-		return "shoppingCart/shoppingCart";
+		return "product/shoppingCart";
 	}
 
 }

@@ -37,16 +37,7 @@
 <div class="container-fluid">
  
   <div class="panel panel-primary" style="border: 2px solid maroon">
-    <c:choose>
-     <c:when test="${productDTO.isEditable == false }">
-      <!-- Show Add product Form -->
-    	<div class="panel-heading" style="color: white; background-color: maroon;"><b>PRODUCT INFO</b></div>
-    </c:when>
-     <c:when test="${productDTO.isEditable == true }">
-      <!-- Show Update product Form -->
-    <div class="panel-heading" style="color: white; background-color: maroon;"><b>Product Details</b></div>
-    </c:when>  
-    </c:choose>
+
      <div class="panel-body" style="background-color: #C1E1A6;"> 
          
          <c:url var="productSave" value="/admin/productSave"/>
@@ -63,9 +54,9 @@
                   </div>
                 </div>
               </div>
-              
+             <sec:authorize access="isAuthenticated()">
          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-              
+              </sec:authorize>
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
@@ -84,6 +75,8 @@
                   <div class="col-sm-4 form-group">
 			           <form:label path="price">Price:</form:label><br>
 			           <form:label path="givenName">${ProductDTO.price}</form:label>
+                  </div>
+                  </div>
                   </div>
                   
                   <div class="col-sm-12">    

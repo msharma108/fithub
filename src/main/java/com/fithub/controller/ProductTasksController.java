@@ -79,6 +79,11 @@ public class ProductTasksController {
 
 	// Use the product image as a button image source and pass the url different
 	// for admin and user
+	// For admin form action will be :
+	// /admin/constructUrlForAdminProductOperations/{productName}
+	// For user action will be:
+	// /constructUrlForProductOperations/{productName}--user will see only add
+	// to cart button and product view
 	@PostMapping(value = { "/admin/constructUrlForAdminProductOperations/{productName}",
 			"/constructUrlForProductOperations/{productName}" })
 	public String constructUrlForProductTasks(@RequestParam(value = "viewProduct", required = false) String viewProduct,

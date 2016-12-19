@@ -20,8 +20,11 @@ public interface ShoppingCartService {
 	 *            of the shoppingCart
 	 * @param shoppingCartOperationType
 	 *            The type of shoppingCartOperation to be performed
+	 * @param productQuantityInCart
+	 *            Product quantity in cart
 	 * @return the updated shoppingCart
 	 */
-	ShoppingCart updateShoppingCart(ShoppingCart shoppingCart, ProductDTO productDTO, String shoppingCartOperationType);
+	ShoppingCart updateShoppingCart(ShoppingCart shoppingCart, ProductDTO productDTO, String shoppingCartOperationType,
+			int productQuantityInCart);
 
 }
