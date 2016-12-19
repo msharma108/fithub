@@ -11,12 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
 import com.fithub.repository.user.UserRepository;
-import com.fithub.util.Helper;
+import com.fithub.service.time.TimeHelperService;
 
 /**
  * Implementation of UserService Interface
@@ -28,18 +29,23 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 	private final UserRepository userRepository;
+	private final UserTasksHelperService userTasksHelperService;
+	private final TimeHelperService timeHelperService;
 
 	// Constructor dependency Injection for UserRepository
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository, UserTasksHelperService userTasksHelperService,
+			TimeHelperService timeHelperService) {
 		this.userRepository = userRepository;
+		this.userTasksHelperService = userTasksHelperService;
+		this.timeHelperService = timeHelperService;
 	}
 
 	@Override
-	public User getUserById(Long userId) {
+	public User getUserById(Integer userId) throws IllegalArgumentException {
 		LOG.debug("Retreive user having userId={}", userId);
 		User user = userRepository.findOne(userId);
-		if (!user.equals(null))
+		if (user != null)
 			return user;
 		else
 			throw new NoSuchElementException(String.format("UserId=%d not found", userId));
@@ -49,50 +55,57 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUsername(String userName) {
 		LOG.debug("Retreive user having userName={}", userName);
 		User user = userRepository.findOneByUserName(userName);
-		if (!user.equals(null))
-			return user;
-		else
-			throw new NoSuchElementException((String.format("Username=%s not found", userName)));
+		return user;
+
 	}
 
 	@Override
 	public User createUser(UserDTO userDTO) {
 
-		LOG.debug("Creating user having userName={}", userDTO.getUserName());
+		LOG.debug("Saving user having userName={}", userDTO.getUserName());
 		User user = new User();
-		Helper.createUserFromUserDTO(user, userDTO);
+		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
+		user.setRegistrationDate(timeHelperService.getCurrentTimeStamp());
 		return userRepository.save(user);
 	}
 
 	@Override
-	public boolean deleteUserByUsername(String userName) {
+	@Transactional
+	public boolean deleteUserByUsername(UserDTO userDTO) {
 
 		boolean isUserDeleted = true;
-		LOG.debug("Attempting to delete user having userName={}", userName);
+		LOG.debug("Attempting to delete user having userName={}", userDTO.getUserName());
 		try {
-			userRepository.deleteByUserName(userName);
+			User user = getUserByUsername(userDTO.getUserName());
+			user = getUserById(user.getUserId());
+			userDTO = userTasksHelperService.destroyUserDataForDeletion(userDTO);
+			user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
+			user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
+			user.setProfileEditedByUser(userDTO.getLoggedInUserName());
+			user = userRepository.save(user);
 			return isUserDeleted;
 		} catch (IllegalArgumentException exception) {
-			LOG.debug("User with userName={} can't be deleted as they dont exist in the database", userName);
+			LOG.debug("User with userName={} can't be deleted as they dont exist in the database",
+					userDTO.getUserName());
 			isUserDeleted = false;
 			return isUserDeleted;
 		}
 	}
 
 	@Override
-	public boolean changeRole(User user, String userName) throws NoSuchElementException {
+	public boolean changeRole(UserDTO userDTO) throws NoSuchElementException {
 
 		boolean isRoleChanged = false;
 
-		if (!user.equals(null)) {
+		if (userDTO.getRole() != null) {
 			// Checking for users current role and switching the role
-			if (user.getRole().equals(UserRole.ADMIN.getRoleAsString())) {
-				user.setRole(UserRole.CUSTOMER.getRoleAsString());
+			if (userDTO.getRole().equals(UserRole.ADMIN)) {
+				userDTO.setRole(UserRole.CUSTOMER);
 			} else {
-				user.setRole(UserRole.ADMIN.getRoleAsString());
+				userDTO.setRole(UserRole.ADMIN);
 			}
-			userRepository.saveAndFlush(user);
-			LOG.debug("User with userName={} now has the role={}", userName, user.getRole());
+			updateUserProfile(userDTO);
+			LOG.debug("User with userName={} now has the role={}", userDTO.getUserName(), userDTO.getRole());
 			isRoleChanged = true;
 		}
 		return isRoleChanged;
@@ -104,4 +117,20 @@ public class UserServiceImpl implements UserService {
 		LOG.debug("Retrieving the list of all the users");
 		return userRepository.findAll(new Sort("userName"));
 	}
+
+	@Override
+	public User updateUserProfile(UserDTO userDTO) {
+
+		LOG.debug("Attempting to edit user profile of user={} by user={}", userDTO.getUserName(),
+				userDTO.getLoggedInUserName());
+		User user = new User();
+		// Get user using DTO to intimate JPA about update operation as a part
+		// of the transaction
+		user = getUserByUsername(userDTO.getUserName());
+		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
+		user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
+		user.setProfileEditedByUser(userDTO.getLoggedInUserName());
+		return userRepository.save(user);
+	}
+
 }

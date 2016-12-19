@@ -1,8 +1,16 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the product_category database table.
@@ -19,8 +27,8 @@ public class ProductCategory implements Serializable {
 	@Column(name = "product_category_id", unique = true, nullable = false)
 	private int productCategoryId;
 
-	@Column(length = 45)
-	private String name;
+	@Column(length = 45, unique = true)
+	private String category;
 
 	// bi-directional many-to-one association to Product
 	@OneToMany(mappedBy = "productCategory")
@@ -37,12 +45,12 @@ public class ProductCategory implements Serializable {
 		this.productCategoryId = productCategoryId;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getCategory() {
+		return this.category;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public List<Product> getProducts() {

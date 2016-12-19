@@ -3,15 +3,13 @@ package com.fithub.domain;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * Data Transfer Object class for user registrations
+ * Data Transfer Object class for User
  * 
  */
 public class UserDTO {
@@ -29,8 +27,6 @@ public class UserDTO {
 	@NotEmpty
 	private String country;
 
-	@Past
-	@DateTimeFormat(pattern = "YYYY/MM/DD")
 	@NotNull
 	private Date dateOfBirth;
 
@@ -66,9 +62,21 @@ public class UserDTO {
 
 	private String sex;
 
+	private Date registrationDate;
+
 	@Size(min = 6, max = 6)
 	@NotEmpty
 	private String zipcode;
+
+	private boolean isEditable = false;
+
+	private boolean isUserDeleted = false;
+
+	// Represents currently logged in User's userName
+	private String loggedInUserName;
+
+	// Represents currently logged in User's role set to default CUSTOMER
+	private String loggedInUserUserRole = "CUSTOMER";
 
 	public String getUserName() {
 		return userName;
@@ -196,6 +204,46 @@ public class UserDTO {
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+
+	public boolean getIsEditable() {
+		return isEditable;
+	}
+
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
+	}
+
+	public String getLoggedInUserName() {
+		return loggedInUserName;
+	}
+
+	public void setLoggedInUserName(String loggedInUserName) {
+		this.loggedInUserName = loggedInUserName;
+	}
+
+	public String getLoggedInUserUserRole() {
+		return loggedInUserUserRole;
+	}
+
+	public void setLoggedInUserUserRole(String loggedInUserUserRole) {
+		this.loggedInUserUserRole = loggedInUserUserRole;
+	}
+
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
+	public boolean getIsUserDeleted() {
+		return isUserDeleted;
+	}
+
+	public void setIsUserDeleted(boolean isUserDeleted) {
+		this.isUserDeleted = isUserDeleted;
 	}
 
 }

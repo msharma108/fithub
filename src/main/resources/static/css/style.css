@@ -1,0 +1,12 @@
+body {
+   padding-top: 60px;
+}
+    
+.navbar .navbar-inner {
+    padding: 0;
+}
+
+.navbar .nav {
+    margin: 0;
+    display: table;
+}

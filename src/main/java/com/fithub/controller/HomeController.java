@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 	private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
-	@RequestMapping("/")
+	@RequestMapping(value = { "/", "/home" })
 	public String displayHome() {
 		LOG.debug("Retreive home page");
 		return "home";

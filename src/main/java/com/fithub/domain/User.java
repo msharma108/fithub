@@ -4,7 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the user database table.
@@ -43,14 +52,24 @@ public class User implements Serializable {
 	@Column(name = "given_name", nullable = false, length = 45)
 	private String givenName;
 
+	@Column(name = "is_user_deleted", nullable = false)
+	private boolean isUserDeleted;
+
 	@Column(nullable = false, length = 60)
 	private String password;
 
-	@Column(name = "payment_mode", length = 1)
+	@Column(name = "payment_mode", length = 20)
 	private String paymentMode;
 
 	@Column(length = 45)
 	private String phone;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "profile_edit_date")
+	private Date profileEditDate;
+
+	@Column(name = "profile_edited_by_user", length = 45)
+	private String profileEditedByUser;
 
 	@Column(length = 45)
 	private String province;
@@ -59,16 +78,16 @@ public class User implements Serializable {
 	@Column(name = "registration_date", nullable = false)
 	private Date registrationDate;
 
-	@Column(nullable = false, length = 1)
+	@Column(nullable = false, length = 20)
 	private String role;
 
-	@Column(length = 1)
+	@Column(length = 20)
 	private String sex;
 
 	@Column(name = "user_name", nullable = false, length = 45)
 	private String userName;
 
-	@Column(length = 7)
+	@Column(length = 20)
 	private String zipcode;
 
 	// bi-directional many-to-one association to SalesOrder
@@ -142,6 +161,14 @@ public class User implements Serializable {
 		this.givenName = givenName;
 	}
 
+	public boolean getIsUserDeleted() {
+		return this.isUserDeleted;
+	}
+
+	public void setIsUserDeleted(boolean isUserDeleted) {
+		this.isUserDeleted = isUserDeleted;
+	}
+
 	public String getPassword() {
 		return this.password;
 	}
@@ -164,6 +191,22 @@ public class User implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public Date getProfileEditDate() {
+		return this.profileEditDate;
+	}
+
+	public void setProfileEditDate(Date profileEditDate) {
+		this.profileEditDate = profileEditDate;
+	}
+
+	public String getProfileEditedByUser() {
+		return this.profileEditedByUser;
+	}
+
+	public void setProfileEditedByUser(String profileEditedByUser) {
+		this.profileEditedByUser = profileEditedByUser;
 	}
 
 	public String getProvince() {

@@ -81,6 +81,14 @@
     		
 		</dependency>
 		
+		<!-- Apache Commons Fileupload dependency -->
+		<dependency>
+    		<groupId>commons-fileupload</groupId>
+    		<artifactId>commons-fileupload</artifactId>
+    		<version>1.3.2</version>
+		</dependency>
+		
+		
 		
 	</dependencies>
 

@@ -1,9 +1,23 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the product database table.
@@ -27,6 +41,9 @@ public class Product implements Serializable {
 	@Column(length = 45)
 	private String flavor;
 
+	@Column(name = "is_product_deleted")
+	private boolean isProductDeleted;
+
 	@Lob
 	private String ldesc;
 
@@ -38,18 +55,33 @@ public class Product implements Serializable {
 	@Column(name = "manufacture_date")
 	private Date manufactureDate;
 
-	@Column(length = 100)
-	private String name;
-
 	private float price;
 
-	private int quantity;
+	@Column(name = "product_edited_by_user", length = 45)
+	private String productEditedByUser;
 
-	@Column(length = 1)
+	@Column(name = "product_name", nullable = false, length = 100)
+	private String productName;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "product_update_date")
+	private Date productUpdateDate;
+
+	@Column(name = "quantity_sold")
+	private int quantitySold;
+
+	@Column(length = 20)
 	private String rating;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "registration_date", nullable = false)
+	private Date registrationDate;
 
 	@Column(length = 300)
 	private String sdesc;
+
+	@Column(name = "stock_quantity")
+	private int stockQuantity;
 
 	@Lob
 	@Column(name = "thumb_image")
@@ -62,7 +94,7 @@ public class Product implements Serializable {
 	private List<OrderDetail> orderDetails;
 
 	// bi-directional many-to-one association to ProductCategory
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "category_id", nullable = false)
 	private ProductCategory productCategory;
 
@@ -93,6 +125,14 @@ public class Product implements Serializable {
 		this.flavor = flavor;
 	}
 
+	public boolean getIsProductDeleted() {
+		return this.isProductDeleted;
+	}
+
+	public void setIsProductDeleted(boolean isProductDeleted) {
+		this.isProductDeleted = isProductDeleted;
+	}
+
 	public String getLdesc() {
 		return this.ldesc;
 	}
@@ -117,14 +157,6 @@ public class Product implements Serializable {
 		this.manufactureDate = manufactureDate;
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public float getPrice() {
 		return this.price;
 	}
@@ -133,12 +165,36 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	public int getQuantity() {
-		return this.quantity;
+	public String getProductEditedByUser() {
+		return this.productEditedByUser;
 	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	public void setProductEditedByUser(String productEditedByUser) {
+		this.productEditedByUser = productEditedByUser;
+	}
+
+	public String getProductName() {
+		return this.productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public Date getProductUpdateDate() {
+		return this.productUpdateDate;
+	}
+
+	public void setProductUpdateDate(Date productUpdateDate) {
+		this.productUpdateDate = productUpdateDate;
+	}
+
+	public int getQuantitySold() {
+		return this.quantitySold;
+	}
+
+	public void setQuantitySold(int quantitySold) {
+		this.quantitySold = quantitySold;
 	}
 
 	public String getRating() {
@@ -149,12 +205,28 @@ public class Product implements Serializable {
 		this.rating = rating;
 	}
 
+	public Date getRegistrationDate() {
+		return this.registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
 	public String getSdesc() {
 		return this.sdesc;
 	}
 
 	public void setSdesc(String sdesc) {
 		this.sdesc = sdesc;
+	}
+
+	public int getStockQuantity() {
+		return this.stockQuantity;
+	}
+
+	public void setStockQuantity(int stockQuantity) {
+		this.stockQuantity = stockQuantity;
 	}
 
 	public byte[] getThumbImage() {
