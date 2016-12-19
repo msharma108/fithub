@@ -2,8 +2,6 @@ package com.fithub.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,7 +17,6 @@ import com.fithub.service.productcategory.ProductCategoryService;
 @ControllerAdvice
 public class ProductCategoryControllerAdvice {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ProductCategoryControllerAdvice.class);
 	private final ProductCategoryService productCategoryService;
 
 	@Autowired
@@ -29,7 +26,6 @@ public class ProductCategoryControllerAdvice {
 
 	@ModelAttribute("categoryList")
 	public List<ProductCategory> getCategoryList() {
-		LOG.debug("Getting the list of categories");
 		return (productCategoryService.getAllProductCategories());
 	}
 

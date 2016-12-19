@@ -77,10 +77,13 @@ public class ProductTasksController {
 		return "product/productList";
 	}
 
+	// Use the product image as a button image source and pass the url different
+	// for admin and user
 	@PostMapping(value = { "/admin/constructUrlForAdminProductOperations/{productName}",
 			"/constructUrlForProductOperations/{productName}" })
 	public String constructUrlForProductTasks(@RequestParam(value = "viewProduct", required = false) String viewProduct,
 			@RequestParam(value = "addToCart", required = false) String addToCart,
+			@RequestParam(value = "removeFromCart", required = false) String removeFromCart,
 			@RequestParam(value = "editProduct", required = false) String editProduct,
 			@RequestParam(value = "deleteProduct", required = false) String deleteProduct,
 			@PathVariable("productName") String productName, HttpServletRequest request, Authentication authentication,
@@ -94,22 +97,27 @@ public class ProductTasksController {
 
 			// Retrieve product by productName and add it to model
 			Product product = productService.getProductByProductName(productName);
-			ProductDTO productDTO = productTasksHelperService.populateProductDTOfromProduct(product);
-			productDTO.setBase64imageFile(productBase64ImageUrl);
+			if (product != null) {
+				ProductDTO productDTO = productTasksHelperService.populateProductDTOfromProduct(product);
+				productDTO.setBase64imageFile(productBase64ImageUrl);
 
-			if (viewProduct != null)
-				reconstructedUrl = "/viewProduct/" + productName;
-			if (addToCart != null)
-				reconstructedUrl = "/addToCart/" + productName;
-			if (editProduct != null)
-				reconstructedUrl = "/admin/editProduct/" + productName;
-			if (deleteProduct != null)
-				reconstructedUrl = "/admin/deleteProduct/" + productName;
+				if (viewProduct != null)
+					reconstructedUrl = "/viewProduct/" + productName;
+				if (addToCart != null)
+					reconstructedUrl = "/shoppingCart/addToCart/" + productName;
+				if (removeFromCart != null)
+					reconstructedUrl = "/shoppingCart/removeFromCart/" + productName;
+				if (editProduct != null)
+					reconstructedUrl = "/admin/editProduct/" + productName;
+				if (deleteProduct != null)
+					reconstructedUrl = "/admin/deleteProduct/" + productName;
 
-			LOG.debug("Reconstructed URL={}", reconstructedUrl);
-			model.addAttribute("productDTO", productDTO);
+				LOG.debug("Reconstructed URL={}", reconstructedUrl);
+				model.addAttribute("productDTO", productDTO);
 
-			return "forward:" + reconstructedUrl;
+				return "forward:" + reconstructedUrl;
+			} else
+				throw new NoSuchElementException((String.format("Product with productName=%s not found", productName)));
 		} else
 			throw new NoSuchElementException("ProductName not supplied,please recheck");
 

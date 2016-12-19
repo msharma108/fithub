@@ -84,8 +84,8 @@ public class ProductRegisterController {
 		productService.registerProduct(productDTO);
 		LOG.debug("Registration successful, heading to the jsp");
 
-		// used to check login success on the canvas page
-		redirectAttributes.addFlashAttribute("productRegisterSuccess", true);
+		// used to check if the product was successfully registered into DB
+		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 1);
 
 		// Redirect based on logged in user's role
 		return "redirect:/admin/productTaskSuccess";

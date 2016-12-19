@@ -57,13 +57,7 @@ public class ProductDTO {
 
 	private transient String base64imageFile;
 
-	public byte[] getThumbImageAsByteArray() {
-		return thumbImageAsByteArray;
-	}
-
-	public void setThumbImageAsByteArray(byte[] thumbImageAsByteArray) {
-		this.thumbImageAsByteArray = thumbImageAsByteArray;
-	}
+	private int quantityInCart = 0;
 
 	private float weight;
 
@@ -203,6 +197,22 @@ public class ProductDTO {
 
 	public void setBase64imageFile(String base64imageFile) {
 		this.base64imageFile = base64imageFile;
+	}
+
+	public byte[] getThumbImageAsByteArray() {
+		return thumbImageAsByteArray;
+	}
+
+	public void setThumbImageAsByteArray(byte[] thumbImageAsByteArray) {
+		this.thumbImageAsByteArray = thumbImageAsByteArray;
+	}
+
+	public int getQuantityInCart() {
+		return quantityInCart;
+	}
+
+	public void setQuantityInCart(int quantityInCart) {
+		this.quantityInCart = quantityInCart;
 	}
 
 }
