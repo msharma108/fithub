@@ -63,7 +63,7 @@
 							<td data-th="Quantity">
 								<input type="number" class="form-control text-center" value="1">
 							</td>
-							<td data-th="Subtotal" class="text-center">$ </td>
+							<td data-th="Subtotal" class="text-center">${shoppingCart.cartCost } </td>
 							<td class="actions" data-th="">
 								<button class="btn btn-primary btn-sm" title="Update Shopping cart"><i class="fa fa-refresh"></i></button>
 								<button class="btn btn-danger btn-sm" title="Delete Item"><i class="fa fa-trash-o"></i></button>

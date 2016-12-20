@@ -44,6 +44,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 						shoppingCart.setCartTotalCost(
 								shoppingCart.getCartCost() + (shoppingCart.getCartCost() * shoppingCart.getCartTax()));
 					}
+					// if the cart is not empty but the product being added is
+					// the first of its kind
+					else {
+						LOG.debug("Adding the first occurance of product={} into cart", productDTO.getProductName());
+						cartProductList.add(productDTO);
+						shoppingCart.setCartCost(shoppingCart.getCartCost() + productDTO.getPrice());
+						shoppingCart.setCartTotalCost(
+								shoppingCart.getCartCost() + shoppingCart.getCartCost() * shoppingCart.getCartTax());
+					}
 
 				}
 			} else if (shoppingCartOperationType.equals(cartOperationTypeRemoveProduct)) {

@@ -41,16 +41,16 @@
      <div class="panel-body" style="background-color: #C1E1A6;"> 
          
          <c:url var="productSave" value="/admin/productSave"/>
-	        <form:form modelAttribute="productDTO" method="POST" action="" style="color: green;" enctype="multipart/form-data">
+	        <form:form modelAttribute="productDTO" method="POST" action="" style="color: green;">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
                        <form:label path="productName">Product Name:</form:label><br>
-                       <form:label path="givenName">${ProductDTO.productName}</form:label>
+                       <form:label path="productName">${productDTO.productName}</form:label>
                   </div>
                   <div class="col-sm-4">
                        <form:label path="ldesc">Description: </form:label><br>
-                       <form:label path="givenName">${ProductDTO.ldesc}</form:label>
+                       <form:label path="ldesc">${productDTO.ldesc}</form:label>
                   </div>
                 </div>
               </div>
@@ -61,11 +61,11 @@
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
                        <form:label path="productCategory">Product Category:</form:label><br>
-                       <form:label path="givenName">${ProductDTO.productCategory}</form:label>
+                       <form:label path="productCategory">${productDTO.productCategory}</form:label>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="manufactureDate">Manufacture Date:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
-			           <form:label path="givenName">${ProductDTO.manufactureDate}</form:label>
+			           <form:label path="manufactureDate">${productDTO.manufactureDate}</form:label>
                   </div>
                 </div>
               </div>
@@ -74,7 +74,7 @@
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="price">Price:</form:label><br>
-			           <form:label path="givenName">${ProductDTO.price}</form:label>
+			           <form:label path="price">${productDTO.price}</form:label>
                   </div>
                   </div>
                   </div>
@@ -82,12 +82,12 @@
                   <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">thumbImage<br>
-                  <form:label path="givenName">${ProductDTO.mainImage}</form:label>
+                  <form:label path="base64imageFile">${productDTO.base64imageFile}</form:label>
                   </div>
                   
                   <div class="col-sm-4 form-group">
 			           <form:label path="weight">Weight:</form:label><br>
-			           <form:label path="givenName">${ProductDTO.weight}</form:label>
+			           <form:label path="weight">${productDTO.weight}</form:label>
                   </div>
                 </div>
               </div>
@@ -96,11 +96,11 @@
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="stockQuantity">Quantity:</form:label><br>
-			           <form:label path="givenName">${ProductDTO.stockQuantity}</form:label>
+			           <form:label path="stockQuantity">${productDTO.stockQuantity}</form:label>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="expiryDate">Expiry Date:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
-			           <form:label path="givenName">${ProductDTO.givenName}</form:label>
+			           <form:label path="expiryDate">${productDTO.expiryDate}</form:label>
                   </div>
                   
                 </div>
@@ -110,11 +110,11 @@
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="flavor">Flavor:</form:label><br>
-			           <form:label path="givenName">${ProductDTO.flavor}</form:label>
+			           <form:label path="flavor">${productDTO.flavor}</form:label>
                   </div>
                   <div class="col-sm-4 form-group">
                        <form:label path="rating">Rating:<span class="glyphicon glyphicon-user"> </span></form:label><br>
-                       <form:label path="givenName">${ProductDTO.rating}</form:label>
+                       <form:label path="rating">${productDTO.rating}</form:label>
                   </div>
                 </div>
               </div>
@@ -123,7 +123,7 @@
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="sdesc">Short description:</form:label><br>
-			           <form:label path="givenName">${ProductDTO.sdesc}</form:label>
+			           <form:label path="sdesc">${productDTO.sdesc}</form:label>
                   </div>
 
                 </div>

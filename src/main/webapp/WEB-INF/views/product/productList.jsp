@@ -47,8 +47,8 @@
                     <h5> Product List</h5>
                   </div>
 				  <div class="col-md-6">
-				  <form>
-                    <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId" formaction= "/shoppingCart/viewCart" ><span class="glyphicon glyphicon-shopping-cart"></span> </button>
+				  <form action="/shoppingCart/viewCart" method="POST">
+                    <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId"  ><span class="glyphicon glyphicon-shopping-cart"></span> </button>
                     </form>
                   </div>
                 </div>
@@ -61,28 +61,44 @@
 			    
 			    <c:forEach items="${allProducts}" var="product" varStatus="status">
 	                <div class = "row">
+	                
+	                <!-- URL encoding -->
+	                 <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${product.productName}"/>
+	                 
+	                 <c:url var="formActionAdminRole" value="/admin/constructUrlForAdminProductOperations/${product.productName}"/>
+	                 
+	                <sec:authorize access="hasAuthority('CUSTOMER')">
+	                <form action="${formActionIndependentOfUserRole }" method="POST" >
+	                </sec:authorize>
+	               	<sec:authorize access="isAnonymous()">
+	                <form action="${formActionIndependentOfUserRole }" method="POST" >
+	                </sec:authorize>
 	                 <sec:authorize access="hasAuthority('ADMIN')">
+	                 <form action="${formActionAdminRole }" method="POST" >
 					   <div class ="col-md-1 col-xs-12">
-					     <form action="" method="POST" >
-                           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                           <input type="hidden" name="userName" value="${product.productName}"/>
-                           <button class="btn btn-Success" title="Edit product" name="productEdit"><i class="glyphicon glyphicon-pencil"></i></button><br>
-                           <button class="btn btn-danger" title="Delete product" name="productDelete"><i class="glyphicon glyphicon-trash"></i></button>
-                         </form>
+					     
+					     
+                           
+                           <input type="hidden" name="productName" value="${product.productName}"/>
+                           <button class="btn btn-Success" title="Edit product" name="editProduct"><i class="glyphicon glyphicon-pencil"></i></button><br>
+                           <button class="btn btn-danger" title="Delete product" name="deleteProduct"><i class="glyphicon glyphicon-trash"></i></button>
+                         
 					   </div>
 					   </sec:authorize>
 					   <div class ="col-md-2 col-xs-12">
-					     <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt=""/>
+					     <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 					   </div>
 					   <div class="col-md-7 col-xs-12">
 					     <h3><c:out value="${product.productName}"/> </h3>
 						 <h4><c:out value="${product.sdesc}"/></h4>
-						 <h4>price: <c:out value="${product.price}"/> Rating: <c:out value="${product.rating}"/> Weight: <c:out value="${product.weight}"/> <button class="btn btn-primary btn-sm" type="submit" name="moreProductInfo" id="moreProductInfoId"  >More Info<span class="glyphicon glyphicon-zoom-in"></span></button></h4>
+						 <h4>price: <c:out value="${product.price}"/> Rating: <c:out value="${product.rating}"/> Weight: <c:out value="${product.weight}"/> <button class="btn btn-primary btn-sm" type="submit" name="viewProduct" id="viewProductId"  >More Info<span class="glyphicon glyphicon-zoom-in"></span></button></h4>
 					   </div>
 					   <div class="col-md-2 col-xs-12">
-					      <button class="btn btn-primary btn-sm pull-right" type="submit" name="shoppingcart" id="shoppingcartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
+					      <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 					   </div>
-					</div>
+					   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					   </form>
+					</div>			
 					<br>
 				</c:forEach>
 				<!-- end of product  -->

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fithub.domain.ProductDTO;
@@ -50,6 +51,7 @@ public class ShoppingCartController {
 		// used to check if the product was successfully added to the cart
 		redirectAttributes.addFlashAttribute("shoppingCartTaskTypeCompleted", 1);
 
+		LOG.debug("Product added to the shopping cart with cart price={}", shoppingCart.getCartCost());
 		return "redirect:/shoppingCart/viewCart";
 
 	}
@@ -74,7 +76,8 @@ public class ShoppingCartController {
 				cartOperationTypeRefreshProductQuantity, productQuantityInCartAfterRefresh);
 		session.setAttribute("shoppingCart", shoppingCart);
 
-		// used to check if the product was successfully removed from the cart
+		// used to check if the product quantity was successfully refreshed in
+		// the cart
 		redirectAttributes.addFlashAttribute("shoppingCartTaskTypeCompleted", 3);
 
 		return "redirect:/shoppingCart/viewCart";
@@ -107,7 +110,7 @@ public class ShoppingCartController {
 
 	}
 
-	@RequestMapping(value = "/viewCart")
+	@RequestMapping(value = "/viewCart", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getShoppingCartPage() {
 		LOG.debug("Getting ShoppingCart Page");
 		return "product/shoppingCart";

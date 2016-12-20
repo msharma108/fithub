@@ -131,7 +131,7 @@ public class ProductTasksController {
 	@RequestMapping(value = "/viewProduct/{productName}")
 	public String getProductDetailsPage(@PathVariable("productName") String productName, Model model,
 			@ModelAttribute("productDTO") ProductDTO productDTO) {
-		LOG.debug("Retreiving product details of product={}", productName);
+		LOG.debug("Retreiving product details of product={}", productDTO.getProductName());
 
 		model.addAttribute("productDTO", productDTO);
 		return "product/productDetails";
