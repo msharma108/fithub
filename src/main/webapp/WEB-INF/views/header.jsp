@@ -19,7 +19,7 @@
 		   </sec:authorize>
 		   <sec:authorize access="isAuthenticated()">
 		   <!-- Displaying LoggedIn User's Name and link to profile -->
-		   <<sec:authentication var="loggedInUserName" property="principal.userName" />
+		   <sec:authentication var="loggedInUserName" property="principal.userName" />
 		   <li class="nav-item">
 		      <a href="<c:url value="/viewUser/${loggedInUserName}"/>">Welcome <span class="glyphicon glyphicon-user"></span> <b>${loggedInUserName}</b></a>
            </li>

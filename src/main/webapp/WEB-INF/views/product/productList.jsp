@@ -61,17 +61,29 @@
 			    
 			    <c:forEach items="${allProducts}" var="product" varStatus="status">
 	                <div class = "row">
+	                 <sec:authorize access="hasAuthority('ADMIN')">
+					   <div class ="col-md-1 col-xs-12">
+					     <form action="" method="POST" >
+                           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                           <input type="hidden" name="userName" value="${product.productName}"/>
+                           <button class="btn btn-Success" title="Edit product" name="productEdit"><i class="glyphicon glyphicon-pencil"></i></button><br>
+                           <button class="btn btn-danger" title="Delete product" name="productDelete"><i class="glyphicon glyphicon-trash"></i></button>
+                         </form>
+					   </div>
+					   </sec:authorize>
 					   <div class ="col-md-2 col-xs-12">
 					     <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt=""/>
 					   </div>
-					   <div class="col-md-4 col-xs-12">
+					   <div class="col-md-7 col-xs-12">
 					     <h3><c:out value="${product.productName}"/> </h3>
 						 <h4><c:out value="${product.sdesc}"/></h4>
+						 <h4>price: <c:out value="${product.price}"/> Rating: <c:out value="${product.rating}"/> Weight: <c:out value="${product.weight}"/> <button class="btn btn-primary btn-sm" type="submit" name="moreProductInfo" id="moreProductInfoId"  >More Info<span class="glyphicon glyphicon-zoom-in"></span></button></h4>
 					   </div>
-					   <div class="col-md-6 col-xs-12">
+					   <div class="col-md-2 col-xs-12">
 					      <button class="btn btn-primary btn-sm pull-right" type="submit" name="shoppingcart" id="shoppingcartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 					   </div>
 					</div>
+					<br>
 				</c:forEach>
 				<!-- end of product  -->
               </div>
