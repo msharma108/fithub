@@ -36,7 +36,7 @@
 
 <!-- contents start here -->
 <!-- Ref: http://bootsnipp.com/snippets/featured/responsive-shopping-cart -->
-
+<form action="" method="POST">
 <div class="container-fluid">
 	<table id="shoppingcart" class="table">
     				<thead>
@@ -66,12 +66,13 @@
 							<td data-th="Subtotal" class="text-center">$ </td>
 							<td class="actions" data-th="">
 								<button class="btn btn-primary btn-sm" title="Update Shopping cart"><i class="fa fa-refresh"></i></button>
-								<button class="btn btn-danger btn-sm" title="Delete Item"><i class="fa fa-trash-o"></i></button>								
+								<button class="btn btn-danger btn-sm" title="Delete Item"><i class="fa fa-trash-o"></i></button>
 							</td>
 						</tr>
+					  
 					</tbody>
 					<tfoot>
-						<tr>
+						<tr> 
 							<td><a href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Continue Shopping</a></td>
 							<td colspan="2" class="hidden-xs"></td>
 							<td class="hidden-xs text-center"><strong>Total </strong></td>
@@ -81,6 +82,7 @@
 	</table>
 	<hr style="height:15px;"/>
 </div>
+</form>
 
 
 <!-- contents end here -->
