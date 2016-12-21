@@ -36,7 +36,7 @@
 
 <!-- contents start here -->
 <!-- Ref: http://bootsnipp.com/snippets/featured/responsive-shopping-cart -->
-<form action="" method="POST">
+
 <div class="container-fluid">
 	<table id="shoppingcart" class="table">
     				<thead>
@@ -49,6 +49,7 @@
 						</tr>
 					</thead>
 					<tbody>
+					  <c:forEach items="${Items}" var="item">
 						<tr>
 							<td data-th="Product">
 								<div class="row">
@@ -65,24 +66,28 @@
 							</td>
 							<td data-th="Subtotal" class="text-center">${shoppingCart.cartCost } </td>
 							<td class="actions" data-th="">
+							   <form action="" method="POST">
 								<button class="btn btn-primary btn-sm" title="Update Shopping cart"><i class="fa fa-refresh"></i></button>
 								<button class="btn btn-danger btn-sm" title="Delete Item"><i class="fa fa-trash-o"></i></button>
+							   </form>
 							</td>
+							
 						</tr>
+						
+						</c:forEach>
 					  
 					</tbody>
 					<tfoot>
 						<tr> 
-							<td><a href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Continue Shopping</a></td>
+							<td> <form action="" method="POST"><button href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Continue Shopping</button></form></td>
 							<td colspan="2" class="hidden-xs"></td>
 							<td class="hidden-xs text-center"><strong>Total </strong></td>
-							<td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a></td>
+							<td> <form action="" method="POST"><button href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></button></form></td>
 						</tr>
 					</tfoot>
 	</table>
 	<hr style="height:15px;"/>
 </div>
-</form>
 
 
 <!-- contents end here -->
