@@ -57,50 +57,41 @@
               <div class="panel-body">
               
 			    <!-- start of product  -->
-			    <!-- http://stackoverflow.com/questions/4142631/is-it-possible-to-iterate-two-items-simulataneously-using-foreach-in-jstl/4142885#4142885 -->
-			    
-			    <c:forEach items="${allProducts}" var="product" varStatus="status">
-	                <div class = "row">
-	                
-	                <!-- URL encoding -->
-	                 <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${product.productName}"/>
-	                 
-	                 <c:url var="formActionAdminRole" value="/admin/constructUrlForAdminProductOperations/${product.productName}"/>
-	                 
-	                <sec:authorize access="hasAuthority('CUSTOMER')">
-	                <form action="${formActionIndependentOfUserRole }" method="POST" >
-	                </sec:authorize>
-	               	<sec:authorize access="isAnonymous()">
-	                <form action="${formActionIndependentOfUserRole }" method="POST" >
-	                </sec:authorize>
-	                 <sec:authorize access="hasAuthority('ADMIN')">
-	                 <form action="${formActionAdminRole }" method="POST" >
-					   <div class ="col-md-1 col-xs-12">
-					     
-					     
-                           
+			   <div class = "row">
+                <c:forEach items="${allProducts}" var="product" varStatus="status">
+	                  <sec:authorize access="hasAuthority('ADMIN')">
+	                 	<form action="${formActionAdminRole }" method="POST" >
+				          <div class ="col-md-1 col-xs-12">
                            <input type="hidden" name="productName" value="${product.productName}"/>
                            <button class="btn btn-Success" title="Edit product" name="editProduct"><i class="glyphicon glyphicon-pencil"></i></button><br>
                            <button class="btn btn-danger" title="Delete product" name="deleteProduct"><i class="glyphicon glyphicon-trash"></i></button>
-                         
-					   </div>
+					      </div>
+					    </form>
 					   </sec:authorize>
-					   <div class ="col-md-2 col-xs-12">
-					     <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
-					   </div>
-					   <div class="col-md-7 col-xs-12">
-					     <h3><c:out value="${product.productName}"/> </h3>
-						 <h4><c:out value="${product.sdesc}"/></h4>
-						 <h4>price: <c:out value="${product.price}"/> Rating: <c:out value="${product.rating}"/> Weight: <c:out value="${product.weight}"/> <button class="btn btn-primary btn-sm" type="submit" name="viewProduct" id="viewProductId"  >More Info<span class="glyphicon glyphicon-zoom-in"></span></button></h4>
-					   </div>
-					   <div class="col-md-2 col-xs-12">
-					      <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
-					   </div>
-					   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-					   </form>
-					</div>			
-					<br>
-				</c:forEach>
+				   <div class = "col-sm-2 col-md-3">
+				      <div class = "thumbnail" style="height:250px;">
+						<sec:authorize access="hasAuthority('CUSTOMER')">
+	                		<form action="${formActionIndependentOfUserRole }" method="POST" >
+	                	</sec:authorize>
+	               		<sec:authorize access="isAnonymous()">
+	                		<form action="${formActionIndependentOfUserRole }" method="POST" >
+	                	</sec:authorize>
+				          <button type="submit">
+				          <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
+				          </button>
+				          </form>
+				      </div>
+				      <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
+				      
+				      <div class = "caption">
+				         <h3><c:out value="${product.productName}"/></h3>
+				         <p><c:out value="${product.sdesc}"/></p>
+				      </div>
+				   </div>
+				   </c:forEach>
+				 </div>
+				<br><br>
+			   
 				<!-- end of product  -->
               </div>
               <div class="panel-footer">
