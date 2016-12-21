@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.fithub.domain.Product;
 import com.fithub.domain.ProductDTO;
@@ -30,6 +31,7 @@ import com.fithub.service.product.ProductTasksHelperService;
  *
  */
 @Controller
+@SessionAttributes("productDTO")
 public class ProductTasksController {
 
 	private final ProductService productService;
@@ -131,7 +133,7 @@ public class ProductTasksController {
 	@RequestMapping(value = "/viewProduct/{productName}")
 	public String getProductDetailsPage(@PathVariable("productName") String productName, Model model,
 			@ModelAttribute("productDTO") ProductDTO productDTO) {
-		LOG.debug("Retreiving product details of product={}", productDTO.getProductName());
+		LOG.debug("Retreiving product details of product={}", productDTO.getPrice());
 
 		model.addAttribute("productDTO", productDTO);
 		return "product/productDetails";

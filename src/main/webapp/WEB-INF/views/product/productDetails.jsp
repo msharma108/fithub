@@ -81,8 +81,7 @@
                   
                   <div class="col-sm-12">    
                 <div class="form-group row">
-                  <div class="col-sm-4 form-group">thumbImage<br>
-                  <form:label path="base64imageFile">${productDTO.base64imageFile}</form:label>
+                  <img class="img-responsive"  src="${productDTO.base64imageFile}" alt="${product.productName}"/>
                   </div>
                   
                   <div class="col-sm-4 form-group">

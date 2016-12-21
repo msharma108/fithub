@@ -57,8 +57,16 @@
               <div class="panel-body">
               
 			    <!-- start of product  -->
+			    <!-- http://stackoverflow.com/questions/4142631/is-it-possible-to-iterate-two-items-simulataneously-using-foreach-in-jstl/4142885#4142885 -->
+			    
 			   <div class = "row">
                 <c:forEach items="${allProducts}" var="product" varStatus="status">
+                
+                <!-- URL encoding -->
+	                 <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${product.productName}"/>
+	                 
+	                 <c:url var="formActionAdminRole" value="/admin/constructUrlForAdminProductOperations/${product.productName}"/>
+                
 	                  <sec:authorize access="hasAuthority('ADMIN')">
 	                 	<form action="${formActionAdminRole }" method="POST" >
 				          <div class ="col-md-1 col-xs-12">
@@ -66,7 +74,6 @@
                            <button class="btn btn-Success" title="Edit product" name="editProduct"><i class="glyphicon glyphicon-pencil"></i></button><br>
                            <button class="btn btn-danger" title="Delete product" name="deleteProduct"><i class="glyphicon glyphicon-trash"></i></button>
 					      </div>
-					    </form>
 					   </sec:authorize>
 				   <div class = "col-sm-2 col-md-3">
 				      <div class = "thumbnail" style="height:250px;">
@@ -76,10 +83,11 @@
 	               		<sec:authorize access="isAnonymous()">
 	                		<form action="${formActionIndependentOfUserRole }" method="POST" >
 	                	</sec:authorize>
-				          <button type="submit">
+				          <button type="submit" name="viewProduct" id="viewProductId">
 				          <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 				          </button>
-				          </form>
+				           <input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
+				           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				      </div>
 				      <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 				      
@@ -88,6 +96,7 @@
 				         <p><c:out value="${product.sdesc}"/></p>
 				      </div>
 				   </div>
+				   </form>
 				   </c:forEach>
 				 </div>
 				<br><br>
