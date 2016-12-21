@@ -91,13 +91,14 @@ public class ProductTasksController {
 	public String constructUrlForProductTasks(@RequestParam(value = "viewProduct", required = false) String viewProduct,
 			@RequestParam(value = "addToCart", required = false) String addToCart,
 			@RequestParam(value = "removeFromCart", required = false) String removeFromCart,
+			@RequestParam(value = "refreshCart", required = false) String refreshCart,
 			@RequestParam(value = "editProduct", required = false) String editProduct,
 			@RequestParam(value = "deleteProduct", required = false) String deleteProduct,
 			@PathVariable("productName") String productName, HttpServletRequest request, Authentication authentication,
 			Model model) {
 		LOG.debug("Reconstructing URL for product operations");
 
-		String productBase64ImageUrl = request.getParameter("productBase64ImageUrl");
+		String base64imageFile = request.getParameter("base64imageFile");
 		String reconstructedUrl = "";
 
 		if (productName != null) {
@@ -106,7 +107,7 @@ public class ProductTasksController {
 			Product product = productService.getProductByProductName(productName);
 			if (product != null) {
 				ProductDTO productDTO = productTasksHelperService.populateProductDTOfromProduct(product);
-				productDTO.setBase64imageFile(productBase64ImageUrl);
+				productDTO.setBase64imageFile(base64imageFile);
 
 				if (viewProduct != null)
 					reconstructedUrl = "/viewProduct/" + productName;
@@ -114,6 +115,11 @@ public class ProductTasksController {
 					reconstructedUrl = "/shoppingCart/addToCart/" + productName;
 				if (removeFromCart != null)
 					reconstructedUrl = "/shoppingCart/removeFromCart/" + productName;
+				if (refreshCart != null) {
+					int productQuantityInCartAfterRefresh = Integer.parseInt(request.getParameter("quantityInCart"));
+					reconstructedUrl = "/shoppingCart/refreshCart/" + productName;
+					model.addAttribute("quantityInCart", productQuantityInCartAfterRefresh);
+				}
 				if (editProduct != null)
 					reconstructedUrl = "/admin/editProduct/" + productName;
 				if (deleteProduct != null)

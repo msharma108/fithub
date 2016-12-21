@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fithub.domain.ProductDTO;
@@ -23,6 +24,7 @@ import com.fithub.shoppingcart.ShoppingCart;
  *
  */
 @Controller
+@SessionAttributes("productDTO")
 @RequestMapping("/shoppingCart")
 public class ShoppingCartController {
 
@@ -60,15 +62,19 @@ public class ShoppingCartController {
 	// :/constructUrlForProductOperations/{productName} with button name
 	// This is for refresh quantity in cart
 	// Write URL Reconstruction for Refresh or think of logic in Cart itself
-	@RequestMapping(value = "/reduceProductQuantity/{productName}")
-	public String handleReduceProductQuantityInCart(@ModelAttribute("productDTO") ProductDTO productDTO,
+	@RequestMapping(value = "/refreshCart/{productName}")
+	public String handleRefreshProductQuantityInCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
-			HttpServletRequest request) {
+			HttpServletRequest request, @ModelAttribute("quantityInCart") Integer quantityInCart) {
 
-		LOG.debug("Attempting to reduce product={} quantity in the cart", productName);
+		// ## If there is any issues remove the sessionAttribute and using
+		// service retrieve the product from db here
+
+		LOG.debug("Attempting to refreshCart product={} quantity in the cart", productName);
 		String cartOperationTypeRefreshProductQuantity = "refreshQuantityInCart";
 		// Get refreshed quantity from request object
-		int productQuantityInCartAfterRefresh = Integer.parseInt(request.getParameter("quantityInCart"));
+		// Get it from flash attributes
+		int productQuantityInCartAfterRefresh = quantityInCart;
 
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");

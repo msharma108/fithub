@@ -49,26 +49,30 @@
 						</tr>
 					</thead>
 					<tbody>
-					  <c:forEach items="${Items}" var="item">
+					  <c:forEach items="${shoppingCart.cartProductList}" var="cartItem">
+					  <c:url var="cartOperation" value="/constructUrlForProductOperations/${cartItem.productName}"/>
+					  <form action="${cartOperation }" method="POST">
 						<tr>
 							<td data-th="Product">
 								<div class="row">
-									<div class="col-sm-2 hidden-xs"><img src="http://placehold.it/100x100/000/fff" alt="..." class="img-responsive"/></div>
+									<div class="col-sm-2 hidden-xs"><img class="img-responsive"  src="${cartItem.base64imageFile}" alt="${cartItem.productName}"/></div>
 									<div class="col-sm-10">
-										<h4 class="nomargin">Productname</h4>
-										<p>shortdescription</p>
+										<h4 class="nomargin">${cartItem.productName}</h4>
+										<p>${cartItem.sdesc}</p>
 									</div>
 								</div>
 							</td>
-							<td data-th="Price">$ </td>
+							<td data-th="Price">${cartItem.price}</td>
 							<td data-th="Quantity">
-								<input type="number" class="form-control text-center" value="1">
+								<input type="number" class="form-control text-center" name="quantityInCart" value="${cartItem.quantityInCart }">
 							</td>
 							<td data-th="Subtotal" class="text-center">${shoppingCart.cartCost } </td>
 							<td class="actions" data-th="">
-							   <form action="" method="POST">
-								<button class="btn btn-primary btn-sm" title="Update Shopping cart"><i class="fa fa-refresh"></i></button>
-								<button class="btn btn-danger btn-sm" title="Delete Item"><i class="fa fa-trash-o"></i></button>
+							
+							   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							   
+								<button class="btn btn-primary btn-sm" title="Update Shopping cart" name="refreshCart"><i class="fa fa-refresh"></i></button>
+								<button class="btn btn-danger btn-sm" title="Delete Item" name="removeFromCart" ><i class="fa fa-trash-o"></i></button>
 							   </form>
 							</td>
 							
@@ -81,7 +85,7 @@
 						<tr> 
 							<td> <form action="" method="POST"><button href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Continue Shopping</button></form></td>
 							<td colspan="2" class="hidden-xs"></td>
-							<td class="hidden-xs text-center"><strong>Total </strong></td>
+							<td class="hidden-xs text-center"><strong>${shoppingCart.cartTotalCost } </strong></td>
 							<td> <form action="" method="POST"><button href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></button></form></td>
 						</tr>
 					</tfoot>

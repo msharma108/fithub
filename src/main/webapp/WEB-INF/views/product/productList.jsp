@@ -83,10 +83,11 @@
 	               		<sec:authorize access="isAnonymous()">
 	                		<form action="${formActionIndependentOfUserRole }" method="POST" >
 	                	</sec:authorize>
+	                	<input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
 				          <button type="submit" name="viewProduct" id="viewProductId">
 				          <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 				          </button>
-				           <input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
+				           
 				           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				      </div>
 				      <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
