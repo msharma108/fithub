@@ -19,7 +19,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
 	<!-- custom -->
-	<link rel="stylesheet" href="../../css/style.css"  >
+	<link rel="stylesheet" href="../css/style.css"  >
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
@@ -35,6 +35,8 @@
 <jsp:include page="../header.jsp" />
 
 <!-- contents start here -->
+<!-- http://stackoverflow.com/questions/4142631/is-it-possible-to-iterate-two-items-simulataneously-using-foreach-in-jstl/4142885#4142885 -->
+<!-- http://bootsnipp.com/snippets/VXAxV -->
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-xs-12">

@@ -1,12 +1,40 @@
 body {
    padding-top: 60px;
-}
-    
+   background-color: #1F1C22;
+}    
 .navbar .navbar-inner {
     padding: 0;
 }
-
 .navbar .nav {
     margin: 0;
     display: table;
+}
+.panel{
+   border: 2px solid blue;
+}
+.panel {
+	color: green; 
+	background-color: #1F1C22; 
+}
+#topfixedbar{
+	background-color: #9999FF;
+}
+
+thead {
+	background:green; 
+	color:white;
+}
+table, th, td 
+{
+    border: 1px solid white;
+}
+
+/* unvisited link */
+a:link {
+    color: blue;
+}
+
+/* visited link */
+a:visited {
+    color: blue;
 }

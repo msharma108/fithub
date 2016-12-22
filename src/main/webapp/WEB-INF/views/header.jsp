@@ -2,7 +2,7 @@
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <div class="container-fluid">
-       <div class="navbar navbar-fixed-top" role="navigation">
+       <div class="navbar navbar-fixed-top" id = "topfixedbar" role="navigation">
          <div class="navbar-inner">
 		  <ul class="nav navbar-nav navbar-right">
 		  
@@ -11,10 +11,10 @@
 		     Welcome<span class="glyphicon glyphicon-user"></span> Guest!</a>
 		   </li>
 		   <li class="nav-item">
-		     <a class="nav-link" href="<c:url value="/userRegister"/>" ><span class="glyphicon glyphicon-pencil"></span> Sign up</a>
-		   </li>
+		     <a class="btn  btn-xs" href="<c:url value="/userRegister"/>" ><span class="glyphicon glyphicon-pencil"></span> Sign up</a>
+		   </li> 
 		   <li class="nav-item">
-			 <a class="nav-link" href="<c:url value="/login"/>"><span class="glyphicon glyphicon-log-in"></span> Sign In</a>
+			 <a class="btn btn-xs" href="<c:url value="/login"/>"><span class="glyphicon glyphicon-log-in"></span> Sign In</a>
 		   </li>
 		   </sec:authorize>
 		   <sec:authorize access="isAuthenticated()">
@@ -28,7 +28,7 @@
 				<form action="${logout}" name="logout" method="POST">        
                   	<div class="col-sm-4 form-group">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                       	<button class="btn btn-default" type="submit" name="logout" id="logout" value="Logout">Logout <span class="glyphicon glyphicon-log-out"></span></button> 
+                       	<button class="btn btn-xs btn-primary" type="submit" name="logout" id="logout" value="Logout">Logout <span class="glyphicon glyphicon-log-out"></span></button> 
                   	</div>
              	</form>
 		   </li>
@@ -36,7 +36,7 @@
 		  </ul>
          </div>
        </div>
-	   <div class="navbar navbar-default"  role="navigation" width:100%>
+	   <div class="navbar "  role="navigation" width:100%>
 		 <div class="navbar-inner">
            <a class="navbar-brand" href="#">FitHub.com</a>
          </div>
