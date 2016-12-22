@@ -75,7 +75,7 @@
 	                	     <!-- start of image -->
 				              <input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
 				              <button type="submit" name="viewProduct" id="viewProductId">
-				               <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
+				               <img class="img-circle" width="304" height="236"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 				              </button>
 				              <!-- end of image -->
 				              
