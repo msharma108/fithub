@@ -35,83 +35,95 @@
 <jsp:include page="../header.jsp" />
 
 <!-- contents start here -->
-
 <div class="container">
-    <div class="row">
-        <div class="col-md-12 col-xs-12">
-            <div class="panel panel-info">
-              <div class="panel-heading">
-			  <div class="panel-title">
+  <div class="row">
+    <div class="col-md-12 col-xs-12">
+        <div class="panel panel-info">
+             <div class="panel-heading">
+			 <div class="panel-title">
                 <div class="row">
                   <div class="col-md-6">
                     <h5> Product List</h5>
                   </div>
 				  <div class="col-md-6">
-				  <form action="/shoppingCart/viewCart" method="POST">
-                    <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId"  ><span class="glyphicon glyphicon-shopping-cart"></span> </button>
+				    <form action="/shoppingCart/viewCart" method="POST">
+                      <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId"  ><span class="glyphicon glyphicon-shopping-cart"></span> </button>
                     </form>
-                  </div>
+                 </div>
                 </div>
 			  </div>
-              </div>
-              <div class="panel-body">
-              
-			    <!-- start of product  -->
-			    <!-- http://stackoverflow.com/questions/4142631/is-it-possible-to-iterate-two-items-simulataneously-using-foreach-in-jstl/4142885#4142885 -->
-			    
-			   <div class = "row">
-                <c:forEach items="${allProducts}" var="product" varStatus="status">
-                
-                <!-- URL encoding -->
-	                 <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${product.productName}"/>
-	                 
-	                 <c:url var="formActionAdminRole" value="/admin/constructUrlForAdminProductOperations/${product.productName}"/>
-                
-	                  <sec:authorize access="hasAuthority('ADMIN')">
-	                 	<form action="${formActionAdminRole }" method="POST" >
-				          <div class ="col-md-1 col-xs-12">
-                           <input type="hidden" name="productName" value="${product.productName}"/>
-                           <button class="btn btn-Success" title="Edit product" name="editProduct"><i class="glyphicon glyphicon-pencil"></i></button><br>
-                           <button class="btn btn-danger" title="Delete product" name="deleteProduct"><i class="glyphicon glyphicon-trash"></i></button>
-					      </div>
-					   </sec:authorize>
-				   <div class = "col-sm-2 col-md-3">
-				      <div class = "thumbnail" style="height:250px;">
-						<sec:authorize access="hasAuthority('CUSTOMER')">
-	                		<form action="${formActionIndependentOfUserRole }" method="POST" >
-	                	</sec:authorize>
-	               		<sec:authorize access="isAnonymous()">
-	                		<form action="${formActionIndependentOfUserRole }" method="POST" >
-	                	</sec:authorize>
-	                	<input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
-				          <button type="submit" name="viewProduct" id="viewProductId">
-				          <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
-				          </button>
-				           
-				           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				      </div>
-				      <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
-				      
-				      <div class = "caption">
-				         <h3><c:out value="${product.productName}"/></h3>
-				         <p><c:out value="${product.sdesc}"/></p>
-				      </div>
-				   </div>
-				   </form>
-				   </c:forEach>
-				 </div>
-				<br><br>
-			   
-				<!-- end of product  -->
-              </div>
-              <div class="panel-footer">
-              </div>
-            </div>
+             </div>
+             <div class="panel-body">
+               <c:forEach items="${allProducts}" var="product" varStatus="status">
+                   <!-- URL encoding -->
+                   <!-- define variables -->
+	               <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${product.productName}"/>
+	               <c:url var="formActionAdminRole" value="/admin/constructUrlForAdminProductOperations/${product.productName}"/>
+	                     
+				        <div class="col-xs-18 col-sm-6 col-md-4">
+				          <div class="thumbnail">
+				          
+				            <!-- contruct action depending on user -->
 
-        </div>
-    </div>
-</div>
-
+	               		     <sec:authorize access="!hasAuthority('ADMIN')">
+	                		    <form action="${formActionIndependentOfUserRole }" method="POST" >
+	                	     </sec:authorize>
+	                	     <sec:authorize access="hasAuthority('ADMIN')">
+	                 	        <form action="${formActionAdminRole }" method="POST" >
+	                 	     </sec:authorize>
+	                	     
+	                	     <!-- start of image -->
+				              <input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
+				              <button type="submit" name="viewProduct" id="viewProductId">
+				               <img class="img-responsive"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
+				              </button>
+				              <!-- end of image -->
+				              
+				              <div class="caption">
+				              
+				                <!-- product info -->
+				                <h4><c:out value="${product.productName}"/></h4>
+				                <p><c:out value="${product.sdesc}"/></p>
+				                <p>price: <c:out value="${product.price}"/> Rating: <c:out value="${product.rating}"/> Weight: <c:out value="${product.weight}"/></p>
+                                <!-- end of product info -->
+                                
+                                <!-- add to cart button -->
+                                <sec:authorize access="!hasAuthority('ADMIN')">
+	                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			                    <button class="btn btn-primary btn-sm center-block" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
+			                    </sec:authorize>
+			                    <!-- pull right if admin -->
+                                <sec:authorize access="hasAuthority('ADMIN')">
+	                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			                    <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
+			                    </sec:authorize>
+			                    
+			                    <!-- end of add to cart button -->
+			                 
+			                    <!-- show edit and delete buttong if admin logged in -->
+			                    <sec:authorize access="hasAuthority('ADMIN')">
+	                	         <input type="hidden" name="productName" value="${product.productName}"/>
+	                         		<button class="btn btn-Success" title="Edit product"  type = "submit" name="editProduct"><i class="glyphicon glyphicon-edit"></i></button>
+	                         		<button class="btn btn-danger" title="Delete product" type = "submit" name="deleteProduct"><i class="glyphicon glyphicon-trash"></i></button>
+	                         	</sec:authorize>
+	                         	
+	                            <!-- end of edit/delete buttong block -->
+				            </div>
+				          </div>
+				        </div>     	  
+	               </form>
+				        
+				</c:forEach>
+				</div>        
+             </div>
+             <div class="panel-footer">
+             </div>
+     </div>
+   </div>
+   <br><br>
+ </div>
+ <br>
+ <br>
 <!-- contents end here -->
 	 
 <jsp:include page="../footer.jsp" />
