@@ -34,7 +34,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
 			if (shoppingCartOperationType.equals(cartOperationTypeAddProduct)) {
 
-				if (listIterator.hasNext()) {
+				while (listIterator.hasNext()) {
 
 					cartProduct = listIterator.next();
 					// Increase the product's quantity in cart if the
@@ -78,7 +78,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
 				} else {
 
-					if (listIterator.hasNext()) {
+					while (listIterator.hasNext()) {
 
 						cartProduct = listIterator.next();
 						// Refresh the product's quantity in cart if the
