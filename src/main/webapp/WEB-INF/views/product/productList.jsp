@@ -103,7 +103,7 @@
 			                    <!-- show edit and delete buttong if admin logged in -->
 			                    <sec:authorize access="hasAuthority('ADMIN')">
 	                	         <input type="hidden" name="productName" value="${product.productName}"/>
-	                         		<button class="btn btn-Success" title="Edit product"  type = "submit" name="editProduct"><i class="glyphicon glyphicon-edit"></i></button>
+	                         		<button class="btn btn-warning" title="Edit product"  type = "submit" name="editProduct"><i class="glyphicon glyphicon-edit"></i></button>
 	                         		<button class="btn btn-danger" title="Delete product" type = "submit" name="deleteProduct"><i class="glyphicon glyphicon-trash"></i></button>
 	                         	</sec:authorize>
 	                         	
