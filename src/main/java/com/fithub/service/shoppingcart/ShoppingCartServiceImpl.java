@@ -24,7 +24,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		String cartOperationTypeRemoveProduct = "removeFromCart";
 		String cartOperationTypeRefreshProductQuantity = "refreshQuantityInCart";
 		List<ProductDTO> cartProductList = shoppingCart.getCartProductList();
-		boolean productNotFoundDuringIteration = false;
+		boolean productFoundInCartDuringIteration = false;
 
 		ListIterator<ProductDTO> listIterator = cartProductList.listIterator();
 		ProductDTO cartProduct;
@@ -49,12 +49,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 								shoppingCart.getCartCost() + (cartProduct.getPrice() * productQuantityInCart));
 						shoppingCart.setCartTotalCost(
 								shoppingCart.getCartCost() + (shoppingCart.getCartCost() * shoppingCart.getCartTax()));
+						productFoundInCartDuringIteration = true;
 					}
-					productNotFoundDuringIteration = true;
+
 				}
+
 				// if the cart is not empty but the product being added is
-				// the first of its kind
-				if (productNotFoundDuringIteration) {
+				// the first of its kind being added to the cart
+				if (productFoundInCartDuringIteration == false) {
 					LOG.debug("Adding the first occurance of product={} into cart", productDTO.getProductName());
 					productDTO.setQuantityInCart(productQuantityInCart);
 					cartProductList.add(productDTO);
