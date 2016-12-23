@@ -73,13 +73,14 @@
 	                	     <sec:authorize access="hasAuthority('ADMIN')">
 	                 	        <form action="${formActionAdminRole }" method="POST" >
 	                 	     </sec:authorize>
-	                	     
+	                	     <div class="hovereffect">
 	                	     <!-- start of image -->
 				              <input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
 				              <button type="submit" name="viewProduct" id="viewProductId">
 				               <img class="img-circle" width="304" height="236"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 				              </button>
 				              <!-- end of image -->
+				              </div>
 				              
 				              <div class="caption">
 				              

@@ -19,7 +19,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
 	<!-- custom -->
-	<link rel="stylesheet" href="../../css/style.css"  >
+	<link rel="stylesheet" href="../css/style.css"  >
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
@@ -35,65 +35,159 @@
 <jsp:include page="../header.jsp" />
 
 <!-- contents start here -->
-<!-- Ref: http://bootsnipp.com/snippets/featured/responsive-shopping-cart -->
+<!-- http://bootsnipp.com/snippets/ypqoW -->
+ <div class="container wrapper">
+   
+            <div class="row">
+                <form class="form-horizontal" method="post" action="">
 
-<div class="container-fluid">
-	<table id="shoppingcart" class="table">
-    				<thead>
-						<tr>
-							<th style="width:50%">Product</th>
-							<th style="width:10%">Price</th>
-							<th style="width:10%">Quantity</th>
-							<th style="width:20%" class="text-center">Subtotal</th>
-							<th style="width:10%"></th>
-						</tr>
-					</thead>
-					<tbody>
-					  <c:forEach items="${shoppingCart.cartProductList}" var="cartItem">
-					  <c:url var="cartOperation" value="/constructUrlForProductOperations/${cartItem.productName}"/>
-					  <form action="${cartOperation }" method="POST">
-						<tr>
-							<td data-th="Product">
-								<div class="row">
-									<div class="col-sm-2 hidden-xs"><img class="img-responsive"  src="${cartItem.base64imageFile}" alt="${cartItem.productName}"/></div>
-									<div class="col-sm-10">
-										<h4 class="nomargin">${cartItem.productName}</h4>
-										<p>${cartItem.sdesc}</p>
-									</div>
-								</div>
-							</td>
-							<td data-th="Price">${cartItem.price}</td>
-							<td data-th="Quantity">
-								<input type="number" class="form-control text-center" name="quantityInCart" value="${cartItem.quantityInCart }">
-							</td>
-							<td data-th="Subtotal" class="text-center">${shoppingCart.cartCost } </td>
-							<td class="actions" data-th="">
-							
-							   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							   
-								<button class="btn btn-primary btn-sm" title="Update Shopping cart" name="refreshCart"><i class="fa fa-refresh"></i></button>
-								<button class="btn btn-danger btn-sm" title="Delete Item" name="removeFromCart" ><i class="fa fa-trash-o"></i></button>
-							   </form>
-							</td>
-							
-						</tr>
-						
-						</c:forEach>
-					  
-					</tbody>
-					<tfoot>
-						<tr> 
-							<td> <form action="" method="POST"><button href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Continue Shopping</button></form></td>
-							<td colspan="2" class="hidden-xs"></td>
-							<td class="hidden-xs text-center"><strong>${shoppingCart.cartTotalCost } </strong></td>
-							<td> <form action="" method="POST"><button href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></button></form></td>
-						</tr>
-					</tfoot>
-	</table>
-	<hr style="height:15px;"/>
-</div>
+                    <div class = "col-lg-5">
+                    <!--SHIPPING METHOD-->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Shipping Address</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>First Name:</strong>
+                                    <input type="text" name="first_name" class="form-control" value="" />
+                                </div>
+                                <div class="span1"></div>
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Last Name:</strong>
+                                    <input type="text" name="last_name" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Address:</strong></div>
+                                <div class="col-md-12">
+                                    <input type="text" name="address" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>City:</strong>
+                                    <input type="text" name="city" class="form-control" value="" />
+                                </div>
+                                <div class="span1"></div>
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>State/Province:</strong>
+                                    <input type="text" name="prov" class="form-control" value="" />
+                                </div>
+                            </div>
+                              <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Country:</strong>
+                                    <input type="text" name="country" class="form-control" value="" />
+                                </div>
+                                <div class="span1"></div>
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Zip/Postal Code:</strong>
+                                    <input type="text" name="postal" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Phone Number:</strong></div>
+                                <div class="col-md-12"><input type="text" name="phone_number" class="form-control" value="" /></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Email Address:</strong></div>
+                                <div class="col-md-12"><input type="text" name="email_address" class="form-control" value="" /></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--SHIPPING METHOD END-->
+                    </div>
+                    <div class ="col-md-5">
+                   
+                    <!--CREDIT CART PAYMENT-->
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Card Type:</strong></div>
+                                <div class="col-md-12">
+                                    <select id="CreditCardType" name="CreditCardType" class="form-control">
+                                        <option value="vs">Visa</option>
+                                        <option value="mc">MasterCard</option>
+                                        <option value="ax">American Express</option>
+                                        <option value="dc">Discover</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Name On Card:</strong></div>
+                                <div class="col-md-12"><input type="text" class="form-control" name=full_name" value="" /></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Credit Card Number:</strong></div>
+                                <div class="col-md-12"><input type="text" class="form-control" name="card_number" value="" /></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Card CVV:</strong></div>
+                                <div class="col-md-12"><input type="text" class="form-control" name="card_code" value="" /></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <strong>Expiration Date</strong>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <select class="form-control" name="">
+                                        <option value="">Month</option>
+                                        <option value="01">Jan (01)</option>
+                                        <option value="02">Feb (02)</option>
+                                        <option value="03">Mar (03)</option>
+                                        <option value="04">Apr (04)</option>
+                                        <option value="05">May (05)</option>
+                                        <option value="06">June (06)</option>
+                                        <option value="07">July (07)</option>
+                                        <option value="08">Aug (08)</option>
+                                        <option value="09">Sep (09)</option>
+                                        <option value="10">Oct (10)</option>
+                                        <option value="11">Nov (11)</option>
+                                        <option value="12">Dec (12)</option>
+                                </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <select class="form-control" name="">
+                                        <option value="">Year</option>
+                                        <option value="2015">2015</option>
+                                        <option value="2016">2016</option>
+                                        <option value="2017">2017</option>
+                                        <option value="2018">2018</option>
+                                        <option value="2019">2019</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                               <div><img class="pull-right"
+                                 src="https://s3.amazonaws.com/hiresnetwork/imgs/cc.png"
+                                 style="max-width: 250px; padding-bottom: 20px;">
+                              </div>
+                                </div>
+                            </div>
 
-
+                        </div>
+                    </div>
+                    <!--CREDIT CART PAYMENT END-->
+                   </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-6 col-xs-12">
+                                    <button type="submit" class="btn btn-primary btn-block">Pay Now</button>
+                                </div>
+                            </div>
+                </form>
+            </div>
+            <div class="row cart-footer">
+            </div>
+    </div>
+    <br><br><br> <br><br>      
 <!-- contents end here -->
 	 
 <jsp:include page="../footer.jsp" />
