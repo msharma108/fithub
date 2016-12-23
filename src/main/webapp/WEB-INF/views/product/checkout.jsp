@@ -35,7 +35,71 @@
 <jsp:include page="../header.jsp" />
 
 <!-- contents start here -->
-  <!--CREDIT CART PAYMENT-->
+<!-- http://bootsnipp.com/snippets/ypqoW -->
+ <div class="container wrapper">
+   
+            <div class="row">
+                <form class="form-horizontal" method="post" action="">
+
+                    <div class = "col-lg-5">
+                    <!--SHIPPING METHOD-->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Shipping Address</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>First Name:</strong>
+                                    <input type="text" name="first_name" class="form-control" value="" />
+                                </div>
+                                <div class="span1"></div>
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Last Name:</strong>
+                                    <input type="text" name="last_name" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Address:</strong></div>
+                                <div class="col-md-12">
+                                    <input type="text" name="address" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>City:</strong>
+                                    <input type="text" name="city" class="form-control" value="" />
+                                </div>
+                                <div class="span1"></div>
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>State/Province:</strong>
+                                    <input type="text" name="prov" class="form-control" value="" />
+                                </div>
+                            </div>
+                              <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Country:</strong>
+                                    <input type="text" name="country" class="form-control" value="" />
+                                </div>
+                                <div class="span1"></div>
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Zip/Postal Code:</strong>
+                                    <input type="text" name="postal" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Phone Number:</strong></div>
+                                <div class="col-md-12"><input type="text" name="phone_number" class="form-control" value="" /></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Email Address:</strong></div>
+                                <div class="col-md-12"><input type="text" name="email_address" class="form-control" value="" /></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--SHIPPING METHOD END-->
+                    </div>
+                    <div class ="col-md-5">
+                   
+                    <!--CREDIT CART PAYMENT-->
                     <div class="panel panel-info">
                         <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
                         <div class="panel-body">
@@ -43,20 +107,24 @@
                                 <div class="col-md-12"><strong>Card Type:</strong></div>
                                 <div class="col-md-12">
                                     <select id="CreditCardType" name="CreditCardType" class="form-control">
-                                        <option value="5">Visa</option>
-                                        <option value="6">MasterCard</option>
-                                        <option value="7">American Express</option>
-                                        <option value="8">Discover</option>
+                                        <option value="vs">Visa</option>
+                                        <option value="mc">MasterCard</option>
+                                        <option value="ax">American Express</option>
+                                        <option value="dc">Discover</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
+                                <div class="col-md-12"><strong>Name On Card:</strong></div>
+                                <div class="col-md-12"><input type="text" class="form-control" name=full_name" value="" /></div>
+                            </div>
+                            <div class="form-group">
                                 <div class="col-md-12"><strong>Credit Card Number:</strong></div>
-                                <div class="col-md-12"><input type="text" class="form-control" name="car_number" value="" /></div>
+                                <div class="col-md-12"><input type="text" class="form-control" name="card_number" value="" /></div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12"><strong>Card CVV:</strong></div>
-                                <div class="col-md-12"><input type="text" class="form-control" name="car_code" value="" /></div>
+                                <div class="col-md-12"><input type="text" class="form-control" name="card_code" value="" /></div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
@@ -65,18 +133,18 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" name="">
                                         <option value="">Month</option>
-                                        <option value="01">01</option>
-                                        <option value="02">02</option>
-                                        <option value="03">03</option>
-                                        <option value="04">04</option>
-                                        <option value="05">05</option>
-                                        <option value="06">06</option>
-                                        <option value="07">07</option>
-                                        <option value="08">08</option>
-                                        <option value="09">09</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
+                                        <option value="01">Jan (01)</option>
+                                        <option value="02">Feb (02)</option>
+                                        <option value="03">Mar (03)</option>
+                                        <option value="04">Apr (04)</option>
+                                        <option value="05">May (05)</option>
+                                        <option value="06">June (06)</option>
+                                        <option value="07">July (07)</option>
+                                        <option value="08">Aug (08)</option>
+                                        <option value="09">Sep (09)</option>
+                                        <option value="10">Oct (10)</option>
+                                        <option value="11">Nov (11)</option>
+                                        <option value="12">Dec (12)</option>
                                 </select>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -98,26 +166,28 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <span>Pay secure using your credit card.</span>
-                                </div>
-                                <div class="col-md-12">
-                                    <ul class="cards">
-                                        <li class="visa hand">Visa</li>
-                                        <li class="mastercard hand">MasterCard</li>
-                                        <li class="amex hand">Amex</li>
-                                    </ul>
-                                    <div class="clearfix"></div>
+                               <div><img class="pull-right"
+                                 src="https://s3.amazonaws.com/hiresnetwork/imgs/cc.png"
+                                 style="max-width: 250px; padding-bottom: 20px;">
+                              </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <button type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     <!--CREDIT CART PAYMENT END-->
-                
+                   </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-6 col-xs-12">
+                                    <button type="submit" class="btn btn-primary btn-block">Pay Now</button>
+                                </div>
+                            </div>
+                </form>
+            </div>
+            <div class="row cart-footer">
+            </div>
+    </div>
+    <br><br><br> <br><br>      
 <!-- contents end here -->
 	 
 <jsp:include page="../footer.jsp" />
