@@ -49,6 +49,7 @@
                   </div>
 				  <div class="col-md-6">
 				    <form action="/shoppingCart/viewCart" method="POST">
+				     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                       <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId"  ><span class="glyphicon glyphicon-shopping-cart"></span> </button>
                     </form>
                  </div>
@@ -65,7 +66,7 @@
 				        <div class="col-xs-18 col-sm-6 col-md-4">
 				          <div class="thumbnail">
 				          
-				            <!-- contruct action depending on user -->
+				            <!-- construct action depending on user -->
 
 	               		     <sec:authorize access="!hasAuthority('ADMIN')">
 	                		    <form action="${formActionIndependentOfUserRole }" method="POST" >

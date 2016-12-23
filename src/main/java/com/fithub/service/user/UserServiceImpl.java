@@ -71,13 +71,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean deleteUserByUsername(UserDTO userDTO) {
+	public boolean deleteUser(UserDTO userDTO) {
 
 		boolean isUserDeleted = true;
 		LOG.debug("Attempting to delete user having userName={}", userDTO.getUserName());
 		try {
 			User user = getUserByUsername(userDTO.getUserName());
-			user = getUserById(user.getUserId());
 			userDTO = userTasksHelperService.destroyUserDataForDeletion(userDTO);
 			user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
 			user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());

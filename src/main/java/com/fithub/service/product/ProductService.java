@@ -44,10 +44,12 @@ public interface ProductService {
 	 * Method deletes a product record from the database based on the provided
 	 * productName and return true as boolean result
 	 * 
-	 * @param productName
+	 * @param productDTO
+	 * @param authentication
+	 *            Spring Security Authentication object to acquire admin details
 	 * @return boolean
 	 */
-	boolean deleteProductByProductName(String productName);
+	boolean deleteProduct(ProductDTO productDTO, Authentication authentication);
 
 	/**
 	 * Method gets a list of all the products in the database

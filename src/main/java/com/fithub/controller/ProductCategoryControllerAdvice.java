@@ -26,7 +26,14 @@ public class ProductCategoryControllerAdvice {
 
 	@ModelAttribute("categoryList")
 	public List<ProductCategory> getCategoryList() {
-		return (productCategoryService.getAllProductCategories());
+
+		final String categoryOfDeletedProducts = "Product_Deleted";
+		List<ProductCategory> productCategoryList = productCategoryService.getAllProductCategories();
+
+		productCategoryList.removeIf((ProductCategory categoryNotShownOnUI) -> categoryNotShownOnUI.getCategory()
+				.equals(categoryOfDeletedProducts));
+
+		return (productCategoryList);
 	}
 
 }

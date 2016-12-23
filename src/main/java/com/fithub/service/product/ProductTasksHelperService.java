@@ -27,4 +27,15 @@ public interface ProductTasksHelperService {
 	 */
 	ProductDTO populateProductDTOfromProduct(Product product);
 
+	/**
+	 * Method overwrites product data with dummy data for product deletion at
+	 * the same time ensuring that the record is in the database for audit
+	 * purposes
+	 * 
+	 * @param productDTO
+	 *            productDTO containing user information to be deleted
+	 * @return productDTO with dummy data
+	 */
+	ProductDTO destroyProductDataForDeletion(ProductDTO productDTO);
+
 }

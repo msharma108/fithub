@@ -62,6 +62,7 @@ public class ProductDTO {
 	private float weight;
 
 	private boolean isEditable = false;
+	private boolean isProductDeleted = false;
 
 	public String getProductName() {
 		return productName;
@@ -213,6 +214,14 @@ public class ProductDTO {
 
 	public void setQuantityInCart(int quantityInCart) {
 		this.quantityInCart = quantityInCart;
+	}
+
+	public boolean isProductDeleted() {
+		return isProductDeleted;
+	}
+
+	public void setProductDeleted(boolean isProductDeleted) {
+		this.isProductDeleted = isProductDeleted;
 	}
 
 }

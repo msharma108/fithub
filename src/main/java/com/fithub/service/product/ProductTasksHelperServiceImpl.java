@@ -8,16 +8,20 @@ import com.fithub.domain.Product;
 import com.fithub.domain.ProductCategory;
 import com.fithub.domain.ProductDTO;
 import com.fithub.service.productcategory.ProductCategoryService;
+import com.fithub.service.time.TimeHelperService;
 
 @Service
 
 public class ProductTasksHelperServiceImpl implements ProductTasksHelperService {
 
 	private final ProductCategoryService productCategoryService;
+	private final TimeHelperService timeHelperService;
 	private final static Logger LOG = LoggerFactory.getLogger(ProductTasksHelperServiceImpl.class);
 
-	public ProductTasksHelperServiceImpl(ProductCategoryService productCategoryService) {
+	public ProductTasksHelperServiceImpl(ProductCategoryService productCategoryService,
+			TimeHelperService timeHelperService) {
 		this.productCategoryService = productCategoryService;
+		this.timeHelperService = timeHelperService;
 	}
 
 	@Override
@@ -67,6 +71,35 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		productDTO.setProductCategory(product.getProductCategory().getCategory());
 		productDTO.setSdesc(product.getSdesc());
 		productDTO.setStockQuantity(product.getStockQuantity());
+
+		return productDTO;
+	}
+
+	@Override
+	public ProductDTO destroyProductDataForDeletion(ProductDTO productDTO) {
+
+		final String productDeleted = "Product_Deleted";
+		final String productDeletedDummyDate = "1900/10/11";
+		final String productDeletedRating = "Not Applicable";
+
+		productDTO.setBase64imageFile(productDeleted);
+
+		productDTO.setExpiryDate(timeHelperService.dateFormatter(productDeletedDummyDate));
+		productDTO.setFlavor(productDeleted);
+		productDTO.setLdesc(productDeleted);
+		productDTO.setManufactureDate((timeHelperService.dateFormatter(productDeletedDummyDate)));
+		productDTO.setPrice(-999);
+		productDTO.setProductCategory(productDeleted);
+		productDTO.setProductDeleted(true);
+		productDTO.setProductName(productDTO.getProductName().concat(productDeleted));
+		productDTO.setQuantityInCart(0);
+		productDTO.setQuantitySold(-999);
+		productDTO.setRating(productDeletedRating);
+		productDTO.setRegistrationDate(timeHelperService.dateFormatter(productDeletedDummyDate));
+		productDTO.setSdesc(productDeleted);
+		productDTO.setStockQuantity(-999);
+		productDTO.setThumbImageAsByteArray(null);
+		productDTO.setWeight(-999);
 
 		return productDTO;
 	}

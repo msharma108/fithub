@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fithub.domain.Product;
 import com.fithub.domain.ProductDTO;
@@ -65,12 +67,19 @@ public class ProductTasksController {
 		// browser display
 		for (Product productFromDB : productList) {
 
-			ProductDTO productDTO = new ProductDTO();
-			LOG.debug("Encoding image retreieved from database");
-			productDTO.setBase64imageFile(
-					"data:image/jpg;base64," + Base64.getEncoder().encodeToString(productFromDB.getThumbImage()));
-			productDTO.setThumbImageAsByteArray(productFromDB.getThumbImage());
-			ListProductDTO.add(productDTO);
+			// Display only the products that have not been marked as deleted
+			// Product marked for deletion have a negative stock quantity
+			if (productFromDB.getStockQuantity() >= 0) {
+
+				ProductDTO productDTO = new ProductDTO();
+				LOG.debug("Encoding image retreieved from database");
+				productDTO.setBase64imageFile(
+						"data:image/jpg;base64," + Base64.getEncoder().encodeToString(productFromDB.getThumbImage()));
+				productDTO.setThumbImageAsByteArray(productFromDB.getThumbImage());
+				ListProductDTO.add(productDTO);
+
+			}
+
 		}
 		model.addAttribute("allProducts", productList);
 		// product DTO holding encoded image URL
@@ -143,6 +152,22 @@ public class ProductTasksController {
 
 		model.addAttribute("productDTO", productDTO);
 		return "product/productDetails";
+	}
+
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/admin/deleteProduct/{productName}")
+	public String handleProductDelete(@PathVariable("productName") String productName,
+			@ModelAttribute("productDTO") ProductDTO productDTO, RedirectAttributes redirectAttributes,
+			Authentication authentication) {
+		LOG.debug("Attempting to delete product={}", productDTO.getProductName());
+
+		boolean isProductDeleted = productService.deleteProduct(productDTO, authentication);
+
+		LOG.debug("Product was deleted successfuly ?={}", isProductDeleted);
+
+		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 2);
+
+		return "redirect:/product/productTaskSuccess";
 	}
 
 }

@@ -45,7 +45,7 @@ public interface UserService {
 	 * @param userDTO
 	 * @return boolean returns true if the user is marked as deleted
 	 */
-	boolean deleteUserByUsername(UserDTO userDTO);
+	boolean deleteUser(UserDTO userDTO);
 
 	/**
 	 * Method checks the existing role of the user and switches it to the other

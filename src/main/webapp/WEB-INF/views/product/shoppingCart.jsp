@@ -66,7 +66,8 @@
 							<td data-th="Quantity">
 								<input type="number" class="form-control text-center" name="quantityInCart" value="${cartItem.quantityInCart }">
 							</td>
-							<td data-th="Subtotal" class="text-center">${shoppingCart.cartCost } </td>
+							<c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}}"/>
+							<td data-th="Subtotal" class="text-center">${cartItem.price} </td>
 							<td class="actions" data-th="">
 							
 							   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
