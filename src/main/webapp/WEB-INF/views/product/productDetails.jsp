@@ -42,14 +42,24 @@
          
          <c:url var="productSave" value="/admin/productSave"/>
 	        <form:form modelAttribute="productDTO" method="POST" action="" style="color: green;">
-              <div class="col-xs-12">    
+                  <div class="col-sm-9">    
+                <div class="form-group row">
+	                <div class="hovereffect">
+	                	<!-- start of image -->
+				        <img class="img-thumbnail" width="304" height="236"  src="${productDTO.base64imageFile}" alt="${product.productName}"/>
+				        <!-- end of image -->
+				     </div>
+                  </div>
+
+                </div>
+              <div class="col-sm-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
-                       <form:label path="productName">Product Name:</form:label><br>
+                       <form:label path="productName">Product Name:</form:label> 
                        <form:label path="productName">${productDTO.productName}</form:label>
                   </div>
-                  <div class="col-sm-4">
-                       <form:label path="ldesc">Description: </form:label><br>
+                  <div class="col-sm-8">
+                       <form:label path="ldesc">Description: </form:label> 
                        <form:label path="ldesc">${productDTO.ldesc}</form:label>
                   </div>
                 </div>
@@ -60,11 +70,11 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-                       <form:label path="productCategory">Product Category:</form:label><br>
+                       <form:label path="productCategory">Product Category:</form:label> 
                        <form:label path="productCategory">${productDTO.productCategory}</form:label>
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="manufactureDate">Manufacture Date:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
+			           <form:label path="manufactureDate">Manufacture Date:<span class="glyphicon glyphicon-calendar"> </span></form:label> 
 			           <form:label path="manufactureDate">${productDTO.manufactureDate}</form:label>
                   </div>
                 </div>
@@ -73,32 +83,27 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="price">Price:</form:label><br>
+			           <form:label path="price">Price:</form:label> 
 			           <form:label path="price">${productDTO.price}</form:label>
-                  </div>
-                  </div>
-                  </div>
-                  
-                  <div class="col-sm-12">    
-                <div class="form-group row">
-                  <img class="img-responsive"  src="${productDTO.base64imageFile}" alt="${product.productName}"/>
                   </div>
                   
                   <div class="col-sm-4 form-group">
-			           <form:label path="weight">Weight:</form:label><br>
+			           <form:label path="weight">Weight:</form:label>
 			           <form:label path="weight">${productDTO.weight}</form:label>
                   </div>
-                </div>
-              </div>
+                  </div>
+                  </div>
+
+             
               
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="stockQuantity">Quantity:</form:label><br>
+			           <form:label path="stockQuantity">Quantity:</form:label>
 			           <form:label path="stockQuantity">${productDTO.stockQuantity}</form:label>
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="expiryDate">Expiry Date:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
+			           <form:label path="expiryDate">Expiry Date:<span class="glyphicon glyphicon-calendar"> </span></form:label>
 			           <form:label path="expiryDate">${productDTO.expiryDate}</form:label>
                   </div>
                   
@@ -108,11 +113,11 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="flavor">Flavor:</form:label><br>
+			           <form:label path="flavor">Flavor:</form:label>
 			           <form:label path="flavor">${productDTO.flavor}</form:label>
                   </div>
                   <div class="col-sm-4 form-group">
-                       <form:label path="rating">Rating:<span class="glyphicon glyphicon-user"> </span></form:label><br>
+                       <form:label path="rating">Rating:<span class="glyphicon glyphicon-user"> </span></form:label>
                        <form:label path="rating">${productDTO.rating}</form:label>
                   </div>
                 </div>
@@ -121,12 +126,15 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <form:label path="sdesc">Short description:</form:label><br>
+			           <form:label path="sdesc">Short description:</form:label>
 			           <form:label path="sdesc">${productDTO.sdesc}</form:label>
                   </div>
 
                 </div>
                 </div>
+                
+                  
+
               
 			<br><br>              
             </form:form>
