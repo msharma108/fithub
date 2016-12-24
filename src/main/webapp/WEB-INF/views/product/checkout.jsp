@@ -40,7 +40,59 @@
    
             <div class="row">
                 <form class="form-horizontal" method="post" action="">
-
+                    <!--REVIEW ORDER-->
+                    <div class = "col-lg-10" >
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Order Details 				  
+                            <div class="col-md-6 pull-right">
+				             <form action="/shoppingCart/viewCart" method="POST">
+                              <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId"  >Edit Cart <span class="glyphicon glyphicon-shopping-cart"></span> </button>
+                             </form>
+                  			</div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                            
+                                 <!-- loop starts -->
+                                
+                                <div class="col-sm-3 col-xs-3">
+                                    <img class="img-responsive" src="" />
+                                </div>
+                                <div class="col-sm-6 col-xs-6">
+                                    <div class="col-xs-12">ProductName</div>
+                                    <div class="col-xs-12"><small>Quantity:<span>TotalQuantity</span></small></div>
+                                </div>
+                                <div class="col-sm-3 col-xs-3 text-right">
+                                    <h6><span>$</span>price</h6>
+                                </div>
+                             </div>
+                             <div class="form-group"><hr /></div>
+                             
+                                 <!-- loop ends -->
+                             
+                            <div class="form-group"><hr /></div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <strong>Subtotal</strong>
+                                    <div class="pull-right"><span>$</span><span>subTotalAmount</span></div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <small>Shipping</small>
+                                    <div class="pull-right"><span>shippingCost</span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><hr /></div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <strong>Order Total</strong>
+                                    <div class="pull-right"><span>$</span><span>totalAmount</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--REVIEW ORDER END-->
+                    </div>
                     <div class = "col-lg-5">
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-info">
