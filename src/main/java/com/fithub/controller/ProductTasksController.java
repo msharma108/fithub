@@ -66,6 +66,9 @@ public class ProductTasksController {
 			// Display all products
 			productList = productService.getAllProducts();
 
+		// Remove products marked as deleted from the list
+		productList.removeIf((Product productMarkedDeleted) -> productMarkedDeleted.getStockQuantity() < 0);
+
 		// Encoding byte array image received from DB and encoding it for
 		// browser display
 		for (Product productFromDB : productList) {

@@ -17,6 +17,8 @@ public class UserDTO {
 	@NotEmpty
 	private String userName;
 
+	private String userNameBeforeEdit;
+
 	@NotEmpty
 	@Size(min = 5, max = 45)
 	private String address;
@@ -244,6 +246,14 @@ public class UserDTO {
 
 	public void setIsUserDeleted(boolean isUserDeleted) {
 		this.isUserDeleted = isUserDeleted;
+	}
+
+	public String getUserNameBeforeEdit() {
+		return userNameBeforeEdit;
+	}
+
+	public void setUserNameBeforeEdit(String userNameBeforeEdit) {
+		this.userNameBeforeEdit = userNameBeforeEdit;
 	}
 
 }

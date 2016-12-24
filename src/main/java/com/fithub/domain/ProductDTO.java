@@ -64,6 +64,8 @@ public class ProductDTO {
 	private boolean isEditable = false;
 	private boolean isProductDeleted = false;
 
+	private String productNameBeforeEdit;
+
 	public String getProductName() {
 		return productName;
 	}
@@ -222,6 +224,14 @@ public class ProductDTO {
 
 	public void setProductDeleted(boolean isProductDeleted) {
 		this.isProductDeleted = isProductDeleted;
+	}
+
+	public String getProductNameBeforeEdit() {
+		return productNameBeforeEdit;
+	}
+
+	public void setProductNameBeforeEdit(String productNameBeforeEdit) {
+		this.productNameBeforeEdit = productNameBeforeEdit;
 	}
 
 }

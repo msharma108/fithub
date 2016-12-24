@@ -122,7 +122,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product = new Product();
 		// Get product using DTO to intimate JPA about update operation as a
 		// part of the transaction
-		product = getProductByProductName(productDTO.getProductName());
+		product = getProductByProductName(productDTO.getProductNameBeforeEdit());
 		product = productTasksHelperService.createProductFromProductDTO(product, productDTO);
 		product.setProductUpdateDate((timeHelperService.getCurrentTimeStamp()));
 		product.setProductEditedByUser((userTasksHelperService.getLoggedInUserName(authentication)));

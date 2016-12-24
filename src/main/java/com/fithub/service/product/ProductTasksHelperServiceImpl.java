@@ -64,6 +64,7 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		productDTO.setManufactureDate(product.getManufactureDate());
 		productDTO.setPrice(product.getPrice());
 		productDTO.setProductName(product.getProductName());
+		productDTO.setProductNameBeforeEdit(product.getProductName());
 		productDTO.setQuantitySold(product.getQuantitySold());
 		productDTO.setRating(product.getRating());
 		productDTO.setRegistrationDate(product.getRegistrationDate());

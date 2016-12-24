@@ -95,6 +95,7 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		userDTO.setRole(UserRole.valueOf(user.getRole()));
 		userDTO.setSex(user.getSex());
 		userDTO.setUserName(user.getUserName());
+		userDTO.setUserNameBeforeEdit(user.getUserName());
 		userDTO.setZipcode(user.getZipcode());
 		userDTO.setRegistrationDate(user.getRegistrationDate());
 
