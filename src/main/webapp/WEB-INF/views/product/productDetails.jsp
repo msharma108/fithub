@@ -40,15 +40,15 @@
 
      <div class="panel-body" style="background-color: #C1E1A6;"> 
          
-         <c:url var="productSave" value="/admin/productSave"/>
-	        <form:form modelAttribute="productDTO" method="POST" action="" style="color: green;">
+         <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${productDTO.productName}"/>
+	        <form:form modelAttribute="productDTO" method="POST" action="${formActionIndependentOfUserRole }" style="color: green;">
                   <div class="col-sm-9">    
                 <div class="form-group row">
-	                <div class="hovereffect">
 	                	<!-- start of image -->
-				        <img class="img-thumbnail" width="304" height="236"  src="${productDTO.base64imageFile}" alt="${product.productName}"/>
+				        <img class="img-thumbnail" width="300" height="200"  src="${productDTO.base64imageFile}" alt="${productDTO.productName}"/>
 				        <!-- end of image -->
-				     </div>
+				       
+			      <button class="btn btn-primary btn-sm center-block" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
                   </div>
 
                 </div>
@@ -64,9 +64,6 @@
                   </div>
                 </div>
               </div>
-             <sec:authorize access="isAuthenticated()">
-         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-              </sec:authorize>
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
@@ -133,7 +130,7 @@
                 </div>
                 </div>
                 
-                  
+                 
 
               
 			<br><br>              

@@ -1,5 +1,6 @@
 package com.fithub.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fithub.domain.Product;
@@ -168,6 +171,47 @@ public class ProductTasksController {
 		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 2);
 
 		return "redirect:/product/productTaskSuccess";
+	}
+
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping(value = { "/admin/editProduct/{productName}" }, params = "editProduct")
+	public String getProductEditPage(@PathVariable("productName") String productName,
+			@ModelAttribute("productDTO") ProductDTO productDTO, Model model) {
+		LOG.debug("Getting editProductPage for product={}", productName);
+
+		productDTO.setEditable(true);
+		// Uncomment the line below this in case I decide to get session using
+		// conventional http session object. userDTO will be added to session
+		// during profile load page.
+		// model.addAttribute("userDTO", userDTO);
+		// Change to registration page
+		return "product/productRegister";
+	}
+
+	@PostMapping(value = { "/admin/productSave" }, params = "editProduct")
+	public String submitProductEditPage(@ModelAttribute("productDTO") ProductDTO productDTO,
+			RedirectAttributes redirectAttributes, Authentication authentication, SessionStatus sessionStatus,
+			@RequestParam("thumbImage") MultipartFile thumbImage) {
+		LOG.debug("Attempting to update product={}", productDTO.getProductName());
+
+		// Invoking User Profile Edit in addition to JSR 303 validation
+		// userEditValidator.validate(userDTO, result);
+
+		// If a new image is being uploaded for the product
+		if (thumbImage != null) {
+			try {
+				productDTO.setThumbImageAsByteArray(thumbImage.getBytes());
+			} catch (IOException e) {
+				LOG.debug("Problems saving product images");
+				e.printStackTrace();
+			}
+		}
+		productService.updateProductDetails(productDTO, authentication);
+		LOG.debug("Product={} information update successful", productDTO.getProductName());
+
+		// used to check update success on the canvas page
+		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 3);
+		return "redirect:/admin/userTaskSuccess";
 	}
 
 }

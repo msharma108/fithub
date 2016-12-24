@@ -137,6 +137,9 @@ function openProductModal(){
                   
                   <div class="col-sm-12">    
                 <div class="form-group row">
+                <c:if test="${productDTO.isEditable == true }">
+                <img class="img-thumbnail" width="200" height="200"  src="${productDTO.base64imageFile}" alt="${productDTO.productName}"/>
+                </c:if>
                   <div class="col-sm-4 form-group">thumbImage<br>
 			           <input class="form-control" type="file" name="thumbImage" id="thumbImage" placeHolder= "Thumbnail"  />
                   </div>
@@ -216,7 +219,7 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
                        <!-- input class="btn btn-primary btn-block" type="submit" name="productUpdate" id="productUpdateId" value="Submit" /-->
-                       <button type="submit" class="btn btn-primary btn-block" name="productUpdate" id="productUpdateId"  ><i class="glyphicon glyphicon-pencil"></i> Update Product</button>
+                       <button type="submit" class="btn btn-primary btn-block" name="editProduct" id="editProductId"  ><i class="glyphicon glyphicon-pencil"></i> Update Product</button>
                   </div>
                 </div> 
               </div>           
