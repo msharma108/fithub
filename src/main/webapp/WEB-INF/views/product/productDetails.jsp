@@ -39,16 +39,17 @@
   <div class="panel panel-primary" style="border: 2px solid maroon">
 
      <div class="panel-body" style="background-color: #C1E1A6;"> 
-         
+     
          <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${productDTO.productName}"/>
 	        <form:form modelAttribute="productDTO" method="POST" action="${formActionIndependentOfUserRole }" style="color: green;">
                   <div class="col-sm-9">    
                 <div class="form-group row">
+
 	                	<!-- start of image -->
-				        <img class="img-thumbnail" width="300" height="200"  src="${productDTO.base64imageFile}" alt="${productDTO.productName}"/>
+				        <img class="img-thumbnail" width="304" height="236"  src="${productDTO.base64imageFile}" alt="${product.productName}"/>
+				        <input type="hidden" name="base64imageFile" value="${productDTO.base64imageFile}"/>
+				        <button class="btn btn-primary btn-sm center-block" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 				        <!-- end of image -->
-				       
-			      <button class="btn btn-primary btn-sm center-block" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
                   </div>
 
                 </div>
@@ -64,6 +65,9 @@
                   </div>
                 </div>
               </div>
+             <sec:authorize access="isAuthenticated()">
+         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+              </sec:authorize>
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
@@ -130,7 +134,7 @@
                 </div>
                 </div>
                 
-                 
+                  
 
               
 			<br><br>              

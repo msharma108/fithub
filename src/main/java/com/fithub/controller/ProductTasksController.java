@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -81,7 +80,6 @@ public class ProductTasksController {
 				LOG.debug("Encoding image retreieved from database");
 				productDTO.setBase64imageFile(
 						"data:image/jpg;base64," + Base64.getEncoder().encodeToString(productFromDB.getThumbImage()));
-				productDTO.setThumbImageAsByteArray(productFromDB.getThumbImage());
 				ListProductDTO.add(productDTO);
 
 			}
@@ -193,22 +191,24 @@ public class ProductTasksController {
 
 	@PostMapping(value = { "/admin/productSave" }, params = "editProduct")
 	public String submitProductEditPage(@ModelAttribute("productDTO") ProductDTO productDTO,
-			RedirectAttributes redirectAttributes, Authentication authentication, SessionStatus sessionStatus,
+			RedirectAttributes redirectAttributes, Authentication authentication, HttpServletRequest request,
 			@RequestParam("thumbImage") MultipartFile thumbImage) {
 		LOG.debug("Attempting to update product={}", productDTO.getProductName());
 
 		// Invoking User Profile Edit in addition to JSR 303 validation
 		// userEditValidator.validate(userDTO, result);
 
-		// If a new image is being uploaded for the product
-		if (thumbImage != null) {
-			try {
+		try {
+			// If a new image is being uploaded for the product
+			if (!thumbImage.isEmpty()) {
 				productDTO.setThumbImageAsByteArray(thumbImage.getBytes());
-			} catch (IOException e) {
-				LOG.debug("Problems saving product images");
-				e.printStackTrace();
 			}
+
+		} catch (IOException e) {
+			LOG.debug("Problems saving product images");
+			e.printStackTrace();
 		}
+
 		productService.updateProductDetails(productDTO, authentication);
 		LOG.debug("Product={} information update successful", productDTO.getProductName());
 

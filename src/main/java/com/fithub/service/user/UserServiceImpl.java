@@ -55,7 +55,10 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUsername(String userName) {
 		LOG.debug("Retreive user having userName={}", userName);
 		User user = userRepository.findOneByUserName(userName);
-		return user;
+		if (user != null)
+			return user;
+		else
+			throw new NoSuchElementException(String.format("UserId=%d not found", userName));
 
 	}
 

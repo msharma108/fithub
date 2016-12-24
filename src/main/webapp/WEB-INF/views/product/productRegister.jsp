@@ -139,6 +139,7 @@ function openProductModal(){
                 <div class="form-group row">
                 <c:if test="${productDTO.isEditable == true }">
                 <img class="img-thumbnail" width="200" height="200"  src="${productDTO.base64imageFile}" alt="${productDTO.productName}"/>
+                <input type="hidden" name="base64imageFile" value="${productDTO.base64imageFile}"/>
                 </c:if>
                   <div class="col-sm-4 form-group">thumbImage<br>
 			           <input class="form-control" type="file" name="thumbImage" id="thumbImage" placeHolder= "Thumbnail"  />

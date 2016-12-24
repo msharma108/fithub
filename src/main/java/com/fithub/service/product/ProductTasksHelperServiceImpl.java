@@ -72,6 +72,7 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		productDTO.setProductCategory(product.getProductCategory().getCategory());
 		productDTO.setSdesc(product.getSdesc());
 		productDTO.setStockQuantity(product.getStockQuantity());
+		productDTO.setThumbImageAsByteArray(product.getThumbImage());
 
 		return productDTO;
 	}
