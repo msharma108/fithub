@@ -43,12 +43,11 @@ CREATE TABLE IF NOT EXISTS `fithub`.`user` (
   `profile_edit_date` DATETIME NULL DEFAULT NULL COMMENT '',
   `profile_edited_by_user` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
   `is_user_deleted` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '',
-  PRIMARY KEY (`user_id`)  COMMENT '')
+  PRIMARY KEY (`user_id`)  COMMENT '',
+  UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC)  COMMENT '')
 ENGINE = InnoDB
-AUTO_INCREMENT = 22
+AUTO_INCREMENT = 25
 DEFAULT CHARACTER SET = utf8;
-
-CREATE UNIQUE INDEX `user_name_UNIQUE` ON `fithub`.`user` (`user_name` ASC)  COMMENT '';
 
 
 -- -----------------------------------------------------
@@ -58,20 +57,21 @@ DROP TABLE IF EXISTS `fithub`.`sales_order` ;
 
 CREATE TABLE IF NOT EXISTS `fithub`.`sales_order` (
   `sales_order_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '',
-  `amount` FLOAT NULL DEFAULT '0' COMMENT '',
+  `amount` DECIMAL(10,0) NULL DEFAULT '0' COMMENT '',
   `user_id` INT(10) NOT NULL COMMENT '',
-  `tax` FLOAT NULL DEFAULT NULL COMMENT '',
+  `tax` DECIMAL(10,0) NULL DEFAULT '0' COMMENT '',
   `address` VARCHAR(100) NULL DEFAULT NULL COMMENT '',
   `city` VARCHAR(50) NULL DEFAULT NULL COMMENT '',
   `province` VARCHAR(20) NULL DEFAULT NULL COMMENT '',
   `zip` VARCHAR(20) NULL DEFAULT NULL COMMENT '',
   `country` VARCHAR(30) NULL DEFAULT NULL COMMENT '',
   `phone` VARCHAR(20) NULL DEFAULT NULL COMMENT '',
-  `shipping_charge` FLOAT NULL DEFAULT NULL COMMENT '',
+  `shipping_charge` DECIMAL(10,0) NULL DEFAULT '10' COMMENT '',
   `email` VARCHAR(100) NULL DEFAULT NULL COMMENT '',
   `order_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '',
   `tracking_number` VARCHAR(80) NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`sales_order_id`)  COMMENT '',
+  INDEX `fkule_idx` (`user_id` ASC)  COMMENT '',
   CONSTRAINT `FK4u1waqcu3ns8bfsrobt4eysi3`
     FOREIGN KEY (`user_id`)
     REFERENCES `fithub`.`user` (`user_id`),
@@ -83,8 +83,6 @@ CREATE TABLE IF NOT EXISTS `fithub`.`sales_order` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-CREATE INDEX `fkule_idx` ON `fithub`.`sales_order` (`user_id` ASC)  COMMENT '';
-
 
 -- -----------------------------------------------------
 -- Table `fithub`.`product_category`
@@ -94,13 +92,12 @@ DROP TABLE IF EXISTS `fithub`.`product_category` ;
 CREATE TABLE IF NOT EXISTS `fithub`.`product_category` (
   `product_category_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '',
   `category` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
-  PRIMARY KEY (`product_category_id`)  COMMENT '')
+  PRIMARY KEY (`product_category_id`)  COMMENT '',
+  UNIQUE INDEX `category_UNIQUE` (`category` ASC)  COMMENT '')
 ENGINE = InnoDB
-AUTO_INCREMENT = 18
+AUTO_INCREMENT = 22
 DEFAULT CHARACTER SET = utf8
 COMMENT = 'various categories of products';
-
-CREATE UNIQUE INDEX `category_UNIQUE` ON `fithub`.`product_category` (`category` ASC)  COMMENT '';
 
 
 -- -----------------------------------------------------
@@ -113,14 +110,13 @@ CREATE TABLE IF NOT EXISTS `fithub`.`product` (
   `product_name` VARCHAR(100) NOT NULL COMMENT '',
   `sdesc` VARCHAR(300) NULL DEFAULT NULL COMMENT '',
   `ldesc` TEXT NULL DEFAULT NULL COMMENT '',
-  `price` FLOAT NULL DEFAULT NULL COMMENT '',
+  `price` DECIMAL(10,0) NULL DEFAULT NULL COMMENT '',
   `stock_quantity` INT(11) NULL DEFAULT '0' COMMENT '',
   `category_id` INT(11) NOT NULL COMMENT '',
   `manufacture_date` DATE NULL DEFAULT NULL COMMENT '',
   `expiry_date` DATE NULL DEFAULT NULL COMMENT '',
-  `rating` ENUM('Bad','Average','Good','Awesome') NULL DEFAULT NULL COMMENT '',
-  `weight` FLOAT NULL DEFAULT NULL COMMENT '',
-  `main_image` LONGBLOB NULL DEFAULT NULL COMMENT '',
+  `rating` ENUM('Bad','Average','Good','Awesome','Not Applicable') NULL DEFAULT NULL COMMENT '',
+  `weight` DECIMAL(10,0) NULL DEFAULT NULL COMMENT '',
   `thumb_image` LONGBLOB NULL DEFAULT NULL COMMENT '',
   `flavor` VARCHAR(45) NULL DEFAULT 'Not Applicable' COMMENT '',
   `product_update_date` DATETIME NULL DEFAULT NULL COMMENT '',
@@ -129,6 +125,8 @@ CREATE TABLE IF NOT EXISTS `fithub`.`product` (
   `quantity_sold` INT(11) NULL DEFAULT '0' COMMENT '',
   `is_product_deleted` TINYINT(1) NULL DEFAULT '0' COMMENT '',
   PRIMARY KEY (`product_id`)  COMMENT '',
+  UNIQUE INDEX `product_name_UNIQUE` (`product_name` ASC)  COMMENT '',
+  INDEX `ProductProductCategory_idx` (`category_id` ASC)  COMMENT '',
   CONSTRAINT `FK5cypb0k23bovo3rn1a5jqs6j4`
     FOREIGN KEY (`category_id`)
     REFERENCES `fithub`.`product_category` (`product_category_id`),
@@ -138,13 +136,9 @@ CREATE TABLE IF NOT EXISTS `fithub`.`product` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 12
+AUTO_INCREMENT = 26
 DEFAULT CHARACTER SET = utf8
 COMMENT = 'Product Entity table';
-
-CREATE UNIQUE INDEX `product_name_UNIQUE` ON `fithub`.`product` (`product_name` ASC)  COMMENT '';
-
-CREATE INDEX `ProductProductCategory_idx` ON `fithub`.`product` (`category_id` ASC)  COMMENT '';
 
 
 -- -----------------------------------------------------
@@ -158,6 +152,8 @@ CREATE TABLE IF NOT EXISTS `fithub`.`order_detail` (
   `product_id` INT(10) NOT NULL COMMENT '',
   `product_quantity` INT(40) NULL DEFAULT '0' COMMENT '',
   PRIMARY KEY (`order_detail_id`)  COMMENT '',
+  INDEX `OrderDetailProduct_idx` (`product_id` ASC)  COMMENT '',
+  INDEX `OrderDetailSalesOrder_idx` (`sales_order_id` ASC)  COMMENT '',
   CONSTRAINT `FK19may4v187yhnxq14vjj5ppki`
     FOREIGN KEY (`sales_order_id`)
     REFERENCES `fithub`.`sales_order` (`sales_order_id`),
@@ -176,10 +172,6 @@ CREATE TABLE IF NOT EXISTS `fithub`.`order_detail` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `OrderDetailProduct_idx` ON `fithub`.`order_detail` (`product_id` ASC)  COMMENT '';
-
-CREATE INDEX `OrderDetailSalesOrder_idx` ON `fithub`.`order_detail` (`sales_order_id` ASC)  COMMENT '';
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

@@ -1,5 +1,7 @@
 package com.fithub.service.product;
 
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -83,6 +85,7 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		final String productDeleted = "Product_Deleted";
 		final String productDeletedDummyDate = "1900/10/11";
 		final String productDeletedRating = "Not Applicable";
+		BigDecimal productDeletedDummyNumber = new BigDecimal(-999);
 
 		productDTO.setBase64imageFile(productDeleted);
 
@@ -90,18 +93,18 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		productDTO.setFlavor(productDeleted);
 		productDTO.setLdesc(productDeleted);
 		productDTO.setManufactureDate((timeHelperService.dateFormatter(productDeletedDummyDate)));
-		productDTO.setPrice(-999);
+		productDTO.setPrice(productDeletedDummyNumber);
 		productDTO.setProductCategory(productDeleted);
 		productDTO.setProductDeleted(true);
 		productDTO.setProductName(productDTO.getProductName().concat(productDeleted));
-		productDTO.setQuantityInCart(0);
+		productDTO.setQuantityInCart(BigDecimal.ZERO);
 		productDTO.setQuantitySold(-999);
 		productDTO.setRating(productDeletedRating);
 		productDTO.setRegistrationDate(timeHelperService.dateFormatter(productDeletedDummyDate));
 		productDTO.setSdesc(productDeleted);
 		productDTO.setStockQuantity(-999);
 		productDTO.setThumbImageAsByteArray(null);
-		productDTO.setWeight(-999);
+		productDTO.setWeight(productDeletedDummyNumber);
 
 		return productDTO;
 	}

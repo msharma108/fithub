@@ -1,5 +1,7 @@
 package com.fithub.controller;
 
+import java.math.BigDecimal;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -43,11 +45,10 @@ public class ShoppingCartController {
 
 		LOG.debug("Attempting to add product={} to the cart", productName);
 		String cartOperationTypeAddProduct = "addToCart";
-		int productQuantityToAddInCart = 1;
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct,
-				productQuantityToAddInCart);
+				BigDecimal.ONE);
 		session.setAttribute("shoppingCart", shoppingCart);
 
 		// used to check if the product was successfully added to the cart
@@ -65,7 +66,7 @@ public class ShoppingCartController {
 	@RequestMapping(value = "/refreshCart/{productName}")
 	public String handleRefreshProductQuantityInCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
-			HttpServletRequest request, @ModelAttribute("quantityInCart") Integer quantityInCart) {
+			HttpServletRequest request, @ModelAttribute("quantityInCart") BigDecimal quantityInCart) {
 
 		// ## If there is any issues remove the sessionAttribute and using
 		// service retrieve the product from db here
@@ -74,7 +75,7 @@ public class ShoppingCartController {
 		String cartOperationTypeRefreshProductQuantity = "refreshQuantityInCart";
 		// Get refreshed quantity from request object
 		// Get it from flash attributes
-		int productQuantityInCartAfterRefresh = quantityInCart;
+		BigDecimal productQuantityInCartAfterRefresh = quantityInCart;
 
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
@@ -106,7 +107,7 @@ public class ShoppingCartController {
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO, cartOperationTypeRemoveProduct,
-				productQuantityInCartAfterRefresh);
+				BigDecimal.ZERO);
 		session.setAttribute("shoppingCart", shoppingCart);
 
 		// used to check if the product was successfully removed from the cart

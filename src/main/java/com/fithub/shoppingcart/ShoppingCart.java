@@ -1,5 +1,6 @@
 package com.fithub.shoppingcart;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +13,10 @@ import com.fithub.domain.ProductDTO;
 public class ShoppingCart {
 
 	private List<ProductDTO> cartProductList = new ArrayList<ProductDTO>();
-	private float cartCost;
-	private float cartTax = (float) 0.13;
-	private float cartTotalCost;
+	private BigDecimal cartCost = BigDecimal.ZERO;
+	private BigDecimal cartTaxRate = BigDecimal.valueOf(0.13);
+	private BigDecimal cartTax = BigDecimal.ZERO;
+	private BigDecimal cartTotalCost = BigDecimal.ZERO;
 
 	public List<ProductDTO> getCartProductList() {
 		return cartProductList;
@@ -24,28 +26,36 @@ public class ShoppingCart {
 		this.cartProductList = cartProductList;
 	}
 
-	public float getCartCost() {
+	public BigDecimal getCartCost() {
 		return cartCost;
 	}
 
-	public void setCartCost(float cartCost) {
+	public void setCartCost(BigDecimal cartCost) {
 		this.cartCost = cartCost;
 	}
 
-	public float getCartTax() {
+	public BigDecimal getCartTax() {
 		return cartTax;
 	}
 
-	public void setCartTax(float cartTax) {
+	public void setCartTax(BigDecimal cartTax) {
 		this.cartTax = cartTax;
 	}
 
-	public float getCartTotalCost() {
+	public BigDecimal getCartTotalCost() {
 		return cartTotalCost;
 	}
 
-	public void setCartTotalCost(float cartTotalCost) {
+	public void setCartTotalCost(BigDecimal cartTotalCost) {
 		this.cartTotalCost = cartTotalCost;
+	}
+
+	public BigDecimal getCartTaxRate() {
+		return cartTaxRate;
+	}
+
+	public void setCartTaxRate(BigDecimal cartTaxRate) {
+		this.cartTaxRate = cartTaxRate;
 	}
 
 }

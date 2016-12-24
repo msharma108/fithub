@@ -64,8 +64,11 @@
 							</td>
 							<td data-th="Price">${cartItem.price}</td>
 							<td data-th="Quantity">
-								<input type="number" class="form-control text-center" name="quantityInCart" value="${cartItem.quantityInCart }">
+								<input type="number" class="form-control text-center" name="quantityInCart" value="${cartItem.quantityInCart }" max="${cartItem.stockQuantity }">
 							</td>
+							<c:if test="${exception !=null }">
+							<c:out value="${exception }"/>
+							</c:if>
 							<c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}"/>
 							<td data-th="Subtotal" class="text-center">${subTotal} </td>
 							<td class="actions" data-th="">

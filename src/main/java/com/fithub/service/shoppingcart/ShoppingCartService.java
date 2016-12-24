@@ -1,5 +1,7 @@
 package com.fithub.service.shoppingcart;
 
+import java.math.BigDecimal;
+
 import com.fithub.domain.ProductDTO;
 import com.fithub.shoppingcart.ShoppingCart;
 
@@ -25,6 +27,6 @@ public interface ShoppingCartService {
 	 * @return the updated shoppingCart
 	 */
 	ShoppingCart updateShoppingCart(ShoppingCart shoppingCart, ProductDTO productDTO, String shoppingCartOperationType,
-			int productQuantityInCart);
+			BigDecimal productQuantityInCart);
 
 }

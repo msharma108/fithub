@@ -1,6 +1,7 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -47,15 +48,11 @@ public class Product implements Serializable {
 	@Lob
 	private String ldesc;
 
-	@Lob
-	@Column(name = "main_image")
-	private byte[] mainImage;
-
 	@Temporal(TemporalType.DATE)
 	@Column(name = "manufacture_date")
 	private Date manufactureDate;
 
-	private float price;
+	private BigDecimal price;
 
 	@Column(name = "product_edited_by_user", length = 45)
 	private String productEditedByUser;
@@ -87,7 +84,7 @@ public class Product implements Serializable {
 	@Column(name = "thumb_image")
 	private byte[] thumbImage;
 
-	private float weight;
+	private BigDecimal weight;
 
 	// bi-directional many-to-one association to OrderDetail
 	@OneToMany(mappedBy = "product")
@@ -141,14 +138,6 @@ public class Product implements Serializable {
 		this.ldesc = ldesc;
 	}
 
-	public byte[] getMainImage() {
-		return this.mainImage;
-	}
-
-	public void setMainImage(byte[] mainImage) {
-		this.mainImage = mainImage;
-	}
-
 	public Date getManufactureDate() {
 		return this.manufactureDate;
 	}
@@ -157,11 +146,11 @@ public class Product implements Serializable {
 		this.manufactureDate = manufactureDate;
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return this.price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
@@ -237,11 +226,11 @@ public class Product implements Serializable {
 		this.thumbImage = thumbImage;
 	}
 
-	public float getWeight() {
+	public BigDecimal getWeight() {
 		return this.weight;
 	}
 
-	public void setWeight(float weight) {
+	public void setWeight(BigDecimal weight) {
 		this.weight = weight;
 	}
 

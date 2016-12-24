@@ -1,5 +1,6 @@
 package com.fithub.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -26,7 +27,7 @@ public class ProductDTO {
 
 	private String flavor;
 
-	private float price;
+	private BigDecimal price;
 
 	private byte[] mainImage;
 
@@ -57,9 +58,9 @@ public class ProductDTO {
 
 	private transient String base64imageFile;
 
-	private int quantityInCart = 0;
+	private BigDecimal quantityInCart = BigDecimal.ZERO;
 
-	private float weight;
+	private BigDecimal weight;
 
 	private boolean isEditable = false;
 	private boolean isProductDeleted = false;
@@ -106,11 +107,11 @@ public class ProductDTO {
 		this.flavor = flavor;
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
@@ -178,11 +179,11 @@ public class ProductDTO {
 		this.thumbImage = thumbImage;
 	}
 
-	public float getWeight() {
+	public BigDecimal getWeight() {
 		return weight;
 	}
 
-	public void setWeight(float weight) {
+	public void setWeight(BigDecimal weight) {
 		this.weight = weight;
 	}
 
@@ -210,11 +211,11 @@ public class ProductDTO {
 		this.thumbImageAsByteArray = thumbImageAsByteArray;
 	}
 
-	public int getQuantityInCart() {
+	public BigDecimal getQuantityInCart() {
 		return quantityInCart;
 	}
 
-	public void setQuantityInCart(int quantityInCart) {
+	public void setQuantityInCart(BigDecimal quantityInCart) {
 		this.quantityInCart = quantityInCart;
 	}
 

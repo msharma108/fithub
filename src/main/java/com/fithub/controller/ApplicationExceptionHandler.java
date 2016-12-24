@@ -36,4 +36,14 @@ public class ApplicationExceptionHandler {
 		return model;
 	}
 
+	@ExceptionHandler(IllegalStateException.class)
+	public ModelAndView handlerIllegalStateException(HttpServletRequest request, IllegalStateException exception) {
+		LOG.error("Excepion ={} appeared at URL={}", exception.getMessage(), request.getRequestURL());
+		ModelAndView model = new ModelAndView();
+		model.addObject("exception", exception.getMessage());
+		model.addObject("errorUrl", request.getRequestURL());
+		model.setViewName("product/shoppingCart");
+		return model;
+	}
+
 }
