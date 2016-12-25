@@ -87,10 +87,16 @@
 					</tbody>
 					<tfoot>
 						<tr> 
-							<td> <form action="" method="POST"><button href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Continue Shopping</button></form></td>
+							<td> <form action="/viewProducts" method="POST">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<button name="continueShopping" class="btn btn-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Continue Shopping</button></form></td>
+							
 							<td colspan="2" class="hidden-xs"></td>
 							<td class="hidden-xs text-center"><strong>${shoppingCart.cartTotalCost } </strong></td>
-							<td> <form action="" method="POST"><button href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></button></form></td>
+							
+							<td> <form action="/orderCheckout" method="POST">
+							 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<button class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></button></form></td>
 						</tr>
 					</tfoot>
 	</table>
