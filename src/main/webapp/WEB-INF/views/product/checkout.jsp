@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
       <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
       <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -13,17 +12,121 @@
     <title>FitHub.com</title>
 
 	<!-- Font Awesome -->
-	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<!-- JQuery -->
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+	 <script src="../../js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
 	<!-- custom -->
 	<link rel="stylesheet" href="../css/style.css"  >
 	<!-- Bootstrap -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	
+	<!-- Stripe.js -->
+	<!-- Stripe Integration -->
+	<!-- Reference: https://stripe.com/docs/custom-form#step-1-collecting-credit-card-information -->
+	
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+	<script type="text/javascript">
+	
+	// Reference: https://stripe.com/docs/custom-form#step-1-collecting-credit-card-information
+	// Reference: http://www.larryullman.com/2012/12/05/writing-the-javascript-code-for-handling-stripe-payments/
+	
+  	Stripe.setPublishableKey('pk_test_4Gv5vV4024ApKYTS3Nkt8oeS');
+	</script>
+	<script type="text/javascript">
+	
+	
+  	function clientValidationResult(result) {
+ 		// If errors in the form, display the errors
+ 		var $form = $('#payment-form');
+ 		
+ 		console.log("Inside Client Validation");
+  	    $form.find('.payment-errors').text(result);
+  	  $form.find('.submit').prop('disabled', false);
+  	    return false;
+  	}
+  	
+	// Client side validation & send payment data directly to Stripe
+  $(document).ready(function() {
+  		
+  		console.log( "ready!" );
+  	  var $form = $('#payment-form');
+  		$form.submit(function(event) {
+  	    // Submit button disabled after one click
+  	    console.log( "button click!" );
+  	  $form.find('.submit').prop('disabled', true);
+  	    
+  	    // To check for client side validation errors and prevent submission to Stripe
+  	    var errorsExist = false;
+  	    var ccNum = $('.card-number').val();
+  	    var expMonth = $('.card-expiry-month').val();
+  	  	var expYear = $('.card-expiry-year').val();
+  	  	var cvc = $('.card-cvc').val();
+  	    
+		// Validate the Card Number:
+		if (!Stripe.card.validateCardNumber(ccNum)) {
+			errorsExist = true;
+			 alert("Invalid Card Number, please correct");
+			clientValidationResult('Invalid Card Number, please correct');
+		}
+  	  	
+		// Validate the card expiry date:
+		if (!Stripe.card.validateExpiry(expMonth,expYear )) {
+			errorsExist = true;
+			clientValidationResult('Invalid expiry date, please correct');
+		}
+  	  	
+		// Validate the cvc number:
+		if (!Stripe.card.validateCVC(cvc)) {
+			errorsExist = true;
+			clientValidationResult('Invalid CVC number, please correct');
+		}
+  	  	
+		// Send token request to stripe only in case of successful client data validation
+  	  	if(!errorsExist){
 
+  	    // Getting token from stripe
+  	    Stripe.card.createToken($form, stripeResponseHandler);
+  	    	  	}
+
+  	    // Prevent the form from being submitted:
+  	    return false;
+  	  });
+  	});
+  	
+  	// Response handler for Stripe response
+  	function stripeResponseHandler(status, response) {
+  	  // Reference the form
+  	  var $form = $('#payment-form');
+
+  	  if (response.error) {
+
+  		 // If errors in the form, display the errors
+  	    $form.find('.payment-errors').text(response.error.message);
+  		// Enable the submit button again
+  	  $form.find('.submit').prop('disabled', false); 
+
+  	  } else {
+  		  
+  		 alert("Form being submitted");
+		// If no errors
+  	    // Grab the stripe token from the response
+  	    var token = response.id;
+
+  	    // Insert the token as a hidden value into the form for server
+  	    $form.append($('<input type="hidden" name="stripeToken">').val(token));
+
+  	    $form.get(0).submit();
+  	  }
+  	};
+  	
+
+  	
+  	
+	</script>
+	
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -39,17 +142,13 @@
  <div class="container wrapper">
    
             <div class="row">
-                <form class="form-horizontal" method="post" action="">
+
+               <form class="form-horizontal" action="/handleOrderCheckout" method="POST" id="payment-form">
                     <!--REVIEW ORDER-->
                     <div class = "col-lg-10" >
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             Order Details 				  
-                            <div class="col-md-6 pull-right">
-				             <form action="/shoppingCart/viewCart" method="POST">
-                              <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId"  >Edit Cart <span class="glyphicon glyphicon-shopping-cart"></span> </button>
-                             </form>
-                  			</div>
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
@@ -79,7 +178,7 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <small>Shipping</small>
-                                    <div class="pull-right"><span>shippingCost</span></div>
+                                    <div class="pull-right"><span>shippingCost: 10$</span></div>
                                 </div>
                             </div>
                             <div class="form-group"><hr /></div>
@@ -155,66 +254,33 @@
                     <div class="panel panel-info">
                         <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
                         <div class="panel-body">
-                            <div class="form-group">
-                                <div class="col-md-12"><strong>Card Type:</strong></div>
-                                <div class="col-md-12">
-                                    <select id="CreditCardType" name="CreditCardType" class="form-control">
-                                        <option value="vs">Visa</option>
-                                        <option value="mc">MasterCard</option>
-                                        <option value="ax">American Express</option>
-                                        <option value="dc">Discover</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
+                        <span class="payment-errors"></span>
+                            <div class="form-row">
                                 <div class="col-md-12"><strong>Name On Card:</strong></div>
-                                <div class="col-md-12"><input type="text" class="form-control" name=full_name" value="" /></div>
+                                <div class="col-md-12"><input type="text" class="card-name" name="name" autocomplete="off"  required placeholder="John Doe"/></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-row">
                                 <div class="col-md-12"><strong>Credit Card Number:</strong></div>
-                                <div class="col-md-12"><input type="text" class="form-control" name="card_number" value="" /></div>
+                                <div class="col-md-12"><input type="text" class="card-number"  size="20" data-stripe="number" autocomplete="off" required placeholder="**** **** **** ****"/></div>
+                                <span>Enter the number without spaces or hyphens.</span>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-12"><strong>Card CVV:</strong></div>
-                                <div class="col-md-12"><input type="text" class="form-control" name="card_code" value="" /></div>
+                            <div class="form-row">
+                                <div class="col-md-12"><strong>Card CVC:</strong></div>
+                                <div class="col-md-12"><input type="text" class="card-cvc" size="3" data-stripe="cvc" autocomplete="off" required placeholder="***" /></div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <strong>Expiration Date</strong>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control" name="">
-                                        <option value="">Month</option>
-                                        <option value="01">Jan (01)</option>
-                                        <option value="02">Feb (02)</option>
-                                        <option value="03">Mar (03)</option>
-                                        <option value="04">Apr (04)</option>
-                                        <option value="05">May (05)</option>
-                                        <option value="06">June (06)</option>
-                                        <option value="07">July (07)</option>
-                                        <option value="08">Aug (08)</option>
-                                        <option value="09">Sep (09)</option>
-                                        <option value="10">Oct (10)</option>
-                                        <option value="11">Nov (11)</option>
-                                        <option value="12">Dec (12)</option>
-                                </select>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control" name="">
-                                        <option value="">Year</option>
-                                        <option value="2015">2015</option>
-                                        <option value="2016">2016</option>
-                                        <option value="2017">2017</option>
-                                        <option value="2018">2018</option>
-                                        <option value="2019">2019</option>
-                                        <option value="2020">2020</option>
-                                        <option value="2021">2021</option>
-                                        <option value="2022">2022</option>
-                                        <option value="2023">2023</option>
-                                        <option value="2024">2024</option>
-                                        <option value="2025">2025</option>
-                                </select>
-                                </div>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<div class="form-row">
+    							<label>
+      								<span>Expiration (MM/YY)</span>
+      									<input type="number" class="card-expiry-month" size="2" data-stripe="exp_month" min="01" max="12"  autocomplete="off" required placeholder="MM">
+    							</label>
+    								<span> / </span>
+    									<input type="number" size="4" class ="card-expiry-year" data-stripe="exp_year" min="2016" max="2030" autocomplete="off" required placeholder="YYYY">
+  							</div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
@@ -231,7 +297,7 @@
                    </div>
                             <div class="form-group">
                                 <div class="col-md-10 col-sm-6 col-xs-12">
-                                    <button type="submit" class="btn btn-primary btn-block">Pay Now</button>
+                                    <input type="submit" class="submit" value="Submit Payment">
                                 </div>
                             </div>
                 </form>
@@ -246,7 +312,7 @@
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../../js/bootstrap.min.js"></script>
+
 
   </body>
 </html>
