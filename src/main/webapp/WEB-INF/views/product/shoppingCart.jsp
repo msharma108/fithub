@@ -75,8 +75,8 @@
 							
 							   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							   
-								<button class="btn btn-primary btn-sm" title="Update Shopping cart" name="refreshCart"><i class="fa fa-refresh"></i></button>
-								<button class="btn btn-danger btn-sm" title="Delete Item" name="removeFromCart" ><i class="fa fa-trash-o"></i></button>
+								<button class="btn btn-primary btn-sm" title="Update Shopping cart" name="refreshCart"><span class="glyphicon glyphicon-refresh"></span></button>
+								<button class="btn btn-danger btn-sm" title="Delete Item" name="removeFromCart" ><span class="glyphicon glyphicon-trash"></span></button>
 							   </form>
 							</td>
 							
@@ -89,14 +89,14 @@
 						<tr> 
 							<td> <form action="/viewProducts" method="POST">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<button name="continueShopping" class="btn btn-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Continue Shopping</button></form></td>
+							<button name="continueShopping" class="btn btn-primary"><span class="glyphicon glyphicon-backward"></span> Continue Shopping</button></form></td>
 							
 							<td colspan="2" class="hidden-xs"></td>
 							<td class="hidden-xs text-center"><strong>${shoppingCart.cartTotalCost } </strong></td>
 							
 							<td> <form action="/orderCheckout" method="POST">
 							 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<button class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></button></form></td>
+							<button class="btn btn-success btn-block">Checkout <span class="glyphicon glyphicon-forward"></span></button></form></td>
 						</tr>
 					</tfoot>
 	</table>

@@ -192,96 +192,104 @@
                     </div>
                     <!--REVIEW ORDER END-->
                     </div>
-                    <div class = "col-lg-5">
+                    <div class = "col-lg-6">
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-info">
                         <div class="panel-heading">Shipping Address</div>
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="col-md-6 col-xs-12">
-                                    <strong>First Name:</strong>
-                                    <input type="text" name="first_name" class="form-control" value="" />
+                                    <strong>First Name</strong>
+                                    <input type="text" name="first_name" class="form-control" value=<c:out value="${product.givenName}"/> />
                                 </div>
                                 <div class="span1"></div>
                                 <div class="col-md-6 col-xs-12">
-                                    <strong>Last Name:</strong>
-                                    <input type="text" name="last_name" class="form-control" value="" />
+                                    <strong>Last Name</strong>
+                                    <input type="text" name="last_name" class="form-control" value=<c:out value="${product.familyName}"/> />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-12"><strong>Address:</strong></div>
+                                <div class="col-md-12"><strong>Address</strong></div>
                                 <div class="col-md-12">
-                                    <input type="text" name="address" class="form-control" value="" />
+                                    <input type="text" name="address" class="form-control" value=<c:out value="${product.address}"/> />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-6 col-xs-12">
-                                    <strong>City:</strong>
-                                    <input type="text" name="city" class="form-control" value="" />
+                                    <strong>City</strong>
+                                    <input type="text" name="city" class="form-control" value=<c:out value="${product.city}"/> />
                                 </div>
                                 <div class="span1"></div>
                                 <div class="col-md-6 col-xs-12">
-                                    <strong>State/Province:</strong>
-                                    <input type="text" name="prov" class="form-control" value="" />
+                                    <strong>State/Province</strong>
+                                    <input type="text" name="prov" class="form-control" value=<c:out value="${product.province}"/> />
                                 </div>
                             </div>
                               <div class="form-group">
                                 <div class="col-md-6 col-xs-12">
-                                    <strong>Country:</strong>
-                                    <input type="text" name="country" class="form-control" value="" />
+                                    <strong>Country</strong>
+                                    <input type="text" name="country" class="form-control" value=<c:out value="${product.country}"/> />
                                 </div>
                                 <div class="span1"></div>
                                 <div class="col-md-6 col-xs-12">
-                                    <strong>Zip/Postal Code:</strong>
-                                    <input type="text" name="postal" class="form-control" value="" />
+                                    <strong>Zip/Postal Code</strong>
+                                    <input type="text" name="postal" class="form-control" value=<c:out value="${product.zipcode}"/> />
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-12"><strong>Phone Number:</strong></div>
-                                <div class="col-md-12"><input type="text" name="phone_number" class="form-control" value="" /></div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12"><strong>Email Address:</strong></div>
-                                <div class="col-md-12"><input type="text" name="email_address" class="form-control" value="" /></div>
+                              <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Phone Number</strong>
+                                    <input type="text" name="phone_number" class="form-control" value=<c:out value="${product.phone}"/> />
+                                </div>
+                                <div class="span1"></div>
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Email Address</strong>
+                                    <input type="text" name="email_address" class="form-control" value=<c:out value="${product.email}"/> />
+                                </div>
                             </div>
                         </div>
                     </div>
                     <!--SHIPPING METHOD END-->
                     </div>
-                    <div class ="col-md-5">
-                   
+                    
+                    <div class ="col-md-4">
                     <!--CREDIT CART PAYMENT-->
                     <div class="panel panel-info">
                         <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
                         <div class="panel-body">
                         <span class="payment-errors"></span>
+                           <div class="form-group">
                             <div class="form-row">
-                                <div class="col-md-12"><strong>Name On Card:</strong></div>
+                                <div class="col-md-12"><strong>Name On Card</strong></div>
                                 <div class="col-md-12"><input type="text" class="card-name" name="name" autocomplete="off"  required placeholder="John Doe"/></div>
                             </div>
+                           </div>
+                            
+                            <div class="form-group">
                             <div class="form-row">
-                                <div class="col-md-12"><strong>Credit Card Number:</strong></div>
+                                <div class="col-md-12"><strong>Credit Card Number</strong></div>
                                 <div class="col-md-12"><input type="text" class="card-number"  size="20" data-stripe="number" autocomplete="off" required placeholder="**** **** **** ****"/></div>
-                                <span>Enter the number without spaces or hyphens.</span>
+                                <div class="col-md-12"><span style="color:red;">No spaces or hyphens</span></div>
                             </div>
-                            <div class="form-row">
-                                <div class="col-md-12"><strong>Card CVC:</strong></div>
-                                <div class="col-md-12"><input type="text" class="card-cvc" size="3" data-stripe="cvc" autocomplete="off" required placeholder="***" /></div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-12">
-                                    <strong>Expiration Date</strong>
-                                </div>
+                            <div class="form-row">
+                                <div class="col-md-12"><strong>Card CVC</strong></div>
+                                <div class="col-md-12"><input type="text" class="card-cvc" size="3" data-stripe="cvc" autocomplete="off" required placeholder="***" /></div>
+                            </div>
+                            </div>
+                            <div class="form-group">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<div class="form-row">
-    							<label>
-      								<span>Expiration (MM/YY)</span>
+							  <div class="col-md-12"><strong>Expiration (MM/YYYY)</strong></div>
+      						  <div class="col-md-12">
       									<input type="number" class="card-expiry-month" size="2" data-stripe="exp_month" min="01" max="12"  autocomplete="off" required placeholder="MM">
-    							</label>
     								<span> / </span>
     									<input type="number" size="4" class ="card-expiry-year" data-stripe="exp_year" min="2016" max="2030" autocomplete="off" required placeholder="YYYY">
+  							  </div>
   							</div>
                             </div>
+                            
                             <div class="form-group">
                                 <div class="col-md-12">
                                <div><img class="pull-right"
@@ -295,11 +303,11 @@
                     </div>
                     <!--CREDIT CART PAYMENT END-->
                    </div>
-                            <div class="form-group">
-                                <div class="col-md-10 col-sm-6 col-xs-12">
-                                    <input type="submit" class="submit" value="Submit Payment">
-                                </div>
-                            </div>
+                   <div class="form-group">
+                       <div class="col-md-10 col-sm-6 col-xs-12">
+                           <input type="submit" class="btn btn-primary btn-block"  type="submit" value="Pay Now">
+                       </div>
+                   </div>
                 </form>
             </div>
             <div class="row cart-footer">
