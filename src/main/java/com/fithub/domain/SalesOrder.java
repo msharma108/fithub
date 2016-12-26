@@ -34,7 +34,8 @@ public class SalesOrder implements Serializable {
 	@Column(length = 100)
 	private String address;
 
-	private BigDecimal amount;
+	@Column(name = "order_total_cost")
+	private BigDecimal orderTotalCost;
 
 	@Column(length = 50)
 	private String city;
@@ -94,11 +95,11 @@ public class SalesOrder implements Serializable {
 	}
 
 	public BigDecimal getAmount() {
-		return this.amount;
+		return this.orderTotalCost;
 	}
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
+	public void setAmount(BigDecimal orderTotalCost) {
+		this.orderTotalCost = orderTotalCost;
 	}
 
 	public String getCity() {
