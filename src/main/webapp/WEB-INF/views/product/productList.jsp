@@ -78,7 +78,7 @@
 	                	     <!-- start of image -->
 				              <input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
 				              <button type="submit" name="viewProduct" id="viewProductId">
-				               <img class="img-circle" width="304" height="236"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
+				               <img class="img-rounded" width="304" height="236"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 				              </button>
 				              <!-- end of image -->
 				              </div>
@@ -111,7 +111,7 @@
 	                         		<button class="btn btn-danger" title="Delete product" type = "submit" name="deleteProduct"><i class="glyphicon glyphicon-trash"></i></button>
 	                         	</sec:authorize>
 	                         	
-	                            <!-- end of edit/delete buttong block -->
+	                            <!-- end of edit/delete button block -->
 				            </div>
 				          </div>
 				        </div>     	  
