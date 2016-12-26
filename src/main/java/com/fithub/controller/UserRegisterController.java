@@ -83,7 +83,7 @@ public class UserRegisterController {
 		userService.createUser(userDTO);
 		LOG.debug("Registration successful, heading to the jsp");
 
-		// used to check login success on the canvas page
+		// used to check if the user registration was successfully completed
 		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 1);
 
 		// Redirect based on logged in user's role

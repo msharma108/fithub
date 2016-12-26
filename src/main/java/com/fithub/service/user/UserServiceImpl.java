@@ -55,7 +55,10 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUsername(String userName) {
 		LOG.debug("Retreive user having userName={}", userName);
 		User user = userRepository.findOneByUserName(userName);
-		return user;
+		if (user != null)
+			return user;
+		else
+			throw new NoSuchElementException(String.format("UserId=%d not found", userName));
 
 	}
 
@@ -71,13 +74,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean deleteUserByUsername(UserDTO userDTO) {
+	public boolean deleteUser(UserDTO userDTO) {
 
 		boolean isUserDeleted = true;
 		LOG.debug("Attempting to delete user having userName={}", userDTO.getUserName());
 		try {
 			User user = getUserByUsername(userDTO.getUserName());
-			user = getUserById(user.getUserId());
 			userDTO = userTasksHelperService.destroyUserDataForDeletion(userDTO);
 			user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
 			user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
@@ -126,7 +128,7 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		// Get user using DTO to intimate JPA about update operation as a part
 		// of the transaction
-		user = getUserByUsername(userDTO.getUserName());
+		user = getUserByUsername(userDTO.getUserNameBeforeEdit());
 		user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
 		user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
 		user.setProfileEditedByUser(userDTO.getLoggedInUserName());

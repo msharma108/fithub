@@ -1,5 +1,6 @@
 package com.fithub.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -26,7 +27,7 @@ public class ProductDTO {
 
 	private String flavor;
 
-	private float price;
+	private BigDecimal price;
 
 	private byte[] mainImage;
 
@@ -57,17 +58,14 @@ public class ProductDTO {
 
 	private transient String base64imageFile;
 
-	public byte[] getThumbImageAsByteArray() {
-		return thumbImageAsByteArray;
-	}
+	private BigDecimal quantityInCart = BigDecimal.ZERO;
 
-	public void setThumbImageAsByteArray(byte[] thumbImageAsByteArray) {
-		this.thumbImageAsByteArray = thumbImageAsByteArray;
-	}
-
-	private float weight;
+	private BigDecimal weight;
 
 	private boolean isEditable = false;
+	private boolean isProductDeleted = false;
+
+	private String productNameBeforeEdit;
 
 	public String getProductName() {
 		return productName;
@@ -109,11 +107,11 @@ public class ProductDTO {
 		this.flavor = flavor;
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
@@ -181,11 +179,11 @@ public class ProductDTO {
 		this.thumbImage = thumbImage;
 	}
 
-	public float getWeight() {
+	public BigDecimal getWeight() {
 		return weight;
 	}
 
-	public void setWeight(float weight) {
+	public void setWeight(BigDecimal weight) {
 		this.weight = weight;
 	}
 
@@ -203,6 +201,38 @@ public class ProductDTO {
 
 	public void setBase64imageFile(String base64imageFile) {
 		this.base64imageFile = base64imageFile;
+	}
+
+	public byte[] getThumbImageAsByteArray() {
+		return thumbImageAsByteArray;
+	}
+
+	public void setThumbImageAsByteArray(byte[] thumbImageAsByteArray) {
+		this.thumbImageAsByteArray = thumbImageAsByteArray;
+	}
+
+	public BigDecimal getQuantityInCart() {
+		return quantityInCart;
+	}
+
+	public void setQuantityInCart(BigDecimal quantityInCart) {
+		this.quantityInCart = quantityInCart;
+	}
+
+	public boolean isProductDeleted() {
+		return isProductDeleted;
+	}
+
+	public void setProductDeleted(boolean isProductDeleted) {
+		this.isProductDeleted = isProductDeleted;
+	}
+
+	public String getProductNameBeforeEdit() {
+		return productNameBeforeEdit;
+	}
+
+	public void setProductNameBeforeEdit(String productNameBeforeEdit) {
+		this.productNameBeforeEdit = productNameBeforeEdit;
 	}
 
 }

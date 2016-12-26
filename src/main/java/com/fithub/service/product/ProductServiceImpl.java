@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fithub.domain.CustomUser;
 import com.fithub.domain.Product;
 import com.fithub.domain.ProductDTO;
 import com.fithub.repository.product.ProductRepository;
@@ -73,15 +74,26 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional
-	public boolean deleteProductByProductName(String productName) {
+	public boolean deleteProduct(ProductDTO productDTO, Authentication authentication) {
 		boolean isProductDeleted = true;
-		LOG.debug("Attempting to delete product having productName={}", productName);
+		LOG.debug("Attempting to delete product having productName={}", productDTO.getProductName());
 		try {
-			productRepository.deleteByProductName(productName);
+			Product product = getProductByProductName(productDTO.getProductName());
+			productDTO = productTasksHelperService.destroyProductDataForDeletion(productDTO);
+			product = productTasksHelperService.createProductFromProductDTO(product, productDTO);
+			product.setProductUpdateDate(timeHelperService.getCurrentTimeStamp());
+			product.setIsProductDeleted(true);
+
+			// Get the name of admin who deleted the product
+			CustomUser loggedInAdmin = (CustomUser) authentication.getPrincipal();
+			product.setProductEditedByUser(loggedInAdmin.getUserName());
+			product = productRepository.save(product);
 			return isProductDeleted;
 		} catch (IllegalArgumentException exception) {
-			LOG.debug("Product with productName={} can't be deleted as it doesn't exist in the database", productName);
-			return (!isProductDeleted);
+			LOG.debug("Product with productName={} can't be deleted as it doesn't exist in the database",
+					productDTO.getProductName());
+			isProductDeleted = false;
+			return isProductDeleted;
 		}
 	}
 
@@ -110,7 +122,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product = new Product();
 		// Get product using DTO to intimate JPA about update operation as a
 		// part of the transaction
-		product = getProductByProductName(productDTO.getProductName());
+		product = getProductByProductName(productDTO.getProductNameBeforeEdit());
 		product = productTasksHelperService.createProductFromProductDTO(product, productDTO);
 		product.setProductUpdateDate((timeHelperService.getCurrentTimeStamp()));
 		product.setProductEditedByUser((userTasksHelperService.getLoggedInUserName(authentication)));

@@ -134,18 +134,24 @@ function openProductModal(){
 			           <form:input class="form-control" type="text" path="price" id="priceId" placeHolder= "Enter Price"  />
 			           <form:errors  path="price" style="color: red;"/>
                   </div>
+                  <div class="col-sm-4 form-group">
+			           <form:label path="weight">Weight:</form:label><br>
+			           <form:input class="form-control" type="text" path="weight" id="weightId" placeHolder= "Enter Weight"  />
+			           <form:errors  path="weight" style="color: red;"/>
+                  </div>
                   
                   <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">thumbImage<br>
 			           <input class="form-control" type="file" name="thumbImage" id="thumbImage" placeHolder= "Thumbnail"  />
                   </div>
-                  
-                  <div class="col-sm-4 form-group">
-			           <form:label path="weight">Weight:</form:label><br>
-			           <form:input class="form-control" type="text" path="weight" id="weightId" placeHolder= "Enter Weight"  />
-			           <form:errors  path="weight" style="color: red;"/>
-                  </div>
+                  <c:if test="${productDTO.isEditable == true }">
+                   <div class="col-sm-4 form-group">
+                     <img class="img-thumbnail" width="200" height="200"  src="${productDTO.base64imageFile}" alt="${productDTO.productName}"/>
+                     <input type="hidden" name="base64imageFile" value="${productDTO.base64imageFile}"/>
+                   </div>
+                  </c:if>
+
                 </div>
               </div>
               
@@ -216,7 +222,7 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
                        <!-- input class="btn btn-primary btn-block" type="submit" name="productUpdate" id="productUpdateId" value="Submit" /-->
-                       <button type="submit" class="btn btn-primary btn-block" name="productUpdate" id="productUpdateId"  ><i class="glyphicon glyphicon-pencil"></i> Update Product</button>
+                       <button type="submit" class="btn btn-primary btn-block" name="editProduct" id="editProductId"  ><i class="glyphicon glyphicon-pencil"></i> Update Product</button>
                   </div>
                 </div> 
               </div>           

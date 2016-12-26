@@ -1,67 +1,77 @@
 package com.fithub.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the sales_order database table.
  * 
  */
 @Entity
-@Table(name="sales_order")
-@NamedQuery(name="SalesOrder.findAll", query="SELECT s FROM SalesOrder s")
+@Table(name = "sales_order")
+@NamedQuery(name = "SalesOrder.findAll", query = "SELECT s FROM SalesOrder s")
 public class SalesOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="sales_order_id", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "sales_order_id", unique = true, nullable = false)
 	private int salesOrderId;
 
-	@Column(length=100)
+	@Column(length = 100)
 	private String address;
 
-	private float amount;
+	private BigDecimal amount;
 
-	@Column(length=50)
+	@Column(length = 50)
 	private String city;
 
-	@Column(length=30)
+	@Column(length = 30)
 	private String country;
 
-	@Column(length=100)
+	@Column(length = 100)
 	private String email;
 
-	@Column(name="order_date")
+	@Column(name = "order_date")
 	private Timestamp orderDate;
 
-	@Column(length=20)
+	@Column(length = 20)
 	private String phone;
 
-	@Column(length=20)
+	@Column(length = 20)
 	private String province;
 
-	@Column(name="shipping_charge")
-	private float shippingCharge;
+	@Column(name = "shipping_charge")
+	private BigDecimal shippingCharge;
 
-	private float tax;
+	private BigDecimal tax;
 
-	@Column(name="tracking_number", length=80)
+	@Column(name = "tracking_number", length = 80)
 	private String trackingNumber;
 
-	@Column(length=20)
+	@Column(length = 20)
 	private String zip;
 
-	//bi-directional many-to-one association to OrderDetail
-	@OneToMany(mappedBy="salesOrder")
+	// bi-directional many-to-one association to OrderDetail
+	@OneToMany(mappedBy = "salesOrder")
 	private List<OrderDetail> orderDetails;
 
-	//bi-directional many-to-one association to User
+	// bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="user_id", nullable=false)
+	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
 	public SalesOrder() {
@@ -83,11 +93,11 @@ public class SalesOrder implements Serializable {
 		this.address = address;
 	}
 
-	public float getAmount() {
+	public BigDecimal getAmount() {
 		return this.amount;
 	}
 
-	public void setAmount(float amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 
@@ -139,19 +149,19 @@ public class SalesOrder implements Serializable {
 		this.province = province;
 	}
 
-	public float getShippingCharge() {
+	public BigDecimal getShippingCharge() {
 		return this.shippingCharge;
 	}
 
-	public void setShippingCharge(float shippingCharge) {
+	public void setShippingCharge(BigDecimal shippingCharge) {
 		this.shippingCharge = shippingCharge;
 	}
 
-	public float getTax() {
+	public BigDecimal getTax() {
 		return this.tax;
 	}
 
-	public void setTax(float tax) {
+	public void setTax(BigDecimal tax) {
 		this.tax = tax;
 	}
 

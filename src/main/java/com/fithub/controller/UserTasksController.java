@@ -158,7 +158,7 @@ public class UserTasksController {
 			@ModelAttribute("userDTO") UserDTO userDTO, RedirectAttributes redirectAttributes) {
 		LOG.debug("Attempting to delete user={}", userDTO.getUserName());
 
-		boolean isUserDelete = userService.deleteUserByUsername(userDTO);
+		boolean isUserDelete = userService.deleteUser(userDTO);
 
 		LOG.debug("User was delete successfuly ?={}", isUserDelete);
 
