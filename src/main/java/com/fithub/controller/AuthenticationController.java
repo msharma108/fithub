@@ -1,11 +1,15 @@
 package com.fithub.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.fithub.shoppingcart.ShoppingCart;
 
 @Controller
 public class AuthenticationController {
@@ -26,11 +30,14 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping(value = "/logoutSuccess")
-	public String handleUserLogout(Model model) {
+	public String handleUserLogout(Model model, HttpSession session) {
 
 		LOG.debug("Logging out,handleUserLogout method has been called by FithubSecurityConfig logoutsuccess Url");
 		model.addAttribute("logoutMessage", "You've logged out of FitHub");
 
+		// Put an empty shopping Cart back into session
+		ShoppingCart shoppingCart = new ShoppingCart();
+		session.setAttribute("shoppingCart", shoppingCart);
 		return "user/login";
 	}
 

@@ -1,6 +1,7 @@
 package com.fithub.controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ import com.fithub.shoppingcart.ShoppingCart;
  *
  */
 @Controller
-@SessionAttributes("productDTO")
+@SessionAttributes({ "productDTO", "cartUpdateParams" })
 @RequestMapping("/shoppingCart")
 public class ShoppingCartController {
 
@@ -45,10 +46,11 @@ public class ShoppingCartController {
 
 		LOG.debug("Attempting to add product={} to the cart", productName);
 		String cartOperationTypeAddProduct = "addToCart";
+		BigDecimal productQuantityIncrease = BigDecimal.ONE;
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct,
-				BigDecimal.ONE);
+				BigDecimal.ZERO, productQuantityIncrease);
 		session.setAttribute("shoppingCart", shoppingCart);
 
 		// used to check if the product was successfully added to the cart
@@ -59,28 +61,20 @@ public class ShoppingCartController {
 
 	}
 
-	// On clicking minus button in cart, have action
-	// :/constructUrlForProductOperations/{productName} with button name
-	// This is for refresh quantity in cart
-	// Write URL Reconstruction for Refresh or think of logic in Cart itself
 	@RequestMapping(value = "/refreshCart/{productName}")
 	public String handleRefreshProductQuantityInCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
-			HttpServletRequest request, @ModelAttribute("quantityInCart") BigDecimal quantityInCart) {
-
-		// ## If there is any issues remove the sessionAttribute and using
-		// service retrieve the product from db here
+			HttpServletRequest request,
+			@ModelAttribute("cartUpdateParams") HashMap<String, BigDecimal> cartUpdateParams) {
 
 		LOG.debug("Attempting to refreshCart product={} quantity in the cart", productName);
 		String cartOperationTypeRefreshProductQuantity = "refreshQuantityInCart";
-		// Get refreshed quantity from request object
-		// Get it from flash attributes
-		BigDecimal productQuantityInCartAfterRefresh = quantityInCart;
 
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO,
-				cartOperationTypeRefreshProductQuantity, productQuantityInCartAfterRefresh);
+				cartOperationTypeRefreshProductQuantity, cartUpdateParams.get("productSubTotalInCart"),
+				cartUpdateParams.get("productQuantityInCart"));
 		session.setAttribute("shoppingCart", shoppingCart);
 
 		// used to check if the product quantity was successfully refreshed in
@@ -91,23 +85,19 @@ public class ShoppingCartController {
 
 	}
 
-	// On clicking minus button in cart, have action
-	// :/constructUrlForProductOperations/{productName} with button name
-	// This is for remove
 	@RequestMapping(value = "/removeFromCart/{productName}")
 	public String handleRemoveFromCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
-			HttpServletRequest request) {
+			HttpServletRequest request,
+			@ModelAttribute("cartUpdateParams") HashMap<String, BigDecimal> cartUpdateParams) {
 
 		LOG.debug("Attempting to reduce product={} quantity in the cart", productName);
 		String cartOperationTypeRemoveProduct = "removeFromCart";
-		// Get refreshed quantity from request object
-		int productQuantityInCartAfterRefresh = 0;
 
 		// Get shoppingCart from session
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 		shoppingCart = shoppingCartService.updateShoppingCart(shoppingCart, productDTO, cartOperationTypeRemoveProduct,
-				BigDecimal.ZERO);
+				cartUpdateParams.get("productSubTotalInCart"), cartUpdateParams.get("productQuantityInCart"));
 		session.setAttribute("shoppingCart", shoppingCart);
 
 		// used to check if the product was successfully removed from the cart

@@ -64,15 +64,16 @@
 							</td>
 							<td data-th="Price">${cartItem.price}</td>
 							<td data-th="Quantity">
-								<input type="number" class="form-control text-center" name="quantityInCart" value="${cartItem.quantityInCart }" max="${cartItem.stockQuantity }">
+								<input type="number" class="form-control text-center" name="quantityInCart" value="${cartItem.quantityInCart }" min ="0" max="${cartItem.stockQuantity }">
 							</td>
 							<c:if test="${exception !=null }">
 							<c:out value="${exception }"/>
 							</c:if>
 							<c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}"/>
 							<td data-th="Subtotal" class="text-center">${subTotal} </td>
-							<td class="actions" data-th="">
 							
+							<td class="actions" data-th="">
+							 <input type="hidden" name="subTotal" value="${subTotal}"/>
 							   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							   
 								<button class="btn btn-primary btn-sm" title="Update Shopping cart" name="refreshCart"><span class="glyphicon glyphicon-refresh"></span></button>

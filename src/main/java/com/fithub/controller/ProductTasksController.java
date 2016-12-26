@@ -1,8 +1,10 @@
 package com.fithub.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -35,7 +37,7 @@ import com.fithub.service.product.ProductTasksHelperService;
  *
  */
 @Controller
-@SessionAttributes("productDTO")
+@SessionAttributes({ "productDTO", "cartUpdateParams" })
 public class ProductTasksController {
 
 	private final ProductService productService;
@@ -113,6 +115,7 @@ public class ProductTasksController {
 
 		String base64imageFile = request.getParameter("base64imageFile");
 		String reconstructedUrl = "";
+		Map<String, BigDecimal> cartUpdateParams = new HashMap<String, BigDecimal>();
 
 		if (productName != null) {
 
@@ -126,12 +129,19 @@ public class ProductTasksController {
 					reconstructedUrl = "/viewProduct/" + productName;
 				if (addToCart != null)
 					reconstructedUrl = "/shoppingCart/addToCart/" + productName;
-				if (removeFromCart != null)
-					reconstructedUrl = "/shoppingCart/removeFromCart/" + productName;
-				if (refreshCart != null) {
-					int productQuantityInCartAfterRefresh = Integer.parseInt(request.getParameter("quantityInCart"));
-					reconstructedUrl = "/shoppingCart/refreshCart/" + productName;
-					model.addAttribute("quantityInCart", productQuantityInCartAfterRefresh);
+				if (removeFromCart != null || refreshCart != null) {
+					BigDecimal productSubTotalInCart = new BigDecimal(request.getParameter("subTotal"));
+					BigDecimal productQuantityInCartAfterRefresh = new BigDecimal(
+							request.getParameter("quantityInCart"));
+
+					cartUpdateParams.put("productSubTotalInCart", productSubTotalInCart);
+					cartUpdateParams.put("productQuantityInCart", productQuantityInCartAfterRefresh);
+					model.addAttribute("cartUpdateParams", cartUpdateParams);
+
+					if (removeFromCart != null)
+						reconstructedUrl = "/shoppingCart/removeFromCart/" + productName;
+					if (refreshCart != null)
+						reconstructedUrl = "/shoppingCart/refreshCart/" + productName;
 				}
 				if (editProduct != null)
 					reconstructedUrl = "/admin/editProduct/" + productName;

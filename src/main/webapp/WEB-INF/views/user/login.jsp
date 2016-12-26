@@ -46,7 +46,7 @@
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
-			           <label for="email">UserName <span class="glyphicon glyphicon-user"> </span></label><br>
+			           <label for="userName">UserName <span class="glyphicon glyphicon-user"> </span></label><br>
 			           <input class="form-control" name="userName" id="userNameId" placeholder="Enter UserName" autofocus required />
 			           
                   </div>

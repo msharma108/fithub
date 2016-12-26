@@ -22,11 +22,13 @@ public interface ShoppingCartService {
 	 *            of the shoppingCart
 	 * @param shoppingCartOperationType
 	 *            The type of shoppingCartOperation to be performed
+	 * @param productSubTotalInCart
+	 *            Subtotal of the product in Cart product in cart
 	 * @param productQuantityInCart
-	 *            Product quantity in cart
+	 *            Quantity of product in cart
 	 * @return the updated shoppingCart
 	 */
 	ShoppingCart updateShoppingCart(ShoppingCart shoppingCart, ProductDTO productDTO, String shoppingCartOperationType,
-			BigDecimal productQuantityInCart);
+			BigDecimal productSubTotalInCart, BigDecimal productQuantityInCart);
 
 }

@@ -18,7 +18,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
 	@Override
 	public ShoppingCart updateShoppingCart(ShoppingCart shoppingCart, ProductDTO productDTO,
-			String shoppingCartOperationType, BigDecimal productQuantityInCart) {
+			String shoppingCartOperationType, BigDecimal productSubTotalInCart, BigDecimal productQuantityCart) {
 		LOG.debug("Inside updateShoppingCart method");
 
 		String cartOperationTypeAddProduct = "addToCart";
@@ -26,6 +26,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		String cartOperationTypeRefreshProductQuantity = "refreshQuantityInCart";
 		List<ProductDTO> cartProductList = shoppingCart.getCartProductList();
 		boolean productFoundInCartDuringIteration = false;
+		boolean isProductRemovedFromCart = false;
 
 		ListIterator<ProductDTO> listIterator = cartProductList.listIterator();
 		ProductDTO cartProduct;
@@ -38,18 +39,29 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 				while (listIterator.hasNext()) {
 
 					cartProduct = listIterator.next();
-					// Increase the product's quantity in cart if the
-					// product being added already exists in the cart
+
 					if (cartProduct.getProductName().equals(productDTO.getProductName())) {
 
-						// Perform update cart for addition of product to
-						// cart
-						LOG.debug("Existing Product={} being added in the cart", cartProduct.getProductName());
-						cartProduct.setQuantityInCart(cartProduct.getQuantityInCart().add(productQuantityInCart));
-						shoppingCart.setCartCost(cartProduct.getQuantityInCart().multiply(cartProduct.getPrice()));
-						shoppingCart.setCartTax(shoppingCart.getCartCost().multiply(shoppingCart.getCartTaxRate()));
-						shoppingCart.setCartTotalCost(shoppingCart.getCartCost().add(shoppingCart.getCartTax()));
-						productFoundInCartDuringIteration = true;
+						// Increase the product's quantity in cart if the
+						// product being added already exists in the cart & in
+						// stock
+						if (cartProduct.getStockQuantity() >= (cartProduct.getQuantityInCart().add(BigDecimal.ONE))
+								.intValue()) {
+
+							// Perform update cart for addition of product to
+							// cart
+							LOG.debug("Existing Product={} being added in the cart", cartProduct.getProductName());
+							cartProduct.setQuantityInCart(cartProduct.getQuantityInCart().add(productQuantityCart));
+							// Synchronize shopping cart parameters
+							shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct,
+									null);
+							productFoundInCartDuringIteration = true;
+						} else
+							throw new IllegalStateException((String.format(
+									"Quantity in cart: %s for product :%s cannot exceed the quantity in stock: %s",
+									cartProduct.getQuantityInCart().toPlainString(), cartProduct.getProductName(),
+									cartProduct.getStockQuantity())));
+
 					}
 
 				}
@@ -58,23 +70,39 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 				// the first of its kind being added to the cart
 				if (productFoundInCartDuringIteration == false) {
 					LOG.debug("Adding the first occurance of product={} into cart", productDTO.getProductName());
-					productDTO.setQuantityInCart(productQuantityInCart);
+					productDTO.setQuantityInCart(productQuantityCart);
 					cartProductList.add(productDTO);
-					shoppingCart.setCartCost(shoppingCart.getCartCost().add(productDTO.getPrice()));
-					shoppingCart.setCartTax(shoppingCart.getCartTaxRate().multiply(shoppingCart.getCartCost()));
-					shoppingCart.setCartTotalCost(shoppingCart.getCartCost().add(shoppingCart.getCartTax()));
+					// Synchronize shopping cart parameters
+					shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct, null);
 				}
 
 			} else if (shoppingCartOperationType.equals(cartOperationTypeRemoveProduct)) {
-				cartProductList.removeIf((ProductDTO cartProductToBeDeleted) -> cartProductToBeDeleted.getProductName()
-						.equals(productDTO.getProductName()));
+				LOG.debug("Attempting to delete product from cart");
+
+				isProductRemovedFromCart = cartProductList
+						.removeIf((ProductDTO cartProductToBeDeleted) -> cartProductToBeDeleted.getProductName()
+								.equals(productDTO.getProductName()));
+				if (isProductRemovedFromCart) {
+					// Synchronize shopping cart parameters
+					shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeRemoveProduct,
+							productSubTotalInCart);
+				}
 			} else if (shoppingCartOperationType.equals(cartOperationTypeRefreshProductQuantity)) {
 				// Handling reducing product quantity in cart
+				LOG.debug("Attempting to refresh product quantity in cart");
+				BigDecimal productQuantityInCart = productQuantityCart;
+
 				if (productQuantityInCart.compareTo(BigDecimal.ONE) < 0) {
 					// remove the product from the cart if the entered quantity
 					// is less than 1
-					cartProductList.removeIf((ProductDTO cartProductToBeDeleted) -> cartProductToBeDeleted
-							.getProductName().equals(productDTO.getProductName()));
+					isProductRemovedFromCart = cartProductList
+							.removeIf((ProductDTO cartProductToBeDeleted) -> cartProductToBeDeleted.getProductName()
+									.equals(productDTO.getProductName()));
+					if (isProductRemovedFromCart) {
+						// Synchronize shopping cart parameters
+						shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeRemoveProduct,
+								productSubTotalInCart);
+					}
 
 				} else {
 
@@ -135,13 +163,36 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		if (cartProductList.isEmpty() && shoppingCartOperationType.equals(cartOperationTypeAddProduct)) {
 			// Add product into an empty shoppingCart
 			LOG.debug("Adding product={} to an empty shoppingCart", productDTO.getProductName());
-			productDTO.setQuantityInCart(productQuantityInCart);
+			productDTO.setQuantityInCart(productQuantityCart);
 			cartProductList.add(productDTO);
-			shoppingCart.setCartCost(shoppingCart.getCartCost().add(productDTO.getPrice()));
-			shoppingCart.setCartTax(shoppingCart.getCartTaxRate().multiply(shoppingCart.getCartCost()));
-			shoppingCart.setCartTotalCost(shoppingCart.getCartCost().add(shoppingCart.getCartTax()));
+			// Synchronize shopping cart parameters
+			shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct, null);
 		}
 
 		return shoppingCart;
 	}
+
+	private ShoppingCart synchShoppingCart(ShoppingCart shoppingCart, ProductDTO productDTO, String cartOperationType,
+			BigDecimal productSubTotalInCart) {
+
+		String cartOperationTypeAddProduct = "addToCart";
+		String cartOperationTypeRemoveProduct = "removeFromCart";
+
+		if (cartOperationType.equals(cartOperationTypeAddProduct)) {
+
+			shoppingCart.setCartCost(shoppingCart.getCartCost().add(productDTO.getPrice()));
+			shoppingCart.setCartTax(shoppingCart.getCartTaxRate().multiply(shoppingCart.getCartCost()));
+			shoppingCart.setCartTotalCost(shoppingCart.getCartCost().add(shoppingCart.getCartTax()));
+		}
+		if (cartOperationType.equals(cartOperationTypeRemoveProduct)) {
+
+			shoppingCart.setCartCost(shoppingCart.getCartCost().subtract(productSubTotalInCart));
+			shoppingCart.setCartTax(shoppingCart.getCartTaxRate().multiply(shoppingCart.getCartCost()));
+			shoppingCart.setCartTotalCost(shoppingCart.getCartCost().add(shoppingCart.getCartTax()));
+
+		}
+
+		return shoppingCart;
+	}
+
 }
