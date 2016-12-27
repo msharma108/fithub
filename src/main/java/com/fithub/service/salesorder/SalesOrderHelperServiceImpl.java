@@ -45,12 +45,16 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 	public SalesOrder createSalesOrderFromOrderDTO(SalesOrder salesOrder, OrderDTO orderDTO) {
 		LOG.debug("Attempting to create a sales order from OrderDTO with email={}", orderDTO.getEmail());
 
+		String salesOrderActiveStatus = "ACTIVE";
+
+		// populate salesOrder from orderDTO
 		salesOrder.setShippingCharge(orderDTO.getShippingCharge());
 		salesOrder.setTax(orderDTO.getTax());
 		salesOrder.setSalesOrderTotalCost(orderDTO.getOrderTotalCost());
 		salesOrder.setTrackingNumber(generateTrackingNumber());
 		salesOrder.setStripeChargeId(orderDTO.getStripeChargeId());
 		salesOrder.setPaymentStatus(orderDTO.getPaymentStatus());
+		salesOrder.setStatus(salesOrderActiveStatus);
 
 		// Map the customer for the order
 		User customer = userService.getUserByUsername(orderDTO.getCustomerUserNameForThisOrder());
@@ -73,9 +77,27 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 
 	private String generateTrackingNumber() {
 
-		// generate a unique random tracking number
-		return timeHelperService.getCurrentTimeStamp().toString().replace("%:-%",
-				RandomStringUtils.randomAlphanumeric(5));
+		// generate a unique random tracking number based on current time
+		int loopControl = 0;
+		StringBuffer randomStringBuffer = new StringBuffer(timeHelperService.getCurrentTimeStamp().toString());
+		while (loopControl < 2) {
+
+			randomStringBuffer = randomStringBuffer.replace(randomStringBuffer.indexOf(":"),
+					randomStringBuffer.indexOf(":") + 1, RandomStringUtils.randomAlphanumeric(1));
+
+			randomStringBuffer = randomStringBuffer.replace(randomStringBuffer.indexOf("-"),
+					randomStringBuffer.indexOf("-") + 1, RandomStringUtils.randomAlphanumeric(1));
+
+			loopControl++;
+		}
+
+		randomStringBuffer = randomStringBuffer.replace(randomStringBuffer.indexOf(" "),
+				randomStringBuffer.indexOf(" ") + 1, "");
+
+		randomStringBuffer = randomStringBuffer.replace(randomStringBuffer.indexOf("."),
+				randomStringBuffer.indexOf(".") + 1, "");
+
+		return randomStringBuffer.toString();
 	}
 
 }

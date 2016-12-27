@@ -38,6 +38,9 @@ public class SalesOrderItem implements Serializable {
 	@JoinColumn(name = "sales_order_id", nullable = false)
 	private SalesOrder salesOrder;
 
+	@Column(name = "sales_order_item_quantity_sold")
+	private int salesOrderItemQuantitySold;
+
 	public SalesOrderItem() {
 	}
 
@@ -63,6 +66,14 @@ public class SalesOrderItem implements Serializable {
 
 	public void setSalesOrder(SalesOrder salesOrder) {
 		this.salesOrder = salesOrder;
+	}
+
+	public int getSalesOrderItemQuantitySold() {
+		return salesOrderItemQuantitySold;
+	}
+
+	public void setSalesOrderItemQuantitySold(int salesOrderItemQuantitySold) {
+		this.salesOrderItemQuantitySold = salesOrderItemQuantitySold;
 	}
 
 }

@@ -67,7 +67,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 		salesOrder = salesOrderHelperService.createSalesOrderFromOrderDTO(salesOrder, orderDTO);
 		salesOrder.setSalesOrderCreationDate(timeHelperService.getCurrentTimeStamp());
 		salesOrder = salesOrderRepository.save(salesOrder);
-		// ## Can be deleted
+		// Update sales order item table as part of the order creation
 		salesOrderItemHelperService.synchronizeSalesOrderItem(orderDTO, salesOrder);
 		return salesOrder;
 	}

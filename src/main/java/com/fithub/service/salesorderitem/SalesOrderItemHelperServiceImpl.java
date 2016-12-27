@@ -44,8 +44,11 @@ public class SalesOrderItemHelperServiceImpl implements SalesOrderItemHelperServ
 			product = productTasksHelperService.createProductFromProductDTO(product, productInOrder);
 			product = productService.getProductByProductName(product.getProductName());
 
+			product.setQuantitySold(product.getQuantitySold() + productInOrder.getQuantityInCart().intValue());
+			product.setStockQuantity(product.getStockQuantity() - product.getQuantitySold());
 			salesOrderItem.setProduct(product);
 			salesOrderItem.setSalesOrder(salesOrder);
+			salesOrderItem.setSalesOrderItemQuantitySold(productInOrder.getQuantityInCart().intValue());
 			salesOrderItemList.add(salesOrderItem);
 
 		}

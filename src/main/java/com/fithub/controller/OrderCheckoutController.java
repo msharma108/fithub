@@ -61,20 +61,17 @@ public class OrderCheckoutController {
 		LOG.debug("Handling order checkout");
 		// private key for test account
 		Stripe.apiKey = "sk_test_AM33dQCKgInsAIX0OcT17kYJ";
-		String paymentToken = request.getParameter("stripeToken");
 
+		// Stripe Charge creation params
+		String paymentToken = request.getParameter("stripeToken");
 		BigDecimal orderTotalCost = new BigDecimal(request.getParameter("orderTotalCost"));
-		BigDecimal shippingCost = new BigDecimal(request.getParameter("shippingCost"));
 		BigDecimal dollarToCents = new BigDecimal(100);
 
 		LOG.debug("payment token from stripe={}", paymentToken);
 
-		CustomUser customer = (CustomUser) authentication.getPrincipal();
-		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
-		// Create a bill for customer
-
 		LOG.debug("Creating a bill for the customer to be sent to Stripe PG");
 
+		// Stripe charge creation
 		Map<String, Object> bill = new HashMap<String, Object>();
 		// Amount in cents
 		bill.put("amount", (orderTotalCost.multiply(dollarToCents)).intValue());
@@ -84,14 +81,10 @@ public class OrderCheckoutController {
 
 		Charge charge = Charge.create(bill);
 
-		// Pre-setup orderDTO with necessary data
-		orderDTO.setOrderProductList(shoppingCart.getCartProductList());
-		orderDTO.setStripeChargeId(charge.getId());
-		orderDTO.setPaymentStatus(charge.getStatus());
-		orderDTO.setShippingCharge(shippingCost);
-		orderDTO.setCustomerUserNameForThisOrder(customer.getUserName());
-		orderDTO.setTax(shoppingCart.getCartTax());
+		// Prepare orderDTO for Order Creation
+		orderDTO = prepareOrderDTO(request, session, authentication, charge, orderDTO);
 
+		// Create order if payment successful
 		if (charge.getPaid()) {
 
 			SalesOrder salesOrder = salesOrderService.createSalesOrder(orderDTO);
@@ -99,27 +92,30 @@ public class OrderCheckoutController {
 
 		}
 
-		// Map<String, String> initialMetadata = new HashMap<String, String>();
-		// initialMetadata = charge.getMetadata();
-		// String orderId = initialMetadata.get("order_id");
-
-		return "home";
+		// ## Redirect to a Order Success Page. Dont show modal.. but show an
+		// actual page with order success. Use redirect attribute to show a
+		// section
+		// initialize cart there.
+		return "redirect:/home";
 	}
 
-	// private prepareOrderDTO(HttpServletRequest request,HttpSession session,
-	// Authentication authentication, Charge charge){
-	//
-	// CustomUser customer = (CustomUser) authentication.getPrincipal();
-	// ShoppingCart shoppingCart = (ShoppingCart)
-	// session.getAttribute("shoppingCart");
-	//
-	// orderDTO.setOrderProductList(shoppingCart.getCartProductList());
-	// orderDTO.setStripeChargeId(charge.getId());
-	// orderDTO.setPaymentStatus(charge.getStatus());
-	// orderDTO.setShippingCharge(shippingCost);
-	// orderDTO.setCustomerUserNameForThisOrder(customer.getUserName());
-	// orderDTO.setTax(shoppingCart.getCartTax());
-	//
-	// }
+	private OrderDTO prepareOrderDTO(HttpServletRequest request, HttpSession session, Authentication authentication,
+			Charge charge, OrderDTO orderDTO) {
+
+		// Get parameters from request and session
+		BigDecimal shippingCost = new BigDecimal(request.getParameter("shippingCost"));
+		CustomUser customer = (CustomUser) authentication.getPrincipal();
+		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
+
+		orderDTO.setOrderProductList(shoppingCart.getCartProductList());
+		orderDTO.setStripeChargeId(charge.getId());
+		orderDTO.setPaymentStatus(charge.getStatus());
+		orderDTO.setShippingCharge(shippingCost);
+		orderDTO.setCustomerUserNameForThisOrder(customer.getUserName());
+		orderDTO.setTax(shoppingCart.getCartTax());
+
+		return orderDTO;
+
+	}
 
 }
