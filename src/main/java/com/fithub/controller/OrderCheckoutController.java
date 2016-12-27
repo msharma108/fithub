@@ -9,12 +9,16 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fithub.domain.CustomUser;
 import com.fithub.domain.OrderDTO;
+import com.fithub.domain.SalesOrder;
+import com.fithub.service.salesorder.SalesOrderService;
 import com.fithub.shoppingcart.ShoppingCart;
 import com.stripe.Stripe;
 import com.stripe.exception.APIConnectionException;
@@ -32,6 +36,11 @@ import com.stripe.model.Charge;
 public class OrderCheckoutController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OrderCheckoutController.class);
+	private final SalesOrderService salesOrderService;
+
+	public OrderCheckoutController(SalesOrderService salesOrderService) {
+		this.salesOrderService = salesOrderService;
+	}
 
 	@RequestMapping(value = "/orderCheckout")
 	public String getOrderCheckoutPage(Model model) {
@@ -45,18 +54,22 @@ public class OrderCheckoutController {
 
 	@RequestMapping(value = "/handleOrderCheckout")
 	public String handleOrderCheckout(HttpServletRequest request, HttpSession session,
-			@ModelAttribute("orderDTO") OrderDTO orderDTO) throws AuthenticationException, InvalidRequestException,
-			APIConnectionException, CardException, APIException {
+			@ModelAttribute("orderDTO") OrderDTO orderDTO, Authentication authentication)
+			throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException,
+			APIException {
 
 		LOG.debug("Handling order checkout");
 		// private key for test account
 		Stripe.apiKey = "sk_test_AM33dQCKgInsAIX0OcT17kYJ";
 		String paymentToken = request.getParameter("stripeToken");
-		BigDecimal orderTotalCost = new BigDecimal(request.getParameter("orderTotalCost"));
-		LOG.debug("payment token from stripe={}", paymentToken);
 
+		BigDecimal orderTotalCost = new BigDecimal(request.getParameter("orderTotalCost"));
+		BigDecimal shippingCost = new BigDecimal(request.getParameter("shippingCost"));
 		BigDecimal dollarToCents = new BigDecimal(100);
 
+		LOG.debug("payment token from stripe={}", paymentToken);
+
+		CustomUser customer = (CustomUser) authentication.getPrincipal();
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 		// Create a bill for customer
 
@@ -71,9 +84,19 @@ public class OrderCheckoutController {
 
 		Charge charge = Charge.create(bill);
 
+		// Pre-setup orderDTO with necessary data
+		orderDTO.setOrderProductList(shoppingCart.getCartProductList());
+		orderDTO.setStripeChargeId(charge.getId());
+		orderDTO.setPaymentStatus(charge.getStatus());
+		orderDTO.setShippingCharge(shippingCost);
+		orderDTO.setCustomerUserNameForThisOrder(customer.getUserName());
+		orderDTO.setTax(shoppingCart.getCartTax());
+
 		if (charge.getPaid()) {
 
-			// Save order to db
+			SalesOrder salesOrder = salesOrderService.createSalesOrder(orderDTO);
+			session.removeAttribute("shoppingCart");
+
 		}
 
 		// Map<String, String> initialMetadata = new HashMap<String, String>();
@@ -82,5 +105,21 @@ public class OrderCheckoutController {
 
 		return "home";
 	}
+
+	// private prepareOrderDTO(HttpServletRequest request,HttpSession session,
+	// Authentication authentication, Charge charge){
+	//
+	// CustomUser customer = (CustomUser) authentication.getPrincipal();
+	// ShoppingCart shoppingCart = (ShoppingCart)
+	// session.getAttribute("shoppingCart");
+	//
+	// orderDTO.setOrderProductList(shoppingCart.getCartProductList());
+	// orderDTO.setStripeChargeId(charge.getId());
+	// orderDTO.setPaymentStatus(charge.getStatus());
+	// orderDTO.setShippingCharge(shippingCost);
+	// orderDTO.setCustomerUserNameForThisOrder(customer.getUserName());
+	// orderDTO.setTax(shoppingCart.getCartTax());
+	//
+	// }
 
 }

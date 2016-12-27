@@ -93,9 +93,9 @@ public class Product implements Serializable {
 	@JoinColumn(name = "category_id", nullable = false)
 	private ProductCategory productCategory;
 
-	// bi-directional many-to-one association to SalesOrderDetail
-	@OneToMany(mappedBy = "product")
-	private List<SalesOrderDetail> salesOrderDetails;
+	// bi-directional many-to-one association to SalesOrderItem
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private List<SalesOrderItem> salesOrderItems;
 
 	public Product() {
 	}
@@ -244,26 +244,26 @@ public class Product implements Serializable {
 		this.productCategory = productCategory;
 	}
 
-	public List<SalesOrderDetail> getSalesOrderDetails() {
-		return this.salesOrderDetails;
+	public List<SalesOrderItem> getSalesOrderItems() {
+		return this.salesOrderItems;
 	}
 
-	public void setSalesOrderDetails(List<SalesOrderDetail> salesOrderDetails) {
-		this.salesOrderDetails = salesOrderDetails;
+	public void setSalesOrderItems(List<SalesOrderItem> salesOrderItems) {
+		this.salesOrderItems = salesOrderItems;
 	}
 
-	public SalesOrderDetail addSalesOrderDetail(SalesOrderDetail salesOrderDetail) {
-		getSalesOrderDetails().add(salesOrderDetail);
-		salesOrderDetail.setProduct(this);
+	public SalesOrderItem addSalesOrderItem(SalesOrderItem salesOrderItem) {
+		getSalesOrderItems().add(salesOrderItem);
+		salesOrderItem.setProduct(this);
 
-		return salesOrderDetail;
+		return salesOrderItem;
 	}
 
-	public SalesOrderDetail removeSalesOrderDetail(SalesOrderDetail salesOrderDetail) {
-		getSalesOrderDetails().remove(salesOrderDetail);
-		salesOrderDetail.setProduct(null);
+	public SalesOrderItem removeSalesOrderItem(SalesOrderItem salesOrderItem) {
+		getSalesOrderItems().remove(salesOrderItem);
+		salesOrderItem.setProduct(null);
 
-		return salesOrderDetail;
+		return salesOrderItem;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.fithub.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,26 +35,11 @@ public class SalesOrder implements Serializable {
 	@Column(name = "sales_order_id", unique = true, nullable = false)
 	private int salesOrderId;
 
-	@Column(nullable = false, length = 100)
-	private String address;
-
-	@Column(nullable = false, length = 50)
-	private String city;
-
-	@Column(nullable = false, length = 30)
-	private String country;
-
-	@Column(nullable = false, length = 100)
-	private String email;
-
-	@Column(nullable = false, length = 20)
-	private String phone;
-
-	@Column(nullable = false, length = 20)
-	private String province;
+	@Column(name = "payment_status", length = 45)
+	private String paymentStatus;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "sales_order_creation_date", nullable = false)
+	@Column(name = "sales_order_creation_date")
 	private Date salesOrderCreationDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -62,39 +49,37 @@ public class SalesOrder implements Serializable {
 	@Column(name = "sales_order_edited_by_user", length = 45)
 	private String salesOrderEditedByUser;
 
-	@Column(name = "stripe_charge_id", length = 60)
-	private String stripeChargeId;
-
-	@Column(name = "payment_status", length = 45)
-	private String paymentStatus;
-
-	@Column(length = 20)
-	private String status;
-
-	@Column(name = "sales_order_total_cost", precision = 10)
+	@Column(name = "sales_order_total_cost", precision = 10, scale = 2)
 	private BigDecimal salesOrderTotalCost;
 
 	@Column(name = "shipping_charge", precision = 10)
 	private BigDecimal shippingCharge;
 
-	@Column(precision = 10)
+	@Column(length = 20)
+	private String status;
+
+	@Column(name = "stripe_charge_id", length = 60)
+	private String stripeChargeId;
+
+	@Column(precision = 10, scale = 2)
 	private BigDecimal tax;
 
 	@Column(name = "tracking_number", length = 80)
 	private String trackingNumber;
 
-	@Column(nullable = false, length = 20)
-	private String zip;
-
-	// bi-directional many-to-one association to SalesOrderDetail
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sales_order_detail_id", nullable = false)
-	private SalesOrderDetail salesOrderDetail;
-
 	// bi-directional many-to-one association to User
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_name", nullable = false)
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	private User user;
+
+	// bi-directional many-to-one association to ShippingAddress
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "shipping_address_id", nullable = false)
+	private ShippingAddress shippingAddress;
+
+	// bi-directional many-to-one association to SalesOrderItem
+	@OneToMany(mappedBy = "salesOrder")
+	private List<SalesOrderItem> salesOrderItems;
 
 	public SalesOrder() {
 	}
@@ -107,52 +92,36 @@ public class SalesOrder implements Serializable {
 		this.salesOrderId = salesOrderId;
 	}
 
-	public String getAddress() {
-		return this.address;
+	public String getPaymentStatus() {
+		return this.paymentStatus;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
 	}
 
-	public String getCity() {
-		return this.city;
+	public Date getSalesOrderCreationDate() {
+		return this.salesOrderCreationDate;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
+	public void setSalesOrderCreationDate(Date salesOrderCreationDate) {
+		this.salesOrderCreationDate = salesOrderCreationDate;
 	}
 
-	public String getCountry() {
-		return this.country;
+	public Date getSalesOrderEditDate() {
+		return this.salesOrderEditDate;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setSalesOrderEditDate(Date salesOrderEditDate) {
+		this.salesOrderEditDate = salesOrderEditDate;
 	}
 
-	public String getEmail() {
-		return this.email;
+	public String getSalesOrderEditedByUser() {
+		return this.salesOrderEditedByUser;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return this.phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getProvince() {
-		return this.province;
-	}
-
-	public void setProvince(String province) {
-		this.province = province;
+	public void setSalesOrderEditedByUser(String salesOrderEditedByUser) {
+		this.salesOrderEditedByUser = salesOrderEditedByUser;
 	}
 
 	public BigDecimal getSalesOrderTotalCost() {
@@ -171,6 +140,22 @@ public class SalesOrder implements Serializable {
 		this.shippingCharge = shippingCharge;
 	}
 
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getStripeChargeId() {
+		return this.stripeChargeId;
+	}
+
+	public void setStripeChargeId(String stripeChargeId) {
+		this.stripeChargeId = stripeChargeId;
+	}
+
 	public BigDecimal getTax() {
 		return this.tax;
 	}
@@ -187,22 +172,6 @@ public class SalesOrder implements Serializable {
 		this.trackingNumber = trackingNumber;
 	}
 
-	public String getZip() {
-		return this.zip;
-	}
-
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
-
-	public SalesOrderDetail getSalesOrderDetail() {
-		return this.salesOrderDetail;
-	}
-
-	public void setSalesOrderDetail(SalesOrderDetail salesOrderDetail) {
-		this.salesOrderDetail = salesOrderDetail;
-	}
-
 	public User getUser() {
 		return this.user;
 	}
@@ -211,52 +180,34 @@ public class SalesOrder implements Serializable {
 		this.user = user;
 	}
 
-	public Date getSalesOrderCreationDate() {
-		return salesOrderCreationDate;
+	public ShippingAddress getShippingAddress() {
+		return this.shippingAddress;
 	}
 
-	public void setSalesOrderCreationDate(Date salesOrderCreationDate) {
-		this.salesOrderCreationDate = salesOrderCreationDate;
+	public void setShippingAddress(ShippingAddress shippingAddress) {
+		this.shippingAddress = shippingAddress;
 	}
 
-	public Date getSalesOrderEditDate() {
-		return salesOrderEditDate;
+	public List<SalesOrderItem> getSalesOrderItems() {
+		return this.salesOrderItems;
 	}
 
-	public void setSalesOrderEditDate(Date salesOrderEditDate) {
-		this.salesOrderEditDate = salesOrderEditDate;
+	public void setSalesOrderItems(List<SalesOrderItem> salesOrderItems) {
+		this.salesOrderItems = salesOrderItems;
 	}
 
-	public String getSalesOrderEditedByUser() {
-		return salesOrderEditedByUser;
+	public SalesOrderItem addSalesOrderItem(SalesOrderItem salesOrderItem) {
+		getSalesOrderItems().add(salesOrderItem);
+		salesOrderItem.setSalesOrder(this);
+
+		return salesOrderItem;
 	}
 
-	public void setSalesOrderEditedByUser(String salesOrderEditedByUser) {
-		this.salesOrderEditedByUser = salesOrderEditedByUser;
-	}
+	public SalesOrderItem removeSalesOrderItem(SalesOrderItem salesOrderItem) {
+		getSalesOrderItems().remove(salesOrderItem);
+		salesOrderItem.setSalesOrder(null);
 
-	public String getStripeChargeId() {
-		return stripeChargeId;
-	}
-
-	public void setStripeChargeId(String stripeChargeId) {
-		this.stripeChargeId = stripeChargeId;
-	}
-
-	public String getPaymentStatus() {
-		return paymentStatus;
-	}
-
-	public void setPaymentStatus(String paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
+		return salesOrderItem;
 	}
 
 }

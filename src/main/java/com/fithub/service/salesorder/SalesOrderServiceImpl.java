@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.fithub.domain.OrderDTO;
 import com.fithub.domain.SalesOrder;
 import com.fithub.repository.salesorder.SalesOrderRepository;
+import com.fithub.service.salesorderitem.SalesOrderItemHelperService;
 import com.fithub.service.time.TimeHelperService;
 
 /**
@@ -27,14 +27,16 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	private final SalesOrderRepository salesOrderRepository;
 	private final TimeHelperService timeHelperService;
 	private final SalesOrderHelperService salesOrderHelperService;
+	private final SalesOrderItemHelperService salesOrderItemHelperService;
 
 	@Autowired
 	public SalesOrderServiceImpl(SalesOrderRepository salesOrderRepository, TimeHelperService timeHelperService,
-			SalesOrderHelperService salesOrderHelperService) {
+			SalesOrderHelperService salesOrderHelperService, SalesOrderItemHelperService salesOrderItemHelperService) {
 
 		this.salesOrderRepository = salesOrderRepository;
 		this.timeHelperService = timeHelperService;
 		this.salesOrderHelperService = salesOrderHelperService;
+		this.salesOrderItemHelperService = salesOrderItemHelperService;
 	}
 
 	@Override
@@ -62,8 +64,12 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	public SalesOrder createSalesOrder(OrderDTO orderDTO) {
 		LOG.debug("Attempting to save the order of email={} into database", orderDTO.getEmail());
 		SalesOrder salesOrder = new SalesOrder();
-		salesOrder= 
-		return null;
+		salesOrder = salesOrderHelperService.createSalesOrderFromOrderDTO(salesOrder, orderDTO);
+		salesOrder.setSalesOrderCreationDate(timeHelperService.getCurrentTimeStamp());
+		salesOrder = salesOrderRepository.save(salesOrder);
+		// ## Can be deleted
+		salesOrderItemHelperService.synchronizeSalesOrderItem(orderDTO, salesOrder);
+		return salesOrder;
 	}
 
 	@Override

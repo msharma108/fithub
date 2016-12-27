@@ -164,14 +164,17 @@
                                 <div class="col-sm-3 col-xs-3 text-right">
                                     <h6><span>$</span>${cartItem.price}</h6>
                                 </div>
-                             </div>
+                             
                                  <div class="col-sm-3 col-xs-3 text-right">
                                <c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}"/>
                                     <h6><span>$</span>${subTotal}</h6>
                                 </div>
+                                	</c:forEach>
+                                	</div>
                              </div>
+                                                					
                              <div class="form-group"><hr /></div>
-                   						</c:forEach>
+
                              
                                  <!-- loop ends -->
                              

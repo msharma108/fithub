@@ -49,6 +49,9 @@
 						</tr>
 					</thead>
 					<tbody>
+							<c:if test="${exception !=null }">
+							<c:out value="${exception }"/>
+							</c:if>
 					  <c:forEach items="${shoppingCart.cartProductList}" var="cartItem">
 					  <c:url var="cartOperation" value="/constructUrlForProductOperations/${cartItem.productName}"/>
 					  <form action="${cartOperation }" method="POST">
@@ -66,9 +69,7 @@
 							<td data-th="Quantity">
 								<input type="number" class="form-control text-center" name="quantityInCart" value="${cartItem.quantityInCart }" min ="0" max="${cartItem.stockQuantity }">
 							</td>
-							<c:if test="${exception !=null }">
-							<c:out value="${exception }"/>
-							</c:if>
+
 							<c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}"/>
 							<td data-th="Subtotal" class="text-center">${subTotal} </td>
 							

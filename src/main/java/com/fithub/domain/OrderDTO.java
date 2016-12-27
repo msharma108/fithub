@@ -1,6 +1,8 @@
 package com.fithub.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.Size;
 
@@ -54,6 +56,12 @@ public class OrderDTO {
 	private String stripeChargeId;
 
 	private String customerUserNameForThisOrder;
+
+	private BigDecimal orderTotalCost;
+
+	private String trackingNumber;
+
+	private List<ProductDTO> orderProductList = new ArrayList<ProductDTO>();
 
 	public BigDecimal getTax() {
 		return tax;
@@ -165,6 +173,30 @@ public class OrderDTO {
 
 	public void setCustomerUserNameForThisOrder(String customerNameForThisOrder) {
 		this.customerUserNameForThisOrder = customerNameForThisOrder;
+	}
+
+	public BigDecimal getOrderTotalCost() {
+		return orderTotalCost;
+	}
+
+	public String getTrackingNumber() {
+		return trackingNumber;
+	}
+
+	public void setOrderTotalCost(BigDecimal orderTotalCost) {
+		this.orderTotalCost = orderTotalCost;
+	}
+
+	public void setTrackingNumber(String trackingNumber) {
+		this.trackingNumber = trackingNumber;
+	}
+
+	public List<ProductDTO> getOrderProductList() {
+		return orderProductList;
+	}
+
+	public void setOrderProductList(List<ProductDTO> orderProductList) {
+		this.orderProductList = orderProductList;
 	}
 
 }

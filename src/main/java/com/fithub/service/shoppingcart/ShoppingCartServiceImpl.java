@@ -69,11 +69,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 				// if the cart is not empty but the product being added is
 				// the first of its kind being added to the cart
 				if (productFoundInCartDuringIteration == false) {
-					LOG.debug("Adding the first occurance of product={} into cart", productDTO.getProductName());
-					productDTO.setQuantityInCart(productQuantityCart);
-					cartProductList.add(productDTO);
-					// Synchronize shopping cart parameters
-					shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct, null);
+					LOG.debug("Attemping to add the first occurance of product={} into cart",
+							productDTO.getProductName());
+
+					if (productDTO.getStockQuantity() >= (productDTO.getQuantityInCart().add(BigDecimal.ONE))
+							.intValue()) {
+						productDTO.setQuantityInCart(productQuantityCart);
+						cartProductList.add(productDTO);
+						// Synchronize shopping cart parameters
+						shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct, null);
+					} else {
+						throw new IllegalStateException((String.format(
+								"Quantity in cart: %s for product :%s cannot exceed the quantity in stock: %s",
+								productDTO.getQuantityInCart().toPlainString(), productDTO.getProductName(),
+								productDTO.getStockQuantity())));
+					}
 				}
 
 			} else if (shoppingCartOperationType.equals(cartOperationTypeRemoveProduct)) {
@@ -162,11 +172,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		// if the cart is empty and a product is being added to the cart
 		if (cartProductList.isEmpty() && shoppingCartOperationType.equals(cartOperationTypeAddProduct)) {
 			// Add product into an empty shoppingCart
-			LOG.debug("Adding product={} to an empty shoppingCart", productDTO.getProductName());
-			productDTO.setQuantityInCart(productQuantityCart);
-			cartProductList.add(productDTO);
-			// Synchronize shopping cart parameters
-			shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct, null);
+			if (productDTO.getStockQuantity() >= (productDTO.getQuantityInCart().add(BigDecimal.ONE)).intValue()) {
+				LOG.debug("Adding product={} to an empty shoppingCart", productDTO.getProductName());
+				productDTO.setQuantityInCart(productQuantityCart);
+				cartProductList.add(productDTO);
+				// Synchronize shopping cart parameters
+				shoppingCart = synchShoppingCart(shoppingCart, productDTO, cartOperationTypeAddProduct, null);
+			} else {
+				throw new IllegalStateException(
+						(String.format("Quantity in cart: %s for product :%s cannot exceed the quantity in stock: %s",
+								productDTO.getQuantityInCart().toPlainString(), productDTO.getProductName(),
+								productDTO.getStockQuantity())));
+			}
 		}
 
 		return shoppingCart;
