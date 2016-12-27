@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.fithub.domain.SalesOrderItem;
 
+/**
+ * Repository for performing SalesOrderItem CRUD operations
+ *
+ */
 @Repository
 public interface SalesOrderItemRepository extends JpaRepository<SalesOrderItem, Integer> {
 

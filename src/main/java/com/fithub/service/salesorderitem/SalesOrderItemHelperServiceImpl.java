@@ -31,31 +31,32 @@ public class SalesOrderItemHelperServiceImpl implements SalesOrderItemHelperServ
 	}
 
 	@Override
-	public List<SalesOrderItem> synchronizeSalesOrderItem(OrderDTO orderDTO, SalesOrder salesOrder) {
+	public void synchronizeSalesOrderItem(OrderDTO orderDTO, SalesOrder salesOrder) {
 
-		// Sales Order Item section
 		List<SalesOrderItem> salesOrderItemList = new ArrayList<SalesOrderItem>();
 
+		// Create a SalesOrderItem record for each of the product in the order
 		for (ProductDTO productInOrder : orderDTO.getOrderProductList()) {
 			SalesOrderItem salesOrderItem = new SalesOrderItem();
 
-			// Product section
+			// Set product for order item
 			Product product = new Product();
 			product = productTasksHelperService.createProductFromProductDTO(product, productInOrder);
 			product = productService.getProductByProductName(product.getProductName());
 
+			// Update the product stock quantity in the product table
 			product.setQuantitySold(product.getQuantitySold() + productInOrder.getQuantityInCart().intValue());
 			product.setStockQuantity(product.getStockQuantity() - product.getQuantitySold());
+
+			// Set the sales order item record
 			salesOrderItem.setProduct(product);
 			salesOrderItem.setSalesOrder(salesOrder);
 			salesOrderItem.setSalesOrderItemQuantitySold(productInOrder.getQuantityInCart().intValue());
 			salesOrderItemList.add(salesOrderItem);
 
 		}
-		//
+		// Save the SalesOrderItem records created for each sales order
 		salesOrderItemService.saveSalesOrderItemList(salesOrderItemList);
-
-		return salesOrderItemList;
 	}
 
 }

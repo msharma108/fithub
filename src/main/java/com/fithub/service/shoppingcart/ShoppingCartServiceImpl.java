@@ -189,6 +189,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		return shoppingCart;
 	}
 
+	/**
+	 * Method synchronizes the total cart cost, subtotal, product cost based on
+	 * quantity, quantity in the cart
+	 * 
+	 * @param shoppingCart
+	 * @param productDTO
+	 * @param cartOperationType
+	 * @param productSubTotalInCart
+	 * @return An updated and synchronized shopping cart post the performed
+	 *         operation
+	 */
 	private ShoppingCart synchShoppingCart(ShoppingCart shoppingCart, ProductDTO productDTO, String cartOperationType,
 			BigDecimal productSubTotalInCart) {
 

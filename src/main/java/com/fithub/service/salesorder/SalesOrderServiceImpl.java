@@ -54,7 +54,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	public List<SalesOrder> getSalesOrderListByUserName(String userName) {
 		LOG.debug("Retrieving list of salesOrders associated with userName={}", userName);
 		List<SalesOrder> salesOrderList = salesOrderRepository.getSalesOrderByUserName(userName);
-		if (salesOrderList != null)
+		if (!salesOrderList.isEmpty())
 			return salesOrderList;
 		else
 			throw new NoSuchElementException(String.format("No sales order found for user=%s", userName));
@@ -76,7 +76,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	public List<SalesOrder> getAllSalesOrder() {
 		LOG.debug("Retrieving the list of all the sales order");
 		List<SalesOrder> salesOrderList = salesOrderRepository.findAll(new Sort("salesOrderCreationDate"));
-		if (salesOrderList != null)
+		if (!salesOrderList.isEmpty())
 			return salesOrderList;
 		else
 			throw new NoSuchElementException("No sales order found in the database");

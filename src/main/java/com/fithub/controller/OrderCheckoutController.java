@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.fithub.domain.CustomUser;
 import com.fithub.domain.OrderDTO;
@@ -52,11 +54,26 @@ public class OrderCheckoutController {
 		return "product/checkout";
 	}
 
+	/**
+	 * Method handles order checkout request to process the sales order in case
+	 * of failure or success
+	 * 
+	 * @param request
+	 * @param session
+	 * @param orderDTO
+	 * @param authentication
+	 * @return redirection to success or failure view based on the result
+	 * @throws AuthenticationException
+	 * @throws InvalidRequestException
+	 * @throws APIConnectionException
+	 * @throws CardException
+	 * @throws APIException
+	 */
 	@RequestMapping(value = "/handleOrderCheckout")
 	public String handleOrderCheckout(HttpServletRequest request, HttpSession session,
-			@ModelAttribute("orderDTO") OrderDTO orderDTO, Authentication authentication)
-			throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException,
-			APIException {
+			@ModelAttribute("orderDTO") OrderDTO orderDTO, Authentication authentication,
+			RedirectAttributes redirectAttribute) throws AuthenticationException, InvalidRequestException,
+			APIConnectionException, CardException, APIException {
 
 		LOG.debug("Handling order checkout");
 		// private key for test account
@@ -81,22 +98,25 @@ public class OrderCheckoutController {
 
 		Charge charge = Charge.create(bill);
 
-		// Prepare orderDTO for Order Creation
 		orderDTO = prepareOrderDTO(request, session, authentication, charge, orderDTO);
 
 		// Create order if payment successful
 		if (charge.getPaid()) {
 
 			SalesOrder salesOrder = salesOrderService.createSalesOrder(orderDTO);
+
+			// Shopping cart cleanup after order completion
 			session.removeAttribute("shoppingCart");
+			session.setAttribute("shoppingCart", new ShoppingCart());
 
-		}
+			// flash attribute for orderBookSuccess message
+			redirectAttribute.addFlashAttribute("orderBookingSuccess", 1);
 
-		// ## Redirect to a Order Success Page. Dont show modal.. but show an
-		// actual page with order success. Use redirect attribute to show a
-		// section
-		// initialize cart there.
-		return "redirect:/home";
+		} else
+			throw new CardException(charge.getFailureMessage(), charge.getId(), charge.getFailureCode(), paymentToken,
+					charge.getCurrency(), paymentToken, charge.getAmount().intValue(), null);
+
+		return "redirect:/orderBookingSuccess";
 	}
 
 	private OrderDTO prepareOrderDTO(HttpServletRequest request, HttpSession session, Authentication authentication,
@@ -116,6 +136,23 @@ public class OrderCheckoutController {
 
 		return orderDTO;
 
+	}
+
+	@RequestMapping(value = "/orderBookingSuccess")
+	public String getOrderBookingSuccessPage(HttpServletRequest request) {
+
+		// Prevent problem with page refresh in case of flash attribute
+		// Reference:
+		// http://www.tikalk.com/redirectattributes-new-feature-spring-mvc-31/
+		LOG.debug("Getting Order booking success Page");
+		Map<String, ?> checkMap = RequestContextUtils.getInputFlashMap(request);
+		if (checkMap != null)
+
+			// Success Page could be on registration itself
+			// Handles RegisterSuccess and UpdateSuccess
+			return "user/orderBookingSuccess";
+		else
+			return "home";
 	}
 
 }

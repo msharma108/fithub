@@ -1,5 +1,8 @@
 package com.fithub.service.salesorder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +13,7 @@ import com.fithub.domain.OrderDTO;
 import com.fithub.domain.SalesOrder;
 import com.fithub.domain.ShippingAddress;
 import com.fithub.domain.User;
-import com.fithub.service.product.ProductService;
-import com.fithub.service.product.ProductTasksHelperService;
-import com.fithub.service.salesorderitem.SalesOrderItemService;
+import com.fithub.service.shippingaddress.ShippingAddressService;
 import com.fithub.service.time.TimeHelperService;
 import com.fithub.service.user.UserService;
 
@@ -26,19 +27,14 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 	private final static Logger LOG = LoggerFactory.getLogger(SalesOrderHelperServiceImpl.class);
 	private final UserService userService;
 	private final TimeHelperService timeHelperService;
-	private final ProductTasksHelperService productTasksHelperService;
-	private final SalesOrderItemService salesOrderItemService;
-	private final ProductService productService;
+	private final ShippingAddressService shippingAddressService;
 
 	@Autowired
 	public SalesOrderHelperServiceImpl(UserService userService, TimeHelperService timeHelperService,
-			ProductTasksHelperService productTasksHelperService, SalesOrderItemService salesOrderItemService,
-			ProductService productService) {
+			ShippingAddressService shippingAddressService) {
 		this.userService = userService;
 		this.timeHelperService = timeHelperService;
-		this.productTasksHelperService = productTasksHelperService;
-		this.salesOrderItemService = salesOrderItemService;
-		this.productService = productService;
+		this.shippingAddressService = shippingAddressService;
 	}
 
 	@Override
@@ -63,18 +59,40 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 
 		// ## Map shipping address by creating new for now
 		ShippingAddress shippingAddress = new ShippingAddress();
-		shippingAddress.setAddress(orderDTO.getAddress());
-		shippingAddress.setCity(orderDTO.getCity());
-		shippingAddress.setCountry(orderDTO.getCountry());
-		shippingAddress.setEmail(orderDTO.getEmail());
-		shippingAddress.setPhone(orderDTO.getPhone());
-		shippingAddress.setProvince(orderDTO.getProvince());
-		shippingAddress.setZip(orderDTO.getZipcode());
-		salesOrder.setShippingAddress(shippingAddress);
+
+		List<ShippingAddress> shippingAddressList = new ArrayList<ShippingAddress>();
+
+		// Checking if the shipping address already exists in DB
+		shippingAddressList = shippingAddressService.getShippingAddress(orderDTO.getAddress(), orderDTO.getCity(),
+				orderDTO.getProvince(), orderDTO.getZipcode(), orderDTO.getCountry(), orderDTO.getPhone(),
+				orderDTO.getEmail());
+
+		// List can contain only 1 element based on parameters
+
+		if (!shippingAddressList.isEmpty())
+			// mapping an existing shipping address with the sales order
+			salesOrder.setShippingAddress(shippingAddressList.get(0));
+		else {
+			// create a new shipping order
+			shippingAddress.setAddress(orderDTO.getAddress());
+			shippingAddress.setCity(orderDTO.getCity());
+			shippingAddress.setCountry(orderDTO.getCountry());
+			shippingAddress.setEmail(orderDTO.getEmail());
+			shippingAddress.setPhone(orderDTO.getPhone());
+			shippingAddress.setProvince(orderDTO.getProvince());
+			shippingAddress.setZip(orderDTO.getZipcode());
+			salesOrder.setShippingAddress(shippingAddress);
+		}
 
 		return salesOrder;
 	}
 
+	/**
+	 * Method generates a unique random tracking number by replacing : & - in
+	 * the current date time
+	 * 
+	 * @return unique random tracking number as string
+	 */
 	private String generateTrackingNumber() {
 
 		// generate a unique random tracking number based on current time
