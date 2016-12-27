@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `fithub`.`shipping_address` (
   `email` VARCHAR(100) NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`shipping_address_id`)  COMMENT '')
 ENGINE = InnoDB
-AUTO_INCREMENT = 26
+AUTO_INCREMENT = 30
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `fithub`.`sales_order` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 25
+AUTO_INCREMENT = 29
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -173,6 +173,7 @@ CREATE TABLE IF NOT EXISTS `fithub`.`sales_order_item` (
   `sales_order_item_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `product_id` INT(10) NOT NULL COMMENT '',
   `sales_order_id` INT(10) NOT NULL COMMENT '',
+  `sales_order_item_quantity_sold` INT(10) NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`sales_order_item_id`)  COMMENT '',
   INDEX `SalesOrderDetailProduct_idx` (`product_id` ASC)  COMMENT '',
   INDEX `SalesOrderDetailSalesOrder_idx` (`sales_order_id` ASC)  COMMENT '',
@@ -187,7 +188,7 @@ CREATE TABLE IF NOT EXISTS `fithub`.`sales_order_item` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 11
+AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8;
 
 
