@@ -185,6 +185,7 @@
                                     <small>Shipping</small>
                                     <c:set var="shippingCost" value="10"/>
                                     <div class="pull-right"><span>$</span><span>${shippingCost}</span></div>
+                                    <input type="hidden" name="shippingCost" value="${shippingCost}" >
                                 </div>
                             </div>
                             <div class="form-group"><hr /></div>
@@ -192,6 +193,7 @@
                                 <div class="col-xs-12">
                                     <strong>Order Total</strong>
                                      <c:set var="orderTotalCost" value="${shoppingCart.cartTotalCost + shippingCost }"/>
+                                     <input type="hidden" name="orderTotalCost" value="${orderTotalCost}" >
                                     <div class="pull-right"><span>$</span><span>${orderTotalCost}</span></div>
                                 </div>
                             </div>

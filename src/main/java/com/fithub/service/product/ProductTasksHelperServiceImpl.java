@@ -48,8 +48,9 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 
 		if (existingProductCategory != null)
 			productCategory = existingProductCategory;
+		else
+			productCategory.setCategory(productDTO.getProductCategory());
 
-		productCategory.setCategory(productDTO.getProductCategory());
 		product.setProductCategory(productCategory);
 
 		return product;

@@ -2,19 +2,20 @@ package com.fithub.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the sales_order database table.
@@ -31,48 +32,67 @@ public class SalesOrder implements Serializable {
 	@Column(name = "sales_order_id", unique = true, nullable = false)
 	private int salesOrderId;
 
-	@Column(length = 100)
+	@Column(nullable = false, length = 100)
 	private String address;
 
-	@Column(name = "order_total_cost")
-	private BigDecimal orderTotalCost;
-
-	@Column(length = 50)
+	@Column(nullable = false, length = 50)
 	private String city;
 
-	@Column(length = 30)
+	@Column(nullable = false, length = 30)
 	private String country;
 
-	@Column(length = 100)
+	@Column(nullable = false, length = 100)
 	private String email;
 
-	@Column(name = "order_date")
-	private Timestamp orderDate;
-
-	@Column(length = 20)
+	@Column(nullable = false, length = 20)
 	private String phone;
 
-	@Column(length = 20)
+	@Column(nullable = false, length = 20)
 	private String province;
 
-	@Column(name = "shipping_charge")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "sales_order_creation_date", nullable = false)
+	private Date salesOrderCreationDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "sales_order_edit_date")
+	private Date salesOrderEditDate;
+
+	@Column(name = "sales_order_edited_by_user", length = 45)
+	private String salesOrderEditedByUser;
+
+	@Column(name = "stripe_charge_id", length = 60)
+	private String stripeChargeId;
+
+	@Column(name = "payment_status", length = 45)
+	private String paymentStatus;
+
+	@Column(length = 20)
+	private String status;
+
+	@Column(name = "sales_order_total_cost", precision = 10)
+	private BigDecimal salesOrderTotalCost;
+
+	@Column(name = "shipping_charge", precision = 10)
 	private BigDecimal shippingCharge;
 
+	@Column(precision = 10)
 	private BigDecimal tax;
 
 	@Column(name = "tracking_number", length = 80)
 	private String trackingNumber;
 
-	@Column(length = 20)
+	@Column(nullable = false, length = 20)
 	private String zip;
 
-	// bi-directional many-to-one association to OrderDetail
-	@OneToMany(mappedBy = "salesOrder")
-	private List<OrderDetail> orderDetails;
+	// bi-directional many-to-one association to SalesOrderDetail
+	@ManyToOne
+	@JoinColumn(name = "sales_order_detail_id", nullable = false)
+	private SalesOrderDetail salesOrderDetail;
 
 	// bi-directional many-to-one association to User
-	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_name", nullable = false)
 	private User user;
 
 	public SalesOrder() {
@@ -92,14 +112,6 @@ public class SalesOrder implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public BigDecimal getAmount() {
-		return this.orderTotalCost;
-	}
-
-	public void setAmount(BigDecimal orderTotalCost) {
-		this.orderTotalCost = orderTotalCost;
 	}
 
 	public String getCity() {
@@ -126,14 +138,6 @@ public class SalesOrder implements Serializable {
 		this.email = email;
 	}
 
-	public Timestamp getOrderDate() {
-		return this.orderDate;
-	}
-
-	public void setOrderDate(Timestamp orderDate) {
-		this.orderDate = orderDate;
-	}
-
 	public String getPhone() {
 		return this.phone;
 	}
@@ -148,6 +152,14 @@ public class SalesOrder implements Serializable {
 
 	public void setProvince(String province) {
 		this.province = province;
+	}
+
+	public BigDecimal getSalesOrderTotalCost() {
+		return this.salesOrderTotalCost;
+	}
+
+	public void setSalesOrderTotalCost(BigDecimal salesOrderTotalCost) {
+		this.salesOrderTotalCost = salesOrderTotalCost;
 	}
 
 	public BigDecimal getShippingCharge() {
@@ -182,26 +194,12 @@ public class SalesOrder implements Serializable {
 		this.zip = zip;
 	}
 
-	public List<OrderDetail> getOrderDetails() {
-		return this.orderDetails;
+	public SalesOrderDetail getSalesOrderDetail() {
+		return this.salesOrderDetail;
 	}
 
-	public void setOrderDetails(List<OrderDetail> orderDetails) {
-		this.orderDetails = orderDetails;
-	}
-
-	public OrderDetail addOrderDetail(OrderDetail orderDetail) {
-		getOrderDetails().add(orderDetail);
-		orderDetail.setSalesOrder(this);
-
-		return orderDetail;
-	}
-
-	public OrderDetail removeOrderDetail(OrderDetail orderDetail) {
-		getOrderDetails().remove(orderDetail);
-		orderDetail.setSalesOrder(null);
-
-		return orderDetail;
+	public void setSalesOrderDetail(SalesOrderDetail salesOrderDetail) {
+		this.salesOrderDetail = salesOrderDetail;
 	}
 
 	public User getUser() {
@@ -210,6 +208,54 @@ public class SalesOrder implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Date getSalesOrderCreationDate() {
+		return salesOrderCreationDate;
+	}
+
+	public void setSalesOrderCreationDate(Date salesOrderCreationDate) {
+		this.salesOrderCreationDate = salesOrderCreationDate;
+	}
+
+	public Date getSalesOrderEditDate() {
+		return salesOrderEditDate;
+	}
+
+	public void setSalesOrderEditDate(Date salesOrderEditDate) {
+		this.salesOrderEditDate = salesOrderEditDate;
+	}
+
+	public String getSalesOrderEditedByUser() {
+		return salesOrderEditedByUser;
+	}
+
+	public void setSalesOrderEditedByUser(String salesOrderEditedByUser) {
+		this.salesOrderEditedByUser = salesOrderEditedByUser;
+	}
+
+	public String getStripeChargeId() {
+		return stripeChargeId;
+	}
+
+	public void setStripeChargeId(String stripeChargeId) {
+		this.stripeChargeId = stripeChargeId;
+	}
+
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

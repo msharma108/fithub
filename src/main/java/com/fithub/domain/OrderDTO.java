@@ -1,5 +1,7 @@
 package com.fithub.domain;
 
+import java.math.BigDecimal;
+
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -42,6 +44,48 @@ public class OrderDTO {
 	@Email
 	@NotEmpty
 	private String email;
+
+	private String paymentStatus;
+
+	private BigDecimal shippingCharge;
+
+	private BigDecimal tax;
+
+	private String stripeChargeId;
+
+	private String customerUserNameForThisOrder;
+
+	public BigDecimal getTax() {
+		return tax;
+	}
+
+	public void setTax(BigDecimal tax) {
+		this.tax = tax;
+	}
+
+	public String getStripeChargeId() {
+		return stripeChargeId;
+	}
+
+	public void setStripeChargeId(String stripeChargeId) {
+		this.stripeChargeId = stripeChargeId;
+	}
+
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public BigDecimal getShippingCharge() {
+		return shippingCharge;
+	}
+
+	public void setShippingCharge(BigDecimal shippingCharge) {
+		this.shippingCharge = shippingCharge;
+	}
 
 	public String getAddress() {
 		return address;
@@ -113,6 +157,14 @@ public class OrderDTO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getCustomerUserNameForThisOrder() {
+		return customerUserNameForThisOrder;
+	}
+
+	public void setCustomerUserNameForThisOrder(String customerNameForThisOrder) {
+		this.customerUserNameForThisOrder = customerNameForThisOrder;
 	}
 
 }

@@ -67,9 +67,18 @@ public class OrderCheckoutController {
 		bill.put("amount", (orderTotalCost.multiply(dollarToCents)).intValue());
 		bill.put("currency", "CAD");
 		bill.put("source", paymentToken);
-		bill.put("description", bill.get("amount"));
+		bill.put("description", "products sold@Test");
 
 		Charge charge = Charge.create(bill);
+
+		if (charge.getPaid()) {
+
+			// Save order to db
+		}
+
+		// Map<String, String> initialMetadata = new HashMap<String, String>();
+		// initialMetadata = charge.getMetadata();
+		// String orderId = initialMetadata.get("order_id");
 
 		return "home";
 	}
