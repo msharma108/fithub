@@ -1,18 +1,24 @@
 package com.fithub.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -155,4 +161,28 @@ public class OrderCheckoutController {
 			return "home";
 	}
 
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping(value = { "/admin/viewAllOrders" })
+	public String getAllOrdersListPage(Model model) {
+		LOG.debug("Attempting to list all the orders");
+		model.addAttribute("orderList", salesOrderService.getAllSalesOrder());
+		return "order/orderList";
+	}
+
+	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
+	@RequestMapping(value = { "/viewUserOrders/{userName}", "/admin/viewUserOrders/{userName}" })
+	public String getUserOrdersListPage(@PathVariable("userName") String userName, Model model) {
+		LOG.debug("Retreiving the orders of user={}", userName);
+
+		List<SalesOrder> userOrdersList = new ArrayList<SalesOrder>();
+		userOrdersList = salesOrderService.getSalesOrderListByUserName(userName);
+		if (!userOrdersList.isEmpty()) {
+
+			model.addAttribute("orderList", userOrdersList);
+		}
+
+		else
+			throw new NoSuchElementException("No Records for the Username");
+		return "order/orderList";
+	}
 }
