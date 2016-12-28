@@ -61,6 +61,8 @@ public class OrderDTO {
 
 	private String trackingNumber;
 
+	private String orderStatus = "ORDERED";
+
 	private List<ProductDTO> orderProductList = new ArrayList<ProductDTO>();
 
 	public BigDecimal getTax() {
@@ -197,6 +199,14 @@ public class OrderDTO {
 
 	public void setOrderProductList(List<ProductDTO> orderProductList) {
 		this.orderProductList = orderProductList;
+	}
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 }

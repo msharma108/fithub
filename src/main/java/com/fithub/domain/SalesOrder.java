@@ -61,6 +61,12 @@ public class SalesOrder implements Serializable {
 	@Column(name = "stripe_charge_id", length = 60)
 	private String stripeChargeId;
 
+	@Column(name = "stripe_refund_id", length = 60)
+	private String stripeRefundId;
+
+	@Column(name = "sales_order_refund_amount", precision = 10, scale = 2)
+	private BigDecimal salesOrderRefundAmount;
+
 	@Column(precision = 10, scale = 2)
 	private BigDecimal tax;
 
@@ -208,6 +214,22 @@ public class SalesOrder implements Serializable {
 		salesOrderItem.setSalesOrder(null);
 
 		return salesOrderItem;
+	}
+
+	public String getStripeRefundId() {
+		return stripeRefundId;
+	}
+
+	public BigDecimal getSalesOrderRefundAmount() {
+		return salesOrderRefundAmount;
+	}
+
+	public void setStripeRefundId(String stripeRefundId) {
+		this.stripeRefundId = stripeRefundId;
+	}
+
+	public void setSalesOrderRefundAmount(BigDecimal salesOrderRefundAmount) {
+		this.salesOrderRefundAmount = salesOrderRefundAmount;
 	}
 
 }

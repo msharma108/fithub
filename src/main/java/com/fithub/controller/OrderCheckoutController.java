@@ -35,6 +35,7 @@ import com.stripe.exception.AuthenticationException;
 import com.stripe.exception.CardException;
 import com.stripe.exception.InvalidRequestException;
 import com.stripe.model.Charge;
+import com.stripe.model.Refund;
 
 /**
  * Controller for handling Order checkout
@@ -45,6 +46,7 @@ public class OrderCheckoutController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OrderCheckoutController.class);
 	private final SalesOrderService salesOrderService;
+	private final BigDecimal dollarToCents = new BigDecimal(100);
 
 	public OrderCheckoutController(SalesOrderService salesOrderService) {
 		this.salesOrderService = salesOrderService;
@@ -88,7 +90,6 @@ public class OrderCheckoutController {
 		// Stripe Charge creation params
 		String paymentToken = request.getParameter("stripeToken");
 		BigDecimal orderTotalCost = new BigDecimal(request.getParameter("orderTotalCost"));
-		BigDecimal dollarToCents = new BigDecimal(100);
 
 		LOG.debug("payment token from stripe={}", paymentToken);
 
@@ -122,7 +123,7 @@ public class OrderCheckoutController {
 			throw new CardException(charge.getFailureMessage(), charge.getId(), charge.getFailureCode(), paymentToken,
 					charge.getCurrency(), paymentToken, charge.getAmount().intValue(), null);
 
-		return "redirect:/orderBookingSuccess";
+		return "redirect:/orderTaskSuccess";
 	}
 
 	private OrderDTO prepareOrderDTO(HttpServletRequest request, HttpSession session, Authentication authentication,
@@ -144,7 +145,7 @@ public class OrderCheckoutController {
 
 	}
 
-	@RequestMapping(value = "/orderBookingSuccess")
+	@RequestMapping(value = "/orderTaskSuccess")
 	public String getOrderBookingSuccessPage(HttpServletRequest request) {
 
 		// Prevent problem with page refresh in case of flash attribute
@@ -185,4 +186,39 @@ public class OrderCheckoutController {
 			throw new NoSuchElementException("No Records for the Username");
 		return "order/orderList";
 	}
+
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = { "/admin/cancelOrder/{salesOrderId}" })
+	public String handleOrderCancellation(Authentication authentication, RedirectAttributes redirectAttribute)
+			throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException,
+			APIException {
+		LOG.debug("Attempting to cancel the order with salesOrderId");
+		// private key for test account
+		Stripe.apiKey = "sk_test_AM33dQCKgInsAIX0OcT17kYJ";
+
+		// ## Hard-coded to test for now
+		int salesOrderId = 33;
+
+		// Get order to be cancelled
+		SalesOrder salesOrder = salesOrderService.getSalesOrderById(salesOrderId);
+
+		// Create a refund request for Stripe
+		Map<String, Object> refundParams = new HashMap<String, Object>();
+		refundParams.put("charge", salesOrder.getStripeChargeId());
+		refundParams.put("amount", salesOrder.getSalesOrderTotalCost().multiply(dollarToCents).intValue());
+
+		Refund refund = Refund.create(refundParams);
+
+		if (refund.getStatus().equals("succeeded")) {
+			// Update sales order in database for cancellation
+			salesOrder.setSalesOrderEditedByUser(authentication.getName());
+			salesOrder = salesOrderService.cancelSalesOrder(salesOrder, refund);
+		}
+		if (salesOrder.getStatus().equals("CANCELED"))
+			redirectAttribute.addFlashAttribute("orderCancellationSuccess", 2);
+
+		return "redirect:/orderTaskSuccess";
+
+	}
+
 }

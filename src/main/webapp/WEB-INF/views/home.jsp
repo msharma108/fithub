@@ -38,6 +38,14 @@
 
 	<!-- contents start here -->
 	Welcome to FitHub
+	 <c:url var="adminCancelOrder" value="/admin/cancelOrder/31"/>
+		  <sec:authorize access="hasAuthority('ADMIN')">
+	<form action="${adminCancelOrder }" method="post">
+ 	 <br><br>
+  		<input type="submit" value="Submit">
+  		 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	</form> 
+	</sec:authorize>
     
 	<!-- contents end here -->
 	 

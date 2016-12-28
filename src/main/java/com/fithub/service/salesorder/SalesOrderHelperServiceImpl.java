@@ -41,8 +41,6 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 	public SalesOrder createSalesOrderFromOrderDTO(SalesOrder salesOrder, OrderDTO orderDTO) {
 		LOG.debug("Attempting to create a sales order from OrderDTO with email={}", orderDTO.getEmail());
 
-		String salesOrderActiveStatus = "ACTIVE";
-
 		// populate salesOrder from orderDTO
 		salesOrder.setShippingCharge(orderDTO.getShippingCharge());
 		salesOrder.setTax(orderDTO.getTax());
@@ -50,7 +48,7 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 		salesOrder.setTrackingNumber(generateTrackingNumber());
 		salesOrder.setStripeChargeId(orderDTO.getStripeChargeId());
 		salesOrder.setPaymentStatus(orderDTO.getPaymentStatus());
-		salesOrder.setStatus(salesOrderActiveStatus);
+		salesOrder.setStatus(orderDTO.getOrderStatus());
 
 		// Map the customer for the order
 		User customer = userService.getUserByUsername(orderDTO.getCustomerUserNameForThisOrder());

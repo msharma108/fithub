@@ -1,5 +1,6 @@
 package com.fithub.service.salesorder;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,6 +15,7 @@ import com.fithub.domain.SalesOrder;
 import com.fithub.repository.salesorder.SalesOrderRepository;
 import com.fithub.service.salesorderitem.SalesOrderItemHelperService;
 import com.fithub.service.time.TimeHelperService;
+import com.stripe.model.Refund;
 
 /**
  * An implementation of the SalesOrder Service
@@ -80,6 +82,24 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 			return salesOrderList;
 		else
 			throw new NoSuchElementException("No sales order found in the database");
+	}
+
+	@Override
+	public SalesOrder cancelSalesOrder(SalesOrder salesOrder, Refund refund) {
+		LOG.debug("Attempting to process cancellation of sales order with id={}", salesOrder.getSalesOrderId());
+
+		String paymentStatusRefunded = "refunded";
+		String orderStatusCancelled = "CANCELED";
+		int centsToDollar = 100;
+
+		// Parameters to be updated for cancellation of order
+		salesOrder.setStripeRefundId(refund.getId());
+		// refund amount is in cents
+		salesOrder.setSalesOrderRefundAmount(new BigDecimal(refund.getAmount() / centsToDollar));
+		salesOrder.setPaymentStatus(paymentStatusRefunded);
+		salesOrder.setStatus(orderStatusCancelled);
+		salesOrder.setSalesOrderEditDate(timeHelperService.getCurrentTimeStamp());
+		return salesOrderRepository.save(salesOrder);
 	}
 
 }
