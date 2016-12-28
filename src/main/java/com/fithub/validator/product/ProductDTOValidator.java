@@ -40,9 +40,9 @@ public class ProductDTOValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		LOG.debug("Initiating validation of productDTO supplied by ProductRegisterValidator");
 		ProductDTO productDTO = (ProductDTO) target;
-		if (!productDTO.getIsEditable())
-			// Run following validation only for new registration
-			validateProductDoesNotExist(productDTO, errors);
+		if(!productDTO.getIsEditable())
+			//Run following validation only for new registration
+		validateProductDoesNotExist(productDTO, errors);
 
 	}
 
