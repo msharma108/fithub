@@ -1,7 +1,7 @@
 	<!-- start of header -->
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <div class="container-fluid">
+    <div class="container-fluid" id="navbarcontainer">
        <div class="navbar navbar-fixed-top" id = "topfixedbar" role="navigation">
          <div class="navbar-inner">
 		  <ul class="nav navbar-nav navbar-right">
@@ -36,7 +36,7 @@
 		  </ul>
          </div>
        </div>
-	   <div class="navbar "  role="navigation" width:100%>
+	   <div class="navbar"  role="navigation" id="bottombar">
 		 <div class="navbar-inner">
            <a class="navbar-brand" href="#">FitHub.com</a>
          </div>

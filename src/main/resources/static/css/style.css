@@ -1,7 +1,15 @@
 body {
    padding-top: 60px;
-   background-color: #1F1C22;
+   padding-left: 0px;
+   padding-right: 0px;
+   background: url(../images/background.jpg) no-repeat;
+   background-size: cover;
+
 }    
+#navbarcontainer{
+   padding-left: 0px; 
+   padding-right: 0px;"
+} 
 .navbar .navbar-inner {
     padding: 0;
 }
@@ -10,18 +18,25 @@ body {
     display: table;
 }
 .panel{
-   border: 2px solid blue;
+   border: 2px blue;
 }
 .panel {
 	color: green; 
 	background-color: #1F1C22; 
 }
-#topfixedbar{
-	background-color: #9999FF;
+#topfixedbar,#bottombar{
+	background-color: #003366 ;  
 }
 
+ #footer{
+	background-color: #9999FF ;  
+}
+.navbar-text >p{
+	color: white;
+} 
+
 thead {
-	background:green; 
+	background: light-blue; 
 	color:white;
 }
 table, th, td 
@@ -31,15 +46,16 @@ table, th, td
 
 /* unvisited link */
 a:link {
-    color: blue;
+    color: white;
 }
 
 /* visited link */
 a:visited {
-    color: blue;
+    color: white;
 }
+
 /* https:miketricking.github.io dist*/
-    .hovereffect {
+.hovereffect {
 width:100%;
 height:100%;
 float:left;

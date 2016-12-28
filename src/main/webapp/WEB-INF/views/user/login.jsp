@@ -37,47 +37,48 @@
 
 
 	<!-- contents start here -->
-	<div class="container-fluid">
-	  <div class="panel panel-primary" style="border: 2px solid maroon">
-        <div class="panel-heading" style="color: white; background-color: maroon;"><b>Please Login</b></div>
-         <div class="panel-body" style="background-color: #C1E1A6;"> 
+	<div class="container">
+	 <div class="col-sm-6 col-sm-offset-3">
+	  <div class="panel panel-primary">
+        <div class="panel-heading"><b>Please Login</b></div>
+         <div class="panel-body" style="background-color: white;"> 
 	        <form action="/login" method="POST" >
  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-              <div class="col-sm-12">    
+              <div class="col-sm-8">    
                 <div class="form-group row">
-                  <div class="col-sm-4 form-group">
+                  <div class="col-sm-8 form-group">
 			           <label for="userName">UserName <span class="glyphicon glyphicon-user"> </span></label><br>
 			           <input class="form-control" name="userName" id="userNameId" placeholder="Enter UserName" autofocus required />
 			           
                   </div>
                 </div>
                 <div class="form-group row">
-                  <div class="col-sm-4 form-group">
+                  <div class="col-sm-8 form-group">
 			           <label for="password">Password <span class="glyphicon glyphicon-lock"></span></label><br>
 			           <input class="form-control" type="password" name="password" id="passwordId" placeholder="Enter Password" required />
                   </div>
                 </div>
                 </div>
-              <div class="col-sm-12">  
+              <div class="col-sm-8">  
                 <div class="form-group row">
-                  <div class="col-sm-4 form-group">
+                  <div class="col-sm-8 form-group">
                     <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-log-in"></i> Sign In</button>
                   </div>
                 </div> 
               <br><br>
               		<c:if test="${not empty invalidCredentials}">
-				 		<div class="col-sm-4">${invalidCredentials}</div>
+				 		<div class="col-sm-8">${invalidCredentials}</div>
 					</c:if>
 					<c:if test="${not empty logoutMessage}">
-						<div class="col-sm-4">${logoutMessage}</div>
+						<div class="col-sm-8">${logoutMessage}</div>
 					</c:if>
               </div>
             </form>
            </div>
-           <div class="panel-footer" style="color: white; background-color: maroon;"></div>
+           <div class="panel-footer"></div>
         </div>
       </div> 
-    
+    </div>
 	<!-- contents end here -->
 	 
 <jsp:include page="../footer.jsp" />
