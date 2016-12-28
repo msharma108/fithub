@@ -41,8 +41,8 @@ public interface ProductService {
 	Product registerProduct(ProductDTO productDTO);
 
 	/**
-	 * Method deletes a product record from the database based on the provided
-	 * productName and return true as boolean result
+	 * Method marks a product record as deleted in the database based on the
+	 * provided productName and return true as boolean result on success
 	 * 
 	 * @param productDTO
 	 * @param authentication

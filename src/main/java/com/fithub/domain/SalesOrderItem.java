@@ -2,6 +2,7 @@ package com.fithub.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,50 +14,42 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * The persistent class for the order_detail database table.
+ * The persistent class for the sales_order_item database table.
  * 
  */
 @Entity
-@Table(name = "order_detail")
-@NamedQuery(name = "OrderDetail.findAll", query = "SELECT o FROM OrderDetail o")
-public class OrderDetail implements Serializable {
+@Table(name = "sales_order_item")
+@NamedQuery(name = "SalesOrderItem.findAll", query = "SELECT s FROM SalesOrderItem s")
+public class SalesOrderItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "order_detail_id", unique = true, nullable = false)
-	private int orderDetailId;
-
-	@Column(name = "product_quantity")
-	private int productQuantity;
+	@Column(name = "sales_order_item_id", unique = true, nullable = false)
+	private int salesOrderItemId;
 
 	// bi-directional many-to-one association to Product
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
 	// bi-directional many-to-one association to SalesOrder
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "sales_order_id", nullable = false)
 	private SalesOrder salesOrder;
 
-	public OrderDetail() {
+	@Column(name = "sales_order_item_quantity_sold")
+	private int salesOrderItemQuantitySold;
+
+	public SalesOrderItem() {
 	}
 
-	public int getOrderDetailId() {
-		return this.orderDetailId;
+	public int getSalesOrderItemId() {
+		return this.salesOrderItemId;
 	}
 
-	public void setOrderDetailId(int orderDetailId) {
-		this.orderDetailId = orderDetailId;
-	}
-
-	public int getProductQuantity() {
-		return this.productQuantity;
-	}
-
-	public void setProductQuantity(int productQuantity) {
-		this.productQuantity = productQuantity;
+	public void setSalesOrderItemId(int salesOrderItemId) {
+		this.salesOrderItemId = salesOrderItemId;
 	}
 
 	public Product getProduct() {
@@ -73,6 +66,14 @@ public class OrderDetail implements Serializable {
 
 	public void setSalesOrder(SalesOrder salesOrder) {
 		this.salesOrder = salesOrder;
+	}
+
+	public int getSalesOrderItemQuantitySold() {
+		return salesOrderItemQuantitySold;
+	}
+
+	public void setSalesOrderItemQuantitySold(int salesOrderItemQuantitySold) {
+		this.salesOrderItemQuantitySold = salesOrderItemQuantitySold;
 	}
 
 }

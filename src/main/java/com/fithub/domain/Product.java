@@ -52,6 +52,7 @@ public class Product implements Serializable {
 	@Column(name = "manufacture_date")
 	private Date manufactureDate;
 
+	@Column(precision = 10)
 	private BigDecimal price;
 
 	@Column(name = "product_edited_by_user", length = 45)
@@ -84,16 +85,17 @@ public class Product implements Serializable {
 	@Column(name = "thumb_image")
 	private byte[] thumbImage;
 
+	@Column(precision = 10)
 	private BigDecimal weight;
-
-	// bi-directional many-to-one association to OrderDetail
-	@OneToMany(mappedBy = "product")
-	private List<OrderDetail> orderDetails;
 
 	// bi-directional many-to-one association to ProductCategory
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "category_id", nullable = false)
 	private ProductCategory productCategory;
+
+	// bi-directional many-to-one association to SalesOrderItem
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private List<SalesOrderItem> salesOrderItems;
 
 	public Product() {
 	}
@@ -234,34 +236,34 @@ public class Product implements Serializable {
 		this.weight = weight;
 	}
 
-	public List<OrderDetail> getOrderDetails() {
-		return this.orderDetails;
-	}
-
-	public void setOrderDetails(List<OrderDetail> orderDetails) {
-		this.orderDetails = orderDetails;
-	}
-
-	public OrderDetail addOrderDetail(OrderDetail orderDetail) {
-		getOrderDetails().add(orderDetail);
-		orderDetail.setProduct(this);
-
-		return orderDetail;
-	}
-
-	public OrderDetail removeOrderDetail(OrderDetail orderDetail) {
-		getOrderDetails().remove(orderDetail);
-		orderDetail.setProduct(null);
-
-		return orderDetail;
-	}
-
 	public ProductCategory getProductCategory() {
 		return this.productCategory;
 	}
 
 	public void setProductCategory(ProductCategory productCategory) {
 		this.productCategory = productCategory;
+	}
+
+	public List<SalesOrderItem> getSalesOrderItems() {
+		return this.salesOrderItems;
+	}
+
+	public void setSalesOrderItems(List<SalesOrderItem> salesOrderItems) {
+		this.salesOrderItems = salesOrderItems;
+	}
+
+	public SalesOrderItem addSalesOrderItem(SalesOrderItem salesOrderItem) {
+		getSalesOrderItems().add(salesOrderItem);
+		salesOrderItem.setProduct(this);
+
+		return salesOrderItem;
+	}
+
+	public SalesOrderItem removeSalesOrderItem(SalesOrderItem salesOrderItem) {
+		getSalesOrderItems().remove(salesOrderItem);
+		salesOrderItem.setProduct(null);
+
+		return salesOrderItem;
 	}
 
 }

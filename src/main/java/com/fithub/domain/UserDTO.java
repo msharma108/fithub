@@ -7,6 +7,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Data Transfer Object class for User
@@ -30,6 +31,7 @@ public class UserDTO {
 	private String country;
 
 	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfBirth;
 
 	@Email
@@ -51,7 +53,7 @@ public class UserDTO {
 	private String repeatPassword;
 
 	@NotEmpty
-	private String paymentMode;
+	private String paymentMode = "CREDIT";
 
 	@Size(min = 10, max = 10)
 	private String phone;
@@ -62,7 +64,7 @@ public class UserDTO {
 	@NotNull
 	private UserRole role = UserRole.CUSTOMER;
 
-	private String sex;
+	private String sex = "UNDISCLOSED";
 
 	private Date registrationDate;
 

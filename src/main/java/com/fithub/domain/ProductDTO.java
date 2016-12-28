@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -20,9 +21,11 @@ public class ProductDTO {
 	private String ldesc;
 
 	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date manufactureDate;
 
 	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiryDate;
 
 	private String flavor;

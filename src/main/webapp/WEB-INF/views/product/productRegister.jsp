@@ -39,9 +39,9 @@ $(document).ready(function() {
  	     $(this).datepicker({
  	        changeMonth: true,
  	        changeYear: true,
- 	        dateFormat: 'yy/mm/dd',
+ 	        dateFormat: 'yy-mm-dd',
  	        minDate: "-120Y", 
- 	        yearRange: "1900:2016" 
+ 	        yearRange: "2000:2030" 
  	     });
  	  });
 });
