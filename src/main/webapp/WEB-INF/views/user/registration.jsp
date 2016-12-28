@@ -39,7 +39,7 @@ $(document).ready(function() {
     {
         changeMonth: true,
         changeYear: true,
-        dateFormat: 'yy/mm/dd',
+        dateFormat: 'yy-mm-dd',
         minDate: "-120Y", 
         yearRange: "1900:2100" 
     });
@@ -102,7 +102,7 @@ $(document).ready(function() {
 			          <form:option value="">--- Select ---</form:option>
 			           <form:option value="MALE">MALE</form:option>
 			           <form:option value="FEMALE">FEMALE</form:option>
-			           <form:option value="UNDISCLOSED">UNDISCLOSED</form:option>
+			           <form:option value="UNDISCLOSED">Prefer not to answer</form:option>
 			           <form:errors  path="sex" style="color: red;"/>
 			           </form:select>
                   </div>
@@ -138,7 +138,7 @@ $(document).ready(function() {
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="country">Country:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           <form:select class="form-control input-medium bfh-countries" data-country="US" path="country" id="countryId"  >
+			           <form:select class="form-control input-medium bfh-countries"  path="country" id="countryId"  >
 			           <form:option value="">--- Select ---</form:option>
 			           <form:option value="CANADA">Canada</form:option>
 			           <form:option value="USA">USA</form:option>
@@ -199,9 +199,9 @@ $(document).ready(function() {
 			          <form:label path="paymentMode">Payment Mode:<span class="glyphicon glyphicon-credit-card"></span></form:label><br>
 			          <form:select class="form-control" path="paymentMode" id="paymentModeId">
 			          <form:option value="">--- Select ---</form:option>
-			          <form:option value="debit">Debit</form:option>
-			          <form:option value="credit">Credit</form:option>
-			          <form:option value="paypal">Paypal</form:option>
+			          <form:option value="DEBIT">Debit</form:option>
+			          <form:option value="CREDIT">Credit</form:option>
+			          <form:option value="UNDISCLOSED">Decide Later</form:option>
 			           <form:errors  path="paymentMode" style="color: red;"/>
 			          </form:select>
                   </div>
