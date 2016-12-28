@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fithub.domain.ProductDTO;
 import com.fithub.service.product.ProductService;
+import com.fithub.validator.product.ProductDTOValidator;
 
 /**
  * Controller for handling product registrations
@@ -29,10 +30,12 @@ public class ProductRegisterController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ProductRegisterController.class);
 	private final ProductService productService;
+	private final ProductDTOValidator productDTOValidator;
 
 	@Autowired
-	public ProductRegisterController(ProductService productService) {
+	public ProductRegisterController(ProductService productService, ProductDTOValidator productDTOValidator) {
 		this.productService = productService;
+		this.productDTOValidator = productDTOValidator;
 	}
 
 	/**
@@ -68,6 +71,7 @@ public class ProductRegisterController {
 			@RequestParam("thumbImage") MultipartFile thumbImage) {
 		LOG.debug("Attempting to register product", productDTO.getProductName());
 
+		productDTOValidator.validate(productDTO, result);
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page

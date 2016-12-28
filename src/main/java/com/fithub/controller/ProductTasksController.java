@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,7 @@ import com.fithub.domain.Product;
 import com.fithub.domain.ProductDTO;
 import com.fithub.service.product.ProductService;
 import com.fithub.service.product.ProductTasksHelperService;
+import com.fithub.validator.product.ProductDTOValidator;
 
 /**
  * Controller to handle product related tasks other than registration and
@@ -42,11 +45,14 @@ public class ProductTasksController {
 
 	private final ProductService productService;
 	private final ProductTasksHelperService productTasksHelperService;
+	private final ProductDTOValidator productDTOValidator;
 	private static final Logger LOG = LoggerFactory.getLogger(ProductTasksController.class);
 
-	public ProductTasksController(ProductService productService, ProductTasksHelperService productTasksHelperService) {
+	public ProductTasksController(ProductService productService, ProductTasksHelperService productTasksHelperService,
+			ProductDTOValidator productDTOValidator) {
 		this.productService = productService;
 		this.productTasksHelperService = productTasksHelperService;
+		this.productDTOValidator = productDTOValidator;
 	}
 
 	@RequestMapping(value = { "/viewProducts", "/viewProducts/{category}" })
@@ -94,13 +100,6 @@ public class ProductTasksController {
 		return "product/productList";
 	}
 
-	// Use the product image as a button image source and pass the url different
-	// for admin and user
-	// For admin form action will be :
-	// /admin/constructUrlForAdminProductOperations/{productName}
-	// For user action will be:
-	// /constructUrlForProductOperations/{productName}--user will see only add
-	// to cart button and product view
 	@PostMapping(value = { "/admin/constructUrlForAdminProductOperations/{productName}",
 			"/constructUrlForProductOperations/{productName}" })
 	public String constructUrlForProductTasks(@RequestParam(value = "viewProduct", required = false) String viewProduct,
@@ -191,22 +190,23 @@ public class ProductTasksController {
 		LOG.debug("Getting editProductPage for product={}", productName);
 
 		productDTO.setEditable(true);
-		// Uncomment the line below this in case I decide to get session using
-		// conventional http session object. userDTO will be added to session
-		// during profile load page.
-		// model.addAttribute("userDTO", userDTO);
-		// Change to registration page
+
 		return "product/productRegister";
 	}
 
 	@PostMapping(value = { "/admin/productSave" }, params = "editProduct")
-	public String submitProductEditPage(@ModelAttribute("productDTO") ProductDTO productDTO,
-			RedirectAttributes redirectAttributes, Authentication authentication, HttpServletRequest request,
-			@RequestParam("thumbImage") MultipartFile thumbImage) {
+	public String submitProductEditPage(@Valid @ModelAttribute("productDTO") ProductDTO productDTO,
+			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication,
+			HttpServletRequest request, @RequestParam("thumbImage") MultipartFile thumbImage) {
 		LOG.debug("Attempting to update product={}", productDTO.getProductName());
 
-		// Invoking User Profile Edit in addition to JSR 303 validation
-		// userEditValidator.validate(userDTO, result);
+		// Product DTO validation
+		productDTOValidator.validate(productDTO, result);
+
+		if (result.hasErrors()) {
+			LOG.debug("Errors in the submitted form");
+			return "product/productRegister";
+		}
 
 		try {
 			// If a new image is being uploaded for the product
