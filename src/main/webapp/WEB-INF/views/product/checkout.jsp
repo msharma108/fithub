@@ -141,50 +141,66 @@
  <div class="container wrapper">
  <c:url var="handleOrderCheckout" value="/handleOrderCheckout"/>
    <form:form modelAttribute="orderDTO" class="form-horizontal" action="${handleOrderCheckout}" method="POST" id="payment-form">
-            <div class="row">
-               
                     <!--REVIEW ORDER-->
-                    <div class = "col-lg-10" >
-                    <div class="panel panel-info">
+                    <div class = "col-md-12 col-sm-12 col-xs-12" >
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
                             Order Details 				  
                         </div>
                         <div class="panel-body">
+                           <div class ="form-group">
+                              <div class="col-md-3 col-xs-3">
+	                          </div>
+	                          <div class="col-md-3 col-xs-6">
+	                          </div>
+	                          <div class="col-md-1 col-xs-6">
+	                          <h6><span></span>Quantity</h6>
+	                          </div>
+                              <div class="col-md-2 col-xs-1 text-right">
+	                           <h6><span></span>Price</h6>
+	                          </div>
+	                          <div class="col-md-3 col-xs-3 text-right">
+	                           <h6><span></span>Sub-total</h6>
+	                          </div>
+                            </div>
                             <div class="form-group">
-                            
+ 
                                  <!-- loop starts -->
                                 <c:forEach items="${shoppingCart.cartProductList}" var="cartItem">
-                                <div class="col-sm-3 col-xs-3">
-                                    <img class="img-responsive"  src="${cartItem.base64imageFile}" alt="${cartItem.productName}"/>
-                                </div>
-                                <div class="col-sm-6 col-xs-6">
-                                    <div class="col-xs-12">${cartItem.productName}</div>
-                                    <div class="col-xs-12"><small>${cartItem.quantityInCart }</div>
-                                </div>
-                                <div class="col-sm-3 col-xs-3 text-right">
-                                    <h6><span>$</span>${cartItem.price}</h6>
-                                </div>
-                             
-                                 <div class="col-sm-3 col-xs-3 text-right">
-                               <c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}"/>
-                                    <h6><span>$</span>${subTotal}</h6>
-                                </div>
-                                	</c:forEach>
-                                	</div>
+                                  <div class="row align-top">
+	                                <div class="col-md-3 col-xs-3">
+	                                    <img class="img-responsive"  src="${cartItem.base64imageFile}" alt="${cartItem.productName}"/>
+	                                </div>
+	                                <div class="col-md-3 col-xs-6">
+	                                    <div class="col-xs-12">${cartItem.productName}</div>
+	                                </div>
+	                                <div class="col-md-1 col-xs-6  text-right">
+	                                    <div class="col-xs-12"><small>${cartItem.quantityInCart }</div>
+	                                </div>
+	                                <div class="col-md-2 col-xs-1 text-right">
+	                                    <h6><span>$</span>${cartItem.price}</h6>
+	                                </div>
+	                             
+	                                 <div class="col-md-3 col-xs-3 text-right">
+	                                  <c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}"/>
+	                                    <h6><span>$</span>${subTotal}</h6>
+	                                </div>
+                                   <div class="form-group"><hr /></div>
+                                 </div>
+                                <!-- loop ends -->
+                               </c:forEach>
+                              </div>
                              </div>
                                                 					
-                             <div class="form-group"><hr /></div>
-
-                             
-                                 <!-- loop ends -->
-                             
                             <div class="form-group"><hr /></div>
                             <div class="form-group">
-                                  <div class="col-xs-12">
+                                  <div class="col-md-4 col-xs-12 col-md-push-8">
                                     <strong>Cart Cost</strong>
                                     <div class="pull-right"><span>$</span><span>${shoppingCart.cartCost}</span></div>
                                 </div>
-                                <div class="col-xs-12">
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4 col-xs-12 col-md-push-8">
                                     <small>Shipping</small>
                                     <c:set var="shippingCost" value="10"/>
                                     <div class="pull-right"><span>$</span><span>${shippingCost}</span></div>
@@ -193,7 +209,7 @@
                             </div>
                             <div class="form-group"><hr /></div>
                             <div class="form-group">
-                                <div class="col-xs-12">
+                                <div class="col-md-4 col-xs-12 col-md-push-8">
                                     <strong>Order Total</strong>
                                      <c:set var="orderTotalCost" value="${shoppingCart.cartTotalCost + shippingCost }"/>
                                      <input type="hidden" name="orderTotalCost" value="${orderTotalCost}" >
@@ -203,10 +219,10 @@
                         </div>
                     </div>
                     <!--REVIEW ORDER END-->
-                    </div>
-                    <div class = "col-lg-6">
+                     
+                    <div class = "col-md-6">
                     <!--SHIPPING METHOD-->
-                    <div class="panel panel-info">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">Shipping Address</div>
                         <div class="panel-body">
                             <div class="form-group">
@@ -277,9 +293,9 @@
                     <!--SHIPPING METHOD END-->
                     </div>
                     
-                    <div class ="col-md-4">
+                    <div class ="col-md-6">
                     <!--CREDIT CART PAYMENT-->
-                    <div class="panel panel-info">
+                    <div class="panel panel-primary">
                         <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
                         <div class="panel-body">
                         <span class="payment-errors"></span>
@@ -328,15 +344,14 @@
                     <!--CREDIT CART PAYMENT END-->
                    </div>
                    <div class="form-group">
-                       <div class="col-md-10 col-sm-6 col-xs-12">
-                           <input type="submit" class="btn btn-primary btn-block"  type="submit" value="Pay Now">
+                       <div class="col-md-12 col-sm-6 col-xs-12">
+                           <input type="submit" class="btn btn-danger btn-block"  type="submit" value="Pay Now">
                        </div>
                    </div>
                 </form:form>
             </div>
             <div class="row cart-footer">
             </div>
-    </div>
     <br><br><br> <br><br>      
 <!-- contents end here -->
 	 

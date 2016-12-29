@@ -77,7 +77,7 @@
 	                	     <div class="hovereffect">
 	                	     <!-- start of image -->
 				              <input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
-				               <img class="img-rounded" width="400" height="250"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
+				               <img class="img-rounded" width="385" height="230"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 				              <!-- end of image -->
 				              <div class="overlay">
 				                 <h2><c:out value="${product.productName}"/></h2>
