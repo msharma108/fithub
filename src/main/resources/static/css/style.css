@@ -29,7 +29,10 @@ body {
 }
 
  #footer{
-	background-color: #9999FF ;  
+	background-color: #9999FF ;
+	         width: 100%;
+            bottom: 0;
+            position: fixed;
 }
 .navbar-text >p{
 	color: white;

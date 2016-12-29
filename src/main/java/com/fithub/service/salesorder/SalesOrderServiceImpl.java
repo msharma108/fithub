@@ -98,12 +98,12 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
 		String paymentStatusRefunded = "refunded";
 		String orderStatusCancelled = "CANCELED";
-		int centsToDollar = 100;
+		BigDecimal centsToDollar = new BigDecimal(100.00);
 
 		// Parameters to be updated for cancellation of order
 		salesOrder.setStripeRefundId(refund.getId());
 		// refund amount is in cents
-		salesOrder.setSalesOrderRefundAmount(new BigDecimal(refund.getAmount() / centsToDollar));
+		salesOrder.setSalesOrderRefundAmount(new BigDecimal(refund.getAmount()).divide(centsToDollar));
 		salesOrder.setPaymentStatus(paymentStatusRefunded);
 		salesOrder.setStatus(orderStatusCancelled);
 		salesOrder.setSalesOrderEditDate(timeHelperService.getCurrentTimeStamp());

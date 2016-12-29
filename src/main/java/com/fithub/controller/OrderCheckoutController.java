@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.fithub.domain.CustomUser;
 import com.fithub.domain.OrderDTO;
 import com.fithub.domain.SalesOrder;
+import com.fithub.restmailclient.RestMailClient;
 import com.fithub.service.salesorder.SalesOrderService;
 import com.fithub.shoppingcart.ShoppingCart;
 import com.stripe.Stripe;
@@ -46,10 +47,12 @@ public class OrderCheckoutController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OrderCheckoutController.class);
 	private final SalesOrderService salesOrderService;
+	private final RestMailClient restMailClient;
 	private final BigDecimal dollarToCents = new BigDecimal(100);
 
-	public OrderCheckoutController(SalesOrderService salesOrderService) {
+	public OrderCheckoutController(SalesOrderService salesOrderService, RestMailClient restMailClient) {
 		this.salesOrderService = salesOrderService;
+		this.restMailClient = restMailClient;
 	}
 
 	@RequestMapping(value = "/orderCheckout")
@@ -115,6 +118,9 @@ public class OrderCheckoutController {
 			// Shopping cart cleanup after order completion
 			session.removeAttribute("shoppingCart");
 			session.setAttribute("shoppingCart", new ShoppingCart());
+
+			// send order receipt mail
+			restMailClient.sendOrderReceiptMail(salesOrder);
 
 			// flash attribute for orderBookSuccess message
 			redirectAttribute.addFlashAttribute("orderBookingSuccess", 1);
@@ -197,7 +203,7 @@ public class OrderCheckoutController {
 		Stripe.apiKey = "sk_test_AM33dQCKgInsAIX0OcT17kYJ";
 
 		// ## Hard-coded to test for now
-		int salesOrderId = 36;
+		int salesOrderId = 38;
 
 		// Get order to be cancelled
 		SalesOrder salesOrder = salesOrderService.getSalesOrderById(salesOrderId);
@@ -214,9 +220,11 @@ public class OrderCheckoutController {
 			salesOrder.setSalesOrderEditedByUser(authentication.getName());
 			salesOrder = salesOrderService.cancelSalesOrder(salesOrder, refund, authentication);
 		}
-		if (salesOrder.getStatus().equals("CANCELED"))
+		if (salesOrder.getStatus().equals("CANCELED")) {
 			redirectAttribute.addFlashAttribute("orderCancellationSuccess", 2);
-
+			// Send order cancellation email
+			restMailClient.sendOrderCancellationMail(salesOrder);
+		}
 		return "redirect:/orderTaskSuccess";
 
 	}
