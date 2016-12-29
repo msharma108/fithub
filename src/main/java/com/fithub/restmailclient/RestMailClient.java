@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.fithub.domain.SalesOrder;
-import com.fithub.domain.User;
 import com.sendgrid.Content;
 import com.sendgrid.Email;
 import com.sendgrid.Mail;
@@ -110,18 +109,18 @@ public class RestMailClient {
 
 	}
 
-	public void sendWelcomeMail(User user) {
+	public void sendWelcomeMail(String givenName, String email) {
 		// Reference:
 		// https://github.com/sendgrid/sendgrid-java
 
 		String welcomeMailTemplateId = "8f77c455-39bc-49b1-9ec2-f165c4d3c09b";
 		Email from = new Email(emailSenderAddress);
 		String subject = "Welcome to FitHub";
-		Email to = new Email(user.getEmail());
+		Email to = new Email(email);
 		Content content = new Content("text/html", "Transactional Mail");
 		Mail mail = new Mail(from, subject, to, content);
 
-		mail.personalization.get(0).addSubstitution("-userName-", user.getGivenName());
+		mail.personalization.get(0).addSubstitution("-userName-", givenName);
 		mail.setTemplateId(welcomeMailTemplateId);
 
 		SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
