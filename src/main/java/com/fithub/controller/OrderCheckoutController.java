@@ -197,7 +197,7 @@ public class OrderCheckoutController {
 		Stripe.apiKey = "sk_test_AM33dQCKgInsAIX0OcT17kYJ";
 
 		// ## Hard-coded to test for now
-		int salesOrderId = 33;
+		int salesOrderId = 36;
 
 		// Get order to be cancelled
 		SalesOrder salesOrder = salesOrderService.getSalesOrderById(salesOrderId);

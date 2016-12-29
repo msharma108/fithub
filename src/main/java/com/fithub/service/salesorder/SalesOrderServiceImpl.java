@@ -1,6 +1,7 @@
 package com.fithub.service.salesorder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -11,8 +12,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.fithub.domain.OrderDTO;
+import com.fithub.domain.Product;
 import com.fithub.domain.SalesOrder;
+import com.fithub.domain.SalesOrderItem;
 import com.fithub.repository.salesorder.SalesOrderRepository;
+import com.fithub.service.product.ProductService;
 import com.fithub.service.salesorderitem.SalesOrderItemHelperService;
 import com.fithub.service.time.TimeHelperService;
 import com.stripe.model.Refund;
@@ -30,15 +34,18 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	private final TimeHelperService timeHelperService;
 	private final SalesOrderHelperService salesOrderHelperService;
 	private final SalesOrderItemHelperService salesOrderItemHelperService;
+	private final ProductService productService;
 
 	@Autowired
 	public SalesOrderServiceImpl(SalesOrderRepository salesOrderRepository, TimeHelperService timeHelperService,
-			SalesOrderHelperService salesOrderHelperService, SalesOrderItemHelperService salesOrderItemHelperService) {
+			SalesOrderHelperService salesOrderHelperService, SalesOrderItemHelperService salesOrderItemHelperService,
+			ProductService productService) {
 
 		this.salesOrderRepository = salesOrderRepository;
 		this.timeHelperService = timeHelperService;
 		this.salesOrderHelperService = salesOrderHelperService;
 		this.salesOrderItemHelperService = salesOrderItemHelperService;
+		this.productService = productService;
 	}
 
 	@Override
@@ -99,6 +106,21 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 		salesOrder.setPaymentStatus(paymentStatusRefunded);
 		salesOrder.setStatus(orderStatusCancelled);
 		salesOrder.setSalesOrderEditDate(timeHelperService.getCurrentTimeStamp());
+
+		// Get Sales Order Item associated with the sales order
+		List<SalesOrderItem> salesOrderItemList = new ArrayList<SalesOrderItem>();
+		salesOrderItemList = salesOrder.getSalesOrderItems();
+
+		for (SalesOrderItem salesOrderItemMappedToSalesOrder : salesOrderItemList) {
+			Product product = salesOrderItemMappedToSalesOrder.getProduct();
+			int productQuantitySold = salesOrderItemMappedToSalesOrder.getSalesOrderItemQuantitySold();
+
+			// Update the product quantity in product table for canceled product
+			product.setQuantitySold(product.getQuantitySold() - productQuantitySold);
+			product.setStockQuantity(product.getStockQuantity() + productQuantitySold);
+
+		}
+
 		return salesOrderRepository.save(salesOrder);
 	}
 
