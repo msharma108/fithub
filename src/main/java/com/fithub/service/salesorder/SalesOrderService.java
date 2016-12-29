@@ -2,6 +2,8 @@ package com.fithub.service.salesorder;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 import com.fithub.domain.OrderDTO;
 import com.fithub.domain.SalesOrder;
 import com.stripe.model.Refund;
@@ -51,8 +53,12 @@ public interface SalesOrderService {
 	 * @param refund
 	 *            Stripe Refund object to update the cancelled order's refund
 	 *            details
+	 * @param authentication
+	 *            Spring security authentication object to get logged in
+	 *            username
+	 * 
 	 * @return cancelled sales order
 	 */
-	SalesOrder cancelSalesOrder(SalesOrder salesOrder, Refund refund);
+	SalesOrder cancelSalesOrder(SalesOrder salesOrder, Refund refund, Authentication authentication);
 
 }

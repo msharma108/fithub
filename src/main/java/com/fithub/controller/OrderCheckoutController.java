@@ -212,7 +212,7 @@ public class OrderCheckoutController {
 		if (refund.getStatus().equals("succeeded")) {
 			// Update sales order in database for cancellation
 			salesOrder.setSalesOrderEditedByUser(authentication.getName());
-			salesOrder = salesOrderService.cancelSalesOrder(salesOrder, refund);
+			salesOrder = salesOrderService.cancelSalesOrder(salesOrder, refund, authentication);
 		}
 		if (salesOrder.getStatus().equals("CANCELED"))
 			redirectAttribute.addFlashAttribute("orderCancellationSuccess", 2);

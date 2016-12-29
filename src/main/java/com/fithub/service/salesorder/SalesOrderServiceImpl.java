@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.fithub.domain.OrderDTO;
@@ -92,7 +93,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	}
 
 	@Override
-	public SalesOrder cancelSalesOrder(SalesOrder salesOrder, Refund refund) {
+	public SalesOrder cancelSalesOrder(SalesOrder salesOrder, Refund refund, Authentication authentication) {
 		LOG.debug("Attempting to process cancellation of sales order with id={}", salesOrder.getSalesOrderId());
 
 		String paymentStatusRefunded = "refunded";
@@ -118,6 +119,8 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 			// Update the product quantity in product table for canceled product
 			product.setQuantitySold(product.getQuantitySold() - productQuantitySold);
 			product.setStockQuantity(product.getStockQuantity() + productQuantitySold);
+			product.setProductEditedByUser(authentication.getName());
+			product.setProductUpdateDate(timeHelperService.getCurrentTimeStamp());
 
 		}
 
