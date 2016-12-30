@@ -39,15 +39,16 @@
 	<!-- contents start here -->
 	<div class="container">
 	 <div class="col-sm-5 col-sm-offset-3">
-	  <div class="panel panel-primary center-block" id ="rounded1">
-         <div class="panel-body" style="background: url(../images/background2.jpg) no-repeat; color: blue"  id ="rounded2"> 
+	  <div class="panel panel-primary" id ="login1">
+	  <div id="login2"><b>SIGN IN</b></div>
+         <div class="panel-body"   id ="login3"> 
 	        <form action="/login" method="POST" >
  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
               <div class="col-sm-8">    
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
 			           <label for="userName">UserName <span class="glyphicon glyphicon-user"> </span></label><br>
-			           <input class="form-control" name="userName" id="userNameId" placeholder="Enter UserName" autofocus required />
+			           <input class="form-control" type= "text" name="userName" id="userNameId" placeholder="Enter UserName" autofocus required />
 			           
                   </div>
                 </div>
@@ -66,10 +67,10 @@
                 </div> 
               <br><br>
               		<c:if test="${not empty invalidCredentials}">
-				 		<div class="col-sm-8">${invalidCredentials}</div>
+				 		<div class="col-sm-12">${invalidCredentials}</div>
 					</c:if>
 					<c:if test="${not empty logoutMessage}">
-						<div class="col-sm-8">${logoutMessage}</div>
+						<div class="col-sm-12">${logoutMessage}</div>
 					</c:if>
               </div>
             </form>

@@ -6,15 +6,89 @@ body {
    background-size: cover;
 
 }
-#rounded1, #rounded2{
-  border-radius: 25px;
+#login1 {
+  border-radius: 75px;
   height: 250px;
-  border: 1px dashed;
+  width: 450px;
+  border: 1px;
+  margin-left:auto;
+  margin-right:auto;
+} 
+#login2{
+  border-radius: 75px 75px 0px 0px;
+  height: 40px;
+  width: 450px;
+  border: 1px;
+  margin-left:auto;
+  margin-right:auto;
+  background: #006dcc;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
 }    
+#login3{
+  border-radius: 0px 0px 75px 75px;
+  height: 250px;
+  width: 450px;
+  border: 1px;
+  background: url(../images/background2.jpg) no-repeat; 
+  color: black;
+}
+
+
+#userReg1{
+  border-radius: 75px;
+  width: 800px;
+  border: none;
+  margin-left:auto;
+  margin-right:auto;
+} 
+#userReg2{
+  border-radius: 75px 75px 0px 0px;
+  height: 40px;
+  width: 800px;
+  border: none;
+  margin-left:auto;
+  margin-right:auto;
+  background: #006dcc;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+} 
+#userReg3{
+  border-radius: 0px 0px 75px 75px;
+  width: 800px;
+  border: none;
+  background: url(../images/background2.jpg) no-repeat; 
+  color: black;
+} 
+input[type=text]{
+  border-radius:15px;
+  width: 220px;
+}
+input[type=password]{
+  border-radius:15px;
+  width: 220px;
+}
+#paymentModeId, #countryId, #sexId{
+  border-radius:15px;
+  width: 220px;
+}
+input[type=email]{
+  border-radius:15px;
+  width: 220px;
+}
+input[type=tel]{
+  border-radius:15px;
+  width: 220px;
+}
 #navbarcontainer{
    padding-left: 0px; 
-   padding-right: 0px;"
+   padding-right: 0px;
 } 
+button[type=submit]{
+   border-radius: 15px;
+}
 .navbar .navbar-inner {
     padding: 0;
 }
