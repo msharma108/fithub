@@ -38,10 +38,9 @@
 
 	<!-- contents start here -->
 	<div class="container">
-	 <div class="col-sm-6 col-sm-offset-3">
-	  <div class="panel panel-primary">
-        <div class="panel-heading"><b>Please Login</b></div>
-         <div class="panel-body" style="background-color: white;"> 
+	 <div class="col-sm-5 col-sm-offset-3">
+	  <div class="panel panel-primary center-block" id ="rounded1">
+         <div class="panel-body" style="background: url(../images/background2.jpg) no-repeat; color: blue"  id ="rounded2"> 
 	        <form action="/login" method="POST" >
  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
               <div class="col-sm-8">    
@@ -75,7 +74,6 @@
               </div>
             </form>
            </div>
-           <div class="panel-footer"></div>
         </div>
       </div> 
     </div>

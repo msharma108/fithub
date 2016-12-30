@@ -2,9 +2,14 @@ body {
    padding-top: 40px;
    padding-left: 0px;
    padding-right: 0px;
-   background: url(../images/background.jpg) no-repeat;
+   background: url(../images/background2.jpg) no-repeat;
    background-size: cover;
 
+}
+#rounded1, #rounded2{
+  border-radius: 25px;
+  height: 250px;
+  border: 1px dashed;
 }    
 #navbarcontainer{
    padding-left: 0px; 
@@ -25,11 +30,11 @@ body {
 	background-color: #1F1C22; 
 }
 #topfixedbar,#bottombar{
-	background-color: #003366 ;  
+	background-color: #72bcd4 ; /*#003366 ; */ 
 }
 
  #footer{
-	background-color: #9999FF ;
+	background-color: #72bcd4 ; /*#9999FF ;*/
 	         width: 100%;
             bottom: 0;
             position: fixed;
