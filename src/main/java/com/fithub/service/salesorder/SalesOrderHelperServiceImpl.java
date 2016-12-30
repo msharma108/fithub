@@ -85,6 +85,31 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 		return salesOrder;
 	}
 
+	@Override
+	public OrderDTO populateOrderDTOFromOrder(SalesOrder salesOrder) {
+
+		OrderDTO orderDTO = new OrderDTO();
+		orderDTO.setOrderId(salesOrder.getSalesOrderId());
+		orderDTO.setShippingCharge(salesOrder.getShippingCharge());
+		orderDTO.setTax(salesOrder.getTax());
+		orderDTO.setOrderTotalCost(salesOrder.getSalesOrderTotalCost());
+		orderDTO.setOrderCreationDate(salesOrder.getSalesOrderCreationDate());
+		orderDTO.setOrderEditDate(salesOrder.getSalesOrderEditDate());
+		orderDTO.setOrderRefundAmount(salesOrder.getSalesOrderRefundAmount());
+		orderDTO.setStripeRefundId(salesOrder.getStripeRefundId());
+		orderDTO.setTrackingNumber(salesOrder.getTrackingNumber());
+		orderDTO.setStripeChargeId(salesOrder.getStripeChargeId());
+		orderDTO.setPaymentStatus(salesOrder.getPaymentStatus());
+		orderDTO.setOrderStatus(salesOrder.getStatus());
+		orderDTO.setPaymentStatus(salesOrder.getPaymentStatus());
+
+		orderDTO.setUser(salesOrder.getUser());
+		orderDTO.setShippingAddress(salesOrder.getShippingAddress());
+		orderDTO.setSalesOrderItems(salesOrder.getSalesOrderItems());
+
+		return orderDTO;
+	}
+
 	/**
 	 * Method generates a unique random tracking number by replacing : & - in
 	 * the current date time

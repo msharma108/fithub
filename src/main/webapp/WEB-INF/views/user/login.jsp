@@ -64,7 +64,6 @@
                     <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-log-in"></i> Sign In</button>
                   </div>
                 </div> 
-              <br><br>
               		<c:if test="${not empty invalidCredentials}">
 				 		<div class="col-sm-8">${invalidCredentials}</div>
 					</c:if>
