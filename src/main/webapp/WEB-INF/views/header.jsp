@@ -59,6 +59,11 @@
 		   <li class="nav-item">
 			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact us</a>
 		   </li>
+		   <sec:authorize access="isAuthenticated()">
+		   	<li class="nav-item">
+			 <a class="nav-link" href="<c:url value="/viewUserAllOrders/${loggedInUserName}"/>"><span class="glyphicon glyphicon-envelope"></span> My Orders</a>
+		   </li>
+		   </sec:authorize>
 		   <li class="nav-item">
 			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-info-sign"></span> About us</a>
 		   </li>
@@ -76,6 +81,9 @@
 		       </li>
 		   	   <li class="nav-item">
 		         <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/viewUsers"/>"><span class="glyphicon glyphicon-eye-open"></span> View all Users</a>
+		      </li>
+		      	<li class="nav-item">
+		         <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/viewAllOrders"/>"><span class="glyphicon glyphicon-eye-open"></span> View all Orders</a>
 		      </li>
              </ul>
            </li>

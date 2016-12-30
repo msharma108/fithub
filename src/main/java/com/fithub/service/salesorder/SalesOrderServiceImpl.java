@@ -20,6 +20,7 @@ import com.fithub.repository.salesorder.SalesOrderRepository;
 import com.fithub.service.product.ProductService;
 import com.fithub.service.salesorderitem.SalesOrderItemHelperService;
 import com.fithub.service.time.TimeHelperService;
+import com.fithub.service.user.UserService;
 import com.stripe.model.Refund;
 
 /**
@@ -35,18 +36,20 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	private final TimeHelperService timeHelperService;
 	private final SalesOrderHelperService salesOrderHelperService;
 	private final SalesOrderItemHelperService salesOrderItemHelperService;
+	private final UserService userService;
 	private final ProductService productService;
 
 	@Autowired
 	public SalesOrderServiceImpl(SalesOrderRepository salesOrderRepository, TimeHelperService timeHelperService,
 			SalesOrderHelperService salesOrderHelperService, SalesOrderItemHelperService salesOrderItemHelperService,
-			ProductService productService) {
+			ProductService productService, UserService userService) {
 
 		this.salesOrderRepository = salesOrderRepository;
 		this.timeHelperService = timeHelperService;
 		this.salesOrderHelperService = salesOrderHelperService;
 		this.salesOrderItemHelperService = salesOrderItemHelperService;
 		this.productService = productService;
+		this.userService = userService;
 	}
 
 	@Override
@@ -63,7 +66,8 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	@Override
 	public List<SalesOrder> getSalesOrderListByUserName(String userName) {
 		LOG.debug("Retrieving list of salesOrders associated with userName={}", userName);
-		List<SalesOrder> salesOrderList = salesOrderRepository.getSalesOrderByUserName(userName);
+
+		List<SalesOrder> salesOrderList = userService.getUserByUsername(userName).getSalesOrders();
 		if (!salesOrderList.isEmpty())
 			return salesOrderList;
 		else

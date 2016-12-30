@@ -40,11 +40,13 @@
 	<table id="orderList" class="table">
     				<thead>
 						<tr>
-							<th style="width:10%">OrderId</th>
-							<th style="width:10%">UserId</th>
-							<th style="width:30%">FullName</th>
-							<th style="width:15%">Date</th>
-							<th style="width:10%" class="text-center">Status</th>
+							<th style="width:5%">OrderId</th>
+							<th style="width:10%">Name</th>
+							<th style="width:10%">Order Amount</th>
+							<th style="width:10%">Status</th>
+							<th style="width:10%">Payment Status</th>
+							<th style="width:15%">Order Creation Date</th>
+							
 							<th style="width:10%" class="text-center"></th>
 						</tr>
 					</thead>
@@ -52,24 +54,45 @@
 							<c:if test="${exception !=null }">
 							<c:out value="${exception }"/>
 							</c:if>
-					  <c:forEach items="${OrderList}" var="orderItem">
-						<tr>
-							<td data-th="OrderId" class="text-left">${orderItem.orderId}</td>
-							<td data-th="UserId">${orderItem.userId}</td>
-							<td data-th="FullName" class="text-left">${orderItem.fullName}</td>
-							<c:set var="Date" value="${orderItem.date}"/>
-							<td data-th="Status" class="text-left">${orderItem.status} </td>
 							
+
+							
+					  <c:forEach items="${orderList}" var="salesOrder">
+					  				  
+						<tr>
+							<!-- link to Order Id & user profile page based on user role -->
+							
+							<sec:authorize access="hasAuthority('ADMIN')">
+							<c:url var="adminViewOrder" value="/admin/viewOrder/${salesOrder.user.userName }/${salesOrder.salesOrderId}"/>
+							<td data-th="OrderId" class="text-left"><a href="${adminViewOrder}">${salesOrder.salesOrderId}</a></td>							
+							 </sec:authorize>
+							<sec:authorize access="hasAuthority('CUSTOMER')">
+							<c:url var="userViewOrder" value="/viewOrder/${salesOrder.user.userName }/${salesOrder.salesOrderId}"/>
+							<td data-th="OrderId" class="text-left"><a href="${userViewOrder}">${salesOrder.salesOrderId}</a></td>							
+							 </sec:authorize>
+							 
+							 <sec:authorize access="hasAuthority('ADMIN')">
+							<td data-th="Name" class="text-left"><a href="<c:url value="/admin/viewUser/${salesOrder.user.userName}"/>">${salesOrder.user.givenName} ${salesOrder.user.familyName}</a></td>
+							</sec:authorize>
+							
+							<sec:authorize access="hasAuthority('CUSTOMER')">
+							<td data-th="Name" class="text-left"><a href="<c:url value="/viewUser/${salesOrder.user.userName}"/>">${salesOrder.user.givenName} ${salesOrder.user.familyName}</a></td>
+							 </sec:authorize>
+							
+							<td data-th="OrderAmount" class="text-left">${salesOrder.salesOrderTotalCost} </td>
+							<td data-th="Status" class="text-left">${salesOrder.status} </td>
+							<td data-th="PaymentStatus" class="text-left">${salesOrder.paymentStatus} </td>
+							<td data-th="Order Creation Date" class="text-left">${salesOrder.salesOrderCreationDate}</td>
+							
+							<sec:authorize access="hasAuthority('ADMIN')">
 							<td class="actions" data-th="">
-							   <form>
-							    <input type="hidden" name="subTotal" value="${OrderId}"/>
+							   <form action="<c:url value="/admin/cancelOrder/${salesOrder.salesOrderId}"/>" method="post">
 							    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							   
-							    <button class="btn btn-primary btn-sm" title="View Order Details" name="viewOrder"><span class="glyphicon glyphicon-plus"></span></button>
+							    							    						   
 							    <button class="btn btn-danger btn-sm" title="Cancel Order" name="cancelOrder" ><span class="glyphicon glyphicon-remove"></span></button>
 							   </form>
 							</td>
-							
+							</sec:authorize>
 						</tr>
 						
 				      </c:forEach>

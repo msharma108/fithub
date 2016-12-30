@@ -27,6 +27,7 @@ import com.fithub.domain.CustomUser;
 import com.fithub.domain.OrderDTO;
 import com.fithub.domain.SalesOrder;
 import com.fithub.restmailclient.RestMailClient;
+import com.fithub.service.salesorder.SalesOrderHelperService;
 import com.fithub.service.salesorder.SalesOrderService;
 import com.fithub.shoppingcart.ShoppingCart;
 import com.stripe.Stripe;
@@ -47,12 +48,15 @@ public class OrderCheckoutController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OrderCheckoutController.class);
 	private final SalesOrderService salesOrderService;
+	private final SalesOrderHelperService salesOrderHelperService;
 	private final RestMailClient restMailClient;
 	private final BigDecimal dollarToCents = new BigDecimal(100);
 
-	public OrderCheckoutController(SalesOrderService salesOrderService, RestMailClient restMailClient) {
+	public OrderCheckoutController(SalesOrderService salesOrderService, RestMailClient restMailClient,
+			SalesOrderHelperService salesOrderHelperService) {
 		this.salesOrderService = salesOrderService;
 		this.restMailClient = restMailClient;
+		this.salesOrderHelperService = salesOrderHelperService;
 	}
 
 	@RequestMapping(value = "/orderCheckout")
@@ -177,7 +181,25 @@ public class OrderCheckoutController {
 	}
 
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
-	@RequestMapping(value = { "/viewUserOrders/{userName}", "/admin/viewUserOrders/{userName}" })
+	@RequestMapping(value = { "/viewOrder/{userName}/{orderId}", "/admin/viewOrder/{userName}/{orderId}" })
+	public String getOrderDetailsPage(@PathVariable("userName") String userName, Model model,
+			@PathVariable("orderId") int orderId) {
+		LOG.debug("Retreiving the order details of order={}", orderId);
+
+		SalesOrder salesOrder = salesOrderService.getSalesOrderById(orderId);
+		if (salesOrder != null) {
+			OrderDTO orderDTO = salesOrderHelperService.populateOrderDTOFromOrder(salesOrder);
+
+			model.addAttribute("orderDTO", orderDTO);
+		}
+
+		else
+			throw new NoSuchElementException((String.format("order=%s not found", orderId)));
+		return "order/orderDetails";
+	}
+
+	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
+	@RequestMapping(value = { "/viewUserAllOrders/{userName}", "/admin/viewUserAllOrders/{userName}" })
 	public String getUserOrdersListPage(@PathVariable("userName") String userName, Model model) {
 		LOG.debug("Retreiving the orders of user={}", userName);
 
@@ -195,15 +217,12 @@ public class OrderCheckoutController {
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = { "/admin/cancelOrder/{salesOrderId}" })
-	public String handleOrderCancellation(Authentication authentication, RedirectAttributes redirectAttribute)
-			throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException,
-			APIException {
+	public String handleOrderCancellation(@PathVariable("salesOrderId") int salesOrderId, Authentication authentication,
+			RedirectAttributes redirectAttribute) throws AuthenticationException, InvalidRequestException,
+			APIConnectionException, CardException, APIException {
 		LOG.debug("Attempting to cancel the order with salesOrderId");
 		// private key for test account
 		Stripe.apiKey = "sk_test_AM33dQCKgInsAIX0OcT17kYJ";
-
-		// ## Hard-coded to test for now
-		int salesOrderId = 38;
 
 		// Get order to be cancelled
 		SalesOrder salesOrder = salesOrderService.getSalesOrderById(salesOrderId);

@@ -23,4 +23,12 @@ public interface SalesOrderHelperService {
 	 */
 	SalesOrder createSalesOrderFromOrderDTO(SalesOrder salesOrder, OrderDTO orderDTO);
 
+	/**
+	 * Method populates the Order DTO from sales Order object
+	 * 
+	 * @param salesOrder
+	 * @return OrderDTO containing data to be displayed on UI
+	 */
+	OrderDTO populateOrderDTOFromOrder(SalesOrder salesOrder);
+
 }

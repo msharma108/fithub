@@ -2,12 +2,14 @@ package com.fithub.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * DTO for order checkout
@@ -47,6 +49,8 @@ public class OrderDTO {
 	@NotEmpty
 	private String email;
 
+	private int orderId;
+
 	private String paymentStatus;
 
 	private BigDecimal shippingCharge;
@@ -63,7 +67,22 @@ public class OrderDTO {
 
 	private String orderStatus = "ORDERED";
 
+	private User user = new User();
+
+	private ShippingAddress shippingAddress = new ShippingAddress();
+
 	private List<ProductDTO> orderProductList = new ArrayList<ProductDTO>();
+
+	private List<SalesOrderItem> salesOrderItems = new ArrayList<SalesOrderItem>();
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date orderCreationDate = new Date();
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date orderEditDate = new Date();
+
+	private String stripeRefundId;
+	private BigDecimal orderRefundAmount;
 
 	public BigDecimal getTax() {
 		return tax;
@@ -207,6 +226,70 @@ public class OrderDTO {
 
 	public void setOrderStatus(String orderStatus) {
 		this.orderStatus = orderStatus;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public ShippingAddress getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public List<SalesOrderItem> getSalesOrderItems() {
+		return salesOrderItems;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setShippingAddress(ShippingAddress shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+
+	public void setSalesOrderItems(List<SalesOrderItem> salesOrderItems) {
+		this.salesOrderItems = salesOrderItems;
+	}
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	public Date getOrderCreationDate() {
+		return orderCreationDate;
+	}
+
+	public Date getOrderEditDate() {
+		return orderEditDate;
+	}
+
+	public String getStripeRefundId() {
+		return stripeRefundId;
+	}
+
+	public BigDecimal getOrderRefundAmount() {
+		return orderRefundAmount;
+	}
+
+	public void setOrderCreationDate(Date orderCreationDate) {
+		this.orderCreationDate = orderCreationDate;
+	}
+
+	public void setOrderEditDate(Date orderEditDate) {
+		this.orderEditDate = orderEditDate;
+	}
+
+	public void setStripeRefundId(String stripeRefundId) {
+		this.stripeRefundId = stripeRefundId;
+	}
+
+	public void setOrderRefundAmount(BigDecimal orderRefundAmount) {
+		this.orderRefundAmount = orderRefundAmount;
 	}
 
 }
