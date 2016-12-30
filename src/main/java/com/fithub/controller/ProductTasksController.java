@@ -55,12 +55,14 @@ public class ProductTasksController {
 		this.productDTOValidator = productDTOValidator;
 	}
 
-	@RequestMapping(value = { "/viewProducts", "/viewProducts/{category}" })
+	@RequestMapping(value = { "/viewProducts", "/viewProducts/{category}", "/viewProducts/topProducts/{topProducts}" })
 	public String getAllProductsListPage(@PathVariable Map<String, String> pathVariables, Model model) {
 		LOG.debug("Attempting to list all the products");
 
 		List<ProductDTO> ListProductDTO = new ArrayList<ProductDTO>();
 		List<Product> productList = new ArrayList<Product>();
+		// quantity of a product that has been marked as deleted in db
+		int deletedProductQuantity = -999;
 
 		// Reference:
 		// http://stackoverflow.com/questions/4904092/with-spring-3-0-can-i-make-an-optional-path-variable
@@ -69,12 +71,18 @@ public class ProductTasksController {
 
 			// Display products based on provided category
 			productList = productService.getProductsByCategory(pathVariables.get("category"));
+
+		else if (pathVariables.containsKey("topProducts"))
+			// Display top products based on quantity sold
+			productList = productService.getTopProductsByQuantitySold();
+
 		else
 			// Display all products
 			productList = productService.getAllProducts();
 
 		// Remove products marked as deleted from the list
-		productList.removeIf((Product productMarkedDeleted) -> productMarkedDeleted.getStockQuantity() < 0);
+		productList.removeIf(
+				(Product productMarkedDeleted) -> productMarkedDeleted.getStockQuantity() == deletedProductQuantity);
 
 		// Encoding byte array image received from DB and encoding it for
 		// browser display
@@ -82,15 +90,15 @@ public class ProductTasksController {
 
 			// Display only the products that have not been marked as deleted
 			// Product marked for deletion have a negative stock quantity
-			if (productFromDB.getStockQuantity() >= 0) {
+			// if (productFromDB.getStockQuantity() >= 0) {
 
-				ProductDTO productDTO = new ProductDTO();
-				LOG.debug("Encoding image retreieved from database");
-				productDTO.setBase64imageFile(
-						"data:image/jpg;base64," + Base64.getEncoder().encodeToString(productFromDB.getThumbImage()));
-				ListProductDTO.add(productDTO);
+			ProductDTO productDTO = new ProductDTO();
+			LOG.debug("Encoding image retreieved from database");
+			productDTO.setBase64imageFile(
+					"data:image/jpg;base64," + Base64.getEncoder().encodeToString(productFromDB.getThumbImage()));
+			ListProductDTO.add(productDTO);
 
-			}
+			// }
 
 		}
 		model.addAttribute("allProducts", productList);

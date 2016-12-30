@@ -91,6 +91,9 @@
 				                <p>price: <c:out value="${product.price}"/> Rating: <c:out value="${product.rating}"/> Weight: <c:out value="${product.weight}"/></p>
                                 <!-- end of product info -->
                                 
+                                <!-- Show add to cart if in stock -->
+                                <c:choose>
+                                <c:when test="${product.stockQuantity >0 }">
                                 <!-- add to cart button -->
                                 <sec:authorize access="!hasAuthority('ADMIN')">
 	                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -101,7 +104,11 @@
 	                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			                    <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 			                    </sec:authorize>
-			                    
+			                    </c:when>
+			                    <c:when test="${product.stockQuantity <=0}">
+			                    <img alt="Out of Stock" src="../images/outOfStock.png" />
+			                    </c:when>
+			                    </c:choose>
 			                    <!-- end of add to cart button -->
 			                 
 			                    <!-- show edit and delete buttong if admin logged in -->

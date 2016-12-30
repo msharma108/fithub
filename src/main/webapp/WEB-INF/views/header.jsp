@@ -44,9 +44,18 @@
 		   <li class="nav-item">
 			 <a class="nav-link" href="<c:url value="/home"/>" ><span class="glyphicon glyphicon-home"> </span> Home</a>
 		   </li>
-		   <li class="nav-item">
-			 <a class="nav-link" href="<c:url value="/viewProducts"/>"><span class="glyphicon glyphicon-shopping-cart"></span> Products</a>
-		   </li>
+		   	<li class="dropdown">
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Product
+             <span class="caret"></span></a>
+             <ul class="dropdown-menu">
+             	<li class="nav-item">
+		         <a class="nav-link" href="<c:url value="/viewProducts"/>"><span class="glyphicon glyphicon-shopping-cart"></span> All Products</a>
+		       	</li>
+		       	<li class="nav-item">
+		         <a class="nav-link" href="<c:url value="/viewProducts/topProducts/top5"/>"><span class="glyphicon glyphicon-shopping-cart"></span> Top Products</a>
+		       	</li>
+             </ul>
+             </li>
 		   <li class="nav-item">
 			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact us</a>
 		   </li>

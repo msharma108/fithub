@@ -18,6 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 	Product findOneByProductName(String productName);
 
+	List<Product> findTop5ByOrderByQuantitySoldDesc();
+
 	@Query("select product from Product product, ProductCategory prodcategory where prodcategory.category =:category and product.productCategory = prodcategory.productCategoryId")
 	List<Product> getProductsByCategory(@Param("category") String category);
 
