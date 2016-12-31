@@ -140,7 +140,7 @@
               </div>
               
 			<br><br> 
-			<button type="submit" class="btn btn-primary btn-block" name="userEdit" id="userEdit"  ><i class="glyphicon glyphicon-pencil"></i> EditTest</button>             
+			<button type="submit" class="btn btn-primary btn-block" name="userEdit" id="userEdit"  ><i class="glyphicon glyphicon-pencil"></i> Edit Profile</button>             
             </form:form>
           </div>
           <div class="panel-footer" style="color: white; background-color: maroon;"></div>

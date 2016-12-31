@@ -72,6 +72,14 @@
 						<div class="col-sm-12">${logoutMessage}</div>
 					</c:if>
               </div>
+                            <div class="col-sm-8">  
+                <div class="form-group row">
+                  <div class="col-sm-8 form-group">
+                                     <div class="form-field"> <a class="nav-link" data-toggle="modal" href="<c:url value="/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register a new user</a></div><br>
+                   <div class="form-field"> <a class="nav-link" data-toggle="modal" href="<c:url value="/passwordRetrieval"/>"><span class="glyphicon glyphicon-lock"></span> Forgot Password</a></div><br>
+              </div>
+              </div>
+              </div>
             </form>
            </div>
         </div>

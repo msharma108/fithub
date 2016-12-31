@@ -136,6 +136,8 @@ public class ProductTasksController {
 					reconstructedUrl = "/viewProduct/" + productName;
 				if (addToCart != null)
 					reconstructedUrl = "/shoppingCart/addToCart/" + productName;
+
+				// request routing for Cart refresh or removal operations
 				if (removeFromCart != null || refreshCart != null) {
 					BigDecimal productSubTotalInCart = new BigDecimal(request.getParameter("subTotal"));
 					BigDecimal productQuantityInCartAfterRefresh = new BigDecimal(

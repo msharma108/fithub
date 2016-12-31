@@ -67,7 +67,7 @@ $(document).ready(function() {
  
      <div class="panel-body" id="userReg3"> 
           <!-- Form action variable value based on user role starts here -->
-          <sec:authorize access="hasAnyRole('CUSTOMER', 'ROLE_ANONYMOUS')">
+          <sec:authorize access="!hasAuthority('ADMIN')">
           <c:url var="userSave" value="/userSave"/>
           </sec:authorize>
          <sec:authorize access="hasAuthority('ADMIN')">
@@ -189,6 +189,21 @@ $(document).ready(function() {
 			           <form:label path="repeatPassword">Repeat Password:<span class="glyphicon glyphicon-lock"></span></form:label><br>
 			           <form:input class="form-control" type="password" path="repeatPassword" id="repeatPasswordId" placeHolder= "Re-enter password"  />
 			           <form:errors  path="repeatPassword" style="color: red;"/>
+                  </div>
+                </div>
+              </div>
+              
+                <div class="col-sm-12">    
+                <div class="form-group row">
+                  <div class="col-sm-4 form-group">
+			           <form:label path="password" >Security Question:<span class="glyphicon glyphicon-question"></span></form:label><br>
+			           <form:input class="form-control" type="text"  autocomplete="off" path="securityQuestion" id="securityQuestionId" placeHolder= "Security Question for Password Reset"  />
+			           <form:errors  path="securityQuestion" style="color: red;"/>
+                  </div>
+                  <div class="col-sm-4 form-group">
+			           <form:label path="repeatPassword">Answer<span class="glyphicon glyphicon-lock"></span></form:label><br>
+			           <form:input class="form-control" type="text"  autocomplete="off" path="securityQuestionAnswer" id="securityQuestionAnswerId" placeHolder= "Re-enter password"  />
+			           <form:errors  path="securityQuestionAnswer" style="color: red;"/>
                   </div>
                 </div>
               </div>

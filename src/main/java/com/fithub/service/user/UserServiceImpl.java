@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -130,6 +131,17 @@ public class UserServiceImpl implements UserService {
 		user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
 		user.setProfileEditedByUser(userDTO.getLoggedInUserName());
 		return userRepository.save(user);
+	}
+
+	@Override
+	public void resetPassword(User user, String resetPassword) {
+		LOG.debug("Attempting to reset user password of user={} by user={}", user.getUserName(), user.getUserName());
+
+		user.setPassword((new BCryptPasswordEncoder().encode(resetPassword)));
+		user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
+		user.setProfileEditedByUser(user.getUserName());
+		userRepository.save(user);
+
 	}
 
 }

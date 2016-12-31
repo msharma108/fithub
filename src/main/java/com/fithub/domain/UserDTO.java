@@ -68,7 +68,7 @@ public class UserDTO {
 
 	private Date registrationDate;
 
-	@Size(min = 6, max = 6)
+	@Size(min = 6, max = 7)
 	@NotEmpty
 	private String zipcode;
 
@@ -81,6 +81,14 @@ public class UserDTO {
 
 	// Represents currently logged in User's role set to default CUSTOMER
 	private String loggedInUserUserRole = "CUSTOMER";
+
+	@Size(min = 6, max = 45)
+	@NotEmpty
+	private String securityQuestion;
+
+	@Size(min = 2, max = 45)
+	@NotEmpty
+	private String securityQuestionAnswer;
 
 	public String getUserName() {
 		return userName;
@@ -256,6 +264,22 @@ public class UserDTO {
 
 	public void setUserNameBeforeEdit(String userNameBeforeEdit) {
 		this.userNameBeforeEdit = userNameBeforeEdit;
+	}
+
+	public String getSecurityQuestion() {
+		return securityQuestion;
+	}
+
+	public String getSecurityQuestionAnswer() {
+		return securityQuestionAnswer;
+	}
+
+	public void setSecurityQuestion(String securityQuestion) {
+		this.securityQuestion = securityQuestion;
+	}
+
+	public void setSecurityQuestionAnswer(String securityQuestionAnswer) {
+		this.securityQuestionAnswer = securityQuestionAnswer;
 	}
 
 }

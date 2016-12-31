@@ -137,6 +137,25 @@
     </div>
   </div>
   
+    <!-- Password reset success Modal -->
+  <div class="modal" id="userPasswordResetSuccessModal">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span>Password Reset</h4>
+        </div>
+        <div class="modal-body">
+          <p>Password Reset Successfully, Check your Email  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>   
+  
   
  </div>
 	<!-- contents end here -->
@@ -155,6 +174,7 @@
     	var userDeleteSuccess =2;
     	var userRoleChangeSuccess =3;
     	var userUpdateSuccess =4;
+    	var userPasswordResetSuccess =5;
     	console.log( "ready!" );
     	if ( ${userTaskTypeCompleted} == userRegisterSuccess)
     		{
@@ -176,6 +196,12 @@
 			 console.log("userUpdateSuccess value",typeof(${userTaskTypeCompleted}));
         	$('#userProfileUpdateSuccessModal').modal('show');
 			}
+    	else if ( ${userTaskTypeCompleted} == userPasswordResetSuccess)
+		{
+		 console.log("userPasswordResetSuccess value",typeof(${userTaskTypeCompleted}));
+    	$('#userPasswordResetSuccessModal').modal('show');
+		}
+    	
 		else
 			{
 				console.log("all false");

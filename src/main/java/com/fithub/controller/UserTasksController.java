@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +25,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.fithub.domain.PasswordRetrievalDTO;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
+import com.fithub.restmailclient.RestMailClient;
 import com.fithub.service.user.UserService;
 import com.fithub.service.user.UserTasksHelperService;
 
@@ -33,13 +38,17 @@ import com.fithub.service.user.UserTasksHelperService;
 public class UserTasksController {
 
 	private final UserService userService;
+	private final RestMailClient restMailClient;
+
 	private static final Logger LOG = LoggerFactory.getLogger(UserTasksController.class);
 	private final UserTasksHelperService userTasksHelperService;
 
 	@Autowired
-	public UserTasksController(UserService userService, UserTasksHelperService userTasksHelperService) {
+	public UserTasksController(UserService userService, UserTasksHelperService userTasksHelperService,
+			RestMailClient restMailClient) {
 		this.userService = userService;
 		this.userTasksHelperService = userTasksHelperService;
+		this.restMailClient = restMailClient;
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -199,4 +208,69 @@ public class UserTasksController {
 			return "home";
 	}
 
+	@GetMapping(value = "/passwordRetrieval")
+	public String getPasswordRetrievalPage() {
+		LOG.debug("Getting password retieval page");
+
+		return "user/passwordRetrieval";
+	}
+
+	@PostMapping(value = "/passwordRetrieval")
+	public String handlePasswordRetrieval(Model model, HttpServletRequest request,
+			@RequestParam(value = "performRetrieval", required = false) String performRetrieval,
+			@RequestParam(value = "getSecurityChecks", required = false) String getSecurityChecks,
+			RedirectAttributes redirectAttributes,
+			@Valid @ModelAttribute("passwordRetrievalDTO") PasswordRetrievalDTO passwordRetrievalDTO,
+			BindingResult result) {
+		LOG.debug("Attempting to handle display security question");
+
+		// Retrieve & display security question of the user
+		if (getSecurityChecks != null) {
+			String userName;
+			userName = request.getParameter("userName");
+			User user = userService.getUserByUsername(userName);
+
+			// passwordRetrievalDTO = new PasswordRetrievalDTO();
+			passwordRetrievalDTO.setSecurityQuestion(user.getSecurityQuestion());
+			passwordRetrievalDTO.setUserName(userName);
+
+			model.addAttribute("passwordRetrievalDTO", passwordRetrievalDTO);
+			model.addAttribute("performRetrieval", true);
+			return "user/passwordRetrieval";
+
+		}
+		// Perform checks for security answer and zip to reset password
+		else if (performRetrieval != null) {
+
+			User user = userService.getUserByUsername(passwordRetrievalDTO.getUserName());
+			passwordRetrievalDTO.setSecurityQuestion(user.getSecurityQuestion());
+
+			if (result.hasErrors()) {
+				LOG.debug("Password retrieval answers submitted have errors");
+				model.addAttribute("showErrors", true);
+				model.addAttribute("performRetrieval", true);
+				model.addAttribute("passwordRetrievalDTO", passwordRetrievalDTO);
+				return "user/passwordRetrieval";
+			}
+
+			LOG.debug("Checking provided security answer");
+			// Check if the answers are true
+			if (passwordRetrievalDTO.getSecurityAnswer().equals(user.getSecurityQuestionAnswer())
+					&& passwordRetrievalDTO.getZip().equals(user.getZipcode())) {
+
+				// Generate a random String as password & update password
+				String resetPassword = RandomStringUtils.randomAlphanumeric(6);
+
+				userService.resetPassword(user, resetPassword);
+
+				// Email the user his new password
+				restMailClient.sendPasswordResetMail(user.getGivenName(), user.getEmail(), resetPassword);
+
+				redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 5);
+				return "redirect:/userTaskSuccess";
+			}
+
+		}
+		return "user/home";
+	}
 }

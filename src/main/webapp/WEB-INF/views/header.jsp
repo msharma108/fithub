@@ -52,7 +52,7 @@
 		         <a class="nav-link" href="<c:url value="/viewProducts"/>"><span class="glyphicon glyphicon-shopping-cart"></span> All Products</a>
 		       	</li>
 		       	<li class="nav-item">
-		         <a class="nav-link" href="<c:url value="/viewProducts/topProducts/top5"/>"><span class="glyphicon glyphicon-shopping-cart"></span> Top Products</a>
+		         <a class="nav-link" href="<c:url value="/viewProducts/topProducts/top5"/>"><span class="glyphicon glyphicon-shopping-cart"></span> Top 5 Products</a>
 		       	</li>
              </ul>
              </li>

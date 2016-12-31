@@ -139,6 +139,39 @@ public class RestMailClient {
 		catch (IOException ex) {
 			LOG.error("errors", ex.toString());
 		}
+	}
+
+	public void sendPasswordResetMail(String givenName, String email, String resetPassword) {
+		// Reference:
+		// https://github.com/sendgrid/sendgrid-java
+
+		String resetPasswordMailTemplateId = "51eafcf2-f8a9-4f85-b3a5-6e8cc30103fd";
+		Email from = new Email(emailSenderAddress);
+		String subject = "Password Reset Requested";
+		Email to = new Email(email);
+		Content content = new Content("text/html", "Password Reset Mail");
+		Mail mail = new Mail(from, subject, to, content);
+
+		mail.personalization.get(0).addSubstitution("-userName-", givenName);
+		mail.personalization.get(0).addSubstitution("-resetPassword-", resetPassword);
+		mail.setTemplateId(resetPasswordMailTemplateId);
+
+		SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+		Request request = new Request();
+		try {
+			request.method = Method.POST;
+			request.endpoint = "mail/send";
+			request.body = mail.build();
+			Response response = sg.api(request);
+			if (response.statusCode == 202)
+				LOG.debug("Password reset mail sent successfully");
+			else
+				LOG.debug("Problems encountered with sending Password reset mail");
+		}
+
+		catch (IOException ex) {
+			LOG.error("errors", ex.toString());
+		}
 
 	}
 
