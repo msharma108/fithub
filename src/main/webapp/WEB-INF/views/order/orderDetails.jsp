@@ -20,6 +20,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
 	<!-- custom -->
 	<link rel="stylesheet" href="../css/style.css"  >
+	<link rel="stylesheet" href="../../../../css/style.css"  >
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
@@ -37,7 +38,13 @@
 <!-- contents start here -->
 
 <div class="container-fluid">
-	<table id="orderList" class="table">
+ <div class="col-md-12 col-xs-12">
+  <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Order Details</h3>
+     </div>
+	<table id="orderList" class="table  table-striped">
     				<thead>
 						<tr>
 							<th style="width:5%">OrderId</th>
@@ -50,7 +57,6 @@
 							<th style="width:15%">Order Refund amount</th>
 							</c:if>
 							<th style="width:15%">Order Creation Date</th>
-							
 							<th style="width:10%" class="text-center"></th>
 						</tr>
 					</thead>
@@ -91,33 +97,58 @@
 							</td>
 							</sec:authorize>
 						</tr>
-						
-						
+						<tr></tr>
+					 </tbody>	
+	</table>
+				<!-- List of items purchased -->		
+				<div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Product details</h3>
+                    </div>
+					<table id="orderList" class="table table-striped">
+					   <thead>
+						 <tr>
+							<th style="width:5%">Product Name</th>
+							<th style="width:10%">Quantity</th>
+					     </tr>
+					   </thead>
+					   <tbody>	
 							<c:forEach items="${orderDTO.salesOrderItems}" var="salesOrderItems">
 							<tr>
-							<td><c:out value="${salesOrderItems.product.productName}"/></td>
-							<td><c:out value="${salesOrderItems.salesOrderItemQuantitySold}"/></td>
+							<td data-th="Product Name" class="text-left"><c:out value="${salesOrderItems.product.productName}"/></td>
+							<td data-th="Quantity" class="text-left"><c:out value="${salesOrderItems.salesOrderItemQuantitySold}"/></td>
 							</tr>
 							</c:forEach>
-							
-							
-							
-							<tr><td><c:out value="${orderDTO.shippingAddress.address}"/></td></tr>
-							
-							<tr><td><c:out value="${orderDTO.shippingAddress.city}"/></td></tr>
-							<tr><td><c:out value="${orderDTO.shippingAddress.email}"/></td></tr>
-							<tr><td><c:out value="${orderDTO.shippingAddress.phone}"/></td></tr>
-							<tr><td><c:out value="${orderDTO.shippingAddress.province}"/></td></tr>
-							<tr><td><c:out value="${orderDTO.shippingAddress.zip}"/></td></tr>
-							
-							
+					  </tbody>
+	                </table>
+	            </div>
+				<!-- Shipping Address -->
+				<div class="panel">
+					<table>
+						<tbody style= "border: none">
+							<tr>
+							 <td>
+							   <div id="shippingAddress">
+							     <h3 class="panel-title">Shipping Address</h3>
+							     <c:out value="${orderDTO.shippingAddress.address}"/><br>
+							     <c:out value="${orderDTO.shippingAddress.city}"/> <c:out value="${orderDTO.shippingAddress.province}"/><br> 
+							     <c:out value="${orderDTO.shippingAddress.zip}"/> <br>
+							     <c:out value="${orderDTO.shippingAddress.country}"/><br>
+							     <span>Email:</span><c:out value="${orderDTO.shippingAddress.email}"/><br>  
+							     <span>Phone:</span><c:out value="${orderDTO.shippingAddress.phone}"/> <br> 
+							   </div>
+							 </td>
+							</tr>
+					    </tbody>
+	                </table>
+	            </div>
 
-					  
-					</tbody>
-	</table>
-	<hr style="height:15px;"/>
+	    <hr style="height:1px;"/>
+	 </div>
+   </div>
+ </div>
 </div>
-
+<br><br><br><br><br>
 
 <!-- contents end here -->
 	 

@@ -8,7 +8,7 @@ body {
 }
 #login1 {
   border-radius: 75px;
-  height: 250px;
+  height: 350px;
   width: 450px;
   border: 1px;
   margin-left:auto;
@@ -28,13 +28,26 @@ body {
 }    
 #login3{
   border-radius: 0px 0px 75px 75px;
-  height: 250px;
+  height: 350px;
   width: 450px;
   border: 1px;
   background: url(../images/background2.jpg) no-repeat; 
   color: black;
 }
+#registerLink a, #forgotPassLink a{
+	color: blue;
+}
 
+#shippingAddress{
+	border-radius: 75px;
+	color: white;
+	background:#006dcc;
+	height: 210px;
+	line-height: 30px;
+    width: 250px;
+    text-align: center;
+	vertical-align: middle;
+}
 
 #userReg1{
   border-radius: 75px;
@@ -104,14 +117,14 @@ button[type=submit]{
 	background-color: #1F1C22; 
 }
 #topfixedbar,#bottombar{
-	background-color: #72bcd4 ; /*#003366 ; */ 
+	background-color: #003366 ;
 }
 
- #footer{
-	background-color: #72bcd4 ; /*#9999FF ;*/
-	         width: 100%;
-            bottom: 0;
-            position: fixed;
+#footer{
+	background-color: #003366 ;
+	width: 100%;
+    bottom: 0;
+    position: fixed;
 }
 .navbar-text >p{
 	color: white;
@@ -124,6 +137,22 @@ thead {
 table, th, td 
 {
     border: 0px solid white;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #C0C0C0;
+   color: black;
+ }
+.table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(even)>th {
+   background-color: white;
+   color: black;
+ }
+
+.table>tbody>tr>td>a {
+  color: blue;
+  text-decoration: underline;
 }
 
 /* unvisited link */

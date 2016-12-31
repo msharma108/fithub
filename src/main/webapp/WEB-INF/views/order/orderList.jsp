@@ -37,7 +37,13 @@
 <!-- contents start here -->
 
 <div class="container-fluid">
-	<table id="orderList" class="table">
+ <div class="col-md-12 col-xs-12">
+  <div class="row">
+    <div class="panel panel-primary">
+          <div class="panel-heading">
+                <h3 class="panel-title">Order list</h3>
+          </div>
+	      <table id="orderList" class="table table-striped">
     				<thead>
 						<tr>
 							<th style="width:5%">OrderId</th>
@@ -94,14 +100,15 @@
 							</td>
 							</sec:authorize>
 						</tr>
-						
 				      </c:forEach>
-					  
 					</tbody>
-	</table>
-	<hr style="height:15px;"/>
+	      </table>
+	      <hr style="height:1px;"/>
+    </div>
+  </div>
+ </div>
 </div>
-
+<br><br><br><br><br>
 
 <!-- contents end here -->
 	 
