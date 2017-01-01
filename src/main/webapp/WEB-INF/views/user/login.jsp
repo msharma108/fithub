@@ -64,21 +64,23 @@
                   <div class="col-sm-8 form-group">
                     <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-log-in"></i> Sign In</button>
                   </div>
-                </div> 
+                </div>
+                <div style ="color: red;">
               		<c:if test="${not empty invalidCredentials}">
 				 		<div class="col-sm-12">${invalidCredentials}</div>
 					</c:if>
 					<c:if test="${not empty logoutMessage}">
 						<div class="col-sm-12">${logoutMessage}</div>
 					</c:if>
+				</div> 
               </div>
-                            <div class="col-sm-8">  
+              <div class="col-sm-8">  
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
-                    <div class="form-field" id="registerLink"> <a class="nav-link" data-toggle="modal" href="<c:url value="/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register a new user</a></div><br>
+                    <div class="form-field" id="registerLink"> <a class="nav-link" data-toggle="modal" href="<c:url value="/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register a new user</a></div>
                    <div class="form-field" id="forgotPassLink"> <a class="nav-link" data-toggle="modal" href="<c:url value="/passwordRetrieval"/>"><span class="glyphicon glyphicon-lock"></span> Forgot Password</a></div><br>
-              </div>
-              </div>
+                  </div>
+                </div>
               </div>
             </form>
            </div>

@@ -36,9 +36,9 @@
 	<!-- contents start here -->
 <div class="container-fluid">
         
-  <div class="panel panel-primary" style="border: 2px solid maroon">
-    <div class="panel-heading" style="color: white; background-color: maroon;"><b>Profile INFO</b></div>
-     <div class="panel-body" style="background-color: #C1E1A6;"> 
+  <div class="panel panel-primary">
+    <div class="panel-heading"><b>Profile INFO</b></div>
+     <div class="panel-body"> 
 
            <!-- Form action variable value based on user role-->
            <sec:authorize access="hasAuthority('ADMIN')">
@@ -143,7 +143,6 @@
 			<button type="submit" class="btn btn-primary btn-block" name="userEdit" id="userEdit"  ><i class="glyphicon glyphicon-pencil"></i> Edit Profile</button>             
             </form:form>
           </div>
-          <div class="panel-footer" style="color: white; background-color: maroon;"></div>
         </div>
         <br><br><br><br><br><br>
   </div>
