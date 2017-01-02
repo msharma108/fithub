@@ -53,38 +53,38 @@ $(document).ready(function() {
 	<!-- contents start here -->
 <div class="container-fluid">
      
-  <div class="panel panel-primary" style="border: 2px solid maroon">
+  <div class="panel panel-primary" id ="userReg1">
     <c:choose>
      <c:when test="${userDTO.isEditable == false }">
       <!-- Show Sign Up Form -->
-    	<div class="panel-heading" style="color: white; background-color: maroon;"><b>REGISTRATION INFO</b></div>
+    	<div id="userReg2"><b>REGISTRATION INFO</b></div>
     </c:when>
      <c:when test="${userDTO.isEditable == true }">
       <!-- Show Update Profile Form -->
-    <div class="panel-heading" style="color: white; background-color: maroon;"><b>User Update Form</b></div>
+    <div id="userReg2"><b>User Update Form</b></div>
     </c:when>  
     </c:choose>
  
-     <div class="panel-body" style="background-color: #C1E1A6;"> 
+     <div class="panel-body" id="userReg3"> 
           <!-- Form action variable value based on user role starts here -->
-          <sec:authorize access="hasAnyRole('CUSTOMER', 'ROLE_ANONYMOUS')">
+          <sec:authorize access="!hasAuthority('ADMIN')">
           <c:url var="userSave" value="/userSave"/>
           </sec:authorize>
          <sec:authorize access="hasAuthority('ADMIN')">
          <c:url var="userSave" value="/admin/userSave"/>
          </sec:authorize>
            <!-- Form action variable value based on user role ends here -->
-	        <form:form modelAttribute="userDTO" method="POST" action="${userSave}" style="color: green;">
+	        <form:form modelAttribute="userDTO" method="POST" action="${userSave}">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
                        <form:label path="givenName">Given Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
-                       <form:input class="form-control" path="givenName" id="givenNameId" placeHolder= "Enter Given names" />
+                       <form:input class="form-control"  type= "text" path="givenName" id="givenNameId" placeHolder= "Enter Given names" />
                        <form:errors  path="givenName" style="color: red;"/>
                   </div>
                   <div class="col-sm-4">
                        <form:label path="familyName">Family Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
-                       <form:input class="form-control" path="familyName" id="familyNameId" placeHolder= "Enter family name" />
+                       <form:input class="form-control"  type= "text" path="familyName" id="familyNameId" placeHolder= "Enter family name" />
                        <form:errors  path="familyName" style="color: red;"/>
                   </div>
                 </div>
@@ -108,7 +108,7 @@ $(document).ready(function() {
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="dateOfBirth">Date Of Birth:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
-			           <form:input class="form-control" path="dateOfBirth" id="dateOfBirthId" placeHolder= "Enter date of birth"  />
+			           <form:input class="form-control"  type= "text" path="dateOfBirth" id="dateOfBirthId" placeHolder= "Enter date of birth"  />
 			           <form:errors  path="dateOfBirth" style="color: red;"/>
                   </div>
                 </div>
@@ -118,12 +118,12 @@ $(document).ready(function() {
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="address">Address:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           <form:input class="form-control" path="address" id="addressId" placeHolder= "Enter Streen number and street name"  />
+			           <form:input class="form-control" type= "text" path="address" id="addressId" placeHolder= "Enter Streen number and street name"  />
 			           <form:errors  path="address" style="color: red;"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="city">City:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           <form:input class="form-control" path="city" id="cityId" placeHolder= "Enter City"  />
+			           <form:input class="form-control" type= "text" path="city" id="cityId" placeHolder= "Enter City"  />
 			           <form:errors  path="city" style="color: red;"/>
                   </div>
                 </div>
@@ -133,12 +133,12 @@ $(document).ready(function() {
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="province">Province:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           <form:input class="form-control" path="province" id="provinceId" placeHolder= "Enter Province"  />
+			           <form:input class="form-control" type= "text" path="province" id="provinceId" placeHolder= "Enter Province"  />
 			           <form:errors  path="province" style="color: red;"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="country">Country:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           <form:select class="form-control input-medium bfh-countries"  path="country" id="countryId"  >
+			           <form:select class="form-control input-medium bfh-countries" type= "select" path="country" id="countryId"  >
 			           <form:option value="">--- Select ---</form:option>
 			           <form:option value="CANADA">Canada</form:option>
 			           <form:option value="USA">USA</form:option>
@@ -193,11 +193,26 @@ $(document).ready(function() {
                 </div>
               </div>
               
+                <div class="col-sm-12">    
+                <div class="form-group row">
+                  <div class="col-sm-4 form-group">
+			           <form:label path="password" >Security Question:<span class="glyphicon glyphicon-question"></span></form:label><br>
+			           <form:input class="form-control" type="text"  autocomplete="off" path="securityQuestion" id="securityQuestionId" placeHolder= "Security Question for Password Reset"  />
+			           <form:errors  path="securityQuestion" style="color: red;"/>
+                  </div>
+                  <div class="col-sm-4 form-group">
+			           <form:label path="repeatPassword">Answer<span class="glyphicon glyphicon-lock"></span></form:label><br>
+			           <form:input class="form-control" type="text"  autocomplete="off" path="securityQuestionAnswer" id="securityQuestionAnswerId" placeHolder= "Re-enter password"  />
+			           <form:errors  path="securityQuestionAnswer" style="color: red;"/>
+                  </div>
+                </div>
+              </div>
+              
               <div class="col-sm-12">    
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			          <form:label path="paymentMode">Payment Mode:<span class="glyphicon glyphicon-credit-card"></span></form:label><br>
-			          <form:select class="form-control" path="paymentMode" id="paymentModeId">
+			          <form:select class="form-control selectbox"  type= "select" path="paymentMode" id="paymentModeId">
 			          <form:option value="">--- Select ---</form:option>
 			          <form:option value="DEBIT">Debit</form:option>
 			          <form:option value="CREDIT">Credit</form:option>
@@ -236,7 +251,6 @@ $(document).ready(function() {
 			<br><br>              
             </form:form>
           </div>
-          <div class="panel-footer" style="color: white; background-color: maroon;"></div>
         </div>
         <br><br><br><br><br><br>
   </div>

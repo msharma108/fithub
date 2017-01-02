@@ -38,9 +38,9 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-12">
 
-            <div class="panel panel-default panel-table">
+            <div class="panel panel-primary panel-table">
               <div class="panel-heading">
                 <div class="row">
                   <div class="col col-xs-6">

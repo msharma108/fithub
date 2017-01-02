@@ -90,6 +90,12 @@ public class User implements Serializable {
 	@Column(length = 20)
 	private String zipcode;
 
+	@Column(length = 45)
+	private String securityQuestion;
+
+	@Column(length = 45)
+	private String securityQuestionAnswer;
+
 	// bi-directional many-to-one association to SalesOrder
 	@OneToMany(mappedBy = "user")
 	private List<SalesOrder> salesOrders;
@@ -277,6 +283,22 @@ public class User implements Serializable {
 		salesOrder.setUser(null);
 
 		return salesOrder;
+	}
+
+	public String getSecurityQuestion() {
+		return securityQuestion;
+	}
+
+	public String getSecurityQuestionAnswer() {
+		return securityQuestionAnswer;
+	}
+
+	public void setSecurityQuestion(String securityQuestion) {
+		this.securityQuestion = securityQuestion;
+	}
+
+	public void setSecurityQuestionAnswer(String securityQuestionAnswer) {
+		this.securityQuestionAnswer = securityQuestionAnswer;
 	}
 
 }

@@ -80,4 +80,13 @@ public interface ProductService {
 
 	Product updateProductDetails(ProductDTO productDTO, Authentication authentication);
 
+	/**
+	 * Method finds top 5 products sorted in a descending order indicating which
+	 * products have the highest quantity sold
+	 * 
+	 * @return List of products based sorted in a descending order based on the
+	 *         quantity sold
+	 */
+	List<Product> getTopProductsByQuantitySold();
+
 }

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
+import com.fithub.restmailclient.RestMailClient;
 import com.fithub.service.user.UserService;
 import com.fithub.validator.user.UserRegisterValidator;
 import com.fithub.validator.user.UserValidator;
@@ -31,13 +33,16 @@ public class UserRegisterController {
 
 	// User Service needed for interfacing with DB through DAO
 	private final UserService userService;
+	private final RestMailClient restMailClient;
 	@Qualifier("userRegisterValidator")
 	private final UserValidator userRegisterValidator;
 
 	@Autowired
-	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService) {
+	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService,
+			RestMailClient restMailClient) {
 		this.userRegisterValidator = userRegisterValidator;
 		this.userService = userService;
+		this.restMailClient = restMailClient;
 	}
 
 	/**
@@ -80,8 +85,11 @@ public class UserRegisterController {
 			// return = forward him to the registration form page
 			return "user/registration";
 		}
-		userService.createUser(userDTO);
+		User user = userService.createUser(userDTO);
 		LOG.debug("Registration successful, heading to the jsp");
+
+		// send user a welcome mail
+		restMailClient.sendWelcomeMail(user.getGivenName(), user.getEmail());
 
 		// used to check if the user registration was successfully completed
 		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 1);

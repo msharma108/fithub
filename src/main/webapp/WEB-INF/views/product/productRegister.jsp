@@ -76,21 +76,21 @@ function openProductModal(){
     </div>
   </div>   
      
-  <div class="panel panel-primary" style="border: 2px solid maroon">
+  <div class="panel panel-primary">
     <c:choose>
      <c:when test="${productDTO.isEditable == false }">
       <!-- Show Add product Form -->
-    	<div class="panel-heading" style="color: white; background-color: maroon;"><b>PRODUCT INFO</b></div>
+    	<div class="panel-heading"><b>PRODUCT INFO</b></div>
     </c:when>
      <c:when test="${productDTO.isEditable == true }">
       <!-- Show Update product Form -->
-    <div class="panel-heading" style="color: white; background-color: maroon;"><b>Product Update Form</b></div>
+    <div class="panel-heading"><b>Product Update Form</b></div>
     </c:when>  
     </c:choose>
      <div class="panel-body" style="background-color: #C1E1A6;"> 
          
          <c:url var="productSave" value="/admin/productSave"/>
-	        <form:form modelAttribute="productDTO" method="POST" action="${productSave}" style="color: green;" enctype="multipart/form-data">
+	        <form:form modelAttribute="productDTO" method="POST" action="${productSave}" style="color: black;" enctype="multipart/form-data">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
@@ -232,10 +232,9 @@ function openProductModal(){
 			<br><br>              
             </form:form>
           </div>
-          <div class="panel-footer" style="color: white; background-color: maroon;"></div>
         </div>
-        <br><br><br><br><br><br>
   </div>
+  
 	<!-- contents end here -->
 	 
 <jsp:include page="../footer.jsp" />

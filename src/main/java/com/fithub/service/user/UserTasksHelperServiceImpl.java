@@ -45,6 +45,8 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		user.setUserName(userDTO.getUserName());
 		user.setZipcode(userDTO.getZipcode());
 		user.setRegistrationDate(userDTO.getRegistrationDate());
+		user.setSecurityQuestion(userDTO.getSecurityQuestion());
+		user.setSecurityQuestionAnswer(userDTO.getSecurityQuestionAnswer());
 
 		return user;
 	}
@@ -98,6 +100,8 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		userDTO.setUserNameBeforeEdit(user.getUserName());
 		userDTO.setZipcode(user.getZipcode());
 		userDTO.setRegistrationDate(user.getRegistrationDate());
+		userDTO.setSecurityQuestion(user.getSecurityQuestion());
+		userDTO.setSecurityQuestionAnswer(user.getSecurityQuestionAnswer());
 
 		return userDTO;
 
@@ -137,6 +141,8 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		userDTO.setUserName(userDTO.getUserName().concat(userDeleted));
 		userDTO.setZipcode(userDeleted);
 		userDTO.setRegistrationDate(timeHelperService.dateFormatter(userDeletedDummyDate));
+		userDTO.setSecurityQuestion(userDeleted);
+		userDTO.setSecurityQuestionAnswer(userDeleted);
 
 		return userDTO;
 	}

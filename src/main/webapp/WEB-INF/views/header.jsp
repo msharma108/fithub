@@ -1,7 +1,7 @@
 	<!-- start of header -->
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <div class="container-fluid">
+    <div class="container-fluid" id="navbarcontainer">
        <div class="navbar navbar-fixed-top" id = "topfixedbar" role="navigation">
          <div class="navbar-inner">
 		  <ul class="nav navbar-nav navbar-right">
@@ -36,7 +36,7 @@
 		  </ul>
          </div>
        </div>
-	   <div class="navbar "  role="navigation" width:100%>
+	   <div class="navbar"  role="navigation" id="bottombar">
 		 <div class="navbar-inner">
            <a class="navbar-brand" href="#">FitHub.com</a>
          </div>
@@ -44,12 +44,26 @@
 		   <li class="nav-item">
 			 <a class="nav-link" href="<c:url value="/home"/>" ><span class="glyphicon glyphicon-home"> </span> Home</a>
 		   </li>
-		   <li class="nav-item">
-			 <a class="nav-link" href="<c:url value="/viewProducts"/>"><span class="glyphicon glyphicon-shopping-cart"></span> Products</a>
-		   </li>
+		   	<li class="dropdown">
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Product
+             <span class="caret"></span></a>
+             <ul class="dropdown-menu">
+             	<li class="nav-item">
+		         <a class="nav-link" href="<c:url value="/viewProducts"/>"><span class="glyphicon glyphicon-shopping-cart"></span> All Products</a>
+		       	</li>
+		       	<li class="nav-item">
+		         <a class="nav-link" href="<c:url value="/viewProducts/topProducts/top5"/>"><span class="glyphicon glyphicon-shopping-cart"></span> Top 5 Products</a>
+		       	</li>
+             </ul>
+             </li>
 		   <li class="nav-item">
 			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact us</a>
 		   </li>
+		   <sec:authorize access="isAuthenticated()">
+		   	<li class="nav-item">
+			 <a class="nav-link" href="<c:url value="/viewUserAllOrders/${loggedInUserName}"/>"><span class="glyphicon glyphicon-envelope"></span> My Orders</a>
+		   </li>
+		   </sec:authorize>
 		   <li class="nav-item">
 			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-info-sign"></span> About us</a>
 		   </li>
@@ -67,6 +81,9 @@
 		       </li>
 		   	   <li class="nav-item">
 		         <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/viewUsers"/>"><span class="glyphicon glyphicon-eye-open"></span> View all Users</a>
+		      </li>
+		      	<li class="nav-item">
+		         <a class="nav-link" data-toggle="modal" href="<c:url value="/admin/viewAllOrders"/>"><span class="glyphicon glyphicon-eye-open"></span> View all Orders</a>
 		      </li>
              </ul>
            </li>

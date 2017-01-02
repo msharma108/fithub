@@ -33,9 +33,9 @@ public class FithubSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		LOG.debug("Role based URL filtering");
         http.authorizeRequests()
-                .antMatchers("/", "/product/**", "/*/login", "/logout","/userTaskSuccess","/viewProducts/**","/home","/shoppingCart/**","/constructUrlForProductOperations/**").permitAll()
+                .antMatchers("/", "/product/**", "/*/login", "/logout","/userTaskSuccess","/viewProducts/**","/userSave","/home","/shoppingCart/**","/constructUrlForProductOperations/**").permitAll()
                 .antMatchers("/admin/***").hasAuthority("ADMIN")
-                .antMatchers("/userRegister").anonymous().antMatchers("/userSave").anonymous()
+                .antMatchers("/userRegister").anonymous().antMatchers("/passwordRetrieval").anonymous()
                 .antMatchers("/admin/userRegister").hasRole("ADMIN")
                 .anyRequest().fullyAuthenticated()
                 .and()

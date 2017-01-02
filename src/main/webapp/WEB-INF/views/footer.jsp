@@ -1,6 +1,6 @@
 	<!-- start of footer -->
 	<div class="container-fluid">
-	   <div class="navbar navbar-default navbar-fixed-bottom navbar-fnt navbar-backgrnd" role="navigation">
+	   <div class="navbar navbar-default navbar-fixed-bottom navbar-fnt navbar-backgrnd" id="footer" role="navigation">
 	      <div class="navbar-text pull-left">
               <p class="txt-railway"> &#169; 2016 FitHub.com</p>
           </div>

@@ -71,4 +71,15 @@ public interface UserService {
 	 */
 	User updateUserProfile(UserDTO userDTO);
 
+	/**
+	 * Method resets the password of the provided user
+	 * 
+	 * @param user
+	 *            User whose password is being reset
+	 * @param resetPassword
+	 *            : The new random string sent to user as password
+	 * 
+	 */
+	void resetPassword(User user, String resetPassword);
+
 }

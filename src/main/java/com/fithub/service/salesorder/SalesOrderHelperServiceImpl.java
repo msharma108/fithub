@@ -41,8 +41,6 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 	public SalesOrder createSalesOrderFromOrderDTO(SalesOrder salesOrder, OrderDTO orderDTO) {
 		LOG.debug("Attempting to create a sales order from OrderDTO with email={}", orderDTO.getEmail());
 
-		String salesOrderActiveStatus = "ACTIVE";
-
 		// populate salesOrder from orderDTO
 		salesOrder.setShippingCharge(orderDTO.getShippingCharge());
 		salesOrder.setTax(orderDTO.getTax());
@@ -50,7 +48,7 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 		salesOrder.setTrackingNumber(generateTrackingNumber());
 		salesOrder.setStripeChargeId(orderDTO.getStripeChargeId());
 		salesOrder.setPaymentStatus(orderDTO.getPaymentStatus());
-		salesOrder.setStatus(salesOrderActiveStatus);
+		salesOrder.setStatus(orderDTO.getOrderStatus());
 
 		// Map the customer for the order
 		User customer = userService.getUserByUsername(orderDTO.getCustomerUserNameForThisOrder());
@@ -85,6 +83,31 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 		}
 
 		return salesOrder;
+	}
+
+	@Override
+	public OrderDTO populateOrderDTOFromOrder(SalesOrder salesOrder) {
+
+		OrderDTO orderDTO = new OrderDTO();
+		orderDTO.setOrderId(salesOrder.getSalesOrderId());
+		orderDTO.setShippingCharge(salesOrder.getShippingCharge());
+		orderDTO.setTax(salesOrder.getTax());
+		orderDTO.setOrderTotalCost(salesOrder.getSalesOrderTotalCost());
+		orderDTO.setOrderCreationDate(salesOrder.getSalesOrderCreationDate());
+		orderDTO.setOrderEditDate(salesOrder.getSalesOrderEditDate());
+		orderDTO.setOrderRefundAmount(salesOrder.getSalesOrderRefundAmount());
+		orderDTO.setStripeRefundId(salesOrder.getStripeRefundId());
+		orderDTO.setTrackingNumber(salesOrder.getTrackingNumber());
+		orderDTO.setStripeChargeId(salesOrder.getStripeChargeId());
+		orderDTO.setPaymentStatus(salesOrder.getPaymentStatus());
+		orderDTO.setOrderStatus(salesOrder.getStatus());
+		orderDTO.setPaymentStatus(salesOrder.getPaymentStatus());
+
+		orderDTO.setUser(salesOrder.getUser());
+		orderDTO.setShippingAddress(salesOrder.getShippingAddress());
+		orderDTO.setSalesOrderItems(salesOrder.getSalesOrderItems());
+
+		return orderDTO;
 	}
 
 	/**

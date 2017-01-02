@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.2.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -35,57 +35,57 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	
-	<!-- MySQL dependency -->	
+
+		<!-- MySQL dependency -->
 		<dependency>
-     		<groupId>mysql</groupId>
-      		<artifactId>mysql-connector-java</artifactId>
-   		 </dependency>
-    
-    <!-- Spring Security dependency -->
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<!-- Spring Security dependency -->
 		<dependency>
-   			<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-security</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-    
-    <!-- Spring JPA dependency -->
- 		<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-    
-	<!-- JSTL dependency -->
+
+		<!-- Spring JPA dependency -->
 		<dependency>
-    		<groupId>jstl</groupId>
-    		<artifactId>jstl</artifactId>
-    		<version>1.2</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
+
+		<!-- JSTL dependency -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
 		<!-- Spring security taglib dependency -->
 		<dependency>
-    		<groupId>org.springframework.security</groupId>
-    		<artifactId>spring-security-taglibs</artifactId>
-    	</dependency>
-		
-	<!-- JSP dependency -->	
-		 <dependency>
-        	<groupId>org.apache.tomcat.embed</groupId>
-        	<artifactId>tomcat-embed-jasper</artifactId>
-        	<scope>provided</scope>
-    	</dependency>
-		
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+		</dependency>
+
+		<!-- JSP dependency -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- HikariCP dependency -->
 		<dependency>
-    		<groupId>com.zaxxer</groupId>
-    		<artifactId>HikariCP</artifactId>
-    		
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+
 		</dependency>
-		
+
 		<!-- Stripe API dependency -->
 		<dependency>
-  			<groupId>com.stripe</groupId>
-  			<artifactId>stripe-java</artifactId>
-  			<version>3.5.0</version>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>3.5.0</version>
 		</dependency>
 
 		<dependency>
@@ -93,6 +93,17 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/com.sendgrid/sendgrid-java -->
+		<dependency>
+			<groupId>com.sendgrid</groupId>
+			<artifactId>sendgrid-java</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 

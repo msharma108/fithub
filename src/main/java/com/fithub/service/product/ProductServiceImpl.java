@@ -104,6 +104,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public List<Product> getTopProductsByQuantitySold() {
+		LOG.debug("Retrieving the list of top products based on quantity sold");
+		return productRepository.findTop5ByOrderByQuantitySoldDesc();
+	}
+
+	@Override
 	public List<Product> getProductsByCategory(String category) {
 
 		if (category != null) {

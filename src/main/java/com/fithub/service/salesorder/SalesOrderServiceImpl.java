@@ -1,5 +1,7 @@
 package com.fithub.service.salesorder;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -7,13 +9,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.fithub.domain.OrderDTO;
+import com.fithub.domain.Product;
 import com.fithub.domain.SalesOrder;
+import com.fithub.domain.SalesOrderItem;
 import com.fithub.repository.salesorder.SalesOrderRepository;
+import com.fithub.service.product.ProductService;
 import com.fithub.service.salesorderitem.SalesOrderItemHelperService;
 import com.fithub.service.time.TimeHelperService;
+import com.fithub.service.user.UserService;
+import com.stripe.model.Refund;
 
 /**
  * An implementation of the SalesOrder Service
@@ -28,15 +36,20 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	private final TimeHelperService timeHelperService;
 	private final SalesOrderHelperService salesOrderHelperService;
 	private final SalesOrderItemHelperService salesOrderItemHelperService;
+	private final UserService userService;
+	private final ProductService productService;
 
 	@Autowired
 	public SalesOrderServiceImpl(SalesOrderRepository salesOrderRepository, TimeHelperService timeHelperService,
-			SalesOrderHelperService salesOrderHelperService, SalesOrderItemHelperService salesOrderItemHelperService) {
+			SalesOrderHelperService salesOrderHelperService, SalesOrderItemHelperService salesOrderItemHelperService,
+			ProductService productService, UserService userService) {
 
 		this.salesOrderRepository = salesOrderRepository;
 		this.timeHelperService = timeHelperService;
 		this.salesOrderHelperService = salesOrderHelperService;
 		this.salesOrderItemHelperService = salesOrderItemHelperService;
+		this.productService = productService;
+		this.userService = userService;
 	}
 
 	@Override
@@ -53,7 +66,8 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	@Override
 	public List<SalesOrder> getSalesOrderListByUserName(String userName) {
 		LOG.debug("Retrieving list of salesOrders associated with userName={}", userName);
-		List<SalesOrder> salesOrderList = salesOrderRepository.getSalesOrderByUserName(userName);
+
+		List<SalesOrder> salesOrderList = userService.getUserByUsername(userName).getSalesOrders();
 		if (!salesOrderList.isEmpty())
 			return salesOrderList;
 		else
@@ -80,6 +94,41 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 			return salesOrderList;
 		else
 			throw new NoSuchElementException("No sales order found in the database");
+	}
+
+	@Override
+	public SalesOrder cancelSalesOrder(SalesOrder salesOrder, Refund refund, Authentication authentication) {
+		LOG.debug("Attempting to process cancellation of sales order with id={}", salesOrder.getSalesOrderId());
+
+		String paymentStatusRefunded = "refunded";
+		String orderStatusCancelled = "CANCELED";
+		BigDecimal centsToDollar = new BigDecimal(100.00);
+
+		// Parameters to be updated for cancellation of order
+		salesOrder.setStripeRefundId(refund.getId());
+		// refund amount is in cents
+		salesOrder.setSalesOrderRefundAmount(new BigDecimal(refund.getAmount()).divide(centsToDollar));
+		salesOrder.setPaymentStatus(paymentStatusRefunded);
+		salesOrder.setStatus(orderStatusCancelled);
+		salesOrder.setSalesOrderEditDate(timeHelperService.getCurrentTimeStamp());
+
+		// Get Sales Order Item associated with the sales order
+		List<SalesOrderItem> salesOrderItemList = new ArrayList<SalesOrderItem>();
+		salesOrderItemList = salesOrder.getSalesOrderItems();
+
+		for (SalesOrderItem salesOrderItemMappedToSalesOrder : salesOrderItemList) {
+			Product product = salesOrderItemMappedToSalesOrder.getProduct();
+			int productQuantitySold = salesOrderItemMappedToSalesOrder.getSalesOrderItemQuantitySold();
+
+			// Update the product quantity in product table for canceled product
+			product.setQuantitySold(product.getQuantitySold() - productQuantitySold);
+			product.setStockQuantity(product.getStockQuantity() + productQuantitySold);
+			product.setProductEditedByUser(authentication.getName());
+			product.setProductUpdateDate(timeHelperService.getCurrentTimeStamp());
+
+		}
+
+		return salesOrderRepository.save(salesOrder);
 	}
 
 }

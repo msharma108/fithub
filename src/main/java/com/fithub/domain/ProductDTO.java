@@ -3,7 +3,9 @@ package com.fithub.domain;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -21,10 +23,12 @@ public class ProductDTO {
 	private String ldesc;
 
 	@NotNull
+	@Past
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date manufactureDate;
 
 	@NotNull
+	@Future
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiryDate;
 

@@ -19,7 +19,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
 	<!-- custom -->
-	<link rel="stylesheet" href="../css/style.css"  >
+	<link rel="stylesheet" href="../../../css/style.css"  >
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
@@ -36,9 +36,9 @@
 	<!-- contents start here -->
 <div class="container-fluid">
  
-  <div class="panel panel-primary" style="border: 2px solid maroon">
+  <div class="panel panel-success" style="border: 2px solid">
 
-     <div class="panel-body" style="background-color: #C1E1A6;"> 
+     <div class="panel-body" style="background-color: white;"> 
      
          <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${productDTO.productName}"/>
 	        <form:form modelAttribute="productDTO" method="POST" action="${formActionIndependentOfUserRole }" style="color: green;">
@@ -140,7 +140,7 @@
 			<br><br>              
             </form:form>
           </div>
-          <div class="panel-footer" style="color: white; background-color: maroon;"></div>
+          <div class="panel-footer" style="color: white; background-color: white;"></div>
         </div>
         <br><br><br><br><br><br>
   </div>

@@ -20,6 +20,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
 	<!-- custom -->
 	<link rel="stylesheet" href="../css/style.css"  >
+	<link rel="stylesheet" href="../../../css/style.css"  >
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
@@ -37,15 +38,15 @@
 <!-- contents start here -->
 <!-- http://stackoverflow.com/questions/4142631/is-it-possible-to-iterate-two-items-simulataneously-using-foreach-in-jstl/4142885#4142885 -->
 <!-- http://bootsnipp.com/snippets/VXAxV -->
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-12 col-xs-12">
-        <div class="panel panel-info">
+        <div class="panel panel-primary">
              <div class="panel-heading">
 			 <div class="panel-title">
                 <div class="row">
                   <div class="col-md-6">
-                    <h5> Product List</h5>
+                    <h3> Product List</h3>
                   </div>
 				  <div class="col-md-6">
 				    <form action="/shoppingCart/viewCart" method="POST">
@@ -77,20 +78,23 @@
 	                	     <div class="hovereffect">
 	                	     <!-- start of image -->
 				              <input type="hidden" name="base64imageFile" value="${ListProductDTO[status.index].base64imageFile}"/>
-				              <button type="submit" name="viewProduct" id="viewProductId">
-				               <img class="img-rounded" width="304" height="236"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
-				              </button>
+				               <img class="img-rounded" width="385" height="230"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 				              <!-- end of image -->
+				              <div class="overlay">
+				                 <h2><c:out value="${product.productName}"/></h2>
+				                 <button class="info" type="submit" name="viewProduct" id="viewProductId">CLICK FOR MORE INFO</button>
+				              </div>
 				              </div>
 				              
 				              <div class="caption">
-				              
 				                <!-- product info -->
-				                <h4><c:out value="${product.productName}"/></h4>
 				                <p><c:out value="${product.sdesc}"/></p>
 				                <p>price: <c:out value="${product.price}"/> Rating: <c:out value="${product.rating}"/> Weight: <c:out value="${product.weight}"/></p>
                                 <!-- end of product info -->
                                 
+                                <!-- Show add to cart if in stock -->
+                                <c:choose>
+                                <c:when test="${product.stockQuantity >0 }">
                                 <!-- add to cart button -->
                                 <sec:authorize access="!hasAuthority('ADMIN')">
 	                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -101,7 +105,11 @@
 	                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			                    <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 			                    </sec:authorize>
-			                    
+			                    </c:when>
+			                    <c:when test="${product.stockQuantity <=0}">
+			                    <img alt="Out of Stock" src="../images/outOfStock.png" />
+			                    </c:when>
+			                    </c:choose>
 			                    <!-- end of add to cart button -->
 			                 
 			                    <!-- show edit and delete buttong if admin logged in -->
@@ -119,9 +127,10 @@
 				        
 				</c:forEach>
 				</div>        
+             
+             <div class="panel-footer"> 
              </div>
-             <div class="panel-footer">
-             </div>
+         </div>
      </div>
    </div>
    <br><br>
