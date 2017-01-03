@@ -23,10 +23,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Query("select product from Product product, ProductCategory prodcategory where prodcategory.category =:category and product.productCategory = prodcategory.productCategoryId")
 	List<Product> getProductsByCategory(@Param("category") String category);
 
-	List<Product> findByProductNameOrSdescContaining(String productName, String sdesc);
+	List<Product> findBySdescIgnoreCaseContaining(String sdesc);
 
-	List<Product> findBySdescContaining(String sdesc);
+	List<Product> findByProductNameIgnoreCaseContaining(String productName);
 
-	List<Product> findByProductNameContaining(String productName);
+	List<Product> findByProductNameContainingIgnoreCaseOrSdescIgnoreCaseContaining(String productName, String sdesc);
 
 }
