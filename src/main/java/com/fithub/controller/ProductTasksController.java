@@ -59,10 +59,7 @@ public class ProductTasksController {
 	public String getAllProductsListPage(@PathVariable Map<String, String> pathVariables, Model model) {
 		LOG.debug("Attempting to list all the products");
 
-		List<ProductDTO> ListProductDTO = new ArrayList<ProductDTO>();
 		List<Product> productList = new ArrayList<Product>();
-		// quantity of a product that has been marked as deleted in db
-		int deletedProductQuantity = -999;
 
 		// Reference:
 		// http://stackoverflow.com/questions/4904092/with-spring-3-0-can-i-make-an-optional-path-variable
@@ -80,32 +77,39 @@ public class ProductTasksController {
 			// Display all products
 			productList = productService.getAllProducts();
 
+		model = prepareProductsForDisplay(model, productList);
+
+		return "product/productList";
+	}
+
+	private Model prepareProductsForDisplay(Model model, List<Product> productList) {
+		List<ProductDTO> listProductDTOForImageDisplay = new ArrayList<ProductDTO>();
+		// quantity of a product that has been marked as deleted in db
+		int deletedProductQuantity = -999;
+
 		// Remove products marked as deleted from the list
 		productList.removeIf(
 				(Product productMarkedDeleted) -> productMarkedDeleted.getStockQuantity() == deletedProductQuantity);
 
-		// Encoding byte array image received from DB and encoding it for
-		// browser display
+		// Encoding byte array image received from DB
 		for (Product productFromDB : productList) {
 
 			// Display only the products that have not been marked as deleted
 			// Product marked for deletion have a negative stock quantity
-			// if (productFromDB.getStockQuantity() >= 0) {
 
 			ProductDTO productDTO = new ProductDTO();
 			LOG.debug("Encoding image retreieved from database");
 			productDTO.setBase64imageFile(
 					"data:image/jpg;base64," + Base64.getEncoder().encodeToString(productFromDB.getThumbImage()));
-			ListProductDTO.add(productDTO);
-
-			// }
+			listProductDTOForImageDisplay.add(productDTO);
 
 		}
+
 		model.addAttribute("allProducts", productList);
 		// product DTO holding encoded image URL
-		model.addAttribute("ListProductDTO", ListProductDTO);
+		model.addAttribute("ListProductDTO", listProductDTOForImageDisplay);
 
-		return "product/productList";
+		return model;
 	}
 
 	@PostMapping(value = { "/admin/constructUrlForAdminProductOperations/{productName}",
@@ -235,6 +239,18 @@ public class ProductTasksController {
 		// used to check update success on the canvas page
 		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 3);
 		return "redirect:/admin/userTaskSuccess";
+	}
+
+	@RequestMapping(value = "/searchProduct")
+	public String searchProduct(Model model, @RequestParam("searchProductName") String searchProductName,
+			@RequestParam("searchShortDescription") String searchShortDescription) {
+		LOG.debug("Attempting to search product");
+		List<Product> productList = new ArrayList<Product>();
+		productList = productService.getProductsContaingNameOrShortDescription(searchProductName,
+				searchShortDescription);
+		model = prepareProductsForDisplay(model, productList);
+
+		return "product/productList";
 	}
 
 }

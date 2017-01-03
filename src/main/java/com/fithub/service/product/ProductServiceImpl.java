@@ -1,5 +1,6 @@
 package com.fithub.service.product;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -56,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product getProductByProductName(String productName) {
+	public Product getProductByProductName(String productName) throws IllegalArgumentException {
 		LOG.debug("Retreive product having productName={}", productName);
 		Product product = productRepository.findOneByProductName(productName);
 		return product;
@@ -133,6 +134,35 @@ public class ProductServiceImpl implements ProductService {
 		product.setProductUpdateDate((timeHelperService.getCurrentTimeStamp()));
 		product.setProductEditedByUser((userTasksHelperService.getLoggedInUserName(authentication)));
 		return productRepository.save(product);
+	}
+
+	@Override
+	public List<Product> getProductsContaingNameOrShortDescription(String searchProductName,
+			String searchShortDescription) {
+		LOG.debug("Attempting to find products based on the searched productName={} and short description={}",
+				searchProductName, searchShortDescription);
+		List<Product> productList = new ArrayList<Product>();
+
+		// Repository invocation based on passed in search strings
+		if (searchProductName.equals("") && searchShortDescription.equals(""))
+			throw new IllegalArgumentException("Please provide search values for searching the product");
+
+		else if (!searchProductName.equals("") && !searchShortDescription.equals(""))
+			productList = productRepository.findByProductNameOrSdescContaining(searchProductName,
+					searchShortDescription);
+
+		else if (!searchProductName.equals("") && searchShortDescription.equals(""))
+			productList = productRepository.findByProductNameContaining(searchProductName);
+		else
+			productList = productRepository.findBySdescContaining(searchShortDescription);
+
+		if (!productList.isEmpty())
+			return productList;
+		else
+			throw new NoSuchElementException(
+					String.format("Product with the entered productName=%s & description =%snot found",
+							searchProductName, searchShortDescription));
+
 	}
 
 }
