@@ -40,29 +40,29 @@
 	<div class="container">
 	 <div class="col-sm-5 col-sm-offset-3">
 	  <div class="panel panel-primary" id ="login1">
-	  <div id="login2"><b>SIGN IN</b></div>
+	  <div id="login2" class="form-title"><b>SIGN IN</b></div>
          <div class="panel-body"   id ="login3"> 
 	        <form action="/login" method="POST" >
  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
               <div class="col-sm-8">    
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
-			           <label for="userName">UserName <span class="glyphicon glyphicon-user"> </span></label><br>
-			           <input class="form-control" type= "text" name="userName" id="userNameId" placeholder="Enter UserName" autofocus required />
+			           <label for="userName" class="form-label"> UserName <span class="glyphicon glyphicon-user"> </span></label><br>
+			           <input class="form-control form-field" type= "text" name="userName" id="userNameId" placeholder="Enter UserName" autofocus required />
 			           
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
-			           <label for="password">Password <span class="glyphicon glyphicon-lock"></span></label><br>
-			           <input class="form-control" type="password" name="password" id="passwordId" placeholder="Enter Password" required />
+			           <label for="password" class="form-label">Password <span class="glyphicon glyphicon-lock"></span></label><br>
+			           <input class="form-control form-field" type="password" name="password" id="passwordId" placeholder="Enter Password" required />
                   </div>
                 </div>
                 </div>
               <div class="col-sm-8">  
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
-                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-log-in"></i> Sign In</button>
+                    <button type="submit" class="btn btn-success submit-button"><i class="glyphicon glyphicon-log-in"></i> Sign In</button>
                   </div>
                 </div>
                 <div style ="color: red;">
@@ -77,8 +77,8 @@
               <div class="col-sm-8">  
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
-                    <div class="form-field" id="registerLink"> <a class="nav-link" data-toggle="modal" href="<c:url value="/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register a new user</a></div>
-                   <div class="form-field" id="forgotPassLink"> <a class="nav-link" data-toggle="modal" href="<c:url value="/passwordRetrieval"/>"><span class="glyphicon glyphicon-lock"></span> Forgot Password</a></div><br>
+                    <div  id="registerLink"> <a class="nav-link" data-toggle="modal" href="<c:url value="/userRegister"/>"><span class="glyphicon glyphicon-pencil"></span> Register a new user</a></div>
+                   <div   id="forgotPassLink"> <a class="nav-link" data-toggle="modal" href="<c:url value="/passwordRetrieval"/>"><span class="glyphicon glyphicon-lock"></span> Forgot Password</a></div><br>
                   </div>
                 </div>
               </div>
