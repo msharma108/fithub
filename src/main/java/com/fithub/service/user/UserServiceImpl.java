@@ -144,4 +144,8 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public long countNumberOfUsersInSystem() {
+		return userRepository.count();
+	}
 }

@@ -82,4 +82,11 @@ public interface UserService {
 	 */
 	void resetPassword(User user, String resetPassword);
 
+	/**
+	 * Method counts the number of users in the system\database
+	 * 
+	 * @return the number of users in the system
+	 */
+	long countNumberOfUsersInSystem();
+
 }

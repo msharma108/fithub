@@ -52,7 +52,7 @@ public class User implements Serializable {
 	@Column(name = "given_name", nullable = false, length = 45)
 	private String givenName;
 
-	@Column(name = "is_user_deleted", nullable = false)
+	@Column(name = "is_user_deleted")
 	private boolean isUserDeleted;
 
 	@Column(nullable = false, length = 60)
@@ -78,7 +78,7 @@ public class User implements Serializable {
 	@Column(name = "registration_date", nullable = false)
 	private Date registrationDate;
 
-	@Column(nullable = false, length = 20)
+	@Column(length = 20)
 	private String role;
 
 	@Column(length = 20)
