@@ -40,8 +40,8 @@
 	<div class="container">
 	 <div class="col-sm-5 col-sm-offset-3">
 	  <div class="panel panel-primary" id ="login1">
-	  <div id="login2" class="form-title"><b>SIGN IN</b></div>
          <div class="panel-body"   id ="login3"> 
+         <div class="form-title"><h4>Sign In</h4></div>
 	        <form action="/login" method="POST" >
  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
               <div class="col-sm-8">    
