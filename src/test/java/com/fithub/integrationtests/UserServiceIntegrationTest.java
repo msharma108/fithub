@@ -4,8 +4,12 @@
 package com.fithub.integrationtests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
+import com.fithub.domain.UserRole;
 import com.fithub.service.time.TimeHelperService;
 import com.fithub.service.user.UserService;
 
@@ -48,32 +53,123 @@ public class UserServiceIntegrationTest {
 
 	@Test
 	public void userServiceCreatesUserIfTheUserNameNotInDatabase() {
-
-		assertEquals("Database in an inconsistent state before test", 1, userService.countNumberOfUsersInSystem());
+		assertDatabaseStateConsistencyBeforetest();
 
 		String expectedUserName = "testUserName";
 		UserDTO userDTO = prepareUserDTO(expectedUserName);
 		User user = userService.createUser(userDTO);
-
 		assertEquals("User registration failure", expectedUserName, user.getUserName());
 
 	}
 
 	@Test(expected = DataIntegrityViolationException.class)
-	public void userServiceDoesNotCreateUserIfTheUserNameAlreadyInDatabase() {
-
-		assertEquals("Database in an inconsistent state before test", 1, userService.countNumberOfUsersInSystem());
+	public void userServiceDoesNotCreateUserAndThrowsDataIntegrityViolationExceptionIfTheUserNameAlreadyInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
 
 		String expectedUserName = "mohitshsh";
 		UserDTO userDTO = prepareUserDTO(expectedUserName);
 		userService.createUser(userDTO);
+		fail("DataIntegrityViolationException expected");
 
+	}
+
+	@Test
+	public void userServiceGetsUserByUserIdIfIdExistsInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		int userId = 1;
+		User user = userService.getUserById(userId);
+		assertNotNull(String.format("UserId=%d not found", userId), user);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void userServiceThrowsNoSuchElementFoundExceptionIfUserIdNotInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		int userId = 1001;
+		userService.getUserById(userId);
+		fail("NoSuchElementException expected");
+	}
+
+	@Test
+	public void userServiceGetsUserByUserNameIfUserNameExistsInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		String userName = "mohitshsh";
+		User user = userService.getUserByUsername(userName);
+		assertNotNull(String.format("UserName=%s not found", userName), user);
+	}
+
+	@Test
+	public void userServiceThrowsUserByUserNameIfUserNameExistsInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		String userName = "mohitshsh";
+		User user = userService.getUserByUsername(userName);
+		assertNotNull(String.format("UserName=%s not found", userName), user);
+	}
+
+	@Test
+	public void userServiceMarksUserAsDeletedWhenUserNameExistsInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		String userNameOfUserBeingDeleted = "mohitshsh";
+		boolean actualIsUserDeleted = userService.deleteUser(userNameOfUserBeingDeleted);
+		boolean expectedUserDeleted = true;
+		assertEquals(String.format("User with userName=%s not deleted as it doesnt exist in database",
+				userNameOfUserBeingDeleted), expectedUserDeleted, actualIsUserDeleted);
+	}
+
+	@Test
+	public void userServiceDoesNotMarkUserAsDeletedWhenUserNameDoesNotExistInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		String userNameOfUserBeingDeleted = "testUserToBeDeleted";
+		boolean actualIsUserDeleted = userService.deleteUser(userNameOfUserBeingDeleted);
+		boolean expectedIsUserDeleted = false;
+		assertEquals(String.format("User with userName=%s deleted", userNameOfUserBeingDeleted), expectedIsUserDeleted,
+				actualIsUserDeleted);
+	}
+
+	@Test
+	public void userServiceChangesUserRoleFromCurrentRoleToSwitchedRoleWhenUserExistsInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		String expectedChangedUserRole = UserRole.ADMIN.toString();
+		String userName = "mohitshsh";
+		UserDTO userDTO = prepareUserDTO(userName);
+
+		User user = userService.changeUserRole(userDTO);
+		assertEquals(String.format("User with userName=%s role is unchanged", userName), expectedChangedUserRole,
+				user.getRole());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void userServiceDoesNotChangeUserRoleFromCurrentRoleToSwitchedRoleWhenUserDoesNotExistInDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		String userName = "testUserNameRoleToBeChanged";
+		UserDTO userDTO = prepareUserDTO(userName);
+
+		userService.changeUserRole(userDTO);
+		fail("IllegalArgumentException expected");
+	}
+
+	@Test
+	public void userServiceGetsAllUsersFromDatabase() {
+		assertDatabaseStateConsistencyBeforetest();
+
+		List<User> userList = userService.getAllUsers();
+		int expectedUserListSize = 2;
+
+		assertEquals("Problems retrieving the list of all users", expectedUserListSize, userList.size());
 	}
 
 	protected UserDTO prepareUserDTO(String userName) {
 
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUserName(userName);
+		userDTO.setUserNameBeforeEdit(userName);
 		userDTO.setPassword("password");
 		userDTO.setGivenName("testGivenName");
 		userDTO.setFamilyName("testFamilyName");
@@ -85,6 +181,10 @@ public class UserServiceIntegrationTest {
 
 		return userDTO;
 
+	}
+
+	protected void assertDatabaseStateConsistencyBeforetest() {
+		assertEquals("Database in an inconsistent state before test", 2, userService.countNumberOfUsersInSystem());
 	}
 
 }

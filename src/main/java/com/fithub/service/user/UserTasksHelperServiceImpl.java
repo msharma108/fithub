@@ -28,6 +28,8 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 	public User createUserFromUserDTO(User user, UserDTO userDTO) {
 		LOG.debug("Preparing user={} from user transfer object", userDTO.getUserName());
 
+		if (user == null)
+			throw new IllegalArgumentException("The user object is null");
 		user.setAddress(userDTO.getAddress());
 		user.setIsUserDeleted(userDTO.getIsUserDeleted());
 		user.setCity(userDTO.getCity());

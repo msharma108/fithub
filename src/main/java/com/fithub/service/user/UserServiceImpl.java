@@ -72,12 +72,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean deleteUser(UserDTO userDTO) {
+	public boolean deleteUser(String userNameOfUserBeingDeleted) {
 
 		boolean isUserDeleted = true;
-		LOG.debug("Attempting to delete user having userName={}", userDTO.getUserName());
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUserName(userNameOfUserBeingDeleted);
+		LOG.debug("Attempting to delete user having userName={}", userNameOfUserBeingDeleted);
 		try {
-			User user = getUserByUsername(userDTO.getUserName());
+			User user = getUserByUsername(userNameOfUserBeingDeleted);
 			userDTO = userTasksHelperService.destroyUserDataForDeletion(userDTO);
 			user = userTasksHelperService.createUserFromUserDTO(user, userDTO);
 			user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
@@ -85,18 +87,16 @@ public class UserServiceImpl implements UserService {
 			user = userRepository.save(user);
 			return isUserDeleted;
 		} catch (IllegalArgumentException exception) {
-			LOG.debug("User with userName={} can't be deleted as they dont exist in the database",
-					userDTO.getUserName());
+			LOG.debug("User with userName={} can't be deleted as they dont exist in the database");
 			isUserDeleted = false;
 			return isUserDeleted;
 		}
 	}
 
 	@Override
-	public boolean changeRole(UserDTO userDTO) throws NoSuchElementException {
+	public User changeUserRole(UserDTO userDTO) throws NoSuchElementException {
 
-		boolean isRoleChanged = false;
-
+		User user = new User();
 		if (userDTO.getRole() != null) {
 			// Checking for users current role and switching the role
 			if (userDTO.getRole().equals(UserRole.ADMIN)) {
@@ -104,11 +104,10 @@ public class UserServiceImpl implements UserService {
 			} else {
 				userDTO.setRole(UserRole.ADMIN);
 			}
-			updateUserProfile(userDTO);
+			user = updateUserProfile(userDTO);
 			LOG.debug("User with userName={} now has the role={}", userDTO.getUserName(), userDTO.getRole());
-			isRoleChanged = true;
 		}
-		return isRoleChanged;
+		return user;
 	}
 
 	@Override

@@ -39,22 +39,23 @@ public interface UserService {
 
 	/**
 	 * Method simulates a user record deletion in the database based on the
-	 * provided userDTO object. The user record is kept for audit purposed but
-	 * his information is overwritten with dummy data
+	 * provided userName. The user record is kept for audit purposes but his
+	 * information is overwritten with dummy data
 	 * 
-	 * @param userDTO
+	 * @param userNameOfUserBeingDeleted
+	 *            userName of the user to be marked as deleted
 	 * @return boolean returns true if the user is marked as deleted
 	 */
-	boolean deleteUser(UserDTO userDTO);
+	boolean deleteUser(String userNameOfUserBeingDeleted);
 
 	/**
 	 * Method checks the existing role of the user and switches it to the other
 	 * alternative role
 	 * 
 	 * @param userDTO
-	 * @return boolean true if the role change has been successful
+	 * @return User The user object with the changed role
 	 */
-	boolean changeRole(UserDTO userDTO);
+	User changeUserRole(UserDTO userDTO);
 
 	/**
 	 * Method gets a list of all the users in the database

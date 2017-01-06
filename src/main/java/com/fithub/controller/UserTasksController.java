@@ -167,7 +167,7 @@ public class UserTasksController {
 			@ModelAttribute("userDTO") UserDTO userDTO, RedirectAttributes redirectAttributes) {
 		LOG.debug("Attempting to delete user={}", userDTO.getUserName());
 
-		boolean isUserDelete = userService.deleteUser(userDTO);
+		boolean isUserDelete = userService.deleteUser(userDTO.getUserName());
 
 		LOG.debug("User was delete successfuly ?={}", isUserDelete);
 
@@ -181,7 +181,7 @@ public class UserTasksController {
 			RedirectAttributes redirectAttributes) {
 		LOG.debug("Attempting to update Role of user={}", userDTO.getUserName());
 
-		userService.changeRole(userDTO);
+		userService.changeUserRole(userDTO);
 		LOG.debug("User={} role changed successfully", userDTO.getUserName());
 
 		// used to check update success on the canvas page
