@@ -58,8 +58,8 @@ public class UserEditController {
 	// the controller will simply take the /admin/userTask as PostMapping.
 
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
-	@RequestMapping(value = { "/userTask/{userName}", "/admin/userTask/{userName}" }, params = "userEdit", method = {
-			RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = { "/userTask/{userName:.+}",
+			"/admin/userTask/{userName:.+}" }, params = "userEdit", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getUserEditPage(@PathVariable("userName") String userName, @ModelAttribute("userDTO") UserDTO userDTO,
 			Model model, Authentication authentication) {
 		LOG.debug("Getting editUserPage for user={}", userName);

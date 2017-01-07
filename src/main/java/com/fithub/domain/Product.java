@@ -61,6 +61,9 @@ public class Product implements Serializable {
 	@Column(name = "product_name", nullable = false, length = 100)
 	private String productName;
 
+	@Column(name = "product_display_name", length = 100)
+	private String productDisplayName;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "product_update_date")
 	private Date productUpdateDate;
@@ -264,6 +267,14 @@ public class Product implements Serializable {
 		salesOrderItem.setProduct(null);
 
 		return salesOrderItem;
+	}
+
+	public String getProductDisplayName() {
+		return productDisplayName;
+	}
+
+	public void setProductDisplayName(String productDisplayName) {
+		this.productDisplayName = productDisplayName;
 	}
 
 }

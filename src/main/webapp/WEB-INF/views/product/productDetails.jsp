@@ -56,8 +56,8 @@
               <div class="col-sm-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
-                       <form:label path="productName">Product Name:</form:label> 
-                       <form:label path="productName">${productDTO.productName}</form:label>
+                       <form:label path="productDisplayName">Product Name:</form:label> 
+                       <form:label path="productDisplayName">${productDTO.productDisplayName}</form:label>
                   </div>
                   <div class="col-sm-8">
                        <form:label path="ldesc">Description: </form:label> 
@@ -73,6 +73,7 @@
                   <div class="col-sm-4 form-group">
                        <form:label path="productCategory">Product Category:</form:label> 
                        <form:label path="productCategory">${productDTO.productCategory}</form:label>
+                       
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="manufactureDate">Manufacture Date:<span class="glyphicon glyphicon-calendar"> </span></form:label> 

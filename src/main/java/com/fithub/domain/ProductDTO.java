@@ -42,8 +42,12 @@ public class ProductDTO {
 	private String productCategory;
 
 	@NotEmpty
-	@Size(min = 3, max = 45)
+	@Size(min = 3, max = 100)
 	private String productName;
+
+	@NotEmpty
+	@Size(min = 3, max = 100)
+	private String productDisplayName;
 
 	private String rating;
 
@@ -240,6 +244,14 @@ public class ProductDTO {
 
 	public void setProductNameBeforeEdit(String productNameBeforeEdit) {
 		this.productNameBeforeEdit = productNameBeforeEdit;
+	}
+
+	public String getProductDisplayName() {
+		return productDisplayName;
+	}
+
+	public void setProductDisplayName(String productDisplayName) {
+		this.productDisplayName = productDisplayName;
 	}
 
 }

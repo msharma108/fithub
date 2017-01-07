@@ -199,7 +199,7 @@ public class OrderCheckoutController {
 	}
 
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
-	@RequestMapping(value = { "/viewUserAllOrders/{userName}", "/admin/viewUserAllOrders/{userName}" })
+	@RequestMapping(value = { "/viewUserAllOrders/{userName:.+}", "/admin/viewUserAllOrders/{userName:.+}" })
 	public String getUserOrdersListPage(@PathVariable("userName") String userName, Model model) {
 		LOG.debug("Retreiving the orders of user={}", userName);
 

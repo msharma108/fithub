@@ -40,6 +40,7 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		product.setSdesc(productDTO.getSdesc());
 		product.setStockQuantity(productDTO.getStockQuantity());
 		product.setWeight(productDTO.getWeight());
+		product.setProductDisplayName(productDTO.getProductDisplayName());
 
 		// Setting Product Category for the product based on the user input
 		ProductCategory productCategory = new ProductCategory();
@@ -76,6 +77,7 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		productDTO.setSdesc(product.getSdesc());
 		productDTO.setStockQuantity(product.getStockQuantity());
 		productDTO.setThumbImageAsByteArray(product.getThumbImage());
+		productDTO.setProductDisplayName(product.getProductDisplayName());
 
 		return productDTO;
 	}
@@ -106,6 +108,7 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 		productDTO.setStockQuantity(-999);
 		productDTO.setThumbImageAsByteArray(null);
 		productDTO.setWeight(productDeletedDummyNumber);
+		productDTO.setProductDisplayName(productDeleted);
 
 		return productDTO;
 	}

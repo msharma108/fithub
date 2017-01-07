@@ -94,9 +94,15 @@ function openProductModal(){
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
-                       <form:label path="productName">Product Name:</form:label><br>
-                       <form:input class="form-control" type="text" path="productName" id="productNameId" placeHolder= "Enter product name" />
+                       <form:label path="productName">Product Business Name:</form:label><br>
+                       <form:input class="form-control" type="text" path="productName" id="productNameId" placeHolder= "Enter Product Business Name" />
                        <form:errors  path="productName" style="color: red;"/>
+                  </div>
+                  
+                  <div class="col-sm-4">
+                       <form:label path="productDisplayName">Product Display Name:</form:label><br>
+                       <form:input class="form-control" type="text" path="productDisplayName" id="productDisplayNameId" placeHolder= "Enter productDisplayName" />
+                       <form:errors  path="productDisplayName" style="color: red;"/>
                   </div>
                   <div class="col-sm-4">
                        <form:label path="ldesc">Description: </form:label><br>

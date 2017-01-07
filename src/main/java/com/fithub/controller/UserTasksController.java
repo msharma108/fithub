@@ -80,7 +80,7 @@ public class UserTasksController {
 	// or delete handler without having to query the database again.
 
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
-	@RequestMapping(value = { "/viewUser/{userName}", "/admin/viewUser/{userName}" })
+	@RequestMapping(value = { "/viewUser/{userName:.+}", "/admin/viewUser/{userName:.+}" })
 	public String getUserProfilePage(@PathVariable("userName") String userName, Model model) {
 		LOG.debug("Retreiving the profile of user={}", userName);
 
@@ -164,7 +164,7 @@ public class UserTasksController {
 	// page is clicked
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/admin/userTask/{userName}", params = "userDelete")
+	@RequestMapping(value = "/admin/userTask/{userName:.+}", params = "userDelete")
 	public String handleUserDelete(@PathVariable("userName") String userName,
 			@ModelAttribute("userDTO") UserDTO userDTO, RedirectAttributes redirectAttributes, Model model) {
 		LOG.debug("Attempting to delete user={}", userDTO.getUserName());

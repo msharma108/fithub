@@ -98,4 +98,11 @@ public interface ProductService {
 	 * @return The list of products containing the supplied search string
 	 */
 	List<Product> getProductsContaingNameOrShortDescription(String productSearchString);
+
+	/**
+	 * Method counts the number of products in the system\database
+	 * 
+	 * @return the number of products in the system
+	 */
+	long countNumberOfProductsInDatabase();
 }
