@@ -21,7 +21,11 @@ public class ApplicationExceptionHandler {
 		ModelAndView model = new ModelAndView();
 		model.addObject("errorUrl", request.getRequestURL());
 		model.addObject("exception", exception.getMessage());
-		model.setViewName("user/customErrorPage");
+
+		if (request.getRequestURL().toString().contains("passwordRetrieval"))
+			model.setViewName("user/passwordRetrieval");
+		else
+			model.setViewName("user/customErrorPage");
 		return model;
 	}
 
@@ -30,7 +34,7 @@ public class ApplicationExceptionHandler {
 			IllegalArgumentException exception) {
 		LOG.error("Excepion ={} appeared at URL={}", exception.getMessage(), request.getRequestURL());
 		ModelAndView model = new ModelAndView();
-		model.addObject("exception", "Blank value(s) provided for the field(s), please provide valid value(s)");
+		model.addObject("exception", exception.getMessage());
 		model.addObject("errorUrl", request.getRequestURL());
 		model.setViewName("user/customErrorPage");
 		return model;

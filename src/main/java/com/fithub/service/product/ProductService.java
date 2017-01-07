@@ -89,4 +89,13 @@ public interface ProductService {
 	 */
 	List<Product> getTopProductsByQuantitySold();
 
+	/**
+	 * Method gets a list of products whose productName or short description
+	 * containing the provided productName and short description
+	 * 
+	 * @param productSearchString
+	 *            The entered search string for product
+	 * @return The list of products containing the supplied search string
+	 */
+	List<Product> getProductsContaingNameOrShortDescription(String productSearchString);
 }

@@ -120,10 +120,13 @@ public class UserTasksController {
 		LOG.debug("Reconstructing URL for user operations");
 		String userName = request.getParameter("userName");
 		String reconstructedUrl = "";
-		if (userName != null) {
 
-			// Retrieve user by userName and add it to model
-			User user = userService.getUserByUsername(userName);
+		// Retrieve user by userName
+		User user = userService.getUserByUsername(userName);
+		// If user not found display error message
+		if (user == null)
+			throw new NoSuchElementException((String.format("Username=%s not found", userName)));
+		else {
 			UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
 
 			if (userView != null) {
@@ -153,8 +156,7 @@ public class UserTasksController {
 			model.addAttribute("userDTO", userDTO);
 
 			return "forward:" + reconstructedUrl;
-		} else
-			throw new NoSuchElementException("Username not supplied,please recheck");
+		}
 
 	}
 
@@ -164,13 +166,16 @@ public class UserTasksController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/admin/userTask/{userName}", params = "userDelete")
 	public String handleUserDelete(@PathVariable("userName") String userName,
-			@ModelAttribute("userDTO") UserDTO userDTO, RedirectAttributes redirectAttributes) {
+			@ModelAttribute("userDTO") UserDTO userDTO, RedirectAttributes redirectAttributes, Model model) {
 		LOG.debug("Attempting to delete user={}", userDTO.getUserName());
 
-		boolean isUserDelete = userService.deleteUser(userDTO);
+		boolean isUserDeleted = userService.deleteUser(userDTO.getUserName());
 
-		LOG.debug("User was delete successfuly ?={}", isUserDelete);
-
+		LOG.debug("User was delete successfuly ?={}", isUserDeleted);
+		if (!isUserDeleted) {
+			model.addAttribute("exception", String.format("Username=%s not found", userName));
+			return "user/customErrorPage";
+		}
 		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 2);
 
 		return "redirect:/admin/userTaskSuccess";
@@ -181,7 +186,7 @@ public class UserTasksController {
 			RedirectAttributes redirectAttributes) {
 		LOG.debug("Attempting to update Role of user={}", userDTO.getUserName());
 
-		userService.changeRole(userDTO);
+		userService.changeUserRole(userDTO);
 		LOG.debug("User={} role changed successfully", userDTO.getUserName());
 
 		// used to check update success on the canvas page
@@ -228,7 +233,11 @@ public class UserTasksController {
 		if (getSecurityChecks != null) {
 			String userName;
 			userName = request.getParameter("userName");
+
 			User user = userService.getUserByUsername(userName);
+			if (user == null)
+				throw new NoSuchElementException(
+						(String.format("Username=%s not found", passwordRetrievalDTO.getUserName())));
 
 			// passwordRetrievalDTO = new PasswordRetrievalDTO();
 			passwordRetrievalDTO.setSecurityQuestion(user.getSecurityQuestion());
@@ -243,6 +252,7 @@ public class UserTasksController {
 		else if (performRetrieval != null) {
 
 			User user = userService.getUserByUsername(passwordRetrievalDTO.getUserName());
+
 			passwordRetrievalDTO.setSecurityQuestion(user.getSecurityQuestion());
 
 			if (result.hasErrors()) {

@@ -103,11 +103,6 @@
              </ul>
            </li>
 
-
-
-
-
-
 		  </ul>
 		  <!-- Admin view user link creation -->
 		  <c:url var="adminViewUser" value="/admin/urlConstructionBasedOnOperation"/>
@@ -117,6 +112,7 @@
                 <div class="input-group">
                     <input id="userNameId" type="text" name="userName" class="form-control" placeholder="Enter UserName">
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
                     <div class="input-group-btn">
                         <button class="btn btn-primary" type="submit" name="userView">Search <i class="glyphicon glyphicon-search"></i></button>
                     </div>
@@ -124,5 +120,20 @@
             </form>
         </div>
         </sec:authorize>
+        
+                <div class="col-sm-3  pull-right">
+                <c:url var="searchProduct" value="/searchProduct"/>
+            <form class="navbar-form" role="search" action="${searchProduct}"method="GET" >
+                <div class="input-group">
+                    <input id="productSearchStringId" type="text" name="productSearchString" class="form-control" placeholder="ProductName or Description"><br>
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="submit" name="userView">Search <i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        
+        
        </div>
     </div>

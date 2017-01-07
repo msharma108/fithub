@@ -64,7 +64,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	}
 
 	@Override
-	public List<SalesOrder> getSalesOrderListByUserName(String userName) {
+	public List<SalesOrder> getSalesOrderListByUserName(String userName) throws IllegalArgumentException {
 		LOG.debug("Retrieving list of salesOrders associated with userName={}", userName);
 
 		List<SalesOrder> salesOrderList = userService.getUserByUsername(userName).getSalesOrders();

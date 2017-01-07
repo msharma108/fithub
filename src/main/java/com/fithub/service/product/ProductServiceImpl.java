@@ -1,5 +1,6 @@
 package com.fithub.service.product;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -56,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product getProductByProductName(String productName) {
+	public Product getProductByProductName(String productName) throws IllegalArgumentException {
 		LOG.debug("Retreive product having productName={}", productName);
 		Product product = productRepository.findOneByProductName(productName);
 		return product;
@@ -133,6 +134,27 @@ public class ProductServiceImpl implements ProductService {
 		product.setProductUpdateDate((timeHelperService.getCurrentTimeStamp()));
 		product.setProductEditedByUser((userTasksHelperService.getLoggedInUserName(authentication)));
 		return productRepository.save(product);
+	}
+
+	@Override
+	public List<Product> getProductsContaingNameOrShortDescription(String productSearchString) {
+		LOG.debug("Attempting to find products matching searchString={}", productSearchString);
+		List<Product> productList = new ArrayList<Product>();
+
+		// Repository invocation based on passed in search strings
+		if (productSearchString.equals(""))
+			throw new IllegalArgumentException("Please provide search values for searching the product");
+
+		else
+			productList = productRepository.findByProductNameContainingIgnoreCaseOrSdescIgnoreCaseContaining(
+					productSearchString, productSearchString);
+
+		if (!productList.isEmpty())
+			return productList;
+		else
+			throw new NoSuchElementException(
+					String.format("Product matching the searchString={} not found", productSearchString));
+
 	}
 
 }

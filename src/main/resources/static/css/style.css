@@ -2,37 +2,44 @@ body {
    padding-top: 40px;
    padding-left: 0px;
    padding-right: 0px;
-   background: url(../images/background2.jpg) no-repeat;
+   background: url(../images/background.jpg) no-repeat;
    background-size: cover;
 
 }
+
+#topfixedbar,#bottombar{
+	background-color: #6C648B ;
+}
+
+#footer{
+	background-color: #6C648B ;
+	width: 100%;
+    bottom: 0;
+    position: fixed;
+}
 #login1 {
-  border-radius: 75px;
+  border-radius: 35px;
   height: 350px;
   width: 450px;
   border: 1px;
   margin-left:auto;
   margin-right:auto;
-} 
-#login2{
-  border-radius: 75px 75px 0px 0px;
-  height: 40px;
-  width: 450px;
-  border: 1px;
-  margin-left:auto;
-  margin-right:auto;
-  background: #006dcc;
-  font-weight: bold;
-  text-align: center;
-  vertical-align: middle;
-}    
+}     
 #login3{
-  border-radius: 0px 0px 75px 75px;
-  height: 350px;
-  width: 450px;
-  border: 1px;
-  background: url(../images/background2.jpg) no-repeat; 
-  color: black;
+   border-radius: 35px;
+   height: 350px;
+   width: 450px;
+   border: 1px #f2e3d2;
+   background: #c7a2a2;
+   background: -webkit-gradient(linear, left top, left bottom, from(#165178), to(#c7a2a2));
+   background: -webkit-linear-gradient(top, #165178, #c7a2a2);
+   background: -moz-linear-gradient(top, #165178, #c7a2a2);
+   background: -ms-linear-gradient(top, #165178, #c7a2a2);
+   background: -o-linear-gradient(top, #165178, #c7a2a2);
+   background-image: -ms-linear-gradient(top, #165178 0%, #c7a2a2 100%);
+   -webkit-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   -moz-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
 }
 #registerLink a, #forgotPassLink a{
 	color: blue;
@@ -50,30 +57,28 @@ body {
 }
 
 #userReg1{
-  border-radius: 75px;
+  border-radius: 35px;
   width: 800px;
   border: none;
   margin-left:auto;
   margin-right:auto;
 } 
-#userReg2{
-  border-radius: 75px 75px 0px 0px;
-  height: 40px;
-  width: 800px;
-  border: none;
-  margin-left:auto;
-  margin-right:auto;
-  background: #006dcc;
-  font-weight: bold;
-  text-align: center;
-  vertical-align: middle;
-} 
+
 #userReg3{
-  border-radius: 0px 0px 75px 75px;
-  width: 800px;
-  border: none;
-  background: url(../images/background2.jpg) no-repeat; 
-  color: black;
+   border-radius: 35px;
+   width: 800px;
+   border: none;
+   border: 1px #f2e3d2;
+   background: #c7a2a2;
+   background: -webkit-gradient(linear, left top, left bottom, from(#165178), to(#c7a2a2));
+   background: -webkit-linear-gradient(top, #165178, #c7a2a2);
+   background: -moz-linear-gradient(top, #165178, #c7a2a2);
+   background: -ms-linear-gradient(top, #165178, #c7a2a2);
+   background: -o-linear-gradient(top, #165178, #c7a2a2);
+   background-image: -ms-linear-gradient(top, #165178 0%, #c7a2a2 100%);
+   -webkit-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   -moz-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
 } 
 input[type=text]{
   border-radius:15px;
@@ -116,16 +121,7 @@ button[type=submit]{
 	color: silver; 
 	background-color: #1F1C22; 
 }
-#topfixedbar,#bottombar{
-	background-color: #003366 ;
-}
 
-#footer{
-	background-color: #003366 ;
-	width: 100%;
-    bottom: 0;
-    position: fixed;
-}
 .navbar-text >p{
 	color: white;
 } 
@@ -253,3 +249,76 @@ transform:translatey(0);
 -webkit-transition-delay:.2s;
 transition-delay:.2s;
 }
+
+.submit-button {
+   border: 0px solid #447314;
+   background: #6aa436;
+   background: -webkit-gradient(linear, left top, left bottom, from(#52c764), to(#6aa436));
+   background: -webkit-linear-gradient(top, #52c764, #6aa436);
+   background: -moz-linear-gradient(top, #52c764, #6aa436);
+   background: -ms-linear-gradient(top, #52c764, #6aa436);
+   background: -o-linear-gradient(top, #52c764, #6aa436);
+   background-image: -ms-linear-gradient(top, #52c764 0%, #6aa436 100%);
+   -webkit-border-radius: 13px;
+   -moz-border-radius: 13px;
+   border-radius: 13px;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 0px 0, inset rgba(255,255,255,0.4) 0 0px 0;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 0px 0, inset rgba(255,255,255,0.4) 0 0px 0;
+   box-shadow: rgba(255,255,255,0.4) 0 0px 0, inset rgba(255,255,255,0.4) 0 0px 0;
+   text-shadow: #96bd6f 0 1px 0;
+   color: #d4d1ae;
+   font-family: helvetica, serif;
+   padding: 8.5px 18px;
+   font-size: 14px;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.submit-button:hover {
+   border: 0px solid #447314;
+   text-shadow: #31540c 0 1px 0;
+   background: #b38719;
+   background: -webkit-gradient(linear, left top, left bottom, from(#bf5a5a), to(#b38719));
+   background: -webkit-linear-gradient(top, #bf5a5a, #b38719);
+   background: -moz-linear-gradient(top, #bf5a5a, #b38719);
+   background: -ms-linear-gradient(top, #bf5a5a, #b38719);
+   background: -o-linear-gradient(top, #bf5a5a, #b38719);
+   background-image: -ms-linear-gradient(top, #bf5a5a 0%, #b38719 100%);
+   color: #fff;
+   }
+.submit-button:active {
+   text-shadow: #31540c 0 1px 0;
+   border: 0px solid #447314;
+   background: #185c61;
+   background: -webkit-gradient(linear, left top, left bottom, from(#4c5dc9), to(#b38719));
+   background: -webkit-linear-gradient(top, #4c5dc9, #185c61);
+   background: -moz-linear-gradient(top, #4c5dc9, #185c61);
+   background: -ms-linear-gradient(top, #4c5dc9, #185c61);
+   background: -o-linear-gradient(top, #4c5dc9, #185c61);
+   background-image: -ms-linear-gradient(top, #4c5dc9 0%, #185c61 100%);
+   color: #fff;
+   }
+   
+   .form-field {
+   border: 1px solid #311f57;
+   background: #090c14;
+   -webkit-border-radius: 11px;
+   -moz-border-radius: 11px;
+   border-radius: 11px;
+   color: #d1c1ae;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   }
+.form-field:focus {
+   background: #225f73;
+   color: #ebd7d3;
+   }
+.form-title {
+   color: #fff;
+   text-shadow: #000000 0 2px 0;
+   text-align:center;
+   }
+.form-label {
+   color: #fff;
+   text-shadow: #000000 0 1px 0;
+   }
