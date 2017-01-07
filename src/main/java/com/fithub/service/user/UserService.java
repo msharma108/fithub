@@ -79,15 +79,16 @@ public interface UserService {
 	 *            User whose password is being reset
 	 * @param resetPassword
 	 *            : The new random string sent to user as password
+	 * @return boolean true if the password reset was successful
 	 * 
 	 */
-	void resetPassword(User user, String resetPassword);
+	boolean resetPassword(User user, String resetPassword);
 
 	/**
 	 * Method counts the number of users in the system\database
 	 * 
 	 * @return the number of users in the system
 	 */
-	long countNumberOfUsersInSystem();
+	long countNumberOfUsersInDatabase();
 
 }

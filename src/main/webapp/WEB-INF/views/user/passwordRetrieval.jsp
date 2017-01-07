@@ -21,6 +21,9 @@
 <!-- Initiate Security check process-->
 <div class="form-title"><h2>Password Retrieval</h2></div>
 <input class="form-field" type="text" name="userName" placeholder="Enter username" /><br>
+	<c:if test="${exception !=null }">
+	<c:out  value="${exception }" />
+	</c:if>
 <div class="submit-container">
 <input class="submit-button" type="submit" value="Submit" name="getSecurityChecks" />
 </div>

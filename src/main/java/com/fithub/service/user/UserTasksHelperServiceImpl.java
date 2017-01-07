@@ -1,5 +1,7 @@
 package com.fithub.service.user;
 
+import java.util.NoSuchElementException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class UserTasksHelperServiceImpl implements UserTasksHelperService {
 		LOG.debug("Preparing user={} from user transfer object", userDTO.getUserName());
 
 		if (user == null)
-			throw new IllegalArgumentException("The user object is null");
+			throw new NoSuchElementException((String.format("Username=%s not found", userDTO.getUserName())));
 		user.setAddress(userDTO.getAddress());
 		user.setIsUserDeleted(userDTO.getIsUserDeleted());
 		user.setCity(userDTO.getCity());

@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUserById(Integer userId) throws IllegalArgumentException {
+	public User getUserById(Integer userId) {
 		LOG.debug("Retreive user having userId={}", userId);
 		User user = userRepository.findOne(userId);
 		if (user != null)
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 			user.setProfileEditedByUser(userDTO.getLoggedInUserName());
 			user = userRepository.save(user);
 			return isUserDeleted;
-		} catch (IllegalArgumentException exception) {
+		} catch (NoSuchElementException exception) {
 			LOG.debug("User with userName={} can't be deleted as they dont exist in the database");
 			isUserDeleted = false;
 			return isUserDeleted;
@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void resetPassword(User user, String resetPassword) {
+	public boolean resetPassword(User user, String resetPassword) {
 		LOG.debug("Attempting to reset user password of user={} by user={}", user.getUserName(), user.getUserName());
 
 		user.setPassword((new BCryptPasswordEncoder().encode(resetPassword)));
@@ -141,10 +141,12 @@ public class UserServiceImpl implements UserService {
 		user.setProfileEditedByUser(user.getUserName());
 		userRepository.save(user);
 
+		return true;
+
 	}
 
 	@Override
-	public long countNumberOfUsersInSystem() {
+	public long countNumberOfUsersInDatabase() {
 		return userRepository.count();
 	}
 }
