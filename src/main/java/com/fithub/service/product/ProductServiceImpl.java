@@ -137,31 +137,23 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> getProductsContaingNameOrShortDescription(String searchProductName,
-			String searchShortDescription) {
-		LOG.debug("Attempting to find products based on the searched productName={} and short description={}",
-				searchProductName, searchShortDescription);
+	public List<Product> getProductsContaingNameOrShortDescription(String productSearchString) {
+		LOG.debug("Attempting to find products matching searchString={}", productSearchString);
 		List<Product> productList = new ArrayList<Product>();
 
 		// Repository invocation based on passed in search strings
-		if (searchProductName.equals("") && searchShortDescription.equals(""))
+		if (productSearchString.equals(""))
 			throw new IllegalArgumentException("Please provide search values for searching the product");
 
-		else if (!searchProductName.equals("") && !searchShortDescription.equals(""))
-			productList = productRepository.findByProductNameContainingIgnoreCaseOrSdescIgnoreCaseContaining(
-					searchProductName, searchShortDescription);
-
-		else if (!searchProductName.equals("") && searchShortDescription.equals(""))
-			productList = productRepository.findByProductNameIgnoreCaseContaining(searchProductName);
 		else
-			productList = productRepository.findBySdescIgnoreCaseContaining(searchShortDescription);
+			productList = productRepository.findByProductNameContainingIgnoreCaseOrSdescIgnoreCaseContaining(
+					productSearchString, productSearchString);
 
 		if (!productList.isEmpty())
 			return productList;
 		else
 			throw new NoSuchElementException(
-					String.format("Product with the entered productName=%s & description =%snot found",
-							searchProductName, searchShortDescription));
+					String.format("Product matching the searchString={} not found", productSearchString));
 
 	}
 

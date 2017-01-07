@@ -242,12 +242,10 @@ public class ProductTasksController {
 	}
 
 	@RequestMapping(value = "/searchProduct")
-	public String searchProduct(Model model, @RequestParam("searchProductName") String searchProductName,
-			@RequestParam("searchShortDescription") String searchShortDescription) {
+	public String searchProduct(Model model, @RequestParam("productSearchString") String productSearchString) {
 		LOG.debug("Attempting to search product");
 		List<Product> productList = new ArrayList<Product>();
-		productList = productService.getProductsContaingNameOrShortDescription(searchProductName,
-				searchShortDescription);
+		productList = productService.getProductsContaingNameOrShortDescription(productSearchString);
 		model = prepareProductsForDisplay(model, productList);
 
 		return "product/productList";
