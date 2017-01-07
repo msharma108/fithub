@@ -148,13 +148,13 @@ public class ProductServiceImpl implements ProductService {
 			throw new IllegalArgumentException("Please provide search values for searching the product");
 
 		else if (!searchProductName.equals("") && !searchShortDescription.equals(""))
-			productList = productRepository.findByProductNameOrSdescContaining(searchProductName,
-					searchShortDescription);
+			productList = productRepository.findByProductNameContainingIgnoreCaseOrSdescIgnoreCaseContaining(
+					searchProductName, searchShortDescription);
 
 		else if (!searchProductName.equals("") && searchShortDescription.equals(""))
-			productList = productRepository.findByProductNameContaining(searchProductName);
+			productList = productRepository.findByProductNameIgnoreCaseContaining(searchProductName);
 		else
-			productList = productRepository.findBySdescContaining(searchShortDescription);
+			productList = productRepository.findBySdescIgnoreCaseContaining(searchShortDescription);
 
 		if (!productList.isEmpty())
 			return productList;
