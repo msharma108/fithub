@@ -227,7 +227,7 @@ public class UserServiceIntegrationTest {
 		assertDatabaseStateConsistencyBeforeTest();
 	}
 
-	protected UserDTO prepareUserDTO(String userName) {
+	private UserDTO prepareUserDTO(String userName) {
 
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUserName(userName);
@@ -245,7 +245,7 @@ public class UserServiceIntegrationTest {
 
 	}
 
-	protected void assertDatabaseStateConsistencyBeforeTest() {
+	private void assertDatabaseStateConsistencyBeforeTest() {
 		assertEquals("Database in an inconsistent state before test", 2, userService.countNumberOfUsersInDatabase());
 	}
 

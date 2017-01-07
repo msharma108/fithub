@@ -2,6 +2,7 @@ package com.fithub.integrationtests;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
@@ -15,6 +16,8 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fithub.domain.Product;
+import com.fithub.domain.ProductDTO;
 import com.fithub.service.product.ProductService;
 import com.fithub.service.time.TimeHelperService;
 
@@ -37,19 +40,26 @@ public class ProductServiceIntegrationTest {
 	@Autowired
 	private TimeHelperService timeHelperService;
 
-	// @Test
-	// public void productServiceRegistersProductIfProductName() {
-	// assertDatabaseStateConsistencyBeforeTest();
-	//
-	// String expectedUserName = "testUserName";
-	// UserDTO userDTO = prepareUserDTO(expectedUserName);
-	// User user = userService.createUser(userDTO);
-	// assertEquals("User registration failure", expectedUserName,
-	// user.getUserName());
-	//
-	// }
+	@Test
+	public void productServiceRegistersProductIfProductNameNotInDatabase() {
+		assertDatabaseStateConsistencyBeforeTest();
 
-	protected void assertDatabaseStateConsistencyBeforeTest() {
+		String expectedProductName = "testProductNameRustColor5Lbs";
+		ProductDTO productDTO = prepareProductDTO(expectedProductName);
+		Product product = productService.registerProduct(productDTO);
+		assertEquals("Product registration failure", expectedProductName, product.getProductName());
+
+	}
+
+	private ProductDTO prepareProductDTO(String expectedProductName) {
+		ProductDTO productDTO = new ProductDTO();
+		productDTO.setProductDisplayName("testProductName");
+		productDTO.setProductName(expectedProductName);
+		productDTO.setProductCategory("Protein");
+		return productDTO;
+	}
+
+	private void assertDatabaseStateConsistencyBeforeTest() {
 		assertEquals("Database in an inconsistent state before test", 2,
 				productService.countNumberOfProductsInDatabase());
 
