@@ -39,7 +39,7 @@ public class ShoppingCartController {
 		this.shoppingCartService = shoppingCartService;
 	}
 
-	@RequestMapping(value = "/addToCart/{productName}")
+	@RequestMapping(value = "/addToCart/{productName:.+}")
 	public String handleAddToCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session,
 			RedirectAttributes redirectAttributes) {
@@ -61,7 +61,7 @@ public class ShoppingCartController {
 
 	}
 
-	@RequestMapping(value = "/refreshCart/{productName}")
+	@RequestMapping(value = "/refreshCart/{productName:.+}")
 	public String handleRefreshProductQuantityInCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
 			HttpServletRequest request,
@@ -85,7 +85,7 @@ public class ShoppingCartController {
 
 	}
 
-	@RequestMapping(value = "/removeFromCart/{productName}")
+	@RequestMapping(value = "/removeFromCart/{productName:.+}")
 	public String handleRemoveFromCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
 			HttpServletRequest request,

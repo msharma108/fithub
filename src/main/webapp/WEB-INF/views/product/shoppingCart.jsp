@@ -60,7 +60,7 @@
 								<div class="row">
 									<div class="col-sm-2 hidden-xs"><img class="img-responsive"  src="${cartItem.base64imageFile}" alt="${cartItem.productName}"/></div>
 									<div class="col-sm-10">
-										<h4 class="nomargin">${cartItem.productName}</h4>
+										<h4 class="nomargin">${cartItem.productDisplayName}</h4>
 										<p>${cartItem.sdesc}</p>
 									</div>
 								</div>

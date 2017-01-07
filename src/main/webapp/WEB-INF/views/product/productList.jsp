@@ -81,7 +81,8 @@
 				               <img class="img-rounded" width="385" height="230"  src="${ListProductDTO[status.index].base64imageFile}" alt="${product.productName}"/>
 				              <!-- end of image -->
 				              <div class="overlay">
-				                 <h2><c:out value="${product.productName}"/></h2>
+				                 <h2><c:out value="${product.productDisplayName}"/></h2>
+				                
 				                 <button class="info" type="submit" name="viewProduct" id="viewProductId">CLICK FOR MORE INFO</button>
 				              </div>
 				              </div>

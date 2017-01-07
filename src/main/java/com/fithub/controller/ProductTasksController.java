@@ -112,8 +112,8 @@ public class ProductTasksController {
 		return model;
 	}
 
-	@PostMapping(value = { "/admin/constructUrlForAdminProductOperations/{productName}",
-			"/constructUrlForProductOperations/{productName}" })
+	@PostMapping(value = { "/admin/constructUrlForAdminProductOperations/{productName:.+}",
+			"/constructUrlForProductOperations/{productName:.+}" })
 	public String constructUrlForProductTasks(@RequestParam(value = "viewProduct", required = false) String viewProduct,
 			@RequestParam(value = "addToCart", required = false) String addToCart,
 			@RequestParam(value = "removeFromCart", required = false) String removeFromCart,
@@ -172,7 +172,7 @@ public class ProductTasksController {
 
 	}
 
-	@RequestMapping(value = "/viewProduct/{productName}")
+	@RequestMapping(value = "/viewProduct/{productName:.+}")
 	public String getProductDetailsPage(@PathVariable("productName") String productName, Model model,
 			@ModelAttribute("productDTO") ProductDTO productDTO) {
 		LOG.debug("Retreiving product details of product={}", productDTO.getPrice());
@@ -182,7 +182,7 @@ public class ProductTasksController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/admin/deleteProduct/{productName}")
+	@RequestMapping(value = "/admin/deleteProduct/{productName:.+}")
 	public String handleProductDelete(@PathVariable("productName") String productName,
 			@ModelAttribute("productDTO") ProductDTO productDTO, RedirectAttributes redirectAttributes,
 			Authentication authentication) {
@@ -198,7 +198,7 @@ public class ProductTasksController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@PostMapping(value = { "/admin/editProduct/{productName}" }, params = "editProduct")
+	@PostMapping(value = { "/admin/editProduct/{productName:.+}" }, params = "editProduct")
 	public String getProductEditPage(@PathVariable("productName") String productName,
 			@ModelAttribute("productDTO") ProductDTO productDTO, Model model) {
 		LOG.debug("Getting editProductPage for product={}", productName);
