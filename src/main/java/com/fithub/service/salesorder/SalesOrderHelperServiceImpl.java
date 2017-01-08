@@ -61,7 +61,7 @@ public class SalesOrderHelperServiceImpl implements SalesOrderHelperService {
 		List<ShippingAddress> shippingAddressList = new ArrayList<ShippingAddress>();
 
 		// Checking if the shipping address already exists in DB
-		shippingAddressList = shippingAddressService.getShippingAddress(orderDTO.getAddress(), orderDTO.getCity(),
+		shippingAddressList = shippingAddressService.getShippingAddressByShippingAddressParameters(orderDTO.getAddress(), orderDTO.getCity(),
 				orderDTO.getProvince(), orderDTO.getZipcode(), orderDTO.getCountry(), orderDTO.getPhone(),
 				orderDTO.getEmail());
 

@@ -11,14 +11,33 @@ import com.fithub.domain.ShippingAddress;
 public interface ShippingAddressService {
 
 	/**
-	 * Method gets shipping address record from the shipping address table in db
-	 * based on the provided shipping address creation date.
+	 * Method gets shipping address record from the shipping address table in
+	 * database based on the provided shipping address information.
 	 * 
 	 * @param shippingAddressCreationDate
-	 * @return ShippingAddress based on the provided shipping address creation
-	 *         date
+	 * @return ShippingAddress based on the provided shipping address
+	 *         information
 	 */
-	List<ShippingAddress> getShippingAddress(String address, String city, String province, String zip, String country,
-			String phone, String email);
+	List<ShippingAddress> getShippingAddressByShippingAddressParameters(String address, String city, String province,
+			String zip, String country, String phone, String email);
+
+	/**
+	 * Method counts the number of shipping address records in the database
+	 * 
+	 * @return the number of shipping address records in the shipping address
+	 *         table
+	 */
+	long countNumberOfShippingAddressInDatabase();
+
+	/**
+	 * Method gets shipping address record based on the shipping address id
+	 * provided
+	 * 
+	 * @param shippingAddressId
+	 *            primary key for shippingAddress table
+	 * 
+	 * @return shippingAddress record for the id provided
+	 */
+	ShippingAddress getShippingAddressById(int shippingAddressId);
 
 }
