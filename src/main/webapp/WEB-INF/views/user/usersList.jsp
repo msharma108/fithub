@@ -41,7 +41,7 @@
         <div class="col-md-12">
 
             <div class="panel panel-table">
-              <div class="panel-heading" id="prodReg-body">
+              <div class="panel-heading" id="table-bg">
                 <div class="row">
                   <div class="col col-xs-6">
                     <div class="panel-title">User List</div>
@@ -51,7 +51,7 @@
               <div class="panel-body">
               
                 <table class="table table-striped">
-                  <thead id="prodReg-body">
+                  <thead id="table-bg">
                     <tr class="table-header">
                         <th><em class="fa fa-cog"></em></th>
                         <th>UserName</th>
@@ -89,7 +89,7 @@
                     </tbody>
                 </table>
               </div>
-              <div class="panel-footer" id="prodReg-body">
+              <div class="panel-footer" id="table-bg">
               </div>
             </div>
 
