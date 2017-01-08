@@ -76,37 +76,38 @@ function openProductModal(){
     </div>
   </div>   
      
-  <div class="panel panel-primary">
-    <c:choose>
-     <c:when test="${productDTO.isEditable == false }">
-      <!-- Show Add product Form -->
-    	<div class="panel-heading"><b>PRODUCT INFO</b></div>
-    </c:when>
-     <c:when test="${productDTO.isEditable == true }">
-      <!-- Show Update product Form -->
-    <div class="panel-heading"><b>Product Update Form</b></div>
-    </c:when>  
-    </c:choose>
-     <div class="panel-body" style="background-color: #C1E1A6;"> 
-         
+  <div class="panel"  id ="prodReg-panel">
+
+     <div class="panel-body" id="prodReg-body"> 
+          <c:choose>
+		     <c:when test="${productDTO.isEditable == false }">
+		      <!-- Show Add product Form -->
+		    	<div class="form-title"><b>ADD PRODUCT</b></div>
+		    </c:when>
+		     <c:when test="${productDTO.isEditable == true }">
+		      <!-- Show Update product Form -->
+		    <div class="form-title"><b>Product Update Form</b></div>
+		    </c:when>  
+	     </c:choose>
+	     <br>
          <c:url var="productSave" value="/admin/productSave"/>
-	        <form:form modelAttribute="productDTO" method="POST" action="${productSave}" style="color: black;" enctype="multipart/form-data">
+	        <form:form modelAttribute="productDTO" method="POST" action="${productSave}" class="form-label" enctype="multipart/form-data">
               <div class="col-xs-12">    
                 <div class=" form-group row">
                   <div class="col-sm-4">
                        <form:label path="productName">Product Business Name:</form:label><br>
-                       <form:input class="form-control" type="text" path="productName" id="productNameId" placeHolder= "Enter Product Business Name" />
+                       <form:input class="form-control form-field" type="text" path="productName" id="productNameId" placeHolder= "Enter Product Business Name" />
                        <form:errors  path="productName" style="color: red;"/>
                   </div>
                   
                   <div class="col-sm-4">
                        <form:label path="productDisplayName">Product Display Name:</form:label><br>
-                       <form:input class="form-control" type="text" path="productDisplayName" id="productDisplayNameId" placeHolder= "Enter productDisplayName" />
+                       <form:input class="form-control form-field" type="text" path="productDisplayName" id="productDisplayNameId" placeHolder= "Enter productDisplayName" />
                        <form:errors  path="productDisplayName" style="color: red;"/>
                   </div>
                   <div class="col-sm-4">
                        <form:label path="ldesc">Description: </form:label><br>
-                       <form:input class="form-control" type="text" path="ldesc" id="ldescId" placeHolder= "Enter Product Description" />
+                       <form:input class="form-control form-field" type="text" path="ldesc" id="ldescId" placeHolder= "Enter Product Description" />
                        <form:errors  path="ldesc" style="color: red;"/>
                   </div>
                 </div>
@@ -118,7 +119,7 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
                        <form:label path="productCategory">Product Category:</form:label><br>
-			           <form:select class="form-control" path="productCategory" id="productCategoryId">
+			           <form:select class="form-control form-field" path="productCategory" id="productCategoryId">
 			           <form:option value="Others">--- Select ---</form:option>
 			           <form:option value="Protein">Protein</form:option>
 			           <form:option value="Vitamins">Vitamins</form:option>
@@ -127,7 +128,7 @@ function openProductModal(){
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="manufactureDate">Manufacture Date:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
-			           <form:input class="form-control" type="text" path="manufactureDate" id="manufactureDateId" placeHolder= "Enter Manufacture Date"  />
+			           <form:input class="form-control form-field" type="text" path="manufactureDate" id="manufactureDateId" placeHolder= "Enter Manufacture Date"  />
 			           <form:errors  path="manufactureDate" style="color: red;"/>
                   </div>
                 </div>
@@ -137,19 +138,20 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="price">Price:</form:label><br>
-			           <form:input class="form-control" type="text" path="price" id="priceId" placeHolder= "Enter Price"  />
+			           <form:input class="form-control form-field" type="text" path="price" id="priceId" placeHolder= "Enter Price"  />
 			           <form:errors  path="price" style="color: red;"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="weight">Weight:</form:label><br>
-			           <form:input class="form-control" type="text" path="weight" id="weightId" placeHolder= "Enter Weight"  />
+			           <form:input class="form-control form-field" type="text" path="weight" id="weightId" placeHolder= "Enter Weight"  />
 			           <form:errors  path="weight" style="color: red;"/>
                   </div>
-                  
+                 </div>
+                 </div> 
                   <div class="col-sm-12">    
                 <div class="form-group row">
-                  <div class="col-sm-4 form-group">thumbImage<br>
-			           <input class="form-control" type="file" name="thumbImage" id="thumbImage" placeHolder= "Thumbnail"  />
+                  <div class="col-sm-4 form-group"><form:label path="thumbImage">Image:</form:label><br> 
+			           <input class="form-control form-field" type="file" name="thumbImage" id="thumbImage" placeHolder= "Thumbnail"  />
                   </div>
                   <c:if test="${productDTO.isEditable == true }">
                    <div class="col-sm-4 form-group">
@@ -165,12 +167,12 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="stockQuantity">Quantity:</form:label><br>
-			           <form:input class="form-control" type="text" path="stockQuantity" id="stockQuantityId" placeHolder= "Enter Quantity"  />
+			           <form:input class="form-control form-field" type="text" path="stockQuantity" id="stockQuantityId" placeHolder= "Enter Quantity"  />
 			           <form:errors  path="stockQuantity" style="color: red;"/>
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="expiryDate">Expiry Date:<span class="glyphicon glyphicon-calendar"> </span></form:label><br>
-			           <form:input class="form-control" type="text" path="expiryDate" id="expiryDateId" placeHolder= "Enter Expiry Date"  />
+			           <form:input class="form-control form-field" type="text" path="expiryDate" id="expiryDateId" placeHolder= "Enter Expiry Date"  />
 			           <form:errors  path="expiryDate" style="color: red;"/>
                   </div>
                   
@@ -181,12 +183,12 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="flavor">Flavor:</form:label><br>
-			           <form:input class="form-control" type="text" path="flavor" id="flavorId" placeHolder= "Enter Flavor"  />
+			           <form:input class="form-control form-field" type="text" path="flavor" id="flavorId" placeHolder= "Enter Flavor"  />
 			           <form:errors  path="flavor" style="color: red;"/>
                   </div>
                   <div class="col-sm-4 form-group">
                        <form:label path="rating">Rating:<span class="glyphicon glyphicon-user"> </span></form:label><br>
-			           <form:select class="form-control" path="rating" id="ratingId">
+			           <form:select class="form-control form-field" path="rating" id="ratingId">
 			          <form:option value="">--- Select ---</form:option>
 			           <form:option value="Bad">Bad</form:option>
 			           <form:option value="Average">Average</form:option>
@@ -202,7 +204,7 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-4 form-group">
 			           <form:label path="sdesc">Short description:</form:label><br>
-			           <form:input class="form-control" type="text" path="sdesc" id="sdescId" placeHolder= "Enter short description"  />
+			           <form:input class="form-control form-field" type="text" path="sdesc" id="sdescId" placeHolder= "Enter short description"  />
 			           <form:errors  path="sdesc" style="color: red;"/>
                   </div>
 
@@ -216,7 +218,7 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
                        <!-- input class="btn btn-primary btn-block" type="submit" name="productRegister" id="productRegisterId" value="Submit" /-->
-                       <button type="submit" class="btn btn-primary btn-block" name="productRegister" id="productRegister"  ><i class="glyphicon glyphicon-plus"></i> Add Product</button>
+                       <button type="submit" class="btn btn-success btn-block submit-button" name="productRegister" id="productRegister"  ><i class="glyphicon glyphicon-plus"></i> Add Product</button>
                   </div>
                 </div> 
               </div>
@@ -228,7 +230,7 @@ function openProductModal(){
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
                        <!-- input class="btn btn-primary btn-block" type="submit" name="productUpdate" id="productUpdateId" value="Submit" /-->
-                       <button type="submit" class="btn btn-primary btn-block" name="editProduct" id="editProductId"  ><i class="glyphicon glyphicon-pencil"></i> Update Product</button>
+                       <button type="submit" class="btn btn-success btn-block submit-button" name="editProduct" id="editProductId"  ><i class="glyphicon glyphicon-pencil"></i> Update Product</button>
                   </div>
                 </div> 
               </div>           
@@ -239,6 +241,7 @@ function openProductModal(){
             </form:form>
           </div>
         </div>
+        <br><br><br><br> 
   </div>
   
 	<!-- contents end here -->
