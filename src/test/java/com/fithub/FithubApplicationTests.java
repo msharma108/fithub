@@ -1,5 +1,7 @@
 package com.fithub;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,9 @@ public class FithubApplicationTests {
 	@Test
 	public void contextLoads() {
 
-		System.out.println(env.getProperty("spring.datasource.url"));
+		String databaseConnectionURL = "jdbc:mysql://localhost:3306/fithub_integ_testing";
+		assertEquals("Database configuration mismatch", databaseConnectionURL,
+				env.getProperty("spring.datasource.url"));
 
 	}
 

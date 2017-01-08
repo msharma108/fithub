@@ -46,7 +46,10 @@ public class ApplicationExceptionHandler {
 		ModelAndView model = new ModelAndView();
 		model.addObject("exception", exception.getMessage());
 		model.addObject("errorUrl", request.getRequestURL());
-		model.setViewName("product/shoppingCart");
+		if (request.getRequestURL().toString().contains("constructUrlForProductOperations"))
+			model.setViewName("product/shoppingCart");
+		else
+			model.setViewName("customErrorPage");
 		return model;
 	}
 

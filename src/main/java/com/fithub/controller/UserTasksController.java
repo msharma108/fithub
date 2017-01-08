@@ -166,7 +166,8 @@ public class UserTasksController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/admin/userTask/{userName:.+}", params = "userDelete")
 	public String handleUserDelete(@PathVariable("userName") String userName,
-			@ModelAttribute("userDTO") UserDTO userDTO, RedirectAttributes redirectAttributes, Model model) {
+			@ModelAttribute("userDTO") UserDTO userDTO, RedirectAttributes redirectAttributes, Model model,
+			HttpServletRequest request) {
 		LOG.debug("Attempting to delete user={}", userDTO.getUserName());
 
 		boolean isUserDeleted = userService.deleteUser(userDTO.getUserName());
@@ -174,7 +175,8 @@ public class UserTasksController {
 		LOG.debug("User was delete successfuly ?={}", isUserDeleted);
 		if (!isUserDeleted) {
 			model.addAttribute("exception", String.format("Username=%s not found", userName));
-			return "user/customErrorPage";
+			model.addAttribute("errorUrl", request.getRequestURL());
+			return "customErrorPage";
 		}
 		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 2);
 

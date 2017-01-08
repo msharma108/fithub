@@ -19,7 +19,7 @@ body {
 }
 #login1 {
   border-radius: 35px;
-  height: 350px;
+  height: 400px;
   width: 450px;
   border: 1px;
   margin-left:auto;
@@ -27,7 +27,7 @@ body {
 }     
 #login3{
    border-radius: 35px;
-   height: 350px;
+   height: 400px;
    width: 450px;
    border: 1px #f2e3d2;
    background: #c7a2a2;
@@ -67,6 +67,33 @@ body {
 #userReg3{
    border-radius: 35px;
    width: 800px;
+   border: none;
+   border: 1px #f2e3d2;
+   background: #c7a2a2;
+   background: -webkit-gradient(linear, left top, left bottom, from(#165178), to(#c7a2a2));
+   background: -webkit-linear-gradient(top, #165178, #c7a2a2);
+   background: -moz-linear-gradient(top, #165178, #c7a2a2);
+   background: -ms-linear-gradient(top, #165178, #c7a2a2);
+   background: -o-linear-gradient(top, #165178, #c7a2a2);
+   background-image: -ms-linear-gradient(top, #165178 0%, #c7a2a2 100%);
+   -webkit-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   -moz-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+} 
+
+#prodReg-panel{
+  border-radius: 35px;
+  width: 800px;
+  height:850px;
+  border: none;
+  margin-left:auto;
+  margin-right:auto;
+} 
+
+#prodReg-body{
+   border-radius: 35px;
+   width: 800px;
+   height:850px;
    border: none;
    border: 1px #f2e3d2;
    background: #c7a2a2;

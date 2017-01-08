@@ -43,24 +43,24 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product getProductById(Integer productId) throws IllegalArgumentException {
+	public Product getProductById(Integer productId) {
 		LOG.debug("Retreive product having productId={}", productId);
 		Product product = productRepository.findOne(productId);
 
-		// Handling null in service layer
-		// if a future controller uses this then we don't need to care about
-		// null checks in controller
 		if (product != null)
 			return product;
 		else
-			throw new NoSuchElementException(String.format("productId=%d not found", productId));
+			throw new NoSuchElementException(String.format("productId=%s not found", productId));
 	}
 
 	@Override
 	public Product getProductByProductName(String productName) throws IllegalArgumentException {
 		LOG.debug("Retreive product having productName={}", productName);
 		Product product = productRepository.findOneByProductName(productName);
-		return product;
+		if (product != null)
+			return product;
+		else
+			throw new NoSuchElementException(String.format("Product with productName=%s not found", productName));
 
 	}
 
@@ -90,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
 			product.setProductEditedByUser(loggedInAdmin.getUserName());
 			product = productRepository.save(product);
 			return isProductDeleted;
-		} catch (IllegalArgumentException exception) {
+		} catch (NoSuchElementException exception) {
 			LOG.debug("Product with productName={} can't be deleted as it doesn't exist in the database",
 					productDTO.getProductName());
 			isProductDeleted = false;
@@ -105,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> getTopProductsByQuantitySold() {
+	public List<Product> getTop5ProductsByQuantitySold() {
 		LOG.debug("Retrieving the list of top products based on quantity sold");
 		return productRepository.findTop5ByOrderByQuantitySoldDesc();
 	}
@@ -113,12 +113,13 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> getProductsByCategory(String category) {
 
-		if (category != null) {
-			LOG.debug("Retrieving the list of products belonging to category={}", category);
+		LOG.debug("Retrieving the list of products belonging to category={}", category);
 
-			return productRepository.getProductsByCategory(category);
-		} else
-			throw new NoSuchElementException(String.format("productCategory=%d not found", category));
+		List<Product> productList = productRepository.getProductsByCategory(category);
+		if (!productList.isEmpty())
+			return productList;
+		else
+			throw new IllegalStateException(String.format("productCategory=%s has no associated products", category));
 	}
 
 	@Override
@@ -137,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> getProductsContaingNameOrShortDescription(String productSearchString) {
+	public List<Product> getProductsContaingProductNameOrShortDescription(String productSearchString) {
 		LOG.debug("Attempting to find products matching searchString={}", productSearchString);
 		List<Product> productList = new ArrayList<Product>();
 

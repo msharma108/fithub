@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 		if (user != null)
 			return user;
 		else
-			throw new NoSuchElementException(String.format("UserId=%d not found", userId));
+			throw new NoSuchElementException(String.format("UserId=%s not found", userId));
 	}
 
 	@Override
@@ -134,14 +134,20 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean resetPassword(User user, String resetPassword) {
-		LOG.debug("Attempting to reset user password of user={} by user={}", user.getUserName(), user.getUserName());
+		LOG.debug("Preparing to reset password");
+		if (user == null)
+			throw new NoSuchElementException("User not found");
+		else {
+			LOG.debug("Attempting to reset user password of user={} by user={}", user.getUserName(),
+					user.getUserName());
 
-		user.setPassword((new BCryptPasswordEncoder().encode(resetPassword)));
-		user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
-		user.setProfileEditedByUser(user.getUserName());
-		userRepository.save(user);
+			user.setPassword((new BCryptPasswordEncoder().encode(resetPassword)));
+			user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
+			user.setProfileEditedByUser(user.getUserName());
+			userRepository.save(user);
 
-		return true;
+			return true;
+		}
 
 	}
 

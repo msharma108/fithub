@@ -71,7 +71,7 @@ public class ProductTasksController {
 
 		else if (pathVariables.containsKey("topProducts"))
 			// Display top products based on quantity sold
-			productList = productService.getTopProductsByQuantitySold();
+			productList = productService.getTop5ProductsByQuantitySold();
 
 		else
 			// Display all products
@@ -185,13 +185,18 @@ public class ProductTasksController {
 	@RequestMapping(value = "/admin/deleteProduct/{productName:.+}")
 	public String handleProductDelete(@PathVariable("productName") String productName,
 			@ModelAttribute("productDTO") ProductDTO productDTO, RedirectAttributes redirectAttributes,
-			Authentication authentication) {
+			Authentication authentication, Model model, HttpServletRequest request) {
 		LOG.debug("Attempting to delete product={}", productDTO.getProductName());
 
 		boolean isProductDeleted = productService.deleteProduct(productDTO, authentication);
 
 		LOG.debug("Product was deleted successfuly ?={}", isProductDeleted);
 
+		if (!isProductDeleted) {
+			model.addAttribute("exception", String.format("ProductName=%s not found", productDTO.getProductName()));
+			model.addAttribute("errorUrl", request.getRequestURI());
+			return "customErrorPage";
+		}
 		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 2);
 
 		return "redirect:/product/productTaskSuccess";
@@ -245,7 +250,7 @@ public class ProductTasksController {
 	public String searchProduct(Model model, @RequestParam("productSearchString") String productSearchString) {
 		LOG.debug("Attempting to search product");
 		List<Product> productList = new ArrayList<Product>();
-		productList = productService.getProductsContaingNameOrShortDescription(productSearchString);
+		productList = productService.getProductsContaingProductNameOrShortDescription(productSearchString);
 		model = prepareProductsForDisplay(model, productList);
 
 		return "product/productList";
