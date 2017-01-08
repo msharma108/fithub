@@ -82,7 +82,7 @@
 				              <!-- end of image -->
 				              <div class="overlay">
 				                 <h2><c:out value="${product.productDisplayName}"/></h2>
-				                
+				                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				                 <button class="info" type="submit" name="viewProduct" id="viewProductId">CLICK FOR MORE INFO</button>
 				              </div>
 				              </div>
@@ -98,12 +98,12 @@
                                 <c:when test="${product.stockQuantity >0 }">
                                 <!-- add to cart button -->
                                 <sec:authorize access="!hasAuthority('ADMIN')">
-	                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	                           
 			                    <button class="btn btn-primary btn-sm center-block" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 			                    </sec:authorize>
 			                    <!-- pull right if admin -->
                                 <sec:authorize access="hasAuthority('ADMIN')">
-	                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	                          
 			                    <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 			                    </sec:authorize>
 			                    </c:when>
@@ -116,6 +116,7 @@
 			                    <!-- show edit and delete buttong if admin logged in -->
 			                    <sec:authorize access="hasAuthority('ADMIN')">
 	                	         <input type="hidden" name="productName" value="${product.productName}"/>
+	                	         
 	                         		<button class="btn btn-warning" title="Edit product"  type = "submit" name="editProduct"><i class="glyphicon glyphicon-edit"></i></button>
 	                         		<button class="btn btn-danger" title="Delete product" type = "submit" name="deleteProduct"><i class="glyphicon glyphicon-trash"></i></button>
 	                         	</sec:authorize>

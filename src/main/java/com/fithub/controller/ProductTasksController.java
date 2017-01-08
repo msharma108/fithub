@@ -243,7 +243,7 @@ public class ProductTasksController {
 
 		// used to check update success on the canvas page
 		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 3);
-		return "redirect:/admin/userTaskSuccess";
+		return "redirect:/product/productTaskSuccess";
 	}
 
 	@RequestMapping(value = "/searchProduct")

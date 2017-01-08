@@ -177,7 +177,6 @@ public class SalesOrderServiceIntegrationTest extends AbstractFithubApplicationI
 		// Get sales order items after cancellation
 		salesOrder = salesOrderService.cancelSalesOrder(salesOrder, mockRefund, mockAuthentication);
 		salesOrderItemList = salesOrder.getSalesOrderItems();
-		int test = salesOrderItemList.get(0).getProduct().getStockQuantity();
 		assertNotEquals("Sales Order not canceled", productSoldInSalesOrderStockQuantityBeforeSalesOrderCancellation,
 				salesOrderItemList.get(0).getProduct().getStockQuantity());
 		assertNotEquals("Sales Order not canceled", productSoldInSalesOrderQuantitySoldBeforeSalesOrderCancellation,
