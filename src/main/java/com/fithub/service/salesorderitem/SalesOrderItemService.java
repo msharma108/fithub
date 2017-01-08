@@ -7,14 +7,6 @@ import com.fithub.domain.SalesOrderItem;
 public interface SalesOrderItemService {
 
 	/**
-	 * Method saves the SalesOrderItem for a sales order
-	 * 
-	 * @param salesOrderItem
-	 * @return SalesOrderItem: The saved salesOrderItem
-	 */
-	SalesOrderItem saveSalesOrderItem(SalesOrderItem salesOrderItem);
-
-	/**
 	 * Method saves the list of SalesOrderItem for a sales order if there are
 	 * multiple products in the order. Each SalesOrderItem will correspond to a
 	 * Product Item
@@ -23,5 +15,12 @@ public interface SalesOrderItemService {
 	 * @return list of SalesOrderItem for a sales order
 	 */
 	List<SalesOrderItem> saveSalesOrderItemList(List<SalesOrderItem> salesOrderItemList);
+
+	/**
+	 * Method counts the number of salesOrderItems in the database
+	 * 
+	 * @return the count of salesOrderItems in database
+	 */
+	long countNumberOfSalesOrderItemInDatabase();
 
 }

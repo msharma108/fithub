@@ -211,7 +211,7 @@ public class OrderCheckoutController {
 		}
 
 		else
-			throw new NoSuchElementException("No Records for the Username");
+			throw new NoSuchElementException("No Sales Order for the Username");
 		return "order/orderList";
 	}
 
@@ -226,6 +226,9 @@ public class OrderCheckoutController {
 
 		// Get order to be cancelled
 		SalesOrder salesOrder = salesOrderService.getSalesOrderById(salesOrderId);
+
+		if (salesOrder == null)
+			throw new NoSuchElementException((String.format("order=%s not found", salesOrderId)));
 
 		// Create a refund request for Stripe
 		Map<String, Object> refundParams = new HashMap<String, Object>();

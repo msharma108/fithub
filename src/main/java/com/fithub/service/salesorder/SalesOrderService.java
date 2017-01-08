@@ -61,4 +61,11 @@ public interface SalesOrderService {
 	 */
 	SalesOrder cancelSalesOrder(SalesOrder salesOrder, Refund refund, Authentication authentication);
 
+	/**
+	 * Method gets the number of sales orders in the database
+	 * 
+	 * @return number of sales order in the database\system
+	 */
+	long countNumberOfSalesOrderInDatabase();
+
 }
