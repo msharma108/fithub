@@ -1,6 +1,7 @@
 package com.fithub.service.product;
 
 import java.math.BigDecimal;
+import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,8 @@ public class ProductTasksHelperServiceImpl implements ProductTasksHelperService 
 	@Override
 	public Product createProductFromProductDTO(Product product, ProductDTO productDTO) {
 
+		if (product == null)
+			throw new NoSuchElementException((String.format("ProductName=%s not found", productDTO.getProductName())));
 		product.setThumbImage(productDTO.getThumbImageAsByteArray());
 		product.setProductName(productDTO.getProductName());
 		product.setExpiryDate(productDTO.getExpiryDate());

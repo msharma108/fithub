@@ -13,7 +13,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
@@ -53,6 +55,9 @@ public class UserServiceIntegrationTest {
 	@Autowired
 	private TimeHelperService timeHelperService;
 
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
+
 	@Test
 	public void userServiceCreatesUserIfTheUserNameNotInDatabase() {
 		assertDatabaseStateConsistencyBeforeTest();
@@ -64,12 +69,13 @@ public class UserServiceIntegrationTest {
 
 	}
 
-	@Test(expected = DataIntegrityViolationException.class)
+	@Test
 	public void userServiceDoesNotCreateUserAndThrowsDataIntegrityViolationExceptionIfTheUserNameAlreadyInDatabase() {
 		assertDatabaseStateConsistencyBeforeTest();
 
 		String expectedUserName = "mohitshsh";
 		UserDTO userDTO = prepareUserDTO(expectedUserName);
+		expectedException.expect(DataIntegrityViolationException.class);
 		userService.createUser(userDTO);
 		fail("DataIntegrityViolationException expected");
 
@@ -84,11 +90,13 @@ public class UserServiceIntegrationTest {
 		assertNotNull(String.format("UserId=%d not found", userId), user);
 	}
 
-	@Test(expected = NoSuchElementException.class)
-	public void userServiceThrowsNoSuchElementFoundExceptionIfUserIdNotInDatabase() {
+	@Test
+	public void userServiceThrowsNoSuchElementExceptionOnGetUserBasedOnIdIfUserIdNotInDatabase() {
 		assertDatabaseStateConsistencyBeforeTest();
 
 		int userId = 1001;
+		expectedException.expect(NoSuchElementException.class);
+		expectedException.expectMessage(String.format("UserId=%s not found", userId));
 		userService.getUserById(userId);
 		fail("NoSuchElementException expected");
 	}
@@ -146,13 +154,15 @@ public class UserServiceIntegrationTest {
 				user.getRole());
 	}
 
-	@Test(expected = NoSuchElementException.class)
+	@Test
 	public void userServiceDoesNotChangeUserRoleFromCurrentRoleToSwitchedRoleWhenUserDoesNotExistInDatabase() {
 		assertDatabaseStateConsistencyBeforeTest();
 
 		String userName = "testUserNameRoleToBeChanged";
 		UserDTO userDTO = prepareUserDTO(userName);
 
+		expectedException.expect(NoSuchElementException.class);
+		expectedException.expectMessage(String.format("Username=%s not found", userDTO.getUserName()));
 		userService.changeUserRole(userDTO);
 		fail("NoSuchElementException expected");
 	}
@@ -183,13 +193,15 @@ public class UserServiceIntegrationTest {
 
 	}
 
-	@Test(expected = NoSuchElementException.class)
+	@Test
 	public void userServiceDoesNotUpdateUserProfileIfTheUserNameNotInDatabase() {
 		assertDatabaseStateConsistencyBeforeTest();
 
 		String userName = "testUserProfileUpdate";
 
 		UserDTO userDTO = prepareUserDTO(userName);
+		expectedException.expect(NoSuchElementException.class);
+		expectedException.expectMessage(String.format("Username=%s not found", userDTO.getUserName()));
 		userService.updateUserProfile(userDTO);
 		fail("NoSuchElementException expected");
 	}
@@ -208,26 +220,28 @@ public class UserServiceIntegrationTest {
 
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void userServiceDoesNotResetPasswordIfUserNotInDatabase() {
 		assertDatabaseStateConsistencyBeforeTest();
 
 		String userName = "userNameNotInDatabase";
 		String resetPasswordString = "resetPassword";
 		User user = userService.getUserByUsername(userName);
+		expectedException.expect(NoSuchElementException.class);
+		expectedException.expectMessage("User not found");
 		userService.resetPassword(user, resetPasswordString);
 
-		fail("NullPointerException expected");
+		fail("NoSuchElementException expected");
 
 	}
 
 	@Test
-	public void voidUserServiceCountsNumberOfUsersInDatabase() {
+	public void userServiceCountsNumberOfUsersInDatabase() {
 
 		assertDatabaseStateConsistencyBeforeTest();
 	}
 
-	protected UserDTO prepareUserDTO(String userName) {
+	private UserDTO prepareUserDTO(String userName) {
 
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUserName(userName);
@@ -245,7 +259,7 @@ public class UserServiceIntegrationTest {
 
 	}
 
-	protected void assertDatabaseStateConsistencyBeforeTest() {
+	private void assertDatabaseStateConsistencyBeforeTest() {
 		assertEquals("Database in an inconsistent state before test", 2, userService.countNumberOfUsersInDatabase());
 	}
 
