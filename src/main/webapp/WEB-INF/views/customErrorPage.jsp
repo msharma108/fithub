@@ -13,6 +13,8 @@
 <body>
 	<c:if test="${exception !=null }">
 	<c:out  value="${exception }" />
+	<c:out  value="while tryin to access:" />
+	<c:out  value="${errorUrl }" />
 	</c:if>
 </body>
 </html>

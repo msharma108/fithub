@@ -35,4 +35,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 			throw new NoSuchElementException(String.format("product category=%d not found", category));
 	}
 
+	@Override
+	public long countNumberOfProductCategoriesInDatabase() {
+
+		return productCategoryRepository.count();
+	}
+
 }

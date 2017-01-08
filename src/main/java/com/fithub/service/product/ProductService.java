@@ -87,7 +87,7 @@ public interface ProductService {
 	 * @return List of products based sorted in a descending order based on the
 	 *         quantity sold
 	 */
-	List<Product> getTopProductsByQuantitySold();
+	List<Product> getTop5ProductsByQuantitySold();
 
 	/**
 	 * Method gets a list of products whose productName or short description
@@ -97,7 +97,7 @@ public interface ProductService {
 	 *            The entered search string for product
 	 * @return The list of products containing the supplied search string
 	 */
-	List<Product> getProductsContaingNameOrShortDescription(String productSearchString);
+	List<Product> getProductsContaingProductNameOrShortDescription(String productSearchString);
 
 	/**
 	 * Method counts the number of products in the system\database

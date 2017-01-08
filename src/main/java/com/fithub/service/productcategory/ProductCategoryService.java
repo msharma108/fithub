@@ -21,4 +21,11 @@ public interface ProductCategoryService {
 	 */
 	ProductCategory getProductCategoryByCategory(String category);
 
+	/**
+	 * Method counts the number of product categories in the system\database
+	 * 
+	 * @return the number of product categories in the system
+	 */
+	long countNumberOfProductCategoriesInDatabase();
+
 }
