@@ -42,7 +42,7 @@
   <div class="row">
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-primary">
-             <div class="panel-heading">
+             <div class="panel-heading" id="table-bg">
 			 <div class="panel-title">
                 <div class="row">
                   <div class="col-md-6">
@@ -129,7 +129,7 @@
 				</c:forEach>
 				</div>        
              
-             <div class="panel-footer"> 
+             <div class="panel-footer" id="table-bg"> 
              </div>
          </div>
      </div>

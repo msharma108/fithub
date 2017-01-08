@@ -19,7 +19,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
 	<!-- custom -->
-	<link rel="stylesheet" href="../css/style.css"  >
+	<link rel="stylesheet" href="../../css/style.css"  >
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-formhelpers-countries.flags.css">
@@ -39,13 +39,18 @@
 <div class="container-fluid">
  <div class="col-md-12 col-xs-12">
   <div class="row">
-    <div class="panel panel-primary">
-          <div class="panel-heading">
-                <h3 class="panel-title">Order list</h3>
+    <div class="panel  panel-table">
+          <div class="panel-heading"  id="table-bg">
+                <div class="row">
+                  <div class="col col-xs-6">
+                    <div class="panel-title">Order List</div>
+                  </div>
+                </div>
           </div>
+        <div class="panel-body">
 	      <table id="orderList" class="table table-striped">
-    				<thead>
-						<tr>
+    				<thead  id="table-bg">
+						<tr class="table-header">
 							<th style="width:5%">OrderId</th>
 							<th style="width:10%">Name</th>
 							<th style="width:10%">Order Amount</th>
@@ -103,7 +108,9 @@
 				      </c:forEach>
 					</tbody>
 	      </table>
-	      <hr style="height:1px;"/>
+	    </div>
+	    <div class="panel-footer" id="table-bg">
+        </div>
     </div>
   </div>
  </div>
