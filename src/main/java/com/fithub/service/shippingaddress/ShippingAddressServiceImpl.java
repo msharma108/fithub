@@ -29,8 +29,6 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
 		List<ShippingAddress> shippingAddressList = new ArrayList<ShippingAddress>();
 		shippingAddressList = shippingAddressRepository.getShippingAddress(address, city, province, zip, country, phone,
 				email);
-		if (shippingAddressList.isEmpty())
-			throw new NoSuchElementException("Shipping address with the provided params not found");
 
 		return shippingAddressList;
 

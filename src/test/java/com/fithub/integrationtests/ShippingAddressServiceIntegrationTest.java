@@ -96,23 +96,23 @@ public class ShippingAddressServiceIntegrationTest {
 	}
 
 	@Test
-	public void shippingAddressServiceThrowsNoSuchElementExceptionOnGetShippingAddressByShippingAddressParametersIfShippingAddressWithTheParametersNotInDatabase() {
+	public void shippingAddressServiceReturnsEmptyListOfShippingAddressOnGetShippingAddressByShippingAddressParametersIfShippingAddressWithTheParametersNotInDatabase() {
 		assertDatabaseStateConsistencyBeforeTest();
 		int shippingAddressIdInDatabaseToPopulateHashMap = 1;
-
+		boolean expectedShippingAddressListIsEmpty = true;
 		Map<String, String> shippingAddressMap = prepareShippingAddress(shippingAddressIdInDatabaseToPopulateHashMap);
 
 		// Set non-existent zip to make shipping address non-existent in
 		// database
 		shippingAddressMap.put("zip", "NotInDatabase");
 
-		expectedException.expect(NoSuchElementException.class);
-		expectedException.expectMessage("Shipping address with the provided params not found");
-		shippingAddressService.getShippingAddressByShippingAddressParameters(shippingAddressMap.get("address"),
-				shippingAddressMap.get("city"), shippingAddressMap.get("province"), shippingAddressMap.get("zip"),
-				shippingAddressMap.get("country"), shippingAddressMap.get("phone"), shippingAddressMap.get("email"));
-
-		fail("NoSuchElement exception expected");
+		List<ShippingAddress> shippingAddressList = shippingAddressService
+				.getShippingAddressByShippingAddressParameters(shippingAddressMap.get("address"),
+						shippingAddressMap.get("city"), shippingAddressMap.get("province"),
+						shippingAddressMap.get("zip"), shippingAddressMap.get("country"),
+						shippingAddressMap.get("phone"), shippingAddressMap.get("email"));
+		assertEquals("Shipping Address found when it should not be found in database",
+				expectedShippingAddressListIsEmpty, shippingAddressList.isEmpty());
 	}
 
 	private Map<String, String> prepareShippingAddress(int shippingAddressIdInDatabase) {
