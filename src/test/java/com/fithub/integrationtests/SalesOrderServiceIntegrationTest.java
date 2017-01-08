@@ -15,19 +15,11 @@ import java.util.NoSuchElementException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.security.core.Authentication;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fithub.domain.OrderDTO;
 import com.fithub.domain.ProductDTO;
@@ -40,15 +32,11 @@ import com.stripe.model.Refund;
  * Class for testing SalesOrderService class integration with the database
  *
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@ActiveProfiles("integration_testing")
-@Transactional
+
 @SqlGroup({
 		@Sql(scripts = "/integration_test_scripts/sales_order_service-test-data-creation.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
 		@Sql(scripts = "/integration_test_scripts/sales_order_service-test-data-deletion.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD) })
-public class SalesOrderServiceIntegrationTest {
+public class SalesOrderServiceIntegrationTest extends AbstractFithubApplicationIntegrationTest {
 
 	@Autowired
 	private SalesOrderService salesOrderService;
@@ -189,7 +177,7 @@ public class SalesOrderServiceIntegrationTest {
 		// Get sales order items after cancellation
 		salesOrder = salesOrderService.cancelSalesOrder(salesOrder, mockRefund, mockAuthentication);
 		salesOrderItemList = salesOrder.getSalesOrderItems();
-
+		int test = salesOrderItemList.get(0).getProduct().getStockQuantity();
 		assertNotEquals("Sales Order not canceled", productSoldInSalesOrderStockQuantityBeforeSalesOrderCancellation,
 				salesOrderItemList.get(0).getProduct().getStockQuantity());
 		assertNotEquals("Sales Order not canceled", productSoldInSalesOrderQuantitySoldBeforeSalesOrderCancellation,

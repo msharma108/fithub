@@ -1,4 +1,4 @@
-package com.fithub;
+package com.fithub.integrationtests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,18 +12,20 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@ActiveProfiles("integration_testing")
-public class FithubApplicationTests {
+@ActiveProfiles("testing")
+@Transactional
+public abstract class AbstractFithubApplicationIntegrationTest {
 
 	@Autowired
 	Environment env;
 
 	@Test
-	public void contextLoads() {
+	public void testChecksIfIntegrationTestingDatabaseIsBeingLoadedFromPropertyFile() {
 
 		String databaseConnectionURL = "jdbc:mysql://localhost:3306/fithub_integ_testing";
 		assertEquals("Database configuration mismatch", databaseConnectionURL,

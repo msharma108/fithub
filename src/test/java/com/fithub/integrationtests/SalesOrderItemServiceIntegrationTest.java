@@ -8,18 +8,10 @@ import java.util.List;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fithub.domain.SalesOrderItem;
 import com.fithub.service.product.ProductService;
@@ -30,15 +22,11 @@ import com.fithub.service.salesorderitem.SalesOrderItemService;
  * Class for testing SalesOrderItemService class integration with the database
  *
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@ActiveProfiles("integration_testing")
-@Transactional
+
 @SqlGroup({
 		@Sql(scripts = "/integration_test_scripts/sales_order_service-test-data-creation.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
 		@Sql(scripts = "/integration_test_scripts/sales_order_service-test-data-deletion.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD) })
-public class SalesOrderItemServiceIntegrationTest {
+public class SalesOrderItemServiceIntegrationTest extends AbstractFithubApplicationIntegrationTest {
 
 	@Autowired
 	SalesOrderItemService salesOrderItemService;
