@@ -19,7 +19,7 @@ body {
 }
 #login1 {
   border-radius: 35px;
-  height: 350px;
+  height: 400px;
   width: 450px;
   border: 1px;
   margin-left:auto;
@@ -27,7 +27,7 @@ body {
 }     
 #login3{
    border-radius: 35px;
-   height: 350px;
+   height: 400px;
    width: 450px;
    border: 1px #f2e3d2;
    background: #c7a2a2;

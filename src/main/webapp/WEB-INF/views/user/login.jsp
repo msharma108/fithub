@@ -59,7 +59,7 @@
                   </div>
                 </div>
                 </div>
-              <div class="col-sm-8">  
+              <div class="col-sm-12">  
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
                     <button type="submit" class="btn btn-success submit-button"><i class="glyphicon glyphicon-log-in"></i> Sign In</button>
