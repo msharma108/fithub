@@ -25,7 +25,7 @@ public class ApplicationExceptionHandler {
 		if (request.getRequestURL().toString().contains("passwordRetrieval"))
 			model.setViewName("user/passwordRetrieval");
 		else
-			model.setViewName("user/customErrorPage");
+			model.setViewName("customErrorPage");
 		return model;
 	}
 

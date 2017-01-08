@@ -18,11 +18,6 @@ public class SalesOrderItemServiceImpl implements SalesOrderItemService {
 	}
 
 	@Override
-	public SalesOrderItem saveSalesOrderItem(SalesOrderItem salesOrderItem) {
-		return salesOrderItemRepository.saveAndFlush(salesOrderItem);
-	}
-
-	@Override
 	public List<SalesOrderItem> saveSalesOrderItemList(List<SalesOrderItem> salesOrderItemList) {
 		return salesOrderItemRepository.save(salesOrderItemList);
 	}

@@ -17,7 +17,6 @@ import com.fithub.domain.Product;
 import com.fithub.domain.SalesOrder;
 import com.fithub.domain.SalesOrderItem;
 import com.fithub.repository.salesorder.SalesOrderRepository;
-import com.fithub.service.product.ProductService;
 import com.fithub.service.salesorderitem.SalesOrderItemHelperService;
 import com.fithub.service.time.TimeHelperService;
 import com.fithub.service.user.UserService;
@@ -37,23 +36,21 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	private final SalesOrderHelperService salesOrderHelperService;
 	private final SalesOrderItemHelperService salesOrderItemHelperService;
 	private final UserService userService;
-	private final ProductService productService;
 
 	@Autowired
 	public SalesOrderServiceImpl(SalesOrderRepository salesOrderRepository, TimeHelperService timeHelperService,
 			SalesOrderHelperService salesOrderHelperService, SalesOrderItemHelperService salesOrderItemHelperService,
-			ProductService productService, UserService userService) {
+			UserService userService) {
 
 		this.salesOrderRepository = salesOrderRepository;
 		this.timeHelperService = timeHelperService;
 		this.salesOrderHelperService = salesOrderHelperService;
 		this.salesOrderItemHelperService = salesOrderItemHelperService;
-		this.productService = productService;
 		this.userService = userService;
 	}
 
 	@Override
-	public SalesOrder getSalesOrderById(Integer salesOrderId) throws IllegalArgumentException {
+	public SalesOrder getSalesOrderById(Integer salesOrderId) {
 		LOG.debug("Retreive sales order having salesOrderId={}", salesOrderId);
 		SalesOrder salesOrder = salesOrderRepository.findOne(salesOrderId);
 
@@ -64,7 +61,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 	}
 
 	@Override
-	public List<SalesOrder> getSalesOrderListByUserName(String userName) throws IllegalArgumentException {
+	public List<SalesOrder> getSalesOrderListByUserName(String userName) {
 		LOG.debug("Retrieving list of salesOrders associated with userName={}", userName);
 
 		List<SalesOrder> salesOrderList = userService.getUserByUsername(userName).getSalesOrders();
@@ -129,6 +126,12 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 		}
 
 		return salesOrderRepository.save(salesOrder);
+	}
+
+	@Override
+	public long countNumberOfSalesOrderInDatabase() {
+		return salesOrderRepository.count();
+
 	}
 
 }

@@ -211,7 +211,7 @@ public class OrderCheckoutController {
 		}
 
 		else
-			throw new NoSuchElementException("No Records for the Username");
+			throw new NoSuchElementException("No Sales Order for the Username");
 		return "order/orderList";
 	}
 
