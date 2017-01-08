@@ -19,7 +19,14 @@ public class SalesOrderItemServiceImpl implements SalesOrderItemService {
 
 	@Override
 	public List<SalesOrderItem> saveSalesOrderItemList(List<SalesOrderItem> salesOrderItemList) {
+		if (salesOrderItemList.isEmpty())
+			throw new IllegalArgumentException("SalesOrderItem list is empty");
 		return salesOrderItemRepository.save(salesOrderItemList);
+	}
+
+	@Override
+	public long countNumberOfSalesOrderItemInDatabase() {
+		return salesOrderItemRepository.count();
 	}
 
 }

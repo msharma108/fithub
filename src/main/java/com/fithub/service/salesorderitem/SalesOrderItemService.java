@@ -16,4 +16,11 @@ public interface SalesOrderItemService {
 	 */
 	List<SalesOrderItem> saveSalesOrderItemList(List<SalesOrderItem> salesOrderItemList);
 
+	/**
+	 * Method counts the number of salesOrderItems in the database
+	 * 
+	 * @return the count of salesOrderItems in database
+	 */
+	long countNumberOfSalesOrderItemInDatabase();
+
 }

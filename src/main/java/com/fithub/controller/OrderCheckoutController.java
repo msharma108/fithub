@@ -227,6 +227,9 @@ public class OrderCheckoutController {
 		// Get order to be cancelled
 		SalesOrder salesOrder = salesOrderService.getSalesOrderById(salesOrderId);
 
+		if (salesOrder == null)
+			throw new NoSuchElementException((String.format("order=%s not found", salesOrderId)));
+
 		// Create a refund request for Stripe
 		Map<String, Object> refundParams = new HashMap<String, Object>();
 		refundParams.put("charge", salesOrder.getStripeChargeId());
