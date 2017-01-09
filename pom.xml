@@ -107,9 +107,31 @@
 		<dependency>
 			<groupId>com.sendgrid</groupId>
 			<artifactId>sendgrid-java</artifactId>
-			<version>3.1.0</version>
+			<version>3.1.0</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 
+<!-- Cucumber Dependencies start -->
+	<!-- https://mvnrepository.com/artifact/info.cukes/cucumber-java -->
+	<dependency>
+   	 	<groupId>info.cukes</groupId>
+    	<artifactId>cucumber-java</artifactId>
+    	<version>1.2.5</version>
+	</dependency>
+	
+	<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>1.2.5</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- Cucumber Dependencies end -->
+
+<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    </dependency>
 
 
 	</dependencies>
