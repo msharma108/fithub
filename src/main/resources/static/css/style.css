@@ -107,6 +107,32 @@ body {
    box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
 } 
 
+#shipping-panel{
+  border-radius: 35px;
+  width: 550px;
+  height:450px;
+  border: none;
+  margin-left:auto;
+  margin-right:auto;
+} 
+
+#shipping-body{
+   border-radius: 35px;
+   width: 550px;
+   height:450px;
+   border: none;
+   background: #c7a2a2;
+   background: -webkit-gradient(linear, left top, left bottom, from(#165178), to(#c7a2a2));
+   background: -webkit-linear-gradient(top, #165178, #c7a2a2);
+   background: -moz-linear-gradient(top, #165178, #c7a2a2);
+   background: -ms-linear-gradient(top, #165178, #c7a2a2);
+   background: -o-linear-gradient(top, #165178, #c7a2a2);
+   background-image: -ms-linear-gradient(top, #165178 0%, #c7a2a2 100%);
+   -webkit-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   -moz-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+} 
+
 #passwordReset-panel{
   border-radius: 35px;
   width: 400px;
@@ -376,6 +402,23 @@ transition-delay:.2s;
    background: #225f73;
    color: #ebd7d3;
    }
+
+#form-field-payinfo {
+   color: #fff;
+   border: 1px solid #311f57;
+   background: #090c14;
+   -webkit-border-radius: 11px;
+   -moz-border-radius: 11px;
+   border-radius: 11px;
+   color: #d1c1ae;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   }
+#form-field-payinfo:focus {
+   background: #225f73;
+   color: #ebd7d3;
+   }
 .form-title {
    color: #fff;
    text-shadow: #000000 0 2px 0;
@@ -394,3 +437,4 @@ transition-delay:.2s;
    color: #fff;
    text-shadow: #000000 0 1px 0;
    }
+ 

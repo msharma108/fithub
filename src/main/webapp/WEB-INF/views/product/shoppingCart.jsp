@@ -38,9 +38,9 @@
 <!-- Ref: http://bootsnipp.com/snippets/featured/responsive-shopping-cart -->
 
 <div class="container-fluid">
-	<table id="shoppingcart" class="table">
-    				<thead>
-						<tr>
+	<table id="shoppingcart" class="table table-striped">
+    				<thead id="table-bg">
+						<tr class="table-header">
 							<th style="width:50%">Product</th>
 							<th style="width:10%">Price</th>
 							<th style="width:10%">Quantity</th>
@@ -87,8 +87,8 @@
 						</c:forEach>
 					  
 					</tbody>
-					<tfoot>
-						<tr> 
+					<tfoot id="table-bg">
+						<tr class="table-header"> 
 							<td> <form action="/viewProducts" method="POST">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<button name="continueShopping" class="btn btn-primary"><span class="glyphicon glyphicon-backward"></span> Continue Shopping</button></form></td>
@@ -102,7 +102,6 @@
 						</tr>
 					</tfoot>
 	</table>
-	<hr style="height:15px;"/>
 </div>
 
 

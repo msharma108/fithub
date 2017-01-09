@@ -139,129 +139,123 @@
 <!-- contents start here -->
 <!-- http://bootsnipp.com/snippets/ypqoW -->
  <div class="container wrapper">
- <c:url var="handleOrderCheckout" value="/handleOrderCheckout"/>
-   <form:form modelAttribute="orderDTO" class="form-horizontal" action="${handleOrderCheckout}" method="POST" id="payment-form">
+  <c:url var="handleOrderCheckout" value="/handleOrderCheckout"/>
                     <!--REVIEW ORDER-->
-                    <div class = "col-md-12 col-sm-12 col-xs-12" >
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            Order Details 				  
-                        </div>
-                        <div class="panel-body">
-                           <div class ="form-group">
-                              <div class="col-md-3 col-xs-3">
-	                          </div>
-	                          <div class="col-md-3 col-xs-6">
-	                          </div>
-	                          <div class="col-md-1 col-xs-6">
-	                          <h6><span></span>Quantity</h6>
-	                          </div>
-                              <div class="col-md-2 col-xs-1 text-right">
-	                           <h6><span></span>Price</h6>
-	                          </div>
-	                          <div class="col-md-3 col-xs-3 text-right">
-	                           <h6><span></span>Sub-total</h6>
-	                          </div>
-                            </div>
-                            <div class="form-group">
- 
-                                 <!-- loop starts -->
-                                <c:forEach items="${shoppingCart.cartProductList}" var="cartItem">
-                                  <div class="row align-top">
-	                                <div class="col-md-3 col-xs-3">
-	                                    <img class="img-responsive"  src="${cartItem.base64imageFile}" alt="${cartItem.productName}"/>
-	                                </div>
-	                                <div class="col-md-3 col-xs-6">
-	                                    <div class="col-xs-12">${cartItem.productName}</div>
-	                                </div>
-	                                <div class="col-md-1 col-xs-6  text-right">
-	                                    <div class="col-xs-12"><small>${cartItem.quantityInCart }</div>
-	                                </div>
-	                                <div class="col-md-2 col-xs-1 text-right">
-	                                    <h6><span>$</span>${cartItem.price}</h6>
-	                                </div>
-	                             
-	                                 <div class="col-md-3 col-xs-3 text-right">
-	                                  <c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}"/>
-	                                    <h6><span>$</span>${subTotal}</h6>
-	                                </div>
-                                   <div class="form-group"><hr /></div>
-                                 </div>
-                                <!-- loop ends -->
-                               </c:forEach>
-                              </div>
-                             </div>
-                                                					
-                            <div class="form-group"><hr /></div>
-                            <div class="form-group">
-                                  <div class="col-md-4 col-xs-12 col-md-push-8">
-                                    <strong>Cart Cost</strong>
-                                    <div class="pull-right"><span>$</span><span>${shoppingCart.cartCost}</span></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-4 col-xs-12 col-md-push-8">
-                                    <small>Shipping</small>
-                                    <c:set var="shippingCost" value="10"/>
-                                    <div class="pull-right"><span>$</span><span>${shippingCost}</span></div>
-                                    <input type="hidden" name="shippingCost" value="${shippingCost}" >
-                                </div>
-                            </div>
-                            <div class="form-group"><hr /></div>
-                            <div class="form-group">
-                                <div class="col-md-4 col-xs-12 col-md-push-8">
-                                    <strong>Order Total</strong>
-                                     <c:set var="orderTotalCost" value="${shoppingCart.cartTotalCost + shippingCost }"/>
-                                     <input type="hidden" name="orderTotalCost" value="${orderTotalCost}" >
-                                    <div class="pull-right"><span>$</span><span>${orderTotalCost}</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+	<table id="checkout" class="table table-striped">
+  			<thead id="table-bg">
+				<tr class="table-header">
+					<th style="width:50%">Product</th>
+					<th style="width:10%">Price</th>
+					<th style="width:10%">Quantity</th>
+					<th style="width:20%" class="text-center">Subtotal</th>
+					<th style="width:10%"> <form action="/viewProducts" method="POST">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<button name="continueShopping" class="btn btn-primary"><span class="glyphicon glyphicon-backward"></span> Continue Shopping</button></form></th>
+				</tr>
+			</thead>
+			<tbody>
+					<c:if test="${exception !=null }">
+					<c:out value="${exception }"/>
+					</c:if>
+			  <c:forEach items="${shoppingCart.cartProductList}" var="cartItem">
+			  <c:url var="cartOperation" value="/constructUrlForProductOperations/${cartItem.productName}"/>
+				<tr>
+					<td data-th="Product">
+						<div class="row">
+							<div class="col-sm-2 hidden-xs"><img class="img-responsive"  src="${cartItem.base64imageFile}" alt="${cartItem.productName}"/></div>
+							<div class="col-sm-10">
+								<h4 class="nomargin">${cartItem.productDisplayName}</h4>
+								<p>${cartItem.sdesc}</p>
+							</div>
+						</div>
+					</td>
+					<td data-th="Price">${cartItem.price}</td>
+					<td data-th="Quantity">
+						 ${cartItem.quantityInCart } 
+					</td>
+
+					<c:set var="subTotal" value="${cartItem.price * cartItem.quantityInCart}"/>
+					<td data-th="Subtotal" class="text-center">${subTotal} </td>
+					
+					<td class="actions" data-th="">
+					 <input type="hidden" name="subTotal" value="${subTotal}"/>
+					   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</td>
+				</tr>
+				</c:forEach>
+			  
+			</tbody>
+			<tfoot>
+				<tr> 
+					<td colspan="2" class="hidden-xs"></td>
+					<td>Cart Total:</td>
+					<td class="hidden-xs text-center"><strong>${shoppingCart.cartTotalCost } </strong></td>
+					<td></td>
+				</tr>
+				<tr> 
+					<td colspan="2" class="hidden-xs"><c:set var="shippingCost" value="10.00"/></td>
+					<td>Shipping:</td>
+					<td class="hidden-xs text-center">
+                                   <strong>${shippingCost}</strong>
+                                  <input type="hidden" name="shippingCost" value="${shippingCost}" > </td>
+					<td></td>
+				</tr>
+				<tr class="table-header"  id="table-bg"> 
+					<td colspan="2" class="hidden-xs"><c:set var="shippingCost" value="10.00"/></td>
+					<td>Total:</td>
+					<td class="hidden-xs text-center">
+                                  <c:set var="orderTotalCost" value="${shoppingCart.cartTotalCost + shippingCost }"/>
+                                  <strong>${orderTotalCost}</strong>
+                                   <input type="hidden" name="orderTotalCost" value="${orderTotalCost}" >
+                          </td>        
+					<td></td>
+				</tr>
+			</tfoot>
+	</table>
                     <!--REVIEW ORDER END-->
-                     
+      <form:form modelAttribute="orderDTO" class="form-horizontal" action="${handleOrderCheckout}" method="POST" id="payment-form">                  
                     <div class = "col-md-6">
                     <!--SHIPPING METHOD-->
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">Shipping Address</div>
-                        <div class="panel-body">
-                            <div class="form-group">
+                    <div class="panel panel-primary" id = "shipping-panel">
+                        <div class="panel-body" id = "shipping-body" >
+                        <div class="form-title"><b>Shipping Address</div><br>
+                            <div class="form-group form-label">
                                 <div class="col-md-6 col-xs-12">
                                     <form:label path="givenName">Given Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
-                       					<form:input class="form-control" path="givenName" id="givenNameId" placeHolder= "Enter Given name" />
+                       					<form:input class="form-control  form-field" path="givenName" id="givenNameId" placeHolder= "Enter Given name" />
                        						<form:errors  path="givenName" style="color: red;"/>
                                 </div>
                                 <div class="span1"></div>
                                 <div class="col-md-6 col-xs-12">
                                     <form:label path="familyName">Family Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
-                       				<form:input class="form-control" path="familyName" id="familyNameId" placeHolder= "Enter family name" />
+                       				<form:input class="form-control  form-field" path="familyName" id="familyNameId" placeHolder= "Enter family name" />
                        				<form:errors  path="familyName" style="color: red;"/>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group form-label">
                                 <div class="col-md-12">
                                     <form:label path="address">Address:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           <form:input class="form-control" path="address" id="addressId" placeHolder= "Enter Streen number and street name"  />
+			           <form:input class="form-control  form-field" path="address" id="addressId" placeHolder= "Enter Streen number and street name"  />
 			           <form:errors  path="address" style="color: red;"/>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group form-label">
                                 <div class="col-md-6 col-xs-12">
                                     <form:label path="city">City:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           <form:input class="form-control" path="city" id="cityId" placeHolder= "Enter City"  />
+			           <form:input class="form-control  form-field" path="city" id="cityId" placeHolder= "Enter City"  />
 			           <form:errors  path="city" style="color: red;"/>
                                 </div>
                                 <div class="span1"></div>
                                 <div class="col-md-6 col-xs-12">
                                     <form:label path="province">Province:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			          			 	<form:input class="form-control" path="province" id="provinceId" placeHolder= "Enter Province"  />
+			          			 	<form:input class="form-control  form-field" path="province" id="provinceId" placeHolder= "Enter Province"  />
 			           				<form:errors  path="province" style="color: red;"/>
                                 </div>
                             </div>
-                              <div class="form-group">
+                              <div class="form-group form-label">
                                 <div class="col-md-6 col-xs-12">
                                     			           <form:label path="country">Country:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           										<form:select class="form-control input-medium bfh-countries" data-country="US" path="country" id="countryId"  >
+			           										<form:select class="form-control input-medium  form-field" data-country="US" path="country" id="countryId"  >
 			           										<form:option value="">--- Select ---</form:option>
 			           										<form:option value="CANADA">Canada</form:option>
 			          										 <form:option value="USA">USA</form:option>
@@ -271,20 +265,20 @@
                                 <div class="span1"></div>
                                 <div class="col-md-6 col-xs-12">
                                    			           <form:label path="zipcode">Zip/Postal code:<span class="glyphicon glyphicon-home"> </span></form:label><br>
-			           									<form:input class="form-control" path="zipcode" id="zipcodeId" placeHolder= "Enter Zip/postal code"  />
+			           									<form:input class="form-control  form-field" path="zipcode" id="zipcodeId" placeHolder= "Enter Zip/postal code"  />
 			         									<form:errors  path="zipcode" style="color: red;"/>
                                 </div>
                             </div>
-                              <div class="form-group">
+                              <div class="form-group form-label">
                                 <div class="col-md-6 col-xs-12">
                                     			           <form:label path="phone">Phone:<span class="glyphicon glyphicon-phone"> </span></form:label><br>
-			           										<form:input class="form-control" type="tel" path="phone" id="phoneId" placeHolder= "Enter Phone number" />
+			           										<form:input class="form-control  form-field" type="tel" path="phone" id="phoneId" placeHolder= "Enter Phone number" />
 			           										<form:errors  path="phone" style="color: red;"/>
                                 </div>
                                 <div class="span1"></div>
                                 <div class="col-md-6 col-xs-12">
                                    		<form:label path="email">Email:<span class="glyphicon glyphicon-envelope"></span></form:label><br>
-			           					<form:input class="form-control" type="email" path="email" id="emailId" placeHolder= "Enter email address"  />
+			           					<form:input class="form-control  form-field" type="email" path="email" id="emailId" placeHolder= "Enter email address"  />
 			           					<form:errors  path="email" style="color: red;"/>
                                 </div>
                             </div>
@@ -295,42 +289,42 @@
                     
                     <div class ="col-md-6">
                     <!--CREDIT CART PAYMENT-->
-                    <div class="panel panel-primary">
-                        <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
-                        <div class="panel-body">
-                        <span class="payment-errors"></span>
-                           <div class="form-group">
+                    <div class="panel" id = "shipping-panel">
+                        <div class="panel-body" id = "shipping-body">
+                        <div class="form-title"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
+                        <br><span class="payment-errors"></span>
+                           <div class="form-group form-label">
                             <div class="form-row">
                                 <div class="col-md-12"><strong>Name On Card</strong></div>
                                 <div class="col-md-12"><input type="text" class="card-name" name="name" autocomplete="off"  required placeholder="John Doe"/></div>
                             </div>
                            </div>
                             
-                            <div class="form-group">
+                            <div class="form-group form-label">
                             <div class="form-row">
                                 <div class="col-md-12"><strong>Credit Card Number</strong></div>
-                                <div class="col-md-12"><input type="text" class="card-number"  size="20" data-stripe="number" autocomplete="off" required placeholder="•••• •••• •••• ••••"/></div>
+                                <div class="col-md-12"><input type="text" class="card-number"   size="20" data-stripe="number" autocomplete="off" required placeholder="•••• •••• •••• ••••"/></div>
                             </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group form-label">
                             <div class="form-row">
                                 <div class="col-md-12"><strong>Card CVC</strong></div>
-                                <div class="col-md-12"><input type="password" class="card-cvc" size="3" data-stripe="cvc" autocomplete="off" required placeholder="•••" /></div>
+                                <div class="col-md-12"><input type="password" class="card-cvc"  size="3" data-stripe="cvc" autocomplete="off" required placeholder="•••" /></div>
                             </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group form-label">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<div class="form-row">
 							  <div class="col-md-12"><strong>Expiration (MM/YYYY)</strong></div>
       						  <div class="col-md-12">
-      									<input type="number" class="card-expiry-month" size="2" data-stripe="exp_month" min="01" max="12"  autocomplete="off" required placeholder="MM">
+      									<input type="number" class="card-expiry-month" size="2" data-stripe="exp_month" min="01" max="12"  autocomplete="off" required placeholder="MM"/>
     								<span> / </span>
-    									<input type="number" size="4" class ="card-expiry-year" data-stripe="exp_year" min="2016" max="2030" autocomplete="off" required placeholder="YYYY">
+    									<input type="number" size="4" class ="card-expiry-year" data-stripe="exp_year" min="2016" max="2030" autocomplete="off" required placeholder="YYYY"/>
   							  </div>
   							</div>
                             </div>
                             
-                            <div class="form-group">
+                            <div class="form-group form-label">
                                 <div class="col-md-12">
                                <div><img class="pull-right"
                                  src="https://s3.amazonaws.com/hiresnetwork/imgs/cc.png"
@@ -345,7 +339,7 @@
                    </div>
                    <div class="form-group">
                        <div class="col-md-12 col-sm-6 col-xs-12">
-                           <input type="submit" class="btn btn-danger btn-block"  type="submit" value="Pay Now">
+                           <input type="submit" class="btn btn-danger btn-block submit-button"  type="submit" value="Pay Now">
                        </div>
                    </div>
                 </form:form>

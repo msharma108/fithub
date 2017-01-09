@@ -36,12 +36,12 @@
 	<!-- contents start here -->
 <div class="container-fluid">
  
-  <div class="panel panel-success" style="border: 2px solid">
+  <div class="panel" id="prodReg-panel">
 
-     <div class="panel-body" style="background-color: white;"> 
+     <div class="panel-body" id="prodReg-body"> 
      
          <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${productDTO.productName}"/>
-	        <form:form modelAttribute="productDTO" method="POST" action="${formActionIndependentOfUserRole }" style="color: green;">
+	        <form:form modelAttribute="productDTO" method="POST" action="${formActionIndependentOfUserRole }"  class="form-label">
                   <div class="col-sm-9">    
                 <div class="form-group row">
 
@@ -76,7 +76,7 @@
                        
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="manufactureDate">Manufacture Date:<span class="glyphicon glyphicon-calendar"> </span></form:label> 
+			           <form:label path="manufactureDate">Manufacture Date<span class="glyphicon glyphicon-calendar"> </span>: </form:label> 
 			           <form:label path="manufactureDate">${productDTO.manufactureDate}</form:label>
                   </div>
                 </div>
@@ -105,7 +105,7 @@
 			           <form:label path="stockQuantity">${productDTO.stockQuantity}</form:label>
                   </div>
                   <div class="col-sm-4 form-group">
-			           <form:label path="expiryDate">Expiry Date:<span class="glyphicon glyphicon-calendar"> </span></form:label>
+			           <form:label path="expiryDate">Expiry Date<span class="glyphicon glyphicon-calendar"> </span>: </form:label>
 			           <form:label path="expiryDate">${productDTO.expiryDate}</form:label>
                   </div>
                   
@@ -119,7 +119,7 @@
 			           <form:label path="flavor">${productDTO.flavor}</form:label>
                   </div>
                   <div class="col-sm-4 form-group">
-                       <form:label path="rating">Rating:<span class="glyphicon glyphicon-user"> </span></form:label>
+                       <form:label path="rating">Rating<span class="glyphicon glyphicon-user"> </span>: </form:label>
                        <form:label path="rating">${productDTO.rating}</form:label>
                   </div>
                 </div>
@@ -141,7 +141,6 @@
 			<br><br>              
             </form:form>
           </div>
-          <div class="panel-footer" style="color: white; background-color: white;"></div>
         </div>
         <br><br><br><br><br><br>
   </div>
