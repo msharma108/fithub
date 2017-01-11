@@ -288,7 +288,7 @@
                     </div>
                     
                     <div class ="col-md-6">
-                    <!--CREDIT CART PAYMENT-->
+                    <!--CREDIT CARD PAYMENT-->
                     <div class="panel" id = "shipping-panel">
                         <div class="panel-body" id = "shipping-body">
                         <div class="form-title"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
@@ -296,30 +296,30 @@
                            <div class="form-group form-label">
                             <div class="form-row">
                                 <div class="col-md-12"><strong>Name On Card</strong></div>
-                                <div class="col-md-12"><input type="text" class="card-name" name="name" autocomplete="off"  required placeholder="John Doe"/></div>
+                                <div class="col-md-12"><input type="text" class="form-control form-field card-name" name="name" autocomplete="off"  required placeholder="John Doe"/></div>
                             </div>
                            </div>
                             
                             <div class="form-group form-label">
                             <div class="form-row">
                                 <div class="col-md-12"><strong>Credit Card Number</strong></div>
-                                <div class="col-md-12"><input type="text" class="card-number"   size="20" data-stripe="number" autocomplete="off" required placeholder="•••• •••• •••• ••••"/></div>
+                                <div class="col-md-12"><input type="text" class="form-control form-field card-number"   size="20" data-stripe="number" autocomplete="off" required placeholder="•••• •••• •••• ••••"/></div>
                             </div>
                             </div>
                             <div class="form-group form-label">
                             <div class="form-row">
                                 <div class="col-md-12"><strong>Card CVC</strong></div>
-                                <div class="col-md-12"><input type="password" class="card-cvc"  size="3" data-stripe="cvc" autocomplete="off" required placeholder="•••" /></div>
+                                <div class="col-md-12"><input type="password" class="form-control form-field card-cvc"  size="3" data-stripe="cvc" autocomplete="off" required placeholder="•••" /></div>
                             </div>
                             </div>
                             <div class="form-group form-label">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<div class="form-row">
 							  <div class="col-md-12"><strong>Expiration (MM/YYYY)</strong></div>
-      						  <div class="col-md-12">
-      									<input type="number" class="card-expiry-month" size="2" data-stripe="exp_month" min="01" max="12"  autocomplete="off" required placeholder="MM"/>
+      						  <div class="col-md-4">
+      									<input type="number" class="form-control form-field card-expiry-month" size="2" data-stripe="exp_month" min="01" max="12"  autocomplete="off" required placeholder="MM"/>
     								<span> / </span>
-    									<input type="number" size="4" class ="card-expiry-year" data-stripe="exp_year" min="2016" max="2030" autocomplete="off" required placeholder="YYYY"/>
+    									<input type="number" size="4" class ="form-control form-field card-expiry-year" data-stripe="exp_year" min="2016" max="2030" autocomplete="off" required placeholder="YYYY"/>
   							  </div>
   							</div>
                             </div>
