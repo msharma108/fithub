@@ -8,10 +8,10 @@
 		  
 		   <sec:authorize access="isAnonymous()">
 		   <li class="nav-item">
-		     <span style="color: #f0ffff; font-size: 15px">Welcome<span class="glyphicon glyphicon-user"></span> Guest!</span>
+		     <span style="color: #f0ffff; font-size: 15px">Welcome<span class="glyphicon glyphicon-user"></span>Guest!</span>
 		   </li>
 		   <li class="nav-item">
-		     <a class="btn  btn-xs" href="<c:url value="/userRegister"/>" ><span class="glyphicon glyphicon-pencil"></span> Sign up</a>
+		     <a class="btn  btn-xs" href="<c:url value="/userRegister"/>" ><span class="glyphicon glyphicon-pencil"></span>Sign up</a>
 		   </li> 
 		   <li class="nav-item">
 			 <a class="btn btn-xs" href="<c:url value="/login"/>"><span class="glyphicon glyphicon-log-in"></span> Sign In</a>

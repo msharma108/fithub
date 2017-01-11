@@ -1,6 +1,9 @@
 package com.fithub.e2etesting.step_definition;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+
+import com.fithub.e2etesting.page_driver.HeaderPageDriver;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
@@ -14,7 +17,10 @@ import cucumber.api.java.en.When;
  *
  */
 
-public class ViewProductListStepDefinition {
+public class ViewProductListStepDefinition extends AbstractStepDefinition {
+
+	@Autowired
+	HeaderPageDriver headerPageDriver;
 
 	@Before("@viewProducts")
 	@Sql(scripts = "classpath:/integration_test_scripts/product_service-test-data-creation.sql")
@@ -30,8 +36,8 @@ public class ViewProductListStepDefinition {
 
 	@Given("^I am on the home page$")
 	public void i_am_on_the_home_page() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+
+		headerPageDriver.selectHome();
 	}
 
 	@When("^I decide to view all products$")
