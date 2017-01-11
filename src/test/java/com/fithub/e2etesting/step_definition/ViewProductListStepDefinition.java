@@ -1,5 +1,7 @@
 package com.fithub.e2etesting.step_definition;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -19,8 +21,27 @@ import cucumber.api.java.en.When;
 
 public class ViewProductListStepDefinition extends AbstractStepDefinition {
 
+	// @Autowired
+	// HeaderPageDriver headerPageDriver;
+
+	private HeaderPageDriver headerPageDriver;
+
+	private final WebDriver driver;
+
 	@Autowired
-	HeaderPageDriver headerPageDriver;
+	String url;
+
+	@Autowired
+	public ViewProductListStepDefinition(WebDriver driver) {
+		this.driver = driver;
+		headerPageDriver = PageFactory.initElements(driver, HeaderPageDriver.class);
+	}
+
+	@Before
+	public void beforeScenarios() {
+		System.out.println(url);
+		driver.get(url);
+	}
 
 	@Before("@viewProducts")
 	@Sql(scripts = "classpath:/integration_test_scripts/product_service-test-data-creation.sql")
@@ -37,7 +58,7 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 	@Given("^I am on the home page$")
 	public void i_am_on_the_home_page() throws Throwable {
 
-		headerPageDriver.selectHome();
+		headerPageDriver.selectSignUp();
 	}
 
 	@When("^I decide to view all products$")

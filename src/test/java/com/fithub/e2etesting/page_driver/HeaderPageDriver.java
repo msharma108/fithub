@@ -4,8 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,18 +13,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class HeaderPageDriver {
 
-	private final WebDriver driver;
+	WebDriver driver;
 
 	@FindBy(how = How.LINK_TEXT, using = "Home")
-	private WebElement home;
+	WebElement home;
 
 	@FindBy(how = How.LINK_TEXT, using = "Sign up")
-	private WebElement signUp;
+	WebElement signUp;
 
-	@Autowired
 	public HeaderPageDriver(WebDriver driver) {
 		this.driver = driver;
-		PageFactory.initElements(this.driver, HeaderPageDriver.class);
+		// PageFactory.initElements(this.driver, HeaderPageDriver.class);
 	}
 
 	public void selectHome() {
