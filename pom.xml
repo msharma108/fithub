@@ -111,11 +111,7 @@
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
-<dependency>
-    <groupId>javax.inject</groupId>
-    <artifactId>javax.inject</artifactId>
-    <version>1</version>
-</dependency>
+
 		
 
 <!-- Cucumber Dependencies start -->
@@ -161,6 +157,13 @@
 <dependency>
     <groupId>org.seleniumhq.selenium</groupId>
     <artifactId>selenium-java</artifactId>
+    	   	    <exclusions>
+    	    <exclusion>
+    	<groupId>xalan</groupId>
+    <artifactId>xalan</artifactId>
+    	    
+    	    </exclusion>
+    	    </exclusions>
     </dependency>
 
 
