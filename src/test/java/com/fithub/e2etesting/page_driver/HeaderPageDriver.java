@@ -1,6 +1,5 @@
 package com.fithub.e2etesting.page_driver;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HeaderPageDriver {
 
-	WebDriver driver;
+	// private WebDriver driver;
 
 	@FindBy(how = How.LINK_TEXT, using = "Home")
 	WebElement home;
@@ -21,10 +20,9 @@ public class HeaderPageDriver {
 	@FindBy(how = How.LINK_TEXT, using = "Sign up")
 	WebElement signUp;
 
-	public HeaderPageDriver(WebDriver driver) {
-		this.driver = driver;
-		// PageFactory.initElements(this.driver, HeaderPageDriver.class);
-	}
+	// public HeaderPageDriver(WebDriver driver) {
+	// this.driver = driver;
+	// }
 
 	public void selectHome() {
 		home.click();

@@ -14,9 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 // @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Transactional
-public class AbstractStepDefinition {
-
-	// private WebDriver driver;
-	// private URI uri;
+public abstract class AbstractStepDefinition {
 
 }

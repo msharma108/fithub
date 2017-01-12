@@ -5,7 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.fithub.e2etesting.page_driver.HeaderPageDriver;
+import com.fithub.e2etesting.page_driver.HomePageDriver;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
@@ -24,24 +24,21 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 	// @Autowired
 	// HeaderPageDriver headerPageDriver;
 
-	private HeaderPageDriver headerPageDriver;
+	private HomePageDriver homePageDriver;
 
-	private final WebDriver driver;
-
-	@Autowired
-	String url;
+	// private final WebDriver driver;
 
 	@Autowired
 	public ViewProductListStepDefinition(WebDriver driver) {
-		this.driver = driver;
-		headerPageDriver = PageFactory.initElements(driver, HeaderPageDriver.class);
+		// this.driver = driver;
+		homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 	}
 
-	@Before
-	public void beforeScenarios() {
-		System.out.println(url);
-		driver.get(url);
-	}
+	// @Before
+	// public void beforeScenarios() {
+	// System.out.println(url);
+	// driver.get(url);
+	// }
 
 	@Before("@viewProducts")
 	@Sql(scripts = "classpath:/integration_test_scripts/product_service-test-data-creation.sql")
@@ -58,13 +55,13 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 	@Given("^I am on the home page$")
 	public void i_am_on_the_home_page() throws Throwable {
 
-		headerPageDriver.selectSignUp();
+		homePageDriver.navigateToHomePage();
+		// assert
 	}
 
 	@When("^I decide to view all products$")
 	public void i_decide_to_view_all_products() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		// homePageDriver.
 	}
 
 	@Then("^I see list of all the products$")

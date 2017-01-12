@@ -7,11 +7,7 @@ formatter.feature({
   "keyword": "Feature"
 });
 formatter.before({
-  "duration": 68255022,
-  "status": "passed"
-});
-formatter.before({
-  "duration": 3515927867,
+  "duration": 62811380,
   "status": "passed"
 });
 formatter.scenario({
@@ -47,25 +43,26 @@ formatter.match({
   "location": "ViewProductListStepDefinition.i_am_on_the_home_page()"
 });
 formatter.result({
-  "duration": 2259182281,
+  "duration": 3225421639,
   "status": "passed"
 });
 formatter.match({
   "location": "ViewProductListStepDefinition.i_decide_to_view_all_products()"
 });
 formatter.result({
-  "duration": 11170641,
-  "error_message": "cucumber.api.PendingException: TODO: implement me\r\n\tat com.fithub.e2etesting.step_definition.ViewProductListStepDefinition.i_decide_to_view_all_products(ViewProductListStepDefinition.java:67)\r\n\tat ✽.When I decide to view all products(com/fithub/e2etesting/feature/Authentication.feature:9)\r\n",
-  "status": "pending"
+  "duration": 13250876,
+  "status": "passed"
 });
 formatter.match({
   "location": "ViewProductListStepDefinition.i_see_list_of_all_the_products()"
 });
 formatter.result({
-  "status": "skipped"
+  "duration": 7604452,
+  "error_message": "cucumber.api.PendingException: TODO: implement me\r\n\tat com.fithub.e2etesting.step_definition.ViewProductListStepDefinition.i_see_list_of_all_the_products(ViewProductListStepDefinition.java:70)\r\n\tat ✽.Then I see list of all the products(com/fithub/e2etesting/feature/Authentication.feature:10)\r\n",
+  "status": "pending"
 });
 formatter.after({
-  "duration": 3051119,
+  "duration": 3624478,
   "status": "passed"
 });
 });
