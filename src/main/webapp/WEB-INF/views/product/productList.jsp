@@ -46,7 +46,7 @@
 			 <div class="panel-title">
                 <div class="row">
                   <div class="col-md-6">
-                    <h3> Product List</h3>
+                    <h3 id="productListHeadingId"> Product List</h3>
                   </div>
 				  <div class="col-md-6">
 				    <form action="/shoppingCart/viewCart" method="POST">

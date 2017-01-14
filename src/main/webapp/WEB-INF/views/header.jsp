@@ -45,14 +45,14 @@
 			 <a class="nav-link" href="<c:url value="/home"/>" ><span class="glyphicon glyphicon-home"> </span> Home</a>
 		   </li>
 		   	<li class="dropdown">
-             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Product
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user" id="productListDropdownId"></span> Product
              <span class="caret"></span></a>
-             <ul class="dropdown-menu">
+             <ul class="dropdown-menu" >
              	<li class="nav-item">
-		         <a class="nav-link" href="<c:url value="/viewProducts"/>"><span class="glyphicon glyphicon-shopping-cart"></span> All Products</a>
+		         <a class="nav-link" href="<c:url value="/viewProducts"/>"><span class="glyphicon glyphicon-shopping-cart"></span>All Products</a>
 		       	</li>
 		       	<li class="nav-item">
-		         <a class="nav-link" href="<c:url value="/viewProducts/topProducts/top5"/>"><span class="glyphicon glyphicon-shopping-cart"></span> Top 5 Products</a>
+		         <a class="nav-link" href="<c:url value="/viewProducts/topProducts/top5"/>"><span class="glyphicon glyphicon-shopping-cart"></span>Top 5 Products</a>
 		       	</li>
              </ul>
              </li>

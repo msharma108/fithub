@@ -10,7 +10,7 @@ public class HomePageDriver extends HeaderPageDriver {
 	private static String HOME_URL = "https://localhost:8443/";
 
 	public HomePageDriver(WebDriver driver) {
-		// super(driver);
+		super(driver);
 		this.driver = driver;
 		PageFactory.initElements(driver, HeaderPageDriver.class);
 	}
