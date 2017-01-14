@@ -85,11 +85,11 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 	// https://advancedweb.hu/2015/04/28/animated-failure-reports-with-selenium-and-cucumber/
 
 	@After("@viewProducts")
-	public void embedScreenshot(Scenario scenario) {
+	public void captureScenarioFailureScreenshot(Scenario scenario) {
 		if (scenario.isFailed()) {
 			try {
-				byte[] scenarioEndScreenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-				scenario.embed(scenarioEndScreenshot, "image/png");
+				byte[] failureScreenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+				scenario.embed(failureScreenshot, "image/png");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -1,7 +1,7 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
-report.js
+e2eReports/
 
 ### STS ###
 .apt_generated
