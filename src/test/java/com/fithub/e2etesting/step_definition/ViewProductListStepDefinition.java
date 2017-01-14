@@ -61,7 +61,7 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 		System.out.println("before");
 		try {
 			ScriptUtils.executeSqlScript(datasource.getConnection(),
-					new ClassPathResource("integration_test_scripts/product_service-test-data-creation.sql"));
+					new ClassPathResource("e2e_test_scripts/e2e_testing-test-data-creation.sql"));
 		} catch (ScriptException | SQLException e) {
 
 			e.printStackTrace();
@@ -73,7 +73,7 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 		System.out.println("after");
 		try {
 			ScriptUtils.executeSqlScript(datasource.getConnection(),
-					new ClassPathResource("integration_test_scripts/product_service-test-data-deletion.sql"));
+					new ClassPathResource("e2e_test_scripts/e2e_testing-test-data-deletion.sql"));
 		} catch (ScriptException | SQLException e) {
 
 			e.printStackTrace();
