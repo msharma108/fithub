@@ -32,6 +32,7 @@
     <![endif]-->
 
   </head>
+  <title>FitHub.com</title>
   <body>
 <jsp:include page="../views/header.jsp" />
 

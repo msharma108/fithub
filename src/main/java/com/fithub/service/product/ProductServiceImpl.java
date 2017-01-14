@@ -57,11 +57,7 @@ public class ProductServiceImpl implements ProductService {
 	public Product getProductByProductName(String productName) throws IllegalArgumentException {
 		LOG.debug("Retreive product having productName={}", productName);
 		Product product = productRepository.findOneByProductName(productName);
-		if (product != null)
-			return product;
-		else
-			throw new NoSuchElementException(String.format("Product with productName=%s not found", productName));
-
+		return product;
 	}
 
 	@Override

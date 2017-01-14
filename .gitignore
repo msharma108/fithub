@@ -1,6 +1,8 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
+e2eReports/
+
 ### STS ###
 .apt_generated
 .classpath

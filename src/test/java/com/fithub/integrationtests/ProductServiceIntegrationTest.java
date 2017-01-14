@@ -3,6 +3,7 @@ package com.fithub.integrationtests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -99,11 +100,8 @@ public class ProductServiceIntegrationTest extends AbstractFithubApplicationInte
 		assertDatabaseStateConsistencyBeforeTest();
 
 		String productNameNotInDatabase = "testProductNameRustColor5Lbs";
-		expectedException.expect(NoSuchElementException.class);
-		expectedException
-				.expectMessage(String.format("Product with productName=%s not found", productNameNotInDatabase));
-		productService.getProductByProductName(productNameNotInDatabase);
-		fail("NoSuchElementException expected");
+		Product product = productService.getProductByProductName(productNameNotInDatabase);
+		assertNull("Null product provided", product);
 	}
 
 	@Test
@@ -226,8 +224,7 @@ public class ProductServiceIntegrationTest extends AbstractFithubApplicationInte
 		when(mockCustomUser.getUserName()).thenReturn("admin");
 
 		expectedException.expect(NoSuchElementException.class);
-		expectedException.expectMessage(
-				String.format("Product with productName=%s not found", productDTO.getProductNameBeforeEdit()));
+		expectedException.expectMessage(String.format("ProductName=%s not found", productDTO.getProductName()));
 		productService.updateProductDetails(productDTO, mockAuthentication);
 		fail("NoSuchElementException expected");
 

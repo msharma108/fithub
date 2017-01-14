@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@ActiveProfiles("testing")
+@ActiveProfiles("integration_testing")
 @Transactional
 public abstract class AbstractFithubApplicationIntegrationTest {
 
