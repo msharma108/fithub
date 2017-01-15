@@ -4,13 +4,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile(value = "e2e_testing")
-public class WebDriverConfig {
+public class WebDriverConfig implements DisposableBean {
+
+	@Autowired
+	private WebDriver driver;
 
 	@Bean
 	public WebDriver driver() {
@@ -43,6 +48,18 @@ public class WebDriverConfig {
 	public String url() {
 
 		return new String("https://localhost:8443/");
+	}
+
+	@Override
+	public void destroy() {
+
+		try {
+			System.out.println("WebDriver destroy");
+			driver.quit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

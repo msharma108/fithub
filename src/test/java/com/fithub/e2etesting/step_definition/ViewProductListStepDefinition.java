@@ -2,25 +2,17 @@ package com.fithub.e2etesting.step_definition;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.ScriptException;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import com.fithub.e2etesting.page_driver.HomePageDriver;
 import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -31,52 +23,16 @@ import cucumber.api.java.en.When;
 
 public class ViewProductListStepDefinition extends AbstractStepDefinition {
 
-	// @Autowired
-	// HeaderPageDriver headerPageDriver;
-
 	private HomePageDriver homePageDriver;
 	private ProductListPageDriver productListPageDriver;
-
-	private final DataSource datasource;
 
 	private final WebDriver driver;
 
 	@Autowired
-	public ViewProductListStepDefinition(WebDriver driver, DataSource datasource) {
+	public ViewProductListStepDefinition(WebDriver driver) {
 		this.driver = driver;
-		this.datasource = datasource;
 		homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 		productListPageDriver = PageFactory.initElements(driver, ProductListPageDriver.class);
-	}
-
-	// @Before
-	// public void beforeScenarios() {
-	// System.out.println(url);
-	// driver.get(url);
-	// }
-
-	@Before
-	public void beforeScenario() {
-		System.out.println("before");
-		try {
-			ScriptUtils.executeSqlScript(datasource.getConnection(),
-					new ClassPathResource("e2e_test_scripts/e2e_testing-test-data-creation.sql"));
-		} catch (ScriptException | SQLException e) {
-
-			e.printStackTrace();
-		}
-	}
-
-	@After
-	public void afterScenario() {
-		System.out.println("after");
-		try {
-			ScriptUtils.executeSqlScript(datasource.getConnection(),
-					new ClassPathResource("e2e_test_scripts/e2e_testing-test-data-deletion.sql"));
-		} catch (ScriptException | SQLException e) {
-
-			e.printStackTrace();
-		}
 	}
 
 	// Take Screenshot on test failure

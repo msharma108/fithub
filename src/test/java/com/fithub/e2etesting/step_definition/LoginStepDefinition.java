@@ -2,8 +2,6 @@ package com.fithub.e2etesting.step_definition;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.sql.DataSource;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,26 +18,10 @@ public class LoginStepDefinition extends AbstractStepDefinition {
 	private HomePageDriver homePageDriver;
 	private LoginPageDriver loginPageDriver;
 
-	private final DataSource datasource;
-
-	private final WebDriver driver;
-
 	@Autowired
-	public LoginStepDefinition(WebDriver driver, DataSource datasource) {
-		this.driver = driver;
-		this.datasource = datasource;
+	public LoginStepDefinition(WebDriver driver) {
 		homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 		loginPageDriver = PageFactory.initElements(driver, LoginPageDriver.class);
-	}
-
-	@Given("^I am on the home page$")
-	public void i_am_on_the_home_page() throws Throwable {
-
-		String homePageTitle = "FitHub.com";
-		String homeURL = "https://localhost:8443/";
-
-		driver.get(homeURL);
-		homePageDriver.assertPageTitle(homePageTitle);
 	}
 
 	@Given("^I am \"([^\"]*)\"$")
