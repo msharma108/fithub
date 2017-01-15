@@ -8,20 +8,24 @@ import org.openqa.selenium.support.PageFactory;
 
 public class ProductListPageDriver extends HeaderPageDriver {
 
-	private WebDriver driver;
+	@FindBy(how = How.ID, using = "allProductListHeadingId")
+	WebElement allProductListHeading;
 
-	@FindBy(how = How.CLASS_NAME, using = "overlay")
-	WebElement productOverlayContent;
+	@FindBy(how = How.ID, using = "topProductListHeadingId")
+	WebElement topProductListHeading;
 
 	public ProductListPageDriver(WebDriver driver) {
 		super(driver);
-		this.driver = driver;
 		// This can be changed later
 		PageFactory.initElements(driver, HeaderPageDriver.class);
 	}
 
-	public boolean assertProductListPage() {
-		return productOverlayContent.isDisplayed();
+	public boolean isAllProductListDisplayed() {
+		return allProductListHeading.isDisplayed();
+	}
+
+	public boolean isTopProductListDisplayed() {
+		return topProductListHeading.isDisplayed();
 	}
 
 }

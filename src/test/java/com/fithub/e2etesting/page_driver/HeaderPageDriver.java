@@ -28,11 +28,11 @@ public class HeaderPageDriver {
 	WebElement allProductsLink;
 
 	@FindBy(how = How.LINK_TEXT, using = "Top 5 Products")
-	WebElement top5ProductsLink;
+	WebElement topProductsLink;
 
 	String viewAllProducts = "viewAllProducts";
 
-	String viewTop5Products = "viewTop5Products";
+	String viewTopProducts = "viewTopProducts";
 
 	public HeaderPageDriver(WebDriver driver) {
 		this.driver = driver;
@@ -46,21 +46,21 @@ public class HeaderPageDriver {
 		signUp.click();
 	}
 
-	public void viewAllOrTop5ProductsBasedOnInput(String input) {
+	public void viewAllOrTopProductsBasedOnInput(String input) {
 		productListDropdown.click();
 
 		if (input.equals(viewAllProducts))
 			clickAllProducts();
 		else
-			clickTop5Products();
+			clickTopProducts();
 	}
 
 	public void clickAllProducts() {
 		allProductsLink.click();
 	}
 
-	public void clickTop5Products() {
-		top5ProductsLink.click();
+	public void clickTopProducts() {
+		topProductsLink.click();
 	}
 
 	public void assertPageTitle(String pageTitle) {

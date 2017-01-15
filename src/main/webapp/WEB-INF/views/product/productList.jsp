@@ -46,7 +46,12 @@
 			 <div class="panel-title">
                 <div class="row">
                   <div class="col-md-6">
-                    <h3 id="productListHeadingId"> Product List</h3>
+                  <c:if test="${ not empty displayTopProductsHeading}">
+                  <h3 id="topProductListHeadingId">Top Product List</h3>
+                  </c:if>
+                  <c:if test="${ empty displayTopProductsHeading}">
+                    <h3 id="allProductListHeadingId"> Product List</h3>
+                    </c:if>
                   </div>
 				  <div class="col-md-6">
 				    <form action="/shoppingCart/viewCart" method="POST">

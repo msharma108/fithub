@@ -20,8 +20,6 @@ import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -30,10 +28,7 @@ import cucumber.api.java.en.When;
  *
  */
 
-public class ViewProductListStepDefinition extends AbstractStepDefinition {
-
-	// @Autowired
-	// HeaderPageDriver headerPageDriver;
+public class ViewTopProductListStepDefinition extends AbstractStepDefinition {
 
 	private HomePageDriver homePageDriver;
 	private ProductListPageDriver productListPageDriver;
@@ -44,19 +39,12 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 	private final WebDriver driver;
 
 	@Autowired
-	public ViewProductListStepDefinition(WebDriver driver) {
+	public ViewTopProductListStepDefinition(WebDriver driver) {
 		this.driver = driver;
 		homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 		productListPageDriver = PageFactory.initElements(driver, ProductListPageDriver.class);
 	}
 
-	// @Before
-	// public void beforeScenarios() {
-	// System.out.println(url);
-	// driver.get(url);
-	// }
-
-	@Before("@viewProducts")
 	public void beforeScenario() {
 		System.out.println("before");
 		try {
@@ -68,7 +56,6 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 		}
 	}
 
-	@After("@viewProducts")
 	public void afterScenario() {
 		System.out.println("after");
 		try {
@@ -84,7 +71,7 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 	// Reference:
 	// https://advancedweb.hu/2015/04/28/animated-failure-reports-with-selenium-and-cucumber/
 
-	@After("@viewProducts")
+	@After
 	public void captureScenarioFailureScreenshot(Scenario scenario) {
 		if (scenario.isFailed()) {
 			try {
@@ -96,23 +83,14 @@ public class ViewProductListStepDefinition extends AbstractStepDefinition {
 		}
 	}
 
-	@Given("^I am on the home page$")
-	public void i_am_on_the_home_page() throws Throwable {
-
-		String homePageTitle = "FitHub.com";
-
-		homePageDriver.navigateToHomePage();
-		homePageDriver.assertPageTitle(homePageTitle);
+	@When("^I decide to view top products$")
+	public void i_decide_to_view_top_products() throws Throwable {
+		homePageDriver.viewAllOrTopProductsBasedOnInput("viewTopProducts");
 	}
 
-	@When("^I decide to view all products$")
-	public void i_decide_to_view_all_products() throws Throwable {
-		homePageDriver.viewAllOrTop5ProductsBasedOnInput("viewAllProducts");
-	}
-
-	@Then("^I see list of all the products$")
-	public void i_see_list_of_all_the_products() throws Throwable {
-		assertEquals("Product List not displayed", true, productListPageDriver.assertProductListPage());
+	@Then("^I see list of top products$")
+	public void i_see_list_of_top_products() throws Throwable {
+		assertEquals("Top Products List not displayed", true, productListPageDriver.isTopProductListDisplayed());
 	}
 
 }
