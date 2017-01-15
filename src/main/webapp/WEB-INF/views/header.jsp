@@ -8,13 +8,13 @@
 		  
 		   <sec:authorize access="isAnonymous()">
 		   <li class="nav-item">
-		     <span style="color: #f0ffff; font-size: 15px">Welcome<span class="glyphicon glyphicon-user"></span>Guest!</span>
+		     <span style="color: #f0ffff; font-size: 15px" id="guestWelcomeId">Welcome<span class="glyphicon glyphicon-user"></span>Guest!</span>
 		   </li>
 		   <li class="nav-item">
 		     <a class="btn  btn-xs" href="<c:url value="/userRegister"/>" ><span class="glyphicon glyphicon-pencil"></span>Sign up</a>
 		   </li> 
 		   <li class="nav-item">
-			 <a class="btn btn-xs" href="<c:url value="/login"/>"><span class="glyphicon glyphicon-log-in"></span> Sign In</a>
+			 <a class="btn btn-xs" href="<c:url value="/login"/>"><span class="glyphicon glyphicon-log-in"></span>Sign in</a>
 		   </li>
 		   </sec:authorize>
 		   <sec:authorize access="isAuthenticated()">
@@ -25,10 +25,10 @@
            </li>
 		   <li class="nav-item">
 		   <c:url var="logout" value="/logout"/>
-				<form action="${logout}" name="logout" method="POST">        
+				<form action="${logout}" method="POST">        
                   	<div class="col-sm-4 form-group">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                       	<button class="btn btn-xs btn-primary" type="submit" name="logout" id="logout" value="Logout">Logout <span class="glyphicon glyphicon-log-out"></span></button> 
+                       	<button class="btn btn-xs btn-primary" type="submit" id="logoutId" value="Logout">Logout<span class="glyphicon glyphicon-log-out"></span></button> 
                   	</div>
              	</form>
 		   </li>

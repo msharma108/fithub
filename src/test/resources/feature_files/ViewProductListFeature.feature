@@ -1,4 +1,4 @@
-@viewProducts
+
 Feature:
 As a user
 I want to view the products in the application

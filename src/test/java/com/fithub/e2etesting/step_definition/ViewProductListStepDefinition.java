@@ -21,7 +21,6 @@ import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -30,7 +29,7 @@ import cucumber.api.java.en.When;
  *
  */
 
-public class ViewAllProductListStepDefinition extends AbstractStepDefinition {
+public class ViewProductListStepDefinition extends AbstractStepDefinition {
 
 	// @Autowired
 	// HeaderPageDriver headerPageDriver;
@@ -38,14 +37,14 @@ public class ViewAllProductListStepDefinition extends AbstractStepDefinition {
 	private HomePageDriver homePageDriver;
 	private ProductListPageDriver productListPageDriver;
 
-	@Autowired
-	DataSource datasource;
+	private final DataSource datasource;
 
 	private final WebDriver driver;
 
 	@Autowired
-	public ViewAllProductListStepDefinition(WebDriver driver) {
+	public ViewProductListStepDefinition(WebDriver driver, DataSource datasource) {
 		this.driver = driver;
+		this.datasource = datasource;
 		homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 		productListPageDriver = PageFactory.initElements(driver, ProductListPageDriver.class);
 	}
@@ -96,15 +95,6 @@ public class ViewAllProductListStepDefinition extends AbstractStepDefinition {
 		}
 	}
 
-	@Given("^I am on the home page$")
-	public void i_am_on_the_home_page() throws Throwable {
-
-		String homePageTitle = "FitHub.com";
-
-		homePageDriver.navigateToHomePage();
-		homePageDriver.assertPageTitle(homePageTitle);
-	}
-
 	@When("^I decide to view all products$")
 	public void i_decide_to_view_all_products() throws Throwable {
 		homePageDriver.viewAllOrTopProductsBasedOnInput("viewAllProducts");
@@ -113,6 +103,16 @@ public class ViewAllProductListStepDefinition extends AbstractStepDefinition {
 	@Then("^I see list of all the products$")
 	public void i_see_list_of_all_the_products() throws Throwable {
 		assertEquals("Product List not displayed", true, productListPageDriver.isAllProductListDisplayed());
+	}
+
+	@When("^I decide to view top products$")
+	public void i_decide_to_view_top_products() throws Throwable {
+		homePageDriver.viewAllOrTopProductsBasedOnInput("viewTopProducts");
+	}
+
+	@Then("^I see list of top products$")
+	public void i_see_list_of_top_products() throws Throwable {
+		assertEquals("Top Product List not displayed", true, productListPageDriver.isTopProductListDisplayed());
 	}
 
 }

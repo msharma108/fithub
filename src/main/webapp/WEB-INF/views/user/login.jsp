@@ -62,12 +62,12 @@
               <div class="col-sm-12">  
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
-                    <button type="submit" class="btn btn-success submit-button"><i class="glyphicon glyphicon-log-in"></i> Sign In</button>
+                    <button type="submit" class="btn btn-success submit-button" id="loginButtonId"><i class="glyphicon glyphicon-log-in"></i> Sign In</button>
                   </div>
                 </div>
                 <div style ="color: red;">
               		<c:if test="${not empty invalidCredentials}">
-				 		<div class="col-sm-12">${invalidCredentials}</div>
+				 		<div class="col-sm-12" id="invalidCredentialsId">${invalidCredentials}</div>
 					</c:if>
 					<c:if test="${not empty logoutMessage}">
 						<div class="col-sm-12">${logoutMessage}</div>
