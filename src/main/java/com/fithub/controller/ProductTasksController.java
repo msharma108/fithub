@@ -69,9 +69,11 @@ public class ProductTasksController {
 			// Display products based on provided category
 			productList = productService.getProductsByCategory(pathVariables.get("category"));
 
-		else if (pathVariables.containsKey("topProducts"))
+		else if (pathVariables.containsKey("topProducts")) {
 			// Display top products based on quantity sold
 			productList = productService.getTop5ProductsByQuantitySold();
+			model.addAttribute("displayTopProductsHeading", true);
+		}
 
 		else
 			// Display all products

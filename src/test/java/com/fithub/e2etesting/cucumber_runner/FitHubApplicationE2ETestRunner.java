@@ -10,8 +10,8 @@ import cucumber.api.junit.Cucumber;
  *
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "classpath:com/fithub/e2etesting/feature", glue = "classpath:com/fithub/e2etesting/step_definition", plugin = {
-		"pretty", "html:src/test/java/com/fithub/e2etesting/e2eReports" })
+@CucumberOptions(features = "classpath:feature_files", glue = "classpath:com/fithub/e2etesting/step_definition", plugin = {
+		"html:target/e2etesting/e2eReports/", "json:target/e2etesting/e2eReports/cucumber.json" })
 
 public class FitHubApplicationE2ETestRunner {
 

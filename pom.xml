@@ -10,6 +10,8 @@
 
 	<name>fithub</name>
 	<description>Spring Boot-fithub project</description>
+	
+	<developers><developer><name>Mohit Sharma</name></developer></developers>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -167,7 +169,6 @@
     	    </exclusions>
     </dependency>
 
-
 	</dependencies>
 
 
@@ -181,6 +182,7 @@
 			        <groupId>org.apache.maven.plugins</groupId>
        			 <artifactId>maven-failsafe-plugin</artifactId>
        			        <configuration>
+       			        <summaryFile>${project.build.directory}/failsafe-reports/TEST-IntegrationTestingResults.xml</summaryFile>
         			<includes>
                     <include>**/IntegrationTest.java</include>
                 </includes>
@@ -194,9 +196,70 @@
           </execution>
         </executions>
       </plugin>
+      
+            <!-- Surefire plugin set to run the application's cucumber runner class -->
+      <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/*E2ETestRunner.java</include>
+                    </includes>
+                    <printSummary>true</printSummary>
+                </configuration>
+            </plugin>
+      
+       <!-- Cucumber reporting plugin -->
+            <plugin>
+    <groupId>net.masterthought</groupId>
+    <artifactId>maven-cucumber-reporting</artifactId>
+    <version>3.4.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-cucumber-reports</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>CucumberCustomReports</projectName>
+                            <outputDirectory>${project.build.directory}/e2etesting/e2eReports</outputDirectory>
+                            <cucumberOutput>${project.build.directory}/e2etesting/e2eReports/cucumber.json</cucumberOutput>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+      
+  
 			
 		</plugins>
 	</build>
+	
+<reporting>
+        <plugins>
+          <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.19.1</version>
+        <reportSets>
+          <reportSet>
+            <id>integration-tests</id>
+            <reports>
+              <report>report-only</report>
+            </reports>
+        </reportSet>
+        </reportSets>
+
+            </plugin>
+                    <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+            <version>2.3</version>
+        </plugin>
+            
+        </plugins>
+    </reporting>
 
 
 </project>
