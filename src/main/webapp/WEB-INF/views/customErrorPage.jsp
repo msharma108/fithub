@@ -43,7 +43,7 @@
               <div class="error-text">
 				<c:if test="${exception !=null }">
 				<b><c:out  value="${exception }" /></b><br>
-				<c:out  value="while tryin to access:" /></br>
+				<c:out  value="while trying to access:" /></br>
 				<c:out  value="${errorUrl }" />
 				</c:if>
 			  </div>
