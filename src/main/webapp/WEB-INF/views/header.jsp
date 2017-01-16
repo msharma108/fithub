@@ -125,9 +125,9 @@
                 <c:url var="searchProduct" value="/searchProduct"/>
             <form class="navbar-form" role="search" action="${searchProduct}"method="GET" >
                 <div class="input-group">
-                    <input id="productSearchStringId" type="text" name="productSearchString" class="form-control form-field" placeholder="ProductName or Description"><br>
+                    <input id="productSearchBoxId" type="text" name="productSearchString" class="form-control form-field" placeholder="ProductName or Description"><br>
                     <div class="input-group-btn">
-                        <button class="btn btn-success submit-button" type="submit" name="userView">Search <i class="glyphicon glyphicon-search"></i></button>
+                        <button class="btn btn-success submit-button" type="submit">Search <i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
             </form>

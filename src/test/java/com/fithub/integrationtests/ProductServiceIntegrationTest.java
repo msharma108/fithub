@@ -261,7 +261,7 @@ public class ProductServiceIntegrationTest extends AbstractFithubApplicationInte
 		String searchStringLikeProductName = "Jazz";
 		expectedException.expect(NoSuchElementException.class);
 		expectedException.expectMessage(
-				String.format("Product matching the searchString={} not found", searchStringLikeProductName));
+				String.format("Product matching the searchString=%s not found", searchStringLikeProductName));
 		productService.getProductsContaingProductNameOrShortDescription(searchStringLikeProductName);
 		fail("NoSuchElementException expected");
 	}

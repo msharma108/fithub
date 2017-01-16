@@ -4,6 +4,9 @@ As a registered user
 I want to be logged in to the system
 so that I can carry out tasks on the system
 
+Background:
+Given I am on home page
+
 Scenario: Login Success
 
 Given I am "registeredUser"

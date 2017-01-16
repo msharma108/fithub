@@ -150,7 +150,7 @@ public class ProductServiceImpl implements ProductService {
 			return productList;
 		else
 			throw new NoSuchElementException(
-					String.format("Product matching the searchString={} not found", productSearchString));
+					String.format("Product matching the searchString=%s not found", productSearchString));
 
 	}
 

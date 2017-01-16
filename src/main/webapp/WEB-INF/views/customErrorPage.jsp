@@ -42,8 +42,8 @@
            <div class="error-title"><h3>Error!</h3></div>
               <div class="error-text">
 				<c:if test="${exception !=null }">
-				<b><c:out  value="${exception }" /></b><br>
-				<c:out  value="while trying to access:" /></br>
+				<p id="exceptionId"><b>${exception } </b></p><br>
+				<c:out  value="while trying to access:" /><br>
 				<c:out  value="${errorUrl }" />
 				</c:if>
 			  </div>

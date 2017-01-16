@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,8 @@ public class WebDriverConfig implements DisposableBean {
 
 	@Autowired
 	private WebDriver driver;
+
+	private static final Logger LOG = LoggerFactory.getLogger(WebDriverConfig.class);
 
 	@Bean
 	public WebDriver driver() {
@@ -52,14 +56,8 @@ public class WebDriverConfig implements DisposableBean {
 
 	@Override
 	public void destroy() {
-
-		try {
-			System.out.println("WebDriver destroy");
-			driver.quit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		LOG.debug("Shutting down webdriver");
+		driver.quit();
 	}
 
 }

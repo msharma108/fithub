@@ -14,9 +14,11 @@ public class ProductListPageDriver extends HeaderPageDriver {
 	@FindBy(how = How.ID, using = "topProductListHeadingId")
 	WebElement topProductListHeading;
 
+	@FindBy(how = How.NAME, name = "addToCart")
+	WebElement instanceOfProductMatchingSearchString;
+
 	public ProductListPageDriver(WebDriver driver) {
 		super(driver);
-		// This can be changed later
 		PageFactory.initElements(driver, HeaderPageDriver.class);
 	}
 
@@ -26,6 +28,10 @@ public class ProductListPageDriver extends HeaderPageDriver {
 
 	public boolean isTopProductListDisplayed() {
 		return topProductListHeading.isDisplayed();
+	}
+
+	public boolean isProductMatchingSearchStringFound(String searchString) {
+		return instanceOfProductMatchingSearchString.isDisplayed();
 	}
 
 }

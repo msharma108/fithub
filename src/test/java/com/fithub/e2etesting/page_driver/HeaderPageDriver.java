@@ -29,6 +29,9 @@ public class HeaderPageDriver {
 	@FindBy(how = How.ID, using = "logoutId")
 	WebElement logout;
 
+	@FindBy(how = How.ID, using = "productSearchBoxId")
+	WebElement productSearchBox;
+
 	@CacheLookup
 	@FindBy(how = How.ID, using = "productListDropdownId")
 	WebElement productListDropdown;
@@ -88,5 +91,10 @@ public class HeaderPageDriver {
 
 	public void logout() {
 		logout.submit();
+	}
+
+	public void productSearch(String productSearchString) {
+		productSearchBox.sendKeys(productSearchString);
+		productSearchBox.submit();
 	}
 }
