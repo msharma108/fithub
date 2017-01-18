@@ -3,6 +3,8 @@ Feature:
 As a user
 I want to view the products in the application
 
+Background:
+Given I am on home page
 
 Scenario: Retrieve all products
 
