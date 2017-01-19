@@ -140,6 +140,7 @@
 <!-- http://bootsnipp.com/snippets/ypqoW -->
  <div class="container wrapper">
   <c:url var="handleOrderCheckout" value="/handleOrderCheckout"/>
+    <form:form modelAttribute="orderDTO" class="form-horizontal" action="${handleOrderCheckout}" method="POST" id="payment-form"> 
                     <!--REVIEW ORDER-->
 	<table id="checkout" class="table table-striped">
   			<thead id="table-bg">
@@ -213,12 +214,12 @@
 			</tfoot>
 	</table>
                     <!--REVIEW ORDER END-->
-      <form:form modelAttribute="orderDTO" class="form-horizontal" action="${handleOrderCheckout}" method="POST" id="payment-form">                  
+                     
                     <div class = "col-md-6">
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-primary" id = "shipping-panel">
                         <div class="panel-body" id = "shipping-body" >
-                        <div class="form-title"><b>Shipping Address</div><br>
+                        <div class="form-title"><b>Shipping Address</b></div><br>
                             <div class="form-group form-label">
                                 <div class="col-md-6 col-xs-12">
                                     <form:label path="givenName">Given Name:<span class="glyphicon glyphicon-user"> </span> </form:label><br>
