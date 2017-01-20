@@ -18,6 +18,12 @@ public class OrderTaskSuccessPageDriver extends HeaderPageDriver {
 
 	public boolean handleOrderTaskSuccess() {
 
+		// wait half a second for the success modal to show up on HTML
+		try {
+			Thread.sleep(700);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		boolean orderSuccess = this.orderBookingSuccessMessagePopup.isDisplayed();
 		this.orderBookingSuccessMessagePopup.click();
 		return orderSuccess;
