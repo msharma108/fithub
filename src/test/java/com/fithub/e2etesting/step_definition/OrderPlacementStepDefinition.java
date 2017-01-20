@@ -2,11 +2,6 @@ package com.fithub.e2etesting.step_definition;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,11 +74,6 @@ public class OrderPlacementStepDefinition extends AbstractStepDefinition {
 
 	@Then("^I see order placement successful message$")
 	public void i_see_order_placement_successful_message() throws Throwable {
-
-		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-		// Now you can do whatever you need to do with it, for example copy
-		// somewhere
-		FileUtils.copyFile(scrFile, new File("E:\\tmp\\screenshot.png"));
 
 		boolean expectedOrderSuccess = true;
 
