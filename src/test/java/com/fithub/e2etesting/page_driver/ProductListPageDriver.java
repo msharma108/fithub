@@ -15,7 +15,7 @@ public class ProductListPageDriver extends HeaderPageDriver {
 	WebElement topProductListHeading;
 
 	@FindBy(how = How.NAME, name = "addToCart")
-	WebElement instanceOfProductMatchingSearchString;
+	WebElement addToCart;
 
 	public ProductListPageDriver(WebDriver driver) {
 		super(driver);
@@ -31,7 +31,11 @@ public class ProductListPageDriver extends HeaderPageDriver {
 	}
 
 	public boolean isProductMatchingSearchStringFound(String searchString) {
-		return instanceOfProductMatchingSearchString.isDisplayed();
+		return addToCart.isDisplayed();
+	}
+
+	public void addToCart() {
+		addToCart.click();
 	}
 
 }

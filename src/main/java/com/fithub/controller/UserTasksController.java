@@ -59,26 +59,6 @@ public class UserTasksController {
 		return "user/usersList";
 	}
 
-	// This method will be called after userName is entered in userSearchPage
-	// ##Try the following to get the userName as part of the form's submit
-	// action
-	// and capture it in controller's Requestmapping and Pathvariable
-	// http://stackoverflow.com/questions/786363/html-append-text-value-to-form-action
-	// http://www.dynamicdrive.com/forums/showthread.php?32900-Append-form-input-to-a-URL
-	// On this JSP , show the admin related operations buttons visible only for
-	// admin role except for Edit User Information button
-	// Or Another Solution for URL
-	// Have a helper method helpConstructUrl method in the
-	// UserTasksHelperService
-	// the url and constructs it in the required manner for this method
-	// ## Important
-	// On the userProfile page, spring form model attribute should be used so
-	// that on form submission the next page (RegisterPage for Editing) should
-	// get the fields pre-populated with data. If that doesn't work with the
-	// modelAttribute. WE CAN PUT The USER not userDTO OBJECT IN SESSION HERE &
-	// retrieve it later at user edit submission handler or role change handler
-	// or delete handler without having to query the database again.
-
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
 	@RequestMapping(value = { "/viewUser/{userName:.+}", "/admin/viewUser/{userName:.+}" })
 	public String getUserProfilePage(@PathVariable("userName") String userName, Model model) {
@@ -87,10 +67,6 @@ public class UserTasksController {
 		User user = userService.getUserByUsername(userName);
 		if (user != null) {
 			UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
-			// setting userDTO with currently logged in user's details
-			// # IF ANYTHING BREAKS UNCOMMENT FOLLOWING
-			// userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
-			// userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
 			model.addAttribute("userDTO", userDTO);
 		}
 
@@ -99,17 +75,6 @@ public class UserTasksController {
 		LOG.debug("Profile page to be invoked");
 		return "user/profile";
 	}
-
-	// ## Not needed as there will be a user search box
-	// ##This preauthorize I feel can be omitted later as the AntMatchers would
-	// ensure that
-	// Url of pattern /admin cant be reached
-	// @PreAuthorize("hasAuthority('ADMIN')")
-	// @RequestMapping(value = { "/admin/searchUser" })
-	// public String getUserSearchPage() {
-	// LOG.debug("Getting userSearchPage");
-	// return "user/userSearchPage";
-	// }
 
 	@PostMapping(value = { "/admin/urlConstructionBasedOnOperation" })
 	public String constructUrlForAdminUserTasks(@RequestParam(value = "userView", required = false) String userView,

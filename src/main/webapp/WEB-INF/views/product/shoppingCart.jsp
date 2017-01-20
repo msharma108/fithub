@@ -98,7 +98,7 @@
 							
 							<td> <form action="/orderCheckout" method="POST">
 							 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<button class="btn btn-success btn-block">Checkout <span class="glyphicon glyphicon-forward"></span></button></form></td>
+							<button class="btn btn-success btn-block" id="checkoutId">Checkout <span class="glyphicon glyphicon-forward"></span></button></form></td>
 						</tr>
 					</tfoot>
 	</table>

@@ -10,7 +10,6 @@ import com.fithub.e2etesting.page_driver.CustomErrorPagePageDriver;
 import com.fithub.e2etesting.page_driver.HomePageDriver;
 import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -25,12 +24,6 @@ public class ProductSearchStepDefinition extends AbstractStepDefinition {
 		this.homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 		this.productListPageDriver = PageFactory.initElements(driver, ProductListPageDriver.class);
 		this.customErrorPagePageDriver = PageFactory.initElements(driver, CustomErrorPagePageDriver.class);
-	}
-
-	@Given("^I am on home page$")
-	public void i_am_on_home_page() throws Throwable {
-		String homePageTitle = "FitHub.com";
-		homePageDriver.assertPageTitle(homePageTitle);
 	}
 
 	@When("^I search product with name or description like \"([^\"]*)\"$")

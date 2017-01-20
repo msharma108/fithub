@@ -90,7 +90,11 @@ public class HeaderPageDriver {
 	}
 
 	public void logout() {
-		logout.submit();
+		logout.click();
+	}
+
+	public boolean isLogoutDisplayed() {
+		return driver.getPageSource().contains("Logout");
 	}
 
 	public void productSearch(String productSearchString) {
