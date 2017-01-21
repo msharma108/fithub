@@ -252,6 +252,7 @@
         <version>2.18.1</version>
 			<configuration>
 			<reportsDirectories><reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory></reportsDirectories>
+			<outputName>fithub_report</outputName>
 			</configuration>
             </plugin>
                     <plugin>
