@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
  *
  */
 @Configuration
-@Profile("!heroku")
+@Profile("!cloud")
 public class TomcatMultiConnectorConfig {
 
 	// Reference:-
