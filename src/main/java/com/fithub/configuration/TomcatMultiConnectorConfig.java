@@ -8,12 +8,14 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
  * Enables support for both http and https
  *
  */
 @Configuration
+@Profile("!heroku")
 public class TomcatMultiConnectorConfig {
 
 	// Reference:-
