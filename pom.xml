@@ -5,6 +5,7 @@
 
 	<groupId>com.fithub</groupId>
 	<artifactId>FitHub</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>fithub</name>
