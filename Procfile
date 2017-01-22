@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=cloud -jar target/FitHub-0.0.1.jar
+web: java -Dserver.port=$PORT ${JDBC_DATABASE_URL} ${JDBC_DATABASE_USERNAME} ${JDBC_DATABASE_PASSWORD} -Dspring.profiles.active=cloud -jar target/FitHub-0.0.1.jar
