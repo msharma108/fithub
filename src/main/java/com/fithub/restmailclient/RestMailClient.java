@@ -27,10 +27,13 @@ public class RestMailClient {
 
 	private static final Logger LOG = LoggerFactory.getLogger(RestMailClient.class);
 	private final String emailSenderAddress;
+	private final String sendGridApiKey;
 
 	@Autowired
-	public RestMailClient(@Value("${application.emailSenderAddress}") final String emailSenderAddress) {
+	public RestMailClient(@Value("${application.emailSenderAddress}") final String emailSenderAddress,
+			@Value("${sendgrid.apikey}") final String sendGridApiKey) {
 		this.emailSenderAddress = emailSenderAddress;
+		this.sendGridApiKey = sendGridApiKey;
 	}
 
 	public void sendOrderReceiptMail(SalesOrder salesOrder) {
@@ -51,7 +54,7 @@ public class RestMailClient {
 				salesOrder.getSalesOrderCreationDate().toString());
 		mail.setTemplateId(orderReceiptTemplateID);
 
-		SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+		SendGrid sg = new SendGrid(sendGridApiKey);
 		Request request = new Request();
 		try {
 			request.method = Method.POST;
@@ -90,7 +93,7 @@ public class RestMailClient {
 		mail.personalization.get(0).addSubstitution("-refundId-", salesOrder.getStripeRefundId().toString());
 		mail.setTemplateId(orderCancellationTemplateId);
 
-		SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+		SendGrid sg = new SendGrid(sendGridApiKey);
 		Request request = new Request();
 		try {
 			request.method = Method.POST;
@@ -123,7 +126,7 @@ public class RestMailClient {
 		mail.personalization.get(0).addSubstitution("-userName-", givenName);
 		mail.setTemplateId(welcomeMailTemplateId);
 
-		SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+		SendGrid sg = new SendGrid(sendGridApiKey);
 		Request request = new Request();
 		try {
 			request.method = Method.POST;
@@ -156,7 +159,7 @@ public class RestMailClient {
 		mail.personalization.get(0).addSubstitution("-resetPassword-", resetPassword);
 		mail.setTemplateId(resetPasswordMailTemplateId);
 
-		SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+		SendGrid sg = new SendGrid(sendGridApiKey);
 		Request request = new Request();
 		try {
 			request.method = Method.POST;

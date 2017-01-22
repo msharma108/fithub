@@ -22,9 +22,6 @@ public class FithubMvcConfig extends WebMvcConfigurerAdapter {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".jsp");
-
-		System.out.println("Heroku URL" + env.getProperty("DATABASE_URL"));
-
 		return resolver;
 	}
 }
