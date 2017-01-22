@@ -37,16 +37,16 @@
 	<!-- contents start here -->
 <div class="container-fluid">
 
-  <!-- Add orderBookingSuccessM Modal -->
-  <div class="modal" id="orderBookingSuccessModalId">
+  <!-- Add productRegistrationSuccess Modal -->
+  <div class="modal" id="productRegistrationSuccessModalId">
     <div class="modal-dialog">
     
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> Order Booking</h4>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> Product Registration</h4>
         </div>
         <div class="modal-body">
-          <p>Order Booked Successfully  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+          <p>Product saved into database successfully <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
@@ -57,16 +57,36 @@
   </div>   
  
  
-  <!-- orderCancellationModal success Modal -->
-  <div class="modal" id="orderCancellationModalId">
+  <!-- productDeletionSuccess Modal -->
+  <div class="modal" id="productDeletionSuccessModalId">
     <div class="modal-dialog">
     
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span>Order Cancellation</h4>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span>Product Deletion</h4>
         </div>
         <div class="modal-body">
-          <p>Order Canceled Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+          <p>Product deleted successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>   
+  
+  
+    <!-- productUpdateSuccess Modal -->
+  <div class="modal" id="productUpdateSuccessModalId">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span>Product Edit</h4>
+        </div>
+        <div class="modal-body">
+          <p>Product updated successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
@@ -91,19 +111,25 @@
     
     $(document).ready(function(){ 
     	
-    	var orderBookingTaskSuccess =1;
-    	var orderCancellationTaskSuccess =2;
+    	var productRegistrationTaskSuccess =1;
+    	var productDeletionTaskSuccess =2;
+    	var productUpdateTaskSuccess =3;
     	console.log( "ready!" );
-    	if ( ${orderTaskTypeCompleted} == orderBookingTaskSuccess)
+    	if ( ${productTaskTypeCompleted} == productRegistrationTaskSuccess)
     		{
-    		 console.log("orderBookingTaskSuccess value",typeof(${orderTaskTypeCompleted}));
-	        $('#orderBookingSuccessModalId').modal('show');
+    		 console.log("productRegistrationTaskSuccess value",typeof(${productTaskTypeCompleted}));
+	        $('#productRegistrationSuccessModalId').modal('show');
     		}
-    	else if ( ${orderTaskTypeCompleted} == orderCancellationTaskSuccess)
+    	else if ( ${productTaskTypeCompleted} == productDeletionTaskSuccess)
 			{
-			 console.log("orderCancellationTaskSuccess value",typeof(${orderTaskTypeCompleted}));
-        	$('#orderCancellationModalId').modal('show');
+			 console.log("productDeletionTaskSuccess value",typeof(${productTaskTypeCompleted}));
+        	$('#productDeletionSuccessModalId').modal('show');
 			}
+    	else if ( ${productTaskTypeCompleted} == productUpdateTaskSuccess)
+		{
+		 console.log("productUpdateTaskSuccess value",typeof(${productTaskTypeCompleted}));
+    	$('#productUpdateSuccessModalId').modal('show');
+		}
 		else
 			{
 				console.log("all conditions false, no action");

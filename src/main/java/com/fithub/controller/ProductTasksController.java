@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.fithub.domain.Product;
 import com.fithub.domain.ProductDTO;
@@ -201,7 +202,7 @@ public class ProductTasksController {
 		}
 		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 2);
 
-		return "redirect:/product/productTaskSuccess";
+		return "redirect:/admin/productTaskSuccess";
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -245,7 +246,7 @@ public class ProductTasksController {
 
 		// used to check update success on the canvas page
 		redirectAttributes.addFlashAttribute("productTaskTypeCompleted", 3);
-		return "redirect:/product/productTaskSuccess";
+		return "redirect:/admin/productTaskSuccess";
 	}
 
 	@RequestMapping(value = "/searchProduct")
@@ -256,6 +257,23 @@ public class ProductTasksController {
 		model = prepareProductsForDisplay(model, productList);
 
 		return "product/productList";
+	}
+
+	@RequestMapping(value = { "/productTaskSuccess", "/admin/productTaskSuccess" })
+	public String getProductTaskSuccessPage(HttpServletRequest request) {
+
+		// Preventing problem with page refresh in case of flash attribute
+		// Reference:
+		// http://www.tikalk.com/redirectattributes-new-feature-spring-mvc-31/
+		LOG.debug("Getting Success Page");
+		Map<String, ?> checkMap = RequestContextUtils.getInputFlashMap(request);
+		if (checkMap != null)
+
+			// Success Page could be on registration itself
+			// Handles RegisterSuccess and UpdateSuccess
+			return "product/productTaskSuccess";
+		else
+			return "home";
 	}
 
 }
