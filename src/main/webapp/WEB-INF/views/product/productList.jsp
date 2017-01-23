@@ -104,12 +104,12 @@
                                 <!-- add to cart button -->
                                 <sec:authorize access="!hasAuthority('ADMIN')">
 	                           
-			                    <button class="btn btn-primary btn-sm center-block" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
+			                    <button class="btn btn-primary btn-sm center-block" type="submit" name="addToCart"   >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 			                    </sec:authorize>
 			                    <!-- pull right if admin -->
                                 <sec:authorize access="hasAuthority('ADMIN')">
 	                          
-			                    <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart" id="addToCartId"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
+			                    <button class="btn btn-primary btn-sm pull-right" type="submit" name="addToCart"  >Add<span class="glyphicon glyphicon-share-alt"></span> <span class="glyphicon glyphicon-shopping-cart"></span></button>
 			                    </sec:authorize>
 			                    </c:when>
 			                    <c:when test="${product.stockQuantity <=0}">

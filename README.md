@@ -33,14 +33,15 @@ Following are the maven commands to perform the listed actions:-
  - Generate test reports only:
  
 
-	> surefire-report:report-only site -DgenerateReports=false
+	> mvn surefire-report:report-only site -DgenerateReports=false
 
  - Run application:
  
 
-	> clean install spring-boot:run
+	> mvn clean install spring-boot:run
 
  - Run Cucumber Tests & generate advance reports:
  
 
 	> mvn clean verify
+

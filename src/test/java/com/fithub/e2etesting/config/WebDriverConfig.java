@@ -49,7 +49,7 @@ public class WebDriverConfig implements DisposableBean {
 	}
 
 	@Bean
-	public String url() {
+	public String homeUrl() {
 
 		return new String("https://localhost:8443/");
 	}

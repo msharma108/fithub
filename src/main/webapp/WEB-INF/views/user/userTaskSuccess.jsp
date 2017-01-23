@@ -204,7 +204,7 @@
     	
 		else
 			{
-				console.log("all false");
+				console.log("all conditions false for user task type,no action");
 			}
     });
     </script>

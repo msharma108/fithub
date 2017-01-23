@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.fithub</groupId>
-	<artifactId>project</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>FitHub</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>fithub</name>
@@ -168,6 +168,13 @@
     	    </exclusion>
     	    </exclusions>
     </dependency>
+    
+    <!-- Heroku PostgreSql dependency -->
+    <dependency>
+  <groupId>org.postgresql</groupId>
+  <artifactId>postgresql</artifactId>
+  <version>9.4.1208</version>
+</dependency>
 
 	</dependencies>
 
@@ -252,6 +259,7 @@
         <version>2.18.1</version>
 			<configuration>
 			<reportsDirectories><reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory></reportsDirectories>
+			<outputName>fithub_report</outputName>
 			</configuration>
             </plugin>
                     <plugin>

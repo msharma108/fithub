@@ -42,7 +42,7 @@
 	  <div class="panel panel-primary" id ="login1">
          <div class="panel-body"   id ="login3"> 
          <div class="form-title"><h4>Sign In</h4></div>
-	        <form action="/login" method="POST" >
+	        <form action="/login" method="POST" id="loginFormId" >
  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
               <div class="col-sm-8">    
                 <div class="form-group row">

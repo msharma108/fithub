@@ -51,6 +51,14 @@ public class UserTasksController {
 		this.restMailClient = restMailClient;
 	}
 
+	/**
+	 * Method handles requests for retrieving the list of all the users in the
+	 * system
+	 * 
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @return View that presents the list of all users
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(value = { "/admin/viewUsers" })
 	public String getAllUsersListPage(Model model) {
@@ -59,26 +67,16 @@ public class UserTasksController {
 		return "user/usersList";
 	}
 
-	// This method will be called after userName is entered in userSearchPage
-	// ##Try the following to get the userName as part of the form's submit
-	// action
-	// and capture it in controller's Requestmapping and Pathvariable
-	// http://stackoverflow.com/questions/786363/html-append-text-value-to-form-action
-	// http://www.dynamicdrive.com/forums/showthread.php?32900-Append-form-input-to-a-URL
-	// On this JSP , show the admin related operations buttons visible only for
-	// admin role except for Edit User Information button
-	// Or Another Solution for URL
-	// Have a helper method helpConstructUrl method in the
-	// UserTasksHelperService
-	// the url and constructs it in the required manner for this method
-	// ## Important
-	// On the userProfile page, spring form model attribute should be used so
-	// that on form submission the next page (RegisterPage for Editing) should
-	// get the fields pre-populated with data. If that doesn't work with the
-	// modelAttribute. WE CAN PUT The USER not userDTO OBJECT IN SESSION HERE &
-	// retrieve it later at user edit submission handler or role change handler
-	// or delete handler without having to query the database again.
-
+	/**
+	 * Method handles requests to retrieve a user's profile page
+	 * 
+	 * @param userName
+	 *            UserName of the user whose profile is to be retrieved
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @return View that presents the profile page of the user whose UserName
+	 *         was passed
+	 */
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
 	@RequestMapping(value = { "/viewUser/{userName:.+}", "/admin/viewUser/{userName:.+}" })
 	public String getUserProfilePage(@PathVariable("userName") String userName, Model model) {
@@ -87,10 +85,6 @@ public class UserTasksController {
 		User user = userService.getUserByUsername(userName);
 		if (user != null) {
 			UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
-			// setting userDTO with currently logged in user's details
-			// # IF ANYTHING BREAKS UNCOMMENT FOLLOWING
-			// userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
-			// userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
 			model.addAttribute("userDTO", userDTO);
 		}
 
@@ -100,17 +94,34 @@ public class UserTasksController {
 		return "user/profile";
 	}
 
-	// ## Not needed as there will be a user search box
-	// ##This preauthorize I feel can be omitted later as the AntMatchers would
-	// ensure that
-	// Url of pattern /admin cant be reached
-	// @PreAuthorize("hasAuthority('ADMIN')")
-	// @RequestMapping(value = { "/admin/searchUser" })
-	// public String getUserSearchPage() {
-	// LOG.debug("Getting userSearchPage");
-	// return "user/userSearchPage";
-	// }
-
+	/**
+	 * Method acts as the initial entry point for filtering various ADMIN user
+	 * task requests. It retrieves the user profile and redirects request to the
+	 * appropriate controller method based on the user task
+	 * 
+	 * @param userView
+	 *            Request Parameter value passed from the user interface for
+	 *            ADMIN user task type - view user profile
+	 * @param userEdit
+	 *            Request Parameter value passed from the user interface for
+	 *            ADMIN user task type - edit user profile
+	 * @param userDelete
+	 *            Request Parameter value passed from the user interface for
+	 *            ADMIN user task type - delete user profile
+	 * @param userRoleChange
+	 *            Request Parameter value passed from the user interface for
+	 *            ADMIN user task type - change user role
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 *            parameters
+	 * @param authentication
+	 *            Spring Security core Authentication instance that comprises of
+	 *            the authenticated user's security details
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @return A Forward Request URI that is handled by ADMIN user task specific
+	 *         controllers
+	 */
 	@PostMapping(value = { "/admin/urlConstructionBasedOnOperation" })
 	public String constructUrlForAdminUserTasks(@RequestParam(value = "userView", required = false) String userView,
 			@RequestParam(value = "userEdit", required = false) String userEdit,
@@ -160,9 +171,28 @@ public class UserTasksController {
 
 	}
 
-	// This method will be reached when the delete button on the user profile
-	// page is clicked
-
+	/**
+	 * Method handles request for ADMIN user delete tasks for deleting a user
+	 * profile
+	 * 
+	 * @param userName
+	 *            UserName of the user whose profile is to be retrieved
+	 * @param userDTO
+	 *            Data Transfer Object(DTO) for user that captures user related
+	 *            data from the UI and also presents it on the UI.
+	 * @param redirectAttributes
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 *            parameters
+	 * @return Redirected request URI that is handled by a dedicated controller
+	 *         handling various task success
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/admin/userTask/{userName:.+}", params = "userDelete")
 	public String handleUserDelete(@PathVariable("userName") String userName,
@@ -183,6 +213,22 @@ public class UserTasksController {
 		return "redirect:/admin/userTaskSuccess";
 	}
 
+	/**
+	 * Method handles request for ADMIN user change user role task for switching
+	 * a user's role in the application
+	 * 
+	 * @param userDTO
+	 *            Data Transfer Object(DTO) for user that captures user related
+	 *            data from the UI and also presents it on the UI.
+	 * @param redirectAttributes
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * 
+	 * @return Redirected request URI that is handled by a dedicated controller
+	 *         handling various task success
+	 */
 	@PostMapping(value = { "/admin/userRoleChange" }, params = "userRoleChange")
 	public String handleUserRoleChange(@ModelAttribute("userDTO") UserDTO userDTO,
 			RedirectAttributes redirectAttributes) {
@@ -198,6 +244,17 @@ public class UserTasksController {
 
 	}
 
+	/**
+	 * Method handles user task success requests and comprises of logic to
+	 * display success results on the UI just once thus preventing any issues
+	 * that could arise due to refresh
+	 * 
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 *            parameters
+	 * @return A user task success page or the home page in case of refresh on a
+	 *         user task execution completion
+	 */
 	@RequestMapping(value = { "/userTaskSuccess", "/admin/userTaskSuccess" })
 	public String getUserTaskSuccessPage(HttpServletRequest request) {
 
@@ -215,6 +272,11 @@ public class UserTasksController {
 			return "home";
 	}
 
+	/**
+	 * Method displays password retrieval page for the user
+	 * 
+	 * @return
+	 */
 	@GetMapping(value = "/passwordRetrieval")
 	public String getPasswordRetrievalPage() {
 		LOG.debug("Getting password retieval page");
@@ -222,6 +284,45 @@ public class UserTasksController {
 		return "user/passwordRetrieval";
 	}
 
+	/**
+	 * Method processes password retrieval information submitted on the password
+	 * retrieval page. It validates and confirms user's authenticity and in case
+	 * of successful validation, sends a randomly generated string token to the
+	 * user's registered email address for resetting password
+	 * 
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 *            parameters
+	 * @param performRetrieval
+	 *            Request Parameter that separates requests for retrieving a
+	 *            user's security questions based on his stored security
+	 *            questions from requests that validate user's response to
+	 *            security questions
+	 * @param getSecurityChecks
+	 *            Request Parameter that separates requests for validating a
+	 *            user's response to security questions from requests for
+	 *            retrieving a user's security questions based on his stored
+	 *            security questions
+	 * @param redirectAttributes
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * @param passwordRetrievalDTO
+	 *            Data Transfer Object for capturing password retrieval related
+	 *            answers from the UI and also display the security questions on
+	 *            the UI
+	 * @param result
+	 *            Spring's BindingResult object that validates the user input on
+	 *            password retrieval page for client side validation i.e.
+	 *            checking Nulls,formats
+	 * @return Returns a UI page based on the results of the password retrieval
+	 *         process. Displays the password retrieval page in case of any
+	 *         failures or else in case of successful validation of user
+	 *         security questions, redirects to home page
+	 */
 	@PostMapping(value = "/passwordRetrieval")
 	public String handlePasswordRetrieval(Model model, HttpServletRequest request,
 			@RequestParam(value = "performRetrieval", required = false) String performRetrieval,

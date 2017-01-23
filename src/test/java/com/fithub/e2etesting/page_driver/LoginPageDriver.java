@@ -17,6 +17,9 @@ public class LoginPageDriver extends HeaderPageDriver {
 	@FindBy(how = How.ID, using = "invalidCredentialsId")
 	WebElement invalidCredentials;
 
+	@FindBy(how = How.ID, using = "loginFormId")
+	WebElement loginForm;
+
 	public LoginPageDriver(WebDriver driver) {
 		super(driver);
 		// This can be changed later
@@ -39,5 +42,9 @@ public class LoginPageDriver extends HeaderPageDriver {
 
 	public boolean isLoginFailureDisplayed() {
 		return invalidCredentials.isDisplayed();
+	}
+
+	public boolean isLoginFormDisplayed() {
+		return loginForm.isDisplayed();
 	}
 }

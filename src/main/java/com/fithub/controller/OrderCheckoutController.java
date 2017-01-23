@@ -127,7 +127,7 @@ public class OrderCheckoutController {
 			restMailClient.sendOrderReceiptMail(salesOrder);
 
 			// flash attribute for orderBookSuccess message
-			redirectAttribute.addFlashAttribute("orderBookingSuccess", 1);
+			redirectAttribute.addFlashAttribute("orderTaskTypeCompleted", 1);
 
 		} else
 			throw new CardException(charge.getFailureMessage(), charge.getId(), charge.getFailureCode(), paymentToken,
@@ -167,7 +167,7 @@ public class OrderCheckoutController {
 
 			// Success Page could be on registration itself
 			// Handles RegisterSuccess and UpdateSuccess
-			return "user/orderBookingSuccess";
+			return "order/orderTaskSuccess";
 		else
 			return "home";
 	}
@@ -243,7 +243,7 @@ public class OrderCheckoutController {
 			salesOrder = salesOrderService.cancelSalesOrder(salesOrder, refund, authentication);
 		}
 		if (salesOrder.getStatus().equals("CANCELED")) {
-			redirectAttribute.addFlashAttribute("orderCancellationSuccess", 2);
+			redirectAttribute.addFlashAttribute("orderTaskTypeCompleted", 2);
 			// Send order cancellation email
 			restMailClient.sendOrderCancellationMail(salesOrder);
 		}

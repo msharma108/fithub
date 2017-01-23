@@ -54,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional
 	public Product getProductByProductName(String productName) throws IllegalArgumentException {
 		LOG.debug("Retreive product having productName={}", productName);
 		Product product = productRepository.findOneByProductName(productName);
@@ -95,18 +96,21 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional
 	public List<Product> getAllProducts() {
 		LOG.debug("Retrieving the list of all the products");
 		return productRepository.findAll(new Sort("productName"));
 	}
 
 	@Override
+	@Transactional
 	public List<Product> getTop5ProductsByQuantitySold() {
 		LOG.debug("Retrieving the list of top products based on quantity sold");
 		return productRepository.findTop5ByOrderByQuantitySoldDesc();
 	}
 
 	@Override
+	@Transactional
 	public List<Product> getProductsByCategory(String category) {
 
 		LOG.debug("Retrieving the list of products belonging to category={}", category);
@@ -119,6 +123,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional
 	public Product updateProductDetails(ProductDTO productDTO, Authentication authentication) {
 
 		LOG.debug("Attempting to update product={} by user={}", productDTO.getProductName(),
@@ -134,6 +139,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional
 	public List<Product> getProductsContaingProductNameOrShortDescription(String productSearchString) {
 		LOG.debug("Attempting to find products matching searchString={}", productSearchString);
 		List<Product> productList = new ArrayList<Product>();

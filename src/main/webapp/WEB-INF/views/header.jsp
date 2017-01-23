@@ -38,7 +38,7 @@
        </div>
 	   <div class="navbar"  role="navigation" id="bottombar">
 		 <div class="navbar-inner">
-           <a class="navbar-brand" href="#">FitHub.com</a>
+           <a class="navbar-brand" href="<c:url value="/home"/>"><img alt="FitHub" src="../images/brand.png" width="200"></a>
          </div>
 		  <ul class="nav navbar-nav">
 		   <li class="nav-item">
