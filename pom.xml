@@ -6,7 +6,8 @@
 	<groupId>com.fithub</groupId>
 	<artifactId>FitHub</artifactId>
 	<version>0.0.1</version>
-	<packaging>jar</packaging>
+	<!-- Dynamic packaging selection based on maven profile selected -->
+<packaging>${packaging.type}</packaging>
 
 	<name>fithub</name>
 	<description>Spring Boot-fithub project</description>
@@ -25,7 +26,29 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
+	
+	<!--Maven profile based packaging starts, Default jar packaging-->
+	<profiles>
+        <profile>
+            <id>war</id>
+            <properties>
+                <packaging.type>war</packaging.type>
+            </properties>
+        </profile>
+        <profile>
+            <id>jar</id>
+             <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <packaging.type>jar</packaging.type>
+            </properties>
+                </profile>
+          </profiles>
+        <!--Maven profile based packaging ends-->
 
+	<!--Dependencies start -->
+  
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -77,12 +100,15 @@
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
 
-		<!-- JSP dependency -->
+		<!-- Building a war file that is both executable and deployable -->
+		<!--http://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-tomcat -->
 		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-			<scope>provided</scope>
-		</dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 
 		<!-- HikariCP dependency -->
 		<dependency>
@@ -114,7 +140,12 @@
 		
 		<!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
 
-		
+		<!-- Embedded Tomcat -->
+		<dependency>
+    		<groupId>org.apache.tomcat.embed</groupId>
+    		<artifactId>tomcat-embed-jasper</artifactId>
+    		<scope>provided</scope>
+		</dependency>
 
 <!-- Cucumber Dependencies start -->
 	<!-- https://mvnrepository.com/artifact/info.cukes/cucumber-java -->
@@ -178,6 +209,7 @@
 
 	</dependencies>
 
+	<!--Dependencies end -->
 
 	<build>
 		<plugins>

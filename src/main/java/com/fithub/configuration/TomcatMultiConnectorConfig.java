@@ -2,6 +2,7 @@ package com.fithub.configuration;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
+import org.apache.catalina.webresources.StandardRoot;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
@@ -27,12 +28,21 @@ public class TomcatMultiConnectorConfig {
 
 			@Override
 			protected void postProcessContext(Context context) {
+				// Configure servlet container cache size
+				int cacheMaxSize = 50 * 1024;
+				StandardRoot standardRoot = new StandardRoot(context);
+				standardRoot.setCacheMaxSize(cacheMaxSize);
+
+				// Security constraints for the servlet container
 				SecurityConstraint securityConstraint = new SecurityConstraint();
 				securityConstraint.setUserConstraint("CONFIDENTIAL");
 				SecurityCollection collection = new SecurityCollection();
 				// redirecting to Https when site accessed over Http
 				collection.addPattern("/*");
 				securityConstraint.addCollection(collection);
+
+				// context update
+				context.setResources(standardRoot);
 				context.addConstraint(securityConstraint);
 			}
 		};
