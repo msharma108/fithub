@@ -213,7 +213,9 @@
 			</tfoot>
 	</table>
                     <!--REVIEW ORDER END-->
-      <form:form modelAttribute="orderDTO" class="form-horizontal" action="${handleOrderCheckout}" method="POST" id="payment-form">                  
+      <form:form modelAttribute="orderDTO" class="form-horizontal" action="${handleOrderCheckout}" method="POST" id="payment-form">  
+      <input type="hidden" name="orderTotalCost" value="${orderTotalCost}" > 
+      <input type="hidden" name="shippingCost" value="${shippingCost}" >  
                     <div class = "col-md-6">
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-primary" id = "shipping-panel">
