@@ -17,7 +17,7 @@ import cucumber.api.java.en.When;
  *
  */
 
-public class ViewProductListStepDefinition extends AbstractStepDefinition {
+public class ViewProductListStepDefinition {
 
 	private HomePageDriver homePageDriver;
 	private ProductListPageDriver productListPageDriver;

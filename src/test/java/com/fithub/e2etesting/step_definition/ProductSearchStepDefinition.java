@@ -13,7 +13,7 @@ import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class ProductSearchStepDefinition extends AbstractStepDefinition {
+public class ProductSearchStepDefinition {
 
 	private HomePageDriver homePageDriver;
 	private ProductListPageDriver productListPageDriver;
