@@ -2,7 +2,7 @@ package com.fithub.e2etesting.jbehave_steps;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jbehave.core.annotations.Given;
+import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.openqa.selenium.WebDriver;
@@ -39,12 +39,11 @@ public class ViewProductListStep {
 	// ProductListPageDriver.class);
 	// }
 
-	@Given("I am on home page")
-	public void givenIAmOnHomePage() {
-		String homePageTitle = "FitHub.com";
-		driver.get(homeUrl);
-		homePageDriver.assertPageTitle(homePageTitle);
-	}
+	// @Given("I am on home page")
+	// public void givenIAmOnHomePage() {
+	// String homePageTitle = "FitHub.com";
+	// homePageDriver.assertPageTitle(homePageTitle);
+	// }
 
 	@When("I decide to view all products")
 	public void whenIDecideToViewAllProducts() {
@@ -53,7 +52,7 @@ public class ViewProductListStep {
 
 	@Then("I see list of all the products")
 	public void thenISeeListOfAllTheProducts() {
-		// PENDING
+		assertEquals("Product List not displayed", true, productListPageDriver.isAllProductListDisplayed());
 	}
 
 	@When("I decide to view top products")
@@ -62,6 +61,7 @@ public class ViewProductListStep {
 	}
 
 	@Then("I see list of top products")
+	@Pending
 	public void thenISeeListOfTopProducts() {
 		assertEquals("Top Product List not displayed", true, productListPageDriver.isTopProductListDisplayed());
 	}

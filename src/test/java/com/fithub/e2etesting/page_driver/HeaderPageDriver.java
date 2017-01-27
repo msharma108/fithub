@@ -32,7 +32,6 @@ public class HeaderPageDriver {
 	@FindBy(how = How.ID, using = "productSearchBoxId")
 	WebElement productSearchBox;
 
-	@CacheLookup
 	@FindBy(how = How.ID, using = "productListDropdownId")
 	WebElement productListDropdown;
 

@@ -7,8 +7,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.io.FileUtils;
 import org.jbehave.core.annotations.AfterScenario;
-import org.jbehave.core.annotations.AfterStory;
-import org.jbehave.core.annotations.BeforeStory;
+import org.jbehave.core.annotations.BeforeScenario;
+import org.jbehave.core.annotations.Given;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -40,7 +40,7 @@ public class ScenarioSetupTeardownStep {
 		homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 	}
 
-	@BeforeStory
+	@BeforeScenario
 	public void beforeEachScenario() {
 		try {
 			ScriptUtils.executeSqlScript(datasource.getConnection(),
@@ -65,7 +65,7 @@ public class ScenarioSetupTeardownStep {
 	// Reference:
 	// https://advancedweb.hu/2015/04/28/animated-failure-reports-with-selenium-and-cucumber/
 
-	@AfterStory
+	@AfterScenario
 	public void afterEachScenario() {
 
 		// if (scenario.isFailed())
@@ -87,11 +87,10 @@ public class ScenarioSetupTeardownStep {
 		captureScenarioSnapshot();
 	}
 
-	// @Given("I am on home page")
-	// public void iAmOnHomePage() throws Throwable {
-	// String homePageTitle = "FitHub.com";
-	// driver.get(homeUrl);
-	// homePageDriver.assertPageTitle(homePageTitle);
-	// }
+	@Given("I am on home page")
+	public void givenIAmOnHomePage() {
+		String homePageTitle = "FitHub.com";
+		homePageDriver.assertPageTitle(homePageTitle);
+	}
 
 }
