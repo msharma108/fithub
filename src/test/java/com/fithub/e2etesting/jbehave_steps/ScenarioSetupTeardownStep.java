@@ -1,18 +1,27 @@
 package com.fithub.e2etesting.jbehave_steps;
 
+import java.io.File;
+import java.sql.SQLException;
+
 import javax.sql.DataSource;
 
+import org.apache.commons.io.FileUtils;
+import org.jbehave.core.annotations.AfterScenario;
+import org.jbehave.core.annotations.AfterStory;
+import org.jbehave.core.annotations.BeforeStory;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ScriptException;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.stereotype.Component;
 
 import com.fithub.e2etesting.page_driver.HomePageDriver;
 
-import cucumber.api.Scenario;
-import cucumber.api.java.en.Given;
-
+@Component
 public class ScenarioSetupTeardownStep {
 
 	private final DataSource datasource;
@@ -31,23 +40,22 @@ public class ScenarioSetupTeardownStep {
 		homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 	}
 
-	// @Before
-	// public void beforeEachScenario() {
-	// try {
-	// ScriptUtils.executeSqlScript(datasource.getConnection(),
-	// new
-	// ClassPathResource("e2e_test_scripts/e2e_testing-test-data-creation.sql"));
-	// } catch (ScriptException | SQLException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// driver.get(homeUrl);
-	// }
-
-	public void captureScenarioSnapshot(Scenario scenario) {
+	@BeforeStory
+	public void beforeEachScenario() {
 		try {
-			byte[] failureScreenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-			scenario.embed(failureScreenshot, "image/png");
+			ScriptUtils.executeSqlScript(datasource.getConnection(),
+					new ClassPathResource("e2e_test_scripts/e2e_testing-test-data-creation.sql"));
+		} catch (ScriptException | SQLException e) {
+			e.printStackTrace();
+		}
+
+		driver.get(homeUrl);
+	}
+
+	public void captureScenarioSnapshot() {
+		try {
+			File failureScreenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(failureScreenshotFile, new File("E:\\ScenarioFailureScreenShot.jpg"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,29 +65,33 @@ public class ScenarioSetupTeardownStep {
 	// Reference:
 	// https://advancedweb.hu/2015/04/28/animated-failure-reports-with-selenium-and-cucumber/
 
-	// @After
-	// public void afterEachScenario(Scenario scenario) {
-	//
-	// if (scenario.isFailed())
-	// captureScenarioSnapshot(scenario);
-	//
-	// if (homePageDriver.isLogoutDisplayed())
-	// homePageDriver.logout();
-	//
-	// try {
-	// ScriptUtils.executeSqlScript(datasource.getConnection(),
-	// new
-	// ClassPathResource("e2e_test_scripts/e2e_testing-test-data-deletion.sql"));
-	// } catch (ScriptException | SQLException e) {
-	// e.printStackTrace();
-	// }
-	// }
+	@AfterStory
+	public void afterEachScenario() {
 
-	@Given("I am on home page")
-	public void i_am_on_home_page() throws Throwable {
-		String homePageTitle = "FitHub.com";
-		driver.get(homeUrl);
-		homePageDriver.assertPageTitle(homePageTitle);
+		// if (scenario.isFailed())
+		// captureScenarioSnapshot(scenario);
+
+		if (homePageDriver.isLogoutDisplayed())
+			homePageDriver.logout();
+
+		try {
+			ScriptUtils.executeSqlScript(datasource.getConnection(),
+					new ClassPathResource("e2e_test_scripts/e2e_testing-test-data-deletion.sql"));
+		} catch (ScriptException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
+
+	@AfterScenario(uponOutcome = AfterScenario.Outcome.FAILURE)
+	public void afterFailedScenario() {
+		captureScenarioSnapshot();
+	}
+
+	// @Given("I am on home page")
+	// public void iAmOnHomePage() throws Throwable {
+	// String homePageTitle = "FitHub.com";
+	// driver.get(homeUrl);
+	// homePageDriver.assertPageTitle(homePageTitle);
+	// }
 
 }

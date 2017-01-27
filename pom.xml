@@ -86,6 +86,13 @@
 			<version>1.2</version>
 		</dependency>
 		
+		  <dependency>
+            <groupId>org.jbehave</groupId>
+            <artifactId>jbehave-gherkin</artifactId>
+            <version>4.0.4</version>
+
+        </dependency>
+		
 				<!-- JUnit dependency -->
 		<dependency>
    			<groupId>junit</groupId>
@@ -221,14 +228,6 @@
     <artifactId>jbehave-spring</artifactId>
     <version>4.1</version>
 </dependency>
-
-<!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
-<dependency>
-    <groupId>org.javassist</groupId>
-    <artifactId>javassist</artifactId>
-    <version>3.21.0-GA</version>
-</dependency>
-
 
 
 	</dependencies>
