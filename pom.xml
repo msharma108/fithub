@@ -207,6 +207,22 @@
   <version>9.4.1208</version>
 </dependency>
 
+
+<!-- https://mvnrepository.com/artifact/org.jbehave/jbehave-core -->
+<dependency>
+    <groupId>org.jbehave</groupId>
+    <artifactId>jbehave-core</artifactId>
+    <version>4.1</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.jbehave/jbehave-spring -->
+<dependency>
+    <groupId>org.jbehave</groupId>
+    <artifactId>jbehave-spring</artifactId>
+    <version>4.1</version>
+</dependency>
+
+
 	</dependencies>
 
 	<!--Dependencies end -->
