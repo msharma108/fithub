@@ -14,7 +14,6 @@ import org.jbehave.core.io.StoryFinder;
 import org.jbehave.core.junit.AnnotatedEmbedderRunner;
 import org.jbehave.core.parsers.RegexPrefixCapturingPatternParser;
 import org.jbehave.core.reporters.StoryReporterBuilder;
-import org.jbehave.core.steps.InstanceStepsFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -30,7 +29,9 @@ import com.fithub.e2etesting.jbehave_steps.AnnotatedEmbedder.CustomStoryLoader;
 @RunWith(AnnotatedEmbedderRunner.class)
 @Configure(storyControls = CustomStoryControls.class, storyLoader = CustomStoryLoader.class, storyReporterBuilder = CustomReportBuilder.class)
 @UsingEmbedder(embedder = Embedder.class, generateViewAfterStories = true, ignoreFailureInStories = true, ignoreFailureInView = true, verboseFailures = true, storyTimeoutInSecs = 100, threads = 2, metaFilters = "-skip")
-@UsingSteps(packages = "com.fithub.e2etesting.jbehave_steps")
+// @UsingSteps(packages = "com.fithub.e2etesting.jbehave_steps", matchingNames =
+// "*Step.java")
+@UsingSteps(instances = { ViewProductListStep.class })
 
 public class AnnotatedEmbedder extends InjectableEmbedder {
 
@@ -67,19 +68,13 @@ public class AnnotatedEmbedder extends InjectableEmbedder {
 	@Test
 	public void run() throws Throwable {
 		// injectedEmbedder().runStoriesAsPaths(getStoryPaths());
-		embedder().runStoriesAsPaths(getStoryPaths());
+		injectedEmbedder().runStoriesAsPaths(getStoryPaths());
 	}
 
 	public static class MyRegexPrefixCapturingPatternParser extends RegexPrefixCapturingPatternParser {
 		public MyRegexPrefixCapturingPatternParser() {
 			super("%");
 		}
-	}
-
-	private Embedder embedder() {
-		Embedder embedder = new Embedder();
-		embedder.useStepsFactory(new InstanceStepsFactory(embedder.configuration(), new ViewProductListStep()));
-		return embedder;
 	}
 
 }

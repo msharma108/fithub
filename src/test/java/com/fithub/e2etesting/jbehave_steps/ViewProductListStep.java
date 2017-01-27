@@ -15,6 +15,7 @@ import com.fithub.e2etesting.page_driver.ProductListPageDriver;
  * Step Definition class for Viewing the list of all products
  *
  */
+
 public class ViewProductListStep extends AbstractStep {
 
 	private HomePageDriver homePageDriver;
