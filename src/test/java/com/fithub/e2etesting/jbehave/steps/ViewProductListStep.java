@@ -1,4 +1,4 @@
-package com.fithub.e2etesting.jbehave_steps;
+package com.fithub.e2etesting.jbehave.steps;
 
 import static org.junit.Assert.assertEquals;
 

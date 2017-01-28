@@ -1,4 +1,4 @@
-package com.fithub.e2etesting.step_definition;
+package com.fithub.e2etesting.cucumber.step_definitions;
 
 import java.sql.SQLException;
 

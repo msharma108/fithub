@@ -1,4 +1,4 @@
-package com.fithub.e2etesting.jbehave_steps;
+package com.fithub.e2etesting.jbehave_runner;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("e2e_testing")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
-public class AnnotatedEmbedder {
+public class JBehaveStoryRunner {
 
 	@Autowired
 	ApplicationContext applicationContext;
