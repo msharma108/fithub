@@ -1,4 +1,4 @@
-package com.fithub.restmailclient;
+package com.fithub.mailclient;
 
 import java.io.IOException;
 
@@ -23,14 +23,14 @@ import com.sendgrid.SendGrid;
  *
  */
 @Component
-public class RestMailClient {
+public class MailClient {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RestMailClient.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MailClient.class);
 	private final String emailSenderAddress;
 	private final String sendGridApiKey;
 
 	@Autowired
-	public RestMailClient(@Value("${application.emailSenderAddress}") final String emailSenderAddress,
+	public MailClient(@Value("${application.emailSenderAddress}") final String emailSenderAddress,
 			@Value("${sendGrid.apiKey}") final String sendGridApiKey) {
 		this.emailSenderAddress = emailSenderAddress;
 		this.sendGridApiKey = sendGridApiKey;

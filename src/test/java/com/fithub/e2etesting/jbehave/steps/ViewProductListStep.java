@@ -2,7 +2,6 @@ package com.fithub.e2etesting.jbehave.steps;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.openqa.selenium.WebDriver;
@@ -61,7 +60,6 @@ public class ViewProductListStep {
 	}
 
 	@Then("I see list of top products")
-	@Pending
 	public void thenISeeListOfTopProducts() {
 		assertEquals("Top Product List not displayed", true, productListPageDriver.isTopProductListDisplayed());
 	}

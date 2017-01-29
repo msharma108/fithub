@@ -29,7 +29,7 @@ import com.fithub.domain.PasswordRetrievalDTO;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
-import com.fithub.restmailclient.RestMailClient;
+import com.fithub.mailclient.MailClient;
 import com.fithub.service.user.UserService;
 import com.fithub.service.user.UserTasksHelperService;
 
@@ -38,14 +38,14 @@ import com.fithub.service.user.UserTasksHelperService;
 public class UserTasksController {
 
 	private final UserService userService;
-	private final RestMailClient restMailClient;
+	private final MailClient restMailClient;
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserTasksController.class);
 	private final UserTasksHelperService userTasksHelperService;
 
 	@Autowired
 	public UserTasksController(UserService userService, UserTasksHelperService userTasksHelperService,
-			RestMailClient restMailClient) {
+			MailClient restMailClient) {
 		this.userService = userService;
 		this.userTasksHelperService = userTasksHelperService;
 		this.restMailClient = restMailClient;
