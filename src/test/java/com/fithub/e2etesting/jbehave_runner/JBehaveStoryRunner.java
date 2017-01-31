@@ -11,7 +11,6 @@ import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
-import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.spring.SpringStepsFactory;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +36,23 @@ public class JBehaveStoryRunner extends JUnitStories {
 	@Autowired
 	ApplicationContext applicationContext;
 
+	// Method overrides JBehave's Embedder configuration by specifying
+	// application specific configuration
 	@Override
 	public Configuration configuration() {
-		ParameterConverters parameterConverters = new ParameterConverters();
 
-		return new MostUsefulConfiguration().useStoryLoader(new LoadFromClasspath()).doDryRun(true)
+		return new MostUsefulConfiguration().useStoryLoader(new LoadFromClasspath()).doDryRun(false)
 				.useStoryReporterBuilder(new StoryReporterBuilder().withDefaultFormats().withFormats(Format.CONSOLE,
 						Format.TXT, Format.HTML, Format.STATS));
 	}
 
+	// Method initializes the Step instances using spring application bean steps
 	@Override
 	public InjectableStepsFactory stepsFactory() {
 		return new SpringStepsFactory(configuration(), applicationContext);
 	}
 
+	// Method returns the list of paths to the stories in the project
 	protected List<String> storyPaths() {
 		List<String> testList = new ArrayList<String>();
 		testList = new StoryFinder().findPaths(

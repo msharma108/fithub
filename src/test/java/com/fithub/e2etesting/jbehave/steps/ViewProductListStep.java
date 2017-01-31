@@ -32,18 +32,6 @@ public class ViewProductListStep {
 		productListPageDriver = PageFactory.initElements(driver, ProductListPageDriver.class);
 	}
 
-	// public ViewProductListStep(WebDriver driver) {
-	// homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
-	// productListPageDriver = PageFactory.initElements(driver,
-	// ProductListPageDriver.class);
-	// }
-
-	// @Given("I am on home page")
-	// public void givenIAmOnHomePage() {
-	// String homePageTitle = "FitHub.com";
-	// homePageDriver.assertPageTitle(homePageTitle);
-	// }
-
 	@When("I decide to view all products")
 	public void whenIDecideToViewAllProducts() {
 		homePageDriver.viewAllOrTopProductsBasedOnInput("viewAllProducts");

@@ -9,10 +9,12 @@ import org.jbehave.core.annotations.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fithub.e2etesting.page_driver.HomePageDriver;
 import com.fithub.e2etesting.page_driver.LoginPageDriver;
 
+@Component
 public class LoginStep {
 
 	private HomePageDriver homePageDriver;
@@ -24,25 +26,19 @@ public class LoginStep {
 		loginPageDriver = PageFactory.initElements(driver, LoginPageDriver.class);
 	}
 
-	@Given("I am registeredUser $registeredUser")
-	public void givenIAmRegisteredUser(String username) throws Throwable {
+	@Given("I am user $userName")
+	public void givenIAmUser(@Named("userName") String userName) throws Throwable {
 
-		whenILoginWithUserNamePassword(username, "adminadmin");
+		whenILoginWithUserNamePassword(userName, "adminadmin");
 
 	}
 
 	@When("I login with username $username password $password")
-	public void whenILoginWithUserNamePassword(String username, String password) throws Throwable {
+	public void whenILoginWithUserNamePassword(String userName, String password) throws Throwable {
 		homePageDriver.clickSignIn();
-		loginPageDriver.enterUserName(username);
+		loginPageDriver.enterUserName(userName);
 		loginPageDriver.enterPassword(password);
 		loginPageDriver.submitLoginForm();
-	}
-
-	@Given("a stock of symbol $symbol and a threshold of $threshold")
-	public void aStock(@Named("threshold") double aThreshold, @Named("symbol") String aSymbol) {
-		System.out.println(aSymbol);
-		System.out.println(aThreshold);
 	}
 
 	@Then("I am authenticated successfully")

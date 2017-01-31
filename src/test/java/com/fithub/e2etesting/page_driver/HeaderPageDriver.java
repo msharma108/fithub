@@ -35,11 +35,9 @@ public class HeaderPageDriver {
 	@FindBy(how = How.ID, using = "productListDropdownId")
 	WebElement productListDropdown;
 
-	@CacheLookup
 	@FindBy(how = How.LINK_TEXT, using = "All Products")
 	WebElement allProducts;
 
-	@CacheLookup
 	@FindBy(how = How.LINK_TEXT, using = "Top 5 Products")
 	WebElement topProducts;
 

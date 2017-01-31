@@ -61,15 +61,8 @@ public class ScenarioSetupTeardownStep {
 		}
 	}
 
-	// Take Screenshot on test failure
-	// Reference:
-	// https://advancedweb.hu/2015/04/28/animated-failure-reports-with-selenium-and-cucumber/
-
 	@AfterScenario
 	public void afterEachScenario() {
-
-		// if (scenario.isFailed())
-		// captureScenarioSnapshot(scenario);
 
 		if (homePageDriver.isLogoutDisplayed())
 			homePageDriver.logout();
@@ -82,6 +75,7 @@ public class ScenarioSetupTeardownStep {
 		}
 	}
 
+	// Take a screenshot for debugging purposes in case of scenario failure
 	@AfterScenario(uponOutcome = AfterScenario.Outcome.FAILURE)
 	public void afterFailedScenario() {
 		captureScenarioSnapshot();
