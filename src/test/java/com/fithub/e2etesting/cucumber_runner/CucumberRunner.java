@@ -13,6 +13,6 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(features = "classpath:feature_files", glue = "classpath:com/fithub/e2etesting/cucumber/step_definitions", plugin = {
 		"html:target/e2etesting/e2eReports/", "json:target/e2etesting/e2eReports/cucumber.json" })
 
-public class FitHubApplicationE2ETestRunner {
+public class CucumberRunner {
 
 }

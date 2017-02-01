@@ -7,6 +7,7 @@ import org.jbehave.core.annotations.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.fithub.e2etesting.page_driver.HomePageDriver;
@@ -17,17 +18,15 @@ import com.fithub.e2etesting.page_driver.ProductListPageDriver;
  *
  */
 @Component
+@Profile("e2e_testing")
 public class ViewProductListStep {
 
 	private HomePageDriver homePageDriver;
 	private ProductListPageDriver productListPageDriver;
-	private final WebDriver driver;
-	private final String homeUrl;
 
 	@Autowired
-	public ViewProductListStep(WebDriver driver, String homeUrl) {
-		this.driver = driver;
-		this.homeUrl = homeUrl;
+	public ViewProductListStep(WebDriver driver) {
+
 		homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 		productListPageDriver = PageFactory.initElements(driver, ProductListPageDriver.class);
 	}

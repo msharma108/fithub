@@ -8,6 +8,7 @@ import org.jbehave.core.annotations.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 import com.fithub.e2etesting.page_driver.ShoppingCartPageDriver;
 
 @Component
+@Profile("e2e_testing")
 public class OrderPlacementStep {
 
 	private ProductListPageDriver productListPageDriver;

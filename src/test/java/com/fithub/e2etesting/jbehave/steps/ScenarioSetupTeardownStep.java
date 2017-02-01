@@ -14,6 +14,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import com.fithub.e2etesting.page_driver.HomePageDriver;
 
 @Component
+@Profile("e2e_testing")
 public class ScenarioSetupTeardownStep {
 
 	private final DataSource datasource;
