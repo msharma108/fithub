@@ -29,7 +29,7 @@ import cucumber.api.java.en.Given;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @ContextConfiguration()
-@ActiveProfiles("e2e_testing")
+@ActiveProfiles("cucumber_e2e_testing")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 public class ScenarioSetupTeardownStepDefinition {

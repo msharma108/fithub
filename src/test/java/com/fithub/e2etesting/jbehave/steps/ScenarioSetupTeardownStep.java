@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import com.fithub.e2etesting.page_driver.HomePageDriver;
 
 @Component
-@Profile("e2e_testing")
+@Profile("jbehave_e2e_testing")
 public class ScenarioSetupTeardownStep {
 
 	private final DataSource datasource;

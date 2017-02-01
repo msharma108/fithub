@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @ContextConfiguration()
-@ActiveProfiles("e2e_testing")
+@ActiveProfiles("jbehave_e2e_testing")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 public class JBehaveStoryRunner extends JUnitStories {

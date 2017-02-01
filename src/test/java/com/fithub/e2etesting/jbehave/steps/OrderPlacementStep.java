@@ -20,7 +20,7 @@ import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 import com.fithub.e2etesting.page_driver.ShoppingCartPageDriver;
 
 @Component
-@Profile("e2e_testing")
+@Profile("jbehave_e2e_testing")
 public class OrderPlacementStep {
 
 	private ProductListPageDriver productListPageDriver;

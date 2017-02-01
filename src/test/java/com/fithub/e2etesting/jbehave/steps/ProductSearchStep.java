@@ -15,7 +15,7 @@ import com.fithub.e2etesting.page_driver.HomePageDriver;
 import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 
 @Component
-@Profile("e2e_testing")
+@Profile("jbehave_e2e_testing")
 public class ProductSearchStep {
 
 	private HomePageDriver homePageDriver;
