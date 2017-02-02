@@ -19,6 +19,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestData
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,6 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+
+// Annotation to close application context after the execution of JBehave
+// stories
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+
 @ContextConfiguration()
 @ActiveProfiles("jbehave_e2e_testing")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)

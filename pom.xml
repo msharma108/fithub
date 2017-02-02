@@ -205,7 +205,7 @@
     <dependency>
   <groupId>org.postgresql</groupId>
   <artifactId>postgresql</artifactId>
-  <version>9.4.1208</version>
+  <version>9.4.1208</version><!--$NO-MVN-MAN-VER$-->
 </dependency>
 
 
@@ -260,13 +260,15 @@
         </executions>
       </plugin>
       
-            <!-- Surefire plugin set to run the application's cucumber runner class -->
+            <!-- Surefire plugin set to run the application's Cucumber & JBehave tests -->
       <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                <runOrder>reversealphabetical</runOrder>
                     <includes>
-                        <include>**/*E2ETestRunner.java</include>
+                        <include>**/*JBehaveStoryRunner.java</include>
+                        <include>**/*CucumberRunner.java</include>
                     </includes>
                     <printSummary>true</printSummary>
      
@@ -293,12 +295,39 @@
                     </execution>
                 </executions>
             </plugin>
-      
-  
-			
+            
+            	<!-- JBehave reporting configuration -->
+      		<!-- Reference: http://jbehave.org/reference/latest/maven-goals.html -->
+	
+	  <plugin> 
+       <groupId>org.apache.maven.plugins</groupId> 
+       <artifactId>maven-dependency-plugin</artifactId> 
+       <executions>
+       <execution> 
+            <id>unpack-jbehave-reports-resources</id>
+            <phase>generate-resources</phase> 
+		<goals> 
+               <goal>unpack</goal> 
+            </goals> 
+            <configuration> 
+              <overwriteSnapshots>true</overwriteSnapshots> 
+              <artifactItems> 
+                 <artifactItem> 
+                   <groupId>org.jbehave</groupId> 
+                   <artifactId>jbehave-core</artifactId> 
+                   <version>4.1</version> 
+                   <outputDirectory>${project.build.directory}/jbehave/view</outputDirectory> 
+                   <includes>**\/*.css,**\/*.ftl,**\/*.js</includes> 
+                 </artifactItem> 
+               </artifactItems> 
+             </configuration> 
+           </execution> 
+         </executions>
+         </plugin>
+        	
 		</plugins>
 	</build>
-	
+
 <reporting>
         <plugins>
         
