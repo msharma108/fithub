@@ -1,4 +1,4 @@
-package com.fithub.e2etesting.step_definition;
+package com.fithub.e2etesting.cucumber.step_definitions;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +17,7 @@ import cucumber.api.java.en.When;
  *
  */
 
-public class ViewProductListStepDefinition extends AbstractStepDefinition {
+public class ViewProductListStepDefinition {
 
 	private HomePageDriver homePageDriver;
 	private ProductListPageDriver productListPageDriver;

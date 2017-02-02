@@ -26,7 +26,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.fithub.domain.CustomUser;
 import com.fithub.domain.OrderDTO;
 import com.fithub.domain.SalesOrder;
-import com.fithub.restmailclient.RestMailClient;
+import com.fithub.mailclient.MailClient;
 import com.fithub.service.salesorder.SalesOrderHelperService;
 import com.fithub.service.salesorder.SalesOrderService;
 import com.fithub.shoppingcart.ShoppingCart;
@@ -49,10 +49,10 @@ public class OrderCheckoutController {
 	private static final Logger LOG = LoggerFactory.getLogger(OrderCheckoutController.class);
 	private final SalesOrderService salesOrderService;
 	private final SalesOrderHelperService salesOrderHelperService;
-	private final RestMailClient restMailClient;
+	private final MailClient restMailClient;
 	private final BigDecimal dollarToCents = new BigDecimal(100);
 
-	public OrderCheckoutController(SalesOrderService salesOrderService, RestMailClient restMailClient,
+	public OrderCheckoutController(SalesOrderService salesOrderService, MailClient restMailClient,
 			SalesOrderHelperService salesOrderHelperService) {
 		this.salesOrderService = salesOrderService;
 		this.restMailClient = restMailClient;

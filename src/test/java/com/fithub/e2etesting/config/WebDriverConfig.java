@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile(value = "e2e_testing")
+@Profile(value = { "cucumber_e2e_testing", "jbehave_e2e_testing" })
 public class WebDriverConfig implements DisposableBean {
 
 	@Autowired
@@ -21,7 +21,7 @@ public class WebDriverConfig implements DisposableBean {
 
 	private static final Logger LOG = LoggerFactory.getLogger(WebDriverConfig.class);
 
-	@Bean
+	@Bean()
 	public WebDriver driver() {
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();

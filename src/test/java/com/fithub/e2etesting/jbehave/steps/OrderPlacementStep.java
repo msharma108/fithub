@@ -1,11 +1,16 @@
-package com.fithub.e2etesting.step_definition;
+package com.fithub.e2etesting.jbehave.steps;
 
 import static org.junit.Assert.assertEquals;
 
+import org.jbehave.core.annotations.Given;
+import org.jbehave.core.annotations.Then;
+import org.jbehave.core.annotations.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import com.fithub.e2etesting.page_driver.HomePageDriver;
 import com.fithub.e2etesting.page_driver.LoginPageDriver;
@@ -14,27 +19,22 @@ import com.fithub.e2etesting.page_driver.OrderTaskSuccessPageDriver;
 import com.fithub.e2etesting.page_driver.ProductListPageDriver;
 import com.fithub.e2etesting.page_driver.ShoppingCartPageDriver;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+@Component
+@Profile("jbehave_e2e_testing")
+public class OrderPlacementStep {
 
-public class OrderPlacementStepDefinition extends AbstractStepDefinition {
-
-	private HomePageDriver homePageDriver;
 	private ProductListPageDriver productListPageDriver;
 	private ShoppingCartPageDriver shoppingCartPageDriver;
 	private LoginPageDriver loginPageDriver;
 	private OrderCheckoutPageDriver orderCheckoutPageDriver;
 	private OrderTaskSuccessPageDriver orderTaskSuccessPageDriver;
+	private HomePageDriver homePageDriver;
 
 	@Autowired
 	Environment environment;
 
-	private final WebDriver driver;
-
 	@Autowired
-	public OrderPlacementStepDefinition(WebDriver driver) {
-		this.driver = driver;
+	public OrderPlacementStep(WebDriver driver) {
 		this.homePageDriver = PageFactory.initElements(driver, HomePageDriver.class);
 		this.productListPageDriver = PageFactory.initElements(driver, ProductListPageDriver.class);
 		this.shoppingCartPageDriver = PageFactory.initElements(driver, ShoppingCartPageDriver.class);
@@ -43,14 +43,14 @@ public class OrderPlacementStepDefinition extends AbstractStepDefinition {
 		this.orderTaskSuccessPageDriver = PageFactory.initElements(driver, OrderTaskSuccessPageDriver.class);
 	}
 
-	@Given("^I decide to add a product to cart$")
-	public void i_decide_to_add_a_product_to_cart() throws Throwable {
+	@Given("I decide to add a product to cart")
+	public void givenIDecideToAddAProductToCart() throws Throwable {
 		productListPageDriver.addToCart();
 		assertEquals("Problems adding product to the cart", true, shoppingCartPageDriver.isCheckoutDisplayed());
 	}
 
-	@Given("^I decide to checkout$")
-	public void i_decide_to_checkout() throws Throwable {
+	@Given("I decide to checkout")
+	public void givenIDecideToCheckout() throws Throwable {
 		shoppingCartPageDriver.checkout();
 
 		// Assert that the registered user moves to Order Checkout Page
@@ -60,20 +60,36 @@ public class OrderPlacementStepDefinition extends AbstractStepDefinition {
 					orderCheckoutPageDriver.isPaymentFormVisible());
 	}
 
-	@Given("^I enter shipping and valid payment details$")
-	public void i_enter_shipping_and_valid_payment_details() throws Throwable {
+	@When("I decide to checkout")
+	public void whenIDecideToCheckout() throws Throwable {
+		shoppingCartPageDriver.checkout();
+
+		// Assert that the registered user moves to Order Checkout Page
+		if (!shoppingCartPageDriver.isGuestWelcomeDisplayed())
+
+			assertEquals("Problems moving to the order checkout page", true,
+					orderCheckoutPageDriver.isPaymentFormVisible());
+	}
+
+	@Given("I enter shipping and valid payment details")
+	public void givenIEnterShippingAndValidPaymentDetails() throws Throwable {
 
 		String validTestCardNumber = "4242424242424242";
 		enterPaymentDetails(validTestCardNumber);
 	}
 
-	@When("^I hit pay now$")
-	public void i_hit_pay_now() throws Throwable {
+	@Given("I decide to view all products")
+	public void whenIDecideToViewAllProducts() {
+		homePageDriver.viewAllOrTopProductsBasedOnInput("viewAllProducts");
+	}
+
+	@When("I hit pay now")
+	public void whenIHitPayNow() throws Throwable {
 		orderCheckoutPageDriver.submitPaymentForm();
 	}
 
-	@Then("^I see order placement successful message$")
-	public void i_see_order_placement_successful_message() throws Throwable {
+	@Then("I see order placement successful message")
+	public void thenISeeOrderPlacementSuccessfulMessage() throws Throwable {
 
 		boolean expectedOrderSuccess = true;
 
@@ -82,8 +98,8 @@ public class OrderPlacementStepDefinition extends AbstractStepDefinition {
 				actualOrderBookingSuccess);
 	}
 
-	@Then("^I am redirected to Login page$")
-	public void i_am_redirected_to_Login_page() throws Throwable {
+	@Then("I am redirected to Login page")
+	public void thenIAmRedirectedToLoginPage() throws Throwable {
 
 		boolean expectedIsLoginFormDisplayed = true;
 
@@ -91,14 +107,14 @@ public class OrderPlacementStepDefinition extends AbstractStepDefinition {
 				expectedIsLoginFormDisplayed, loginPageDriver.isLoginFormDisplayed());
 	}
 
-	@Given("^I enter shipping and invalid payment details$")
-	public void i_enter_shipping_and_invalid_payment_details() throws Throwable {
+	@Given("I enter shipping and invalid payment details")
+	public void givenIEnterShippingAndInvalidPaymentDetails() throws Throwable {
 		String invalidTestCardNumber = "1234567890";
 		enterPaymentDetails(invalidTestCardNumber);
 	}
 
-	@Then("^I see payment error message$")
-	public void i_see_payment_error_message() throws Throwable {
+	@Then("I see payment error message")
+	public void thenISeePaymentErrorMessage() throws Throwable {
 		String invalidPaymentDetailsMessage = orderCheckoutPageDriver.handleInvalidPaymentDetailsAlert();
 		String expectedInvalidPaymentDetailsMessage = String.format("Invalid Card Number, please correct");
 

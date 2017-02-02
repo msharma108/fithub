@@ -1,4 +1,4 @@
-package com.fithub.e2etesting.step_definition;
+package com.fithub.e2etesting.cucumber.step_definitions;
 
 import java.sql.SQLException;
 
@@ -9,9 +9,16 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fithub.e2etesting.page_driver.HomePageDriver;
 
@@ -20,7 +27,12 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 
-public class ScenarioSetupTeardownStepDefinition extends AbstractStepDefinition {
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@ContextConfiguration()
+@ActiveProfiles("cucumber_e2e_testing")
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@Transactional
+public class ScenarioSetupTeardownStepDefinition {
 
 	private final DataSource datasource;
 

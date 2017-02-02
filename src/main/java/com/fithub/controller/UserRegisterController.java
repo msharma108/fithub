@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
-import com.fithub.restmailclient.RestMailClient;
+import com.fithub.mailclient.MailClient;
 import com.fithub.service.user.UserService;
 import com.fithub.validator.user.UserRegisterValidator;
 import com.fithub.validator.user.UserValidator;
@@ -33,13 +33,13 @@ public class UserRegisterController {
 
 	// User Service needed for interfacing with DB through DAO
 	private final UserService userService;
-	private final RestMailClient restMailClient;
+	private final MailClient restMailClient;
 	@Qualifier("userRegisterValidator")
 	private final UserValidator userRegisterValidator;
 
 	@Autowired
 	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService,
-			RestMailClient restMailClient) {
+			MailClient restMailClient) {
 		this.userRegisterValidator = userRegisterValidator;
 		this.userService = userService;
 		this.restMailClient = restMailClient;

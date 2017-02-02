@@ -1,4 +1,4 @@
-package com.fithub.restmailclient;
+package com.fithub.mailclient;
 
 import java.io.IOException;
 
@@ -23,17 +23,16 @@ import com.sendgrid.SendGrid;
  *
  */
 @Component
-public class RestMailClient {
+public class MailClient {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RestMailClient.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MailClient.class);
 	private final String emailSenderAddress;
-	private final String sendGridApiKey;
+	private final SendGrid sendGridClient;
 
 	@Autowired
-	public RestMailClient(@Value("${application.emailSenderAddress}") final String emailSenderAddress,
-			@Value("${sendGrid.apiKey}") final String sendGridApiKey) {
+	public MailClient(@Value("${application.emailSenderAddress}") final String emailSenderAddress) {
 		this.emailSenderAddress = emailSenderAddress;
-		this.sendGridApiKey = sendGridApiKey;
+		this.sendGridClient = new SendGrid(System.getenv("SENDGRID_API_KEY"));
 	}
 
 	public void sendOrderReceiptMail(SalesOrder salesOrder) {
@@ -54,13 +53,12 @@ public class RestMailClient {
 				salesOrder.getSalesOrderCreationDate().toString());
 		mail.setTemplateId(orderReceiptTemplateID);
 
-		SendGrid sg = new SendGrid(sendGridApiKey);
 		Request request = new Request();
 		try {
 			request.method = Method.POST;
 			request.endpoint = "mail/send";
 			request.body = mail.build();
-			Response response = sg.api(request);
+			Response response = sendGridClient.api(request);
 			if (response.statusCode == 202)
 				LOG.debug("Order receipt sent successfully");
 			else
@@ -93,13 +91,12 @@ public class RestMailClient {
 		mail.personalization.get(0).addSubstitution("-refundId-", salesOrder.getStripeRefundId().toString());
 		mail.setTemplateId(orderCancellationTemplateId);
 
-		SendGrid sg = new SendGrid(sendGridApiKey);
 		Request request = new Request();
 		try {
 			request.method = Method.POST;
 			request.endpoint = "mail/send";
 			request.body = mail.build();
-			Response response = sg.api(request);
+			Response response = sendGridClient.api(request);
 			if (response.statusCode == 202)
 				LOG.debug("Order cancellation mail sent successfully");
 			else
@@ -126,13 +123,12 @@ public class RestMailClient {
 		mail.personalization.get(0).addSubstitution("-userName-", givenName);
 		mail.setTemplateId(welcomeMailTemplateId);
 
-		SendGrid sg = new SendGrid(sendGridApiKey);
 		Request request = new Request();
 		try {
 			request.method = Method.POST;
 			request.endpoint = "mail/send";
 			request.body = mail.build();
-			Response response = sg.api(request);
+			Response response = sendGridClient.api(request);
 			if (response.statusCode == 202)
 				LOG.debug("User welcome mail sent successfully");
 			else
@@ -159,13 +155,12 @@ public class RestMailClient {
 		mail.personalization.get(0).addSubstitution("-resetPassword-", resetPassword);
 		mail.setTemplateId(resetPasswordMailTemplateId);
 
-		SendGrid sg = new SendGrid(sendGridApiKey);
 		Request request = new Request();
 		try {
 			request.method = Method.POST;
 			request.endpoint = "mail/send";
 			request.body = mail.build();
-			Response response = sg.api(request);
+			Response response = sendGridClient.api(request);
 			if (response.statusCode == 202)
 				LOG.debug("Password reset mail sent successfully");
 			else
