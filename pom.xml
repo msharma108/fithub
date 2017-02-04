@@ -229,6 +229,38 @@
     <version>4.1</version>
 </dependency>
 
+<dependency>
+    <groupId>net.serenity-bdd</groupId>
+    <artifactId>serenity-jbehave</artifactId>
+    <version>1.21.0</version>
+       <exclusions> 
+        <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+        </exclusion>   
+    </exclusions>  
+</dependency>
+
+
+   <dependency>
+      <groupId>net.serenity-bdd</groupId>
+      <artifactId>serenity-core</artifactId>
+      <version>1.2.2</version>
+      <exclusions>
+      
+      	        <exclusion>
+          <groupId>xalan</groupId>
+      <artifactId>xalan</artifactId>
+    </exclusion>
+    <exclusion>
+          <groupId>xalan</groupId>
+      <artifactId>serializer</artifactId>
+    </exclusion>
+
+      </exclusions>
+
+    </dependency>
+    
 
 	</dependencies>
 
@@ -254,13 +286,36 @@
           <execution>
             <goals>
               <goal>integration-test</goal>
-              <goal>verify</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
       
-            <!-- Surefire plugin set to run the application's Cucumber & JBehave tests -->
+      <!-- Serenity Reporting -->
+      <plugin>
+                <groupId>net.serenity-bdd.maven.plugins</groupId>       
+                <artifactId>serenity-maven-plugin</artifactId>
+               <version>1.2.2</version>
+                <dependencies>
+					<dependency>
+    					<groupId>net.serenity-bdd</groupId>
+    					<artifactId>serenity-core</artifactId>
+    					<version>1.2.2</version>
+					</dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>serenity-reports</id>
+                        <phase>post-integration-test</phase>             
+                        <goals>
+                            <goal>aggregate</goal>                       
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+      
+      
+            <!-- Surefire plugin set to run the application's Cucumber & JBehave, Serenity JBehave tests -->
       <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -270,6 +325,7 @@
                         <include>**/*JBehaveStoryRunner.java</include>
                         <include>**/*CucumberRunner.java</include>
                     </includes>
+                    <reportsDirectory>target/surefire-reports</reportsDirectory>
                     <printSummary>true</printSummary>
      
                 </configuration>
@@ -283,7 +339,7 @@
                 <executions>
                     <execution>
                         <id>generate-cucumber-reports</id>
-                        <phase>verify</phase>
+                        <phase>post-integration-test</phase> 
                         <goals>
                             <goal>generate</goal>
                         </goals>

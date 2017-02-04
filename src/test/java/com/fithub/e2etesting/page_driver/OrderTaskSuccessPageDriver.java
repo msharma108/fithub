@@ -26,7 +26,7 @@ public class OrderTaskSuccessPageDriver extends HeaderPageDriver {
 	public boolean handleOrderTaskSuccess() {
 
 		// added explicit wait for booking success modal
-		WebElement orderBookingPopupWebElement = (new WebDriverWait(driver, 3))
+		WebElement orderBookingPopupWebElement = (new WebDriverWait(driver, 5))
 				.until(ExpectedConditions.visibilityOf(orderBookingSuccessMessagePopup));
 
 		boolean orderSuccess = orderBookingPopupWebElement.isDisplayed();
