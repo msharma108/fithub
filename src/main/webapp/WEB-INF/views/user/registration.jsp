@@ -30,6 +30,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 <script>
 
 
@@ -47,6 +48,7 @@ $(document).ready(function() {
 });
 
 </script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
   <body>
 <jsp:include page="../header.jsp" />
@@ -219,10 +221,21 @@ $(document).ready(function() {
 			           <form:errors  path="paymentMode" style="color: red;"/>
 			          </form:select>
                   </div>
+                  
+                      	<div class="col-sm-4 form-group">
+			           	 <!-- Google recaptcha -->
+               			<div class="g-recaptcha" data-theme="dark" data-sitekey="6LcuZxQUAAAAAEYl7FUXoiY6fISFaRMStO0YQfaL" ></div>
+               			<form:errors path="recaptchaResponse"/>
+                  </div>
+                  
                 </div>
               </div>
               <c:choose>
               <c:when test="${userDTO.isEditable == false }">
+              
+              
+
+              
              <!--  Sign Up button for new users -->
               <div class="col-sm-12"> 
                 <div class="form-group row">
