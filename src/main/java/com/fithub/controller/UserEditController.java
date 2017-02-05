@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -60,19 +61,16 @@ public class UserEditController {
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
 	@RequestMapping(value = { "/userTask/{userName:.+}",
 			"/admin/userTask/{userName:.+}" }, params = "userEdit", method = { RequestMethod.GET, RequestMethod.POST })
+	
 	public String getUserEditPage(@PathVariable("userName") String userName, @ModelAttribute("userDTO") UserDTO userDTO,
-			Model model, Authentication authentication) {
+			Model model, Authentication authentication,@Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
 		LOG.debug("Getting editUserPage for user={}", userName);
 
 		userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
 		userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
-
+		model.addAttribute("recaptchaPublicKey",recaptchaPublicKey);
 		userDTO.setEditable(true);
-		// Uncomment the line below this in case I decide to get session using
-		// conventional http session object. userDTO will be added to session
-		// during profile load page.
-		// model.addAttribute("userDTO", userDTO);
-		// Change to registration page
+
 		return "user/registration";
 	}
 

@@ -2,16 +2,24 @@ package com.fithub.validator.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.fithub.domain.UserDTO;
+import com.fithub.service.captcha.CaptchaService;
 
 @Component
 public abstract class UserValidator implements Validator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserValidator.class);
+	
+	@Autowired
+	private CaptchaService recaptchaService;
+	
+	
+
 
 	/**
 	 * Method returns true if the passed object can be validated by the given
@@ -40,6 +48,16 @@ public abstract class UserValidator implements Validator {
 		if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
 			errors.rejectValue("password", "password.mismatch", "The entered passwords do not match");
 		}
+	}
+	
+	protected void validateRecaptchaResponse(UserDTO userDTO, Errors errors) {
+		LOG.debug("Validating if the user is a human");
+	
+            if (!userDTO.getRecaptchaResponse().isEmpty() && userDTO.getRecaptchaResponse() != null
+                    && !recaptchaService.isCaptchaResponseValid(userDTO.getRecaptchaResponse())) 
+            	
+                errors.rejectValue("captcha", "captcha.invalid","Invalid captcha provided");
+           
 	}
 
 	@Override
