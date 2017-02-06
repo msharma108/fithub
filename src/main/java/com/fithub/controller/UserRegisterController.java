@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,27 +38,34 @@ public class UserRegisterController {
 	private final MailClient restMailClient;
 	@Qualifier("userRegisterValidator")
 	private final UserValidator userRegisterValidator;
+	private final Environment environment;
 
 	@Autowired
 	public UserRegisterController(UserRegisterValidator userRegisterValidator, UserService userService,
-			MailClient restMailClient) {
+			MailClient restMailClient, Environment environment) {
 		this.userRegisterValidator = userRegisterValidator;
 		this.userService = userService;
 		this.restMailClient = restMailClient;
+		this.environment = environment;
 	}
 
 	/**
 	 * Method for displaying the Registration form
 	 * 
 	 * @param model
+	 * @param recaptchaPublicKey
 	 * @return registration view
 	 */
 	@GetMapping(value = { "/userRegister", "/admin/userRegister" })
-	public String getUserRegisterPage(Model model,@Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
+	public String getUserRegisterPage(Model model, @Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
 		LOG.debug("Displaying User Registration page");
 		UserDTO userDTO = new UserDTO();
 		model.addAttribute("userDTO", userDTO);
-		model.addAttribute("recaptchaPublicKey",recaptchaPublicKey);
+
+		// Add non-testing profile recaptcha key for user validation
+		if (environment.getProperty("spring.profiles.active") != null
+				&& !environment.getProperty("spring.profiles.active").contains("testing"))
+			model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
 
 		return "user/registration";
 	}
@@ -70,11 +78,14 @@ public class UserRegisterController {
 	 * 
 	 * @param userDTO
 	 * @param result
+	 * @param model
+	 * @param recaptchaPublicKey
 	 * @return view based on results
 	 */
 	@PostMapping(value = { "/userSave", "/admin/userSave" }, params = "userRegister")
 	public String submitUserRegisterPage(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
-			RedirectAttributes redirectAttributes, Authentication authentication) {
+			RedirectAttributes redirectAttributes, Authentication authentication, Model model,
+			@Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
 		LOG.debug("Attempting to register user", userDTO.getUserName());
 
 		// Invoking User Registration in addition to JSR 303 validation
@@ -83,6 +94,7 @@ public class UserRegisterController {
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page
+			model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
 			return "user/registration";
 		}
 		User user = userService.createUser(userDTO);

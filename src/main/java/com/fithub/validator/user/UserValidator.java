@@ -50,6 +50,10 @@ public abstract class UserValidator implements Validator {
 		}
 	}
 	
+	/** Method checks recaptcha response from user, validating that the user is not a robot
+	 * @param userDTO
+	 * @param errors
+	 */
 	protected void validateRecaptchaResponse(UserDTO userDTO, Errors errors) {
 		LOG.debug("Validating if the user is a human");
 	

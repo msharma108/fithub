@@ -37,28 +37,9 @@
 	<!-- contents start here -->
 <div class="container-fluid">
 
-  <!-- Add product success Modal -->
-  <div class="modal" id="AddProductSuccessModal">
-    <div class="modal-dialog">
-    
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"> </span> Product</h4>
-        </div>
-        <div class="modal-body">
-          <p>Product has been added Successfully.  <span class="glyphicon glyphicon-ok" style="color:green;"> </span> </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>   
- 
  
   <!-- Profile update success Modal -->
-  <div class="modal" id="userProfileUpdateSuccessModal">
+  <div class="modal" id="userProfileUpdateSuccessModalId">
     <div class="modal-dialog">
     
       <div class="modal-content">
@@ -77,7 +58,7 @@
   </div>   
      
    <!-- User registration success Modal -->
-  <div class="modal fade" id="userRegistrationSuccessModal" role="dialog">
+  <div class="modal fade" id="userRegistrationSuccessModalId" role="dialog">
     <div class="modal-dialog">
     
       <div class="modal-content">
@@ -97,7 +78,7 @@
   </div>
   
      <!-- User registration success Modal -->
-  <div class="modal fade" id="userRoleChangeSuccessModal" role="dialog">
+  <div class="modal fade" id="userRoleChangeSuccessModalId" role="dialog">
     <div class="modal-dialog">
     
       <div class="modal-content">
@@ -118,7 +99,7 @@
   
   
      <!-- User deletion: success Modal -->
-  <div class="modal fade" id="userDeletionSuccessModal" role="dialog">
+  <div class="modal fade" id="userDeletionSuccessModalId" role="dialog">
     <div class="modal-dialog">
     
       <div class="modal-content">
@@ -138,7 +119,7 @@
   </div>
   
     <!-- Password reset success Modal -->
-  <div class="modal" id="userPasswordResetSuccessModal">
+  <div class="modal" id="userPasswordResetSuccessModalId">
     <div class="modal-dialog">
     
       <div class="modal-content">
@@ -179,27 +160,27 @@
     	if ( ${userTaskTypeCompleted} == userRegisterSuccess)
     		{
     		 console.log("userRegisterSuccess value",typeof(${userTaskTypeCompleted}));
-	        $('#userRegistrationSuccessModal').modal('show');
+	        $('#userRegistrationSuccessModalId').modal('show');
     		}
     	else if ( ${userTaskTypeCompleted} == userDeleteSuccess)
 			{
 			 console.log("userDeleteSuccess value",typeof(${userTaskTypeCompleted}));
-        	$('#userDeletionSuccessModal').modal('show');
+        	$('#userDeletionSuccessModalId').modal('show');
 			}
 		else if ( ${userTaskTypeCompleted} == userRoleChangeSuccess)
 			{
 			 console.log("userRoleChangeSuccess value",typeof(${userTaskTypeCompleted}));
-       		 $('#userRoleChangeSuccessModal').modal('show');
+       		 $('#userRoleChangeSuccessModalId').modal('show');
 			}
     	else if ( ${userTaskTypeCompleted} == userUpdateSuccess)
 			{
 			 console.log("userUpdateSuccess value",typeof(${userTaskTypeCompleted}));
-        	$('#userProfileUpdateSuccessModal').modal('show');
+        	$('#userProfileUpdateSuccessModalId').modal('show');
 			}
     	else if ( ${userTaskTypeCompleted} == userPasswordResetSuccess)
 		{
 		 console.log("userPasswordResetSuccess value",typeof(${userTaskTypeCompleted}));
-    	$('#userPasswordResetSuccessModal').modal('show');
+    	$('#userPasswordResetSuccessModalId').modal('show');
 		}
     	
 		else

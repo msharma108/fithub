@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -36,13 +37,15 @@ public class UserEditController {
 	private final UserValidator userEditValidator;
 
 	private final UserTasksHelperService userTasksHelperService;
+	private final Environment environment;
 
 	@Autowired
 	public UserEditController(UserService userService, UserValidator userEditValidator,
-			UserTasksHelperService userTasksHelperService) {
+			UserTasksHelperService userTasksHelperService, Environment environment) {
 		this.userService = userService;
 		this.userEditValidator = userEditValidator;
 		this.userTasksHelperService = userTasksHelperService;
+		this.environment= environment;
 	}
 
 	// On the userProfile page, there should be some buttons with form actions
@@ -68,6 +71,9 @@ public class UserEditController {
 
 		userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
 		userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
+		
+		// Add non-testing profile recaptcha key for user validation
+		if(environment.getProperty("spring.profiles.active") !=null && !environment.getProperty("spring.profiles.active").contains("testing"))
 		model.addAttribute("recaptchaPublicKey",recaptchaPublicKey);
 		userDTO.setEditable(true);
 

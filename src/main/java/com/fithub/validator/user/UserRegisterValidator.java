@@ -37,6 +37,7 @@ public class UserRegisterValidator extends UserValidator {
 		LOG.debug("Initiating validation of userDTO supplied by UserRegisterValidator");
 		UserDTO userDTO = (UserDTO) userDTOBeingValidated;
 		validateUserNameDoesNotExist(userDTO, errors);
+		validateRecaptchaResponse(userDTO, errors);
 		validatePasswords(userDTO, errors);
 	}
 

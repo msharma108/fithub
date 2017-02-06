@@ -48,7 +48,6 @@ $(document).ready(function() {
 });
 
 </script>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
   <body>
 <jsp:include page="../header.jsp" />
@@ -60,11 +59,11 @@ $(document).ready(function() {
 		    <c:choose>
 		     <c:when test="${userDTO.isEditable == false }">
 		      <!-- Show Sign Up Form -->
-		    <div class="form-title"><h4>REGISTRATION INFO</h4></div>
+		    <div class="form-title" id="userRegistrationId"><h4>REGISTRATION INFO</h4></div>
 		    </c:when>
 		     <c:when test="${userDTO.isEditable == true }">
 		      <!-- Show Update Profile Form -->
-		    <div class="form-title"><h4>User Update Form</h4></div>
+		    <div class="form-title" id="userEditId"><h4>User Update Form</h4></div>
 		    </c:when>  
 		    </c:choose>
           <!-- Form action variable value based on user role starts here -->
@@ -173,8 +172,8 @@ $(document).ready(function() {
                   </div>
                   <div class="col-sm-4 form-group">
 			           <form:label path="userName" class="form-label">UserName:<span class="glyphicon glyphicon-user"> </span></form:label><br>
-			           <form:input class="form-control  form-field" path="userName" id="userNameId" placeHolder= "Choose an username"  />
-			           <form:errors  path="userName" style="color: red;"/>
+			           <form:input class="form-control  form-field" path="userName" id="userNameId" placeHolder= "Choose a username"  />
+			           <form:errors  path="userName" style="color: red;" id="userNameExistsErrorId"/>
                   </div>
                 </div>
                 </div>
@@ -222,12 +221,56 @@ $(document).ready(function() {
 			          </form:select>
                   </div>
                   
+                    <c:if test="${recaptchaPublicKey !=null }">
+                  <!-- Google recaptcha for non-testing profiles of application -->
+                
                       	<div class="col-sm-4 form-group">
 			           	 <!-- Google recaptcha -->
-               			<div class="g-recaptcha" data-theme="dark" data-sitekey="6LcuZxQUAAAAAEYl7FUXoiY6fISFaRMStO0YQfaL" ></div>
-               			<form:errors path="recaptchaResponse"/>
-                  </div>
-                  
+               			
+    			<div id="g-recaptcha"></div>
+    			<form:hidden path="recaptchaResponse" id="recaptchaResponseId"/>
+    			<script>
+        		var captureRecaptchaResponse = function() {
+        			console.log("${recaptchaPublicKey}");
+          			  	grecaptcha.render('g-recaptcha', {
+                			'sitekey' : '<c:out value="${recaptchaPublicKey}" />',
+                			'callback' : function(response) {
+                   	 	document.getElementById('recaptchaResponseId').value = response;
+               					 },
+               			 'theme' : 'dark'
+           				 });
+          			  console.log(document.getElementById('recaptchaResponseId').value);
+        			}
+   					 </script>
+                  		</div>
+                  </c:if>
+                   <!-- Google recaptcha for non-testing profiles of application ends -->
+                   
+                    <c:if test="${recaptchaPublicKey ==null }">
+                   <!-- Google recaptcha for testing profiles of application with testing site key-->
+                   
+                    	<div class="col-sm-4 form-group">
+			           	 <!-- Google recaptcha -->
+			           	 
+			           	  <div id="g-recaptcha"></div>
+    					<form:hidden path="recaptchaResponse" id="recaptchaResponseId"/>
+    					<script>
+        				var captureRecaptchaResponse = function() {
+          			  	grecaptcha.render('g-recaptcha', {
+                			'sitekey' : '<c:out value= "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" />',
+                			'callback' : function(response) {
+                   	 	document.getElementById('recaptchaResponseId').value = response;
+               					 },
+               			 'theme' : 'dark'
+           				 });
+        				}
+   					 </script>
+                  		</div>
+                  	</c:if>
+                   
+                    <!-- Google recaptcha for testing profiles of application ends -->
+                <script src="https://www.google.com/recaptcha/api.js?onload=captureRecaptchaResponse&render=explicit" async defer></script>
+                <form:errors path="recaptchaResponse"/> 
                 </div>
               </div>
               <c:choose>
@@ -241,7 +284,7 @@ $(document).ready(function() {
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
                        <!-- input class="btn btn-primary btn-block" type="submit" name="userRegister" id="userRegister" value="Submit" /-->
-                       <button type="submit" class="btn btn-success btn-block  submit-button" name="userRegister" id="userRegister"  ><i class="glyphicon glyphicon-pencil"></i> Sign Up</button>
+                       <button type="submit" class="btn btn-success btn-block  submit-button" name="userRegister" id="userRegisterId"  ><i class="glyphicon glyphicon-pencil"></i> Sign Up</button>
                   </div>
                 </div> 
               </div>
@@ -253,7 +296,7 @@ $(document).ready(function() {
                 <div class="form-group row">
                   <div class="col-sm-8 form-group">
                        <!-- input class="btn btn-primary btn-block" type="submit" name="userUpdate" id="userUpdate" value="Submit" /-->
-                       <button type="submit" class="btn btn-success btn-block  submit-button" name="userUpdate" id="userUpdate"  ><i class="glyphicon glyphicon-pencil"></i> Update Profile</button>
+                       <button type="submit" class="btn btn-success btn-block  submit-button" name="userUpdate" id="userUpdateId"  ><i class="glyphicon glyphicon-pencil"></i> Update Profile</button>
                   </div>
                 </div> 
               </div>           
