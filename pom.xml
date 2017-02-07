@@ -258,13 +258,13 @@
     </exclusion>
 
       </exclusions>
-	
-		<!-- Dependency for Rest APIs consumption -->
+
+    </dependency>
+    
+    		<!-- Dependency for Rest APIs consumption -->
 	<dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
-    </dependency>
-
     </dependency>
     
 
