@@ -89,6 +89,9 @@ public class UserDTO {
 	@Size(min = 2, max = 45)
 	@NotEmpty
 	private String securityQuestionAnswer;
+	
+	@NotEmpty
+	private String recaptchaResponse;
 
 	public String getUserName() {
 		return userName;
@@ -280,6 +283,14 @@ public class UserDTO {
 
 	public void setSecurityQuestionAnswer(String securityQuestionAnswer) {
 		this.securityQuestionAnswer = securityQuestionAnswer;
+	}
+
+	public String getRecaptchaResponse() {
+		return recaptchaResponse;
+	}
+
+	public void setRecaptchaResponse(String recaptchaResponse) {
+		this.recaptchaResponse = recaptchaResponse;
 	}
 
 }
