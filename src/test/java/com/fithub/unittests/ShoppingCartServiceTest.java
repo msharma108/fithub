@@ -17,6 +17,8 @@ import com.fithub.shoppingcart.ShoppingCart;
 public class ShoppingCartServiceTest {
 
 	private ShoppingCart shoppingCart;
+	private final BigDecimal TWO = new BigDecimal(2);
+	BigDecimal productPrice = BigDecimal.TEN;
 
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
@@ -30,9 +32,9 @@ public class ShoppingCartServiceTest {
 	public void updateShoppingCartAddsProductToCartAndUpdatesCartCostIfProductInStockAndNotInCart() {
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 2;
-		BigDecimal productPrice = BigDecimal.TEN;
 		BigDecimal expectedCartCost = (productPrice.multiply(shoppingCart.getCartTaxRate())).add(productPrice);
-		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice);
+		BigDecimal quantityInCart = BigDecimal.ZERO;
+		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		String shoppingCartOperationType = "addToCart";
 
 		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType, BigDecimal.ZERO,
@@ -43,11 +45,34 @@ public class ShoppingCartServiceTest {
 	}
 
 	@Test
+	public void updateShoppingCartUpdatesProductQuantityInCartAndUpdatesCartCostIfProductInStockAndInCart() {
+		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
+		int stockQuantity = 2;
+
+		BigDecimal expectedCartTotalCost = (productPrice.add(productPrice)).multiply(shoppingCart.getCartTaxRate())
+				.add(productPrice.add(productPrice));
+
+		BigDecimal quantityInCart = BigDecimal.ONE;
+		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
+		shoppingCart.getCartProductList().add(productDTO);
+		shoppingCart.setCartCost(productPrice);
+		String shoppingCartOperationType = "addToCart";
+
+		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
+				productDTO.getPrice(), shoppingCart.getCartProductList().get(0).getQuantityInCart());
+
+		// Assert shopping cart has 2 item
+		assertEquals("Shopping cart not updated", new BigDecimal(2),
+				shoppingCart.getCartProductList().get(0).getQuantityInCart());
+		assertEquals("Shopping cart cost not updated", expectedCartTotalCost, shoppingCart.getCartTotalCost());
+	}
+
+	@Test
 	public void updateShoppingCartDoesNotAddProductToCartIfProductNotInStock() {
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 0;
-		BigDecimal productPrice = BigDecimal.TEN;
-		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice);
+		BigDecimal quantityInCart = BigDecimal.ZERO;
+		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		String shoppingCartOperationType = "addToCart";
 
 		expectedException.expect(IllegalStateException.class);
@@ -65,8 +90,8 @@ public class ShoppingCartServiceTest {
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 2;
 		String shoppingCartOperationType = "removeFromCart";
-		BigDecimal productPrice = BigDecimal.TEN;
-		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice);
+		BigDecimal quantityInCart = BigDecimal.ONE;
+		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		// setup test data by adding product to cart
 		shoppingCart.getCartProductList().add(productDTO);
 		shoppingCart.setCartCost(productPrice);
@@ -82,12 +107,12 @@ public class ShoppingCartServiceTest {
 
 	}
 
-	public ProductDTO prepareProductDTOForTest(int stockQuantity, BigDecimal productPrice) {
+	public ProductDTO prepareProductDTOForTest(int stockQuantity, BigDecimal productPrice, BigDecimal quantityInCart) {
 		ProductDTO productDTO = new ProductDTO();
 		productDTO.setStockQuantity(stockQuantity);
-		productDTO.setQuantityInCart(BigDecimal.ZERO);
+		productDTO.setQuantityInCart(quantityInCart);
 		productDTO.setPrice(productPrice);
-		productDTO.setProductName("productBeingAddedFirstTimeToCart");
+		productDTO.setProductName("productName");
 		return productDTO;
 	}
 
