@@ -29,7 +29,7 @@ public class ShoppingCartServiceTest {
 	}
 
 	@Test
-	public void updateShoppingCartAddsProductToCartAndUpdatesCartCostIfProductInStockAndNotInCart() {
+	public void updateShoppingCartAddsProductToCartAndUpdatesCartCostIfProductInStockAndNotInCartAndCartOperationTypeIsAddToCart() {
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 2;
 		BigDecimal expectedCartCost = (productPrice.multiply(shoppingCart.getCartTaxRate())).add(productPrice);
@@ -45,7 +45,7 @@ public class ShoppingCartServiceTest {
 	}
 
 	@Test
-	public void updateShoppingCartUpdatesProductQuantityInCartAndUpdatesCartCostIfProductInStockAndInCart() {
+	public void updateShoppingCartUpdatesProductQuantityInCartAndUpdatesCartCostIfProductInStockAndInCartAndCartOperationTypeIsAddToCart() {
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 2;
 
@@ -68,7 +68,33 @@ public class ShoppingCartServiceTest {
 	}
 
 	@Test
-	public void updateShoppingCartDoesNotAddProductToCartIfProductNotInStock() {
+	public void updateShoppingCartUpdatesProductQuantityInCartAndUpdatesCartCostIfProductInStockAndInCartAndCartOperationTypeIsRefreshCart() {
+		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
+		int stockQuantity = 2;
+
+		BigDecimal expectedCartTotalCost = (productPrice.add(productPrice)).multiply(shoppingCart.getCartTaxRate())
+				.add(productPrice.add(productPrice));
+
+		BigDecimal quantityInCart = BigDecimal.ONE;
+
+		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
+		shoppingCart.getCartProductList().add(productDTO);
+		shoppingCart.setCartCost(productPrice);
+		String shoppingCartOperationType = "refreshQuantityInCart";
+		BigDecimal quantityInCartEnteredByUser = shoppingCart.getCartProductList().get(0).getQuantityInCart()
+				.add(BigDecimal.ONE);
+
+		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
+				productDTO.getPrice(), quantityInCartEnteredByUser);
+
+		// Assert shopping cart item's quantity is refreshed to 2
+		assertEquals("Shopping cart not updated", new BigDecimal(2),
+				shoppingCart.getCartProductList().get(0).getQuantityInCart());
+		assertEquals("Shopping cart cost not updated", expectedCartTotalCost, shoppingCart.getCartTotalCost());
+	}
+
+	@Test
+	public void updateShoppingCartDoesNotAddOrUpdateProductToCartIfProductNotInStockAndCartOperationTypeIsAddOrRefresh() {
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 0;
 		BigDecimal quantityInCart = BigDecimal.ZERO;
@@ -86,7 +112,7 @@ public class ShoppingCartServiceTest {
 	}
 
 	@Test
-	public void updateShoppingCartRemovesProductFromCartAndUpdatesCartCostIfProductInCart() {
+	public void updateShoppingCartRemovesProductFromCartAndUpdatesCartCostIfProductInCartAndCartOperationTypeIsRemove() {
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 2;
 		String shoppingCartOperationType = "removeFromCart";
