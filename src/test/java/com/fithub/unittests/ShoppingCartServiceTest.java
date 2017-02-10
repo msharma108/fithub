@@ -68,7 +68,7 @@ public class ShoppingCartServiceTest {
 	}
 
 	@Test
-	public void updateShoppingCartUpdatesProductQuantityInCartAndUpdatesCartCostIfProductInStockAndInCartAndCartOperationTypeIsRefreshCart() {
+	public void updateShoppingCartIncrementsProductQuantityInCartAndUpdatesCartCostIfProductInStockAndInCartAndCartOperationTypeIsRefreshCartToIncrementCartQuantity() {
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 2;
 
@@ -91,6 +91,56 @@ public class ShoppingCartServiceTest {
 		assertEquals("Shopping cart not updated", new BigDecimal(2),
 				shoppingCart.getCartProductList().get(0).getQuantityInCart());
 		assertEquals("Shopping cart cost not updated", expectedCartTotalCost, shoppingCart.getCartTotalCost());
+	}
+
+	@Test
+	public void updateShoppingCartDecrementsProductQuantityInCartAndUpdatesCartCostIfProductInCartAndCartOperationTypeIsRefreshCartToDecrementCartQuantity() {
+		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
+		int stockQuantity = 2;
+
+		BigDecimal expectedCartTotalCost = (productPrice).multiply(shoppingCart.getCartTaxRate()).add(productPrice);
+
+		BigDecimal quantityInCart = new BigDecimal(2);
+
+		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
+		shoppingCart.getCartProductList().add(productDTO);
+
+		shoppingCart.setCartCost(productPrice.add(productPrice));
+		String shoppingCartOperationType = "refreshQuantityInCart";
+		BigDecimal quantityInCartEnteredByUser = shoppingCart.getCartProductList().get(0).getQuantityInCart()
+				.subtract(BigDecimal.ONE);
+
+		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
+				productDTO.getPrice(), quantityInCartEnteredByUser);
+
+		// Assert shopping cart item's quantity is refreshed to 1
+		assertEquals("Shopping cart not updated", BigDecimal.ONE,
+				shoppingCart.getCartProductList().get(0).getQuantityInCart());
+		assertEquals("Shopping cart cost not updated", expectedCartTotalCost, shoppingCart.getCartTotalCost());
+	}
+
+	@Test
+	public void updateShoppingCartRemovesProductFromCartAndUpdatesCartCostIfProductInCartAndCartOperationTypeIsRefreshCartToDecrementCartQuantityToZero() {
+		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
+		int stockQuantity = 1;
+
+		boolean expectedCartEmpty = true;
+		BigDecimal quantityInCart = BigDecimal.ONE;
+
+		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
+		shoppingCart.getCartProductList().add(productDTO);
+
+		shoppingCart.setCartCost(productPrice);
+		String shoppingCartOperationType = "refreshQuantityInCart";
+		BigDecimal quantityInCartEnteredByUser = shoppingCart.getCartProductList().get(0).getQuantityInCart()
+				.subtract(BigDecimal.ONE);
+
+		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
+				productDTO.getPrice(), quantityInCartEnteredByUser);
+
+		// Assert shopping cart item has been removed from cart
+		assertEquals("Shopping cart not updated", expectedCartEmpty, shoppingCart.getCartProductList().isEmpty());
+		assertEquals("Shopping cart cost not updated", BigDecimal.ZERO.setScale(2, 0), shoppingCart.getCartTotalCost());
 	}
 
 	@Test
