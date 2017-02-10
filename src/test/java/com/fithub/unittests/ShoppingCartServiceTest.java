@@ -17,7 +17,7 @@ import com.fithub.shoppingcart.ShoppingCart;
 public class ShoppingCartServiceTest {
 
 	private ShoppingCart shoppingCart;
-	private final BigDecimal TWO = new BigDecimal(2);
+	ShoppingCartService shoppingCartService;
 	BigDecimal productPrice = BigDecimal.TEN;
 
 	@Rule
@@ -26,19 +26,24 @@ public class ShoppingCartServiceTest {
 	@Before
 	public void beforeTest() {
 		this.shoppingCart = new ShoppingCart();
+		this.shoppingCartService = new ShoppingCartServiceImpl();
 	}
 
 	@Test
 	public void updateShoppingCartAddsProductToCartAndUpdatesCartCostIfProductInStockAndNotInCartAndCartOperationTypeIsAddToCart() {
-		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
+
+		// setup test data -> Arrange
 		int stockQuantity = 2;
 		BigDecimal expectedCartCost = (productPrice.multiply(shoppingCart.getCartTaxRate())).add(productPrice);
 		BigDecimal quantityInCart = BigDecimal.ZERO;
 		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		String shoppingCartOperationType = "addToCart";
 
+		// call the method being tested -> Act
 		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType, BigDecimal.ZERO,
 				BigDecimal.ZERO);
+
+		// Assert the test results -> Assert
 		// Assert shopping cart has 1 item
 		assertEquals("Shopping cart empty, product not added", 1, shoppingCart.getCartProductList().size());
 		assertEquals("Shopping cart cost not updated", expectedCartCost, shoppingCart.getCartTotalCost());
@@ -46,21 +51,22 @@ public class ShoppingCartServiceTest {
 
 	@Test
 	public void updateShoppingCartUpdatesProductQuantityInCartAndUpdatesCartCostIfProductInStockAndInCartAndCartOperationTypeIsAddToCart() {
-		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
-		int stockQuantity = 2;
 
+		// setup test data -> Arrange
+		int stockQuantity = 2;
 		BigDecimal expectedCartTotalCost = (productPrice.add(productPrice)).multiply(shoppingCart.getCartTaxRate())
 				.add(productPrice.add(productPrice));
-
 		BigDecimal quantityInCart = BigDecimal.ONE;
 		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		shoppingCart.getCartProductList().add(productDTO);
 		shoppingCart.setCartCost(productPrice);
 		String shoppingCartOperationType = "addToCart";
 
+		// call the method being tested -> Act
 		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
 				productDTO.getPrice(), shoppingCart.getCartProductList().get(0).getQuantityInCart());
 
+		// Assert the test results -> Assert
 		// Assert shopping cart has 2 item
 		assertEquals("Shopping cart not updated", new BigDecimal(2),
 				shoppingCart.getCartProductList().get(0).getQuantityInCart());
@@ -69,14 +75,12 @@ public class ShoppingCartServiceTest {
 
 	@Test
 	public void updateShoppingCartIncrementsProductQuantityInCartAndUpdatesCartCostIfProductInStockAndInCartAndCartOperationTypeIsRefreshCartToIncrementCartQuantity() {
-		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
-		int stockQuantity = 2;
 
+		// call the method being tested -> Act
+		int stockQuantity = 2;
 		BigDecimal expectedCartTotalCost = (productPrice.add(productPrice)).multiply(shoppingCart.getCartTaxRate())
 				.add(productPrice.add(productPrice));
-
 		BigDecimal quantityInCart = BigDecimal.ONE;
-
 		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		shoppingCart.getCartProductList().add(productDTO);
 		shoppingCart.setCartCost(productPrice);
@@ -84,9 +88,11 @@ public class ShoppingCartServiceTest {
 		BigDecimal quantityInCartEnteredByUser = shoppingCart.getCartProductList().get(0).getQuantityInCart()
 				.add(BigDecimal.ONE);
 
+		// call the method being tested -> Act
 		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
 				productDTO.getPrice(), quantityInCartEnteredByUser);
 
+		// Assert the test results -> Assert
 		// Assert shopping cart item's quantity is refreshed to 2
 		assertEquals("Shopping cart not updated", new BigDecimal(2),
 				shoppingCart.getCartProductList().get(0).getQuantityInCart());
@@ -95,24 +101,24 @@ public class ShoppingCartServiceTest {
 
 	@Test
 	public void updateShoppingCartDecrementsProductQuantityInCartAndUpdatesCartCostIfProductInCartAndCartOperationTypeIsRefreshCartToDecrementCartQuantity() {
+
+		// setup test data -> Arrange
 		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 		int stockQuantity = 2;
-
 		BigDecimal expectedCartTotalCost = (productPrice).multiply(shoppingCart.getCartTaxRate()).add(productPrice);
-
 		BigDecimal quantityInCart = new BigDecimal(2);
-
 		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		shoppingCart.getCartProductList().add(productDTO);
-
 		shoppingCart.setCartCost(productPrice.add(productPrice));
 		String shoppingCartOperationType = "refreshQuantityInCart";
 		BigDecimal quantityInCartEnteredByUser = shoppingCart.getCartProductList().get(0).getQuantityInCart()
 				.subtract(BigDecimal.ONE);
 
+		// call the method being tested -> Act
 		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
 				productDTO.getPrice(), quantityInCartEnteredByUser);
 
+		// Assert the test results -> Assert
 		// Assert shopping cart item's quantity is refreshed to 1
 		assertEquals("Shopping cart not updated", BigDecimal.ONE,
 				shoppingCart.getCartProductList().get(0).getQuantityInCart());
@@ -121,23 +127,23 @@ public class ShoppingCartServiceTest {
 
 	@Test
 	public void updateShoppingCartRemovesProductFromCartAndUpdatesCartCostIfProductInCartAndCartOperationTypeIsRefreshCartToDecrementCartQuantityToZero() {
-		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
-		int stockQuantity = 1;
 
+		// setup test data -> Arrange
+		int stockQuantity = 1;
 		boolean expectedCartEmpty = true;
 		BigDecimal quantityInCart = BigDecimal.ONE;
-
 		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		shoppingCart.getCartProductList().add(productDTO);
-
 		shoppingCart.setCartCost(productPrice);
 		String shoppingCartOperationType = "refreshQuantityInCart";
 		BigDecimal quantityInCartEnteredByUser = shoppingCart.getCartProductList().get(0).getQuantityInCart()
 				.subtract(BigDecimal.ONE);
 
+		// call the method being tested -> Act
 		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
 				productDTO.getPrice(), quantityInCartEnteredByUser);
 
+		// Assert the test results -> Assert
 		// Assert shopping cart item has been removed from cart
 		assertEquals("Shopping cart not updated", expectedCartEmpty, shoppingCart.getCartProductList().isEmpty());
 		assertEquals("Shopping cart cost not updated", BigDecimal.ZERO.setScale(2, 0), shoppingCart.getCartTotalCost());
@@ -145,17 +151,21 @@ public class ShoppingCartServiceTest {
 
 	@Test
 	public void updateShoppingCartDoesNotAddOrUpdateProductToCartIfProductNotInStockAndCartOperationTypeIsAddOrRefresh() {
-		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
+
+		// setup test data -> Arrange
 		int stockQuantity = 0;
 		BigDecimal quantityInCart = BigDecimal.ZERO;
 		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
 		String shoppingCartOperationType = "addToCart";
 
+		// Assert the test results -> Assert
 		expectedException.expect(IllegalStateException.class);
 		expectedException.expectMessage(
 				String.format("Quantity in cart: %s for product :%s cannot exceed the quantity in stock: %s",
 						productDTO.getQuantityInCart().toPlainString(), productDTO.getProductName(),
 						productDTO.getStockQuantity()));
+
+		// call the method being tested -> Act
 		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType, BigDecimal.ZERO,
 				BigDecimal.ZERO);
 
@@ -163,21 +173,23 @@ public class ShoppingCartServiceTest {
 
 	@Test
 	public void updateShoppingCartRemovesProductFromCartAndUpdatesCartCostIfProductInCartAndCartOperationTypeIsRemove() {
-		ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
+
+		// setup test data -> Arrange
 		int stockQuantity = 2;
 		String shoppingCartOperationType = "removeFromCart";
 		BigDecimal quantityInCart = BigDecimal.ONE;
 		ProductDTO productDTO = prepareProductDTOForTest(stockQuantity, productPrice, quantityInCart);
-		// setup test data by adding product to cart
 		shoppingCart.getCartProductList().add(productDTO);
 		shoppingCart.setCartCost(productPrice);
 		shoppingCart.setCartTax(shoppingCart.getCartCost().multiply(shoppingCart.getCartTaxRate()));
 		shoppingCart.setCartTotalCost(shoppingCart.getCartTax().add(shoppingCart.getCartCost()));
 
+		// call the method being tested -> Act
 		shoppingCartService.updateShoppingCart(shoppingCart, productDTO, shoppingCartOperationType,
 				productDTO.getPrice(), BigDecimal.ONE);
 
-		// Assert shopping cart has 1 item
+		// Assert the test results -> Assert
+		// Assert the cart is empty and price updated
 		assertEquals("Product not removed from shopping cart", 0, shoppingCart.getCartProductList().size());
 		assertEquals("Shopping cart cost not updated", BigDecimal.ZERO.setScale(2, 0), shoppingCart.getCartTotalCost());
 
