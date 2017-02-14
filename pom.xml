@@ -234,6 +234,14 @@
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
     </dependency>
+    
+    <!-- JUnit detailed test reports dependency for JBehave tests -->
+    
+    <dependency>
+    <groupId>de.codecentric</groupId>
+    <artifactId>jbehave-junit-runner</artifactId>
+    <version>1.2.0</version>
+</dependency>
 
 	</dependencies>
 
