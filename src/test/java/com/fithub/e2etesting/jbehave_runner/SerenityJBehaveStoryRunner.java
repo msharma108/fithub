@@ -12,31 +12,44 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestContextManager;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.codecentric.jbehave.junit.monitoring.JUnitReportingRunner;
 import net.serenitybdd.jbehave.SerenityStories;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-// Annotation to close application context after the execution of JBehave
-// stories
+//Annotation to close application context after the execution of JBehave
+//stories
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-
-@ContextConfiguration()
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("jbehave_e2e_testing")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
+@RunWith(JUnitReportingRunner.class)
 public class SerenityJBehaveStoryRunner extends SerenityStories {
 
 	@Autowired
 	ApplicationContext applicationContext;
 
+	private TestContextManager testContextManager;
+
 	// Method initializes the Step instances using spring application bean steps
 	@Override
 	public InjectableStepsFactory stepsFactory() {
+
+		// Initialize TestContextManager that loads the application context for
+		// the tests
+		initializeSpringApplicationContext();
 		return new SpringStepsFactory(configuration(), applicationContext);
+	}
+
+	private void initializeSpringApplicationContext() {
+		try {
+			this.testContextManager = new TestContextManager(getClass());
+			this.testContextManager.prepareTestInstance(this);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
