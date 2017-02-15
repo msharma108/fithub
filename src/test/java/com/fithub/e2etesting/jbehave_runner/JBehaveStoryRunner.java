@@ -51,13 +51,6 @@ public class JBehaveStoryRunner extends JUnitStories {
 	@Override
 	public Configuration configuration() {
 
-		try {
-			this.testContextManager = new TestContextManager(getClass());
-			this.testContextManager.prepareTestInstance(this);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
 		return new MostUsefulConfiguration().useStoryLoader(new LoadFromClasspath()).doDryRun(false)
 				.useStoryReporterBuilder(new StoryReporterBuilder().withDefaultFormats().withFormats(Format.CONSOLE,
 						Format.TXT, Format.HTML, Format.STATS));
@@ -66,7 +59,19 @@ public class JBehaveStoryRunner extends JUnitStories {
 	// Method initializes the Step instances using spring application bean steps
 	@Override
 	public InjectableStepsFactory stepsFactory() {
+		// Initialize TestContextManager that loads the application context for
+		// the tests
+		initializeSpringApplicationContext();
 		return new SpringStepsFactory(configuration(), applicationContext);
+	}
+
+	private void initializeSpringApplicationContext() {
+		try {
+			this.testContextManager = new TestContextManager(getClass());
+			this.testContextManager.prepareTestInstance(this);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	// Method returns the list of paths to the stories in the project

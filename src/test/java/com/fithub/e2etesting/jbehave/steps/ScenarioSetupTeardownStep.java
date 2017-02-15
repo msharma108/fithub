@@ -34,6 +34,8 @@ public class ScenarioSetupTeardownStep {
 
 	private HomePageDriver homePageDriver;
 
+	private static final String FAILURE_SCREENSHOT = "./target/JBehave_Failure_Screenshots/scenarioFailureScreenshot.jpg";
+
 	@Autowired
 	public ScenarioSetupTeardownStep(WebDriver driver, DataSource datasource, String homeUrl) {
 		this.driver = driver;
@@ -57,7 +59,7 @@ public class ScenarioSetupTeardownStep {
 	public void captureScenarioSnapshot() {
 		try {
 			File failureScreenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(failureScreenshotFile, new File("E:\\ScenarioFailureScreenShot.jpg"));
+			FileUtils.copyFile(failureScreenshotFile, new File(FAILURE_SCREENSHOT));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
