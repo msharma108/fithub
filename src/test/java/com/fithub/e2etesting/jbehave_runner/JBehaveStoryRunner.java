@@ -22,25 +22,29 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestContextManager;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+import de.codecentric.jbehave.junit.monitoring.JUnitReportingRunner;
 
 // Annotation to close application context after the execution of JBehave
 // stories
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-
-@ContextConfiguration()
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("jbehave_e2e_testing")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
+@RunWith(JUnitReportingRunner.class)
 public class JBehaveStoryRunner extends JUnitStories {
 
 	@Autowired
 	ApplicationContext applicationContext;
+
+	private TestContextManager testContextManager;
+
+	public JBehaveStoryRunner() {
+		JUnitReportingRunner.recommendedControls(configuredEmbedder());
+	}
 
 	// Method overrides JBehave's Embedder configuration by specifying
 	// application specific configuration
@@ -55,7 +59,19 @@ public class JBehaveStoryRunner extends JUnitStories {
 	// Method initializes the Step instances using spring application bean steps
 	@Override
 	public InjectableStepsFactory stepsFactory() {
+		// Initialize TestContextManager that loads the application context for
+		// the tests
+		initializeSpringApplicationContext();
 		return new SpringStepsFactory(configuration(), applicationContext);
+	}
+
+	private void initializeSpringApplicationContext() {
+		try {
+			this.testContextManager = new TestContextManager(getClass());
+			this.testContextManager.prepareTestInstance(this);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	// Method returns the list of paths to the stories in the project
