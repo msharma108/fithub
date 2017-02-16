@@ -36,7 +36,7 @@ public class ApplicationExceptionHandler {
 		ModelAndView model = new ModelAndView();
 		model.addObject("exception", exception.getMessage());
 		model.addObject("errorUrl", request.getRequestURL());
-		model.setViewName("user/customErrorPage");
+		model.setViewName("customErrorPage");
 		return model;
 	}
 
