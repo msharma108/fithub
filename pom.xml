@@ -53,6 +53,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-expression</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -71,6 +77,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-expression</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Spring JPA dependency -->
@@ -198,7 +210,15 @@
     <artifactId>xalan</artifactId>
     	    
     	    </exclusion>
-    	    </exclusions>
+    	    <exclusion>
+    	    	<groupId>net.sourceforge.htmlunit</groupId>
+    	    	<artifactId>htmlunit</artifactId>
+    	    </exclusion>
+    	    <exclusion>
+    	    	<groupId>org.seleniumhq.selenium</groupId>
+    	    	<artifactId>htmlunit-driver</artifactId>
+    	    </exclusion>
+    	   	    </exclusions>
     </dependency>
     
     <!-- Heroku PostgreSql dependency -->
@@ -257,6 +277,30 @@
       <artifactId>serializer</artifactId>
     </exclusion>
 
+    <exclusion>
+    	<groupId>net.sourceforge.htmlunit</groupId>
+    	<artifactId>htmlunit</artifactId>
+    </exclusion>
+    <exclusion>
+    	<groupId>org.glassfish.web</groupId>
+    	<artifactId>javax.el</artifactId>
+    </exclusion>
+    <exclusion>
+    	<groupId>org.seleniumhq.selenium</groupId>
+    	<artifactId>selenium-server</artifactId>
+    </exclusion>
+    <exclusion>
+    	<groupId>javax.el</groupId>
+    	<artifactId>javax.el-api</artifactId>
+    </exclusion>
+    <exclusion>
+    	<groupId>net.sourceforge.jexcelapi</groupId>
+    	<artifactId>jxl</artifactId>
+    </exclusion>
+    <exclusion>
+    	<groupId>org.seleniumhq.selenium</groupId>
+    	<artifactId>htmlunit-driver</artifactId>
+    </exclusion>
       </exclusions>
 
     </dependency>
