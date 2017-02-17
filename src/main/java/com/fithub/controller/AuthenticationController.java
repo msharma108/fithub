@@ -11,11 +11,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fithub.shoppingcart.ShoppingCart;
 
+/**
+ * Controller class for managing authentication requests. Login requests are
+ * intercepted by Spring Security FithubSecurityConfig configuration class
+ *
+ */
 @Controller
 public class AuthenticationController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationController.class);
 
+	/**
+	 * Method retrieves the application's login page for user
+	 * 
+	 * @param invalidCredentials
+	 *            acquires "failure" value from request param when
+	 *            authentication requests are declared unsuccessful by Spring
+	 *            Security
+	 * @param model
+	 *            Spring Model object that encompasses request data and invalid
+	 *            credentials message
+	 * @return Login page for the application
+	 */
 	@RequestMapping(value = "/login")
 	public String getUserLoginPage(@RequestParam(value = "failure", required = false) String invalidCredentials,
 			Model model) {
@@ -29,6 +46,16 @@ public class AuthenticationController {
 		return "user/login";
 	}
 
+	/**
+	 * Method handles User logout requests
+	 * 
+	 * @param model
+	 *            Spring Model object that encompasses request data and logout
+	 *            message
+	 * @param session
+	 *            Session object holding session data
+	 * @return Login page for the application after logout
+	 */
 	@RequestMapping(value = "/logoutSuccess")
 	public String handleUserLogout(Model model, HttpSession session) {
 
