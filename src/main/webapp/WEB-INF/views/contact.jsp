@@ -60,17 +60,33 @@
         infowindow.open(fitHubMap,marker);
         
       }
+      
+      function loadChat() {
+    	  document.getElementById("botChatId").src="https://webchat.botframework.com/embed/botmshar108?s=OzlIzALwm6s.cwA.weQ.mLTAK_B1xsVBkiN1NbFRriSxzA4-oeDV1gKnmsk_ZaI"; 
+    	  document.getElementById("botChatId").frameBorder="2";
+      }
     </script>
   <body>
 <jsp:include page="header.jsp" />
 
     
   <body>
-    <h3>Contact us:</h3>
+    <h3>Contact us:<span class="span12">
+      
+         <a ><img src="images/chat_window.png" onClick=loadChat() width="80" height="80"></a>
+    </span> </h3>
+   
+    <div class="navbar-text pull-right">
+          <iframe id="botChatId" style="height:300px; width:402px" frameBorder="0" ></iframe>
+          </div><br>
     <div id="map"></div>
+   
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBE1ruz3NIxLcigdPBtoGhk1BvIfsqdjsQ&callback=loadMap">
     </script>
+
+    
+
     
 <jsp:include page="footer.jsp" />
 	
