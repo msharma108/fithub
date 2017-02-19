@@ -31,7 +31,7 @@ public class SerenityJBehaveStoryRunner extends SerenityStories {
 	@Autowired
 	ApplicationContext applicationContext;
 
-	private TestContextManager testContextManager;
+	private static TestContextManager testContextManager;
 
 	// Method initializes the Step instances using spring application bean steps
 	@Override
@@ -49,6 +49,17 @@ public class SerenityJBehaveStoryRunner extends SerenityStories {
 			this.testContextManager.prepareTestInstance(this);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+	
+		@AfterClass
+	public static void destroyApplicationContext() {
+		// Call after test class hook for TestExecutionListeners specifically
+		// DirtiesContextExecutionListener
+		try {
+			testContextManager.afterTestClass();
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 	}
 
