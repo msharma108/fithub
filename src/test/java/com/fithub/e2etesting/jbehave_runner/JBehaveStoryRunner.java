@@ -12,6 +12,7 @@ import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.spring.SpringStepsFactory;
+import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
@@ -40,7 +41,7 @@ public class JBehaveStoryRunner extends JUnitStories {
 	@Autowired
 	ApplicationContext applicationContext;
 
-	private TestContextManager testContextManager;
+	private static TestContextManager testContextManager;
 
 	public JBehaveStoryRunner() {
 		JUnitReportingRunner.recommendedControls(configuredEmbedder());
@@ -67,8 +68,8 @@ public class JBehaveStoryRunner extends JUnitStories {
 
 	private void initializeSpringApplicationContext() {
 		try {
-			this.testContextManager = new TestContextManager(getClass());
-			this.testContextManager.prepareTestInstance(this);
+			JBehaveStoryRunner.testContextManager = new TestContextManager(getClass());
+			JBehaveStoryRunner.testContextManager.prepareTestInstance(this);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -80,6 +81,17 @@ public class JBehaveStoryRunner extends JUnitStories {
 		testList = new StoryFinder().findPaths(
 				org.jbehave.core.io.CodeLocations.codeLocationFromClass(this.getClass()).getFile(), "**/*.story", "");
 		return testList;
+	}
+
+	@AfterClass
+	public static void destroyApplicationContext() {
+		// Call after test class hook for TestExecutionListeners specifically
+		// DirtiesContextExecutionListener
+		try {
+			testContextManager.afterTestClass();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 
 }

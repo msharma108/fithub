@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Enables support for both http and https
+ * Web Container configuration class for Tomcat
  *
  */
 @Configuration
@@ -22,6 +22,12 @@ public class TomcatMultiConnectorConfig {
 	// Reference:-
 	// https://www.drissamri.be/blog/java/enable-https-in-spring-boot/
 
+	/**
+	 * Method returns Servlet Container Bean with configuration that supports
+	 * both http and https
+	 * 
+	 * @return Servlet container Bean
+	 */
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 		TomcatEmbeddedServletContainerFactory tomcatContainer = new TomcatEmbeddedServletContainerFactory() {
@@ -51,6 +57,12 @@ public class TomcatMultiConnectorConfig {
 		return tomcatContainer;
 	}
 
+	/**
+	 * Method creates a tomcat connector configured to redirect requests to
+	 * https
+	 * 
+	 * @return connector with http and https support
+	 */
 	private Connector createBasicConnector() {
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
 		connector.setPort(8080);
