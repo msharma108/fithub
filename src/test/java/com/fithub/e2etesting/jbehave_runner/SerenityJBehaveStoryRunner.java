@@ -2,6 +2,7 @@ package com.fithub.e2etesting.jbehave_runner;
 
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.spring.SpringStepsFactory;
+import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
@@ -45,14 +46,14 @@ public class SerenityJBehaveStoryRunner extends SerenityStories {
 
 	private void initializeSpringApplicationContext() {
 		try {
-			this.testContextManager = new TestContextManager(getClass());
-			this.testContextManager.prepareTestInstance(this);
+			SerenityJBehaveStoryRunner.testContextManager = new TestContextManager(getClass());
+			SerenityJBehaveStoryRunner.testContextManager.prepareTestInstance(this);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
-		@AfterClass
+
+	@AfterClass
 	public static void destroyApplicationContext() {
 		// Call after test class hook for TestExecutionListeners specifically
 		// DirtiesContextExecutionListener
