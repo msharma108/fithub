@@ -43,7 +43,7 @@
 		   <br>
            <!-- Form action variable value based on user role-->
            <sec:authorize access="hasAuthority('ADMIN')">
-           <c:url var="userTask" value="/admin/userTask/${userDTO.userName}"/>
+           <c:url var="userTask" value="/admin/userEdit/${userDTO.userName}"/>
            </sec:authorize>
            
            <sec:authorize access="hasAuthority('CUSTOMER')">

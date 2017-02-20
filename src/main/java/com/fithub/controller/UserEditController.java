@@ -45,7 +45,7 @@ public class UserEditController {
 		this.userService = userService;
 		this.userEditValidator = userEditValidator;
 		this.userTasksHelperService = userTasksHelperService;
-		this.environment= environment;
+		this.environment = environment;
 	}
 
 	// On the userProfile page, there should be some buttons with form actions
@@ -62,19 +62,20 @@ public class UserEditController {
 	// the controller will simply take the /admin/userTask as PostMapping.
 
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
-	@RequestMapping(value = { "/userTask/{userName:.+}",
-			"/admin/userTask/{userName:.+}" }, params = "userEdit", method = { RequestMethod.GET, RequestMethod.POST })
-	
+	@RequestMapping(value = { "/userEdit/{userName:.+}",
+			"/admin/userEdit/{userName:.+}" }, params = "userEdit", method = { RequestMethod.GET, RequestMethod.POST })
+
 	public String getUserEditPage(@PathVariable("userName") String userName, @ModelAttribute("userDTO") UserDTO userDTO,
-			Model model, Authentication authentication,@Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
+			Model model, Authentication authentication, @Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
 		LOG.debug("Getting editUserPage for user={}", userName);
 
 		userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
 		userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
-		
+
 		// Add non-testing profile recaptcha key for user validation
-		if(environment.getProperty("spring.profiles.active") !=null && !environment.getProperty("spring.profiles.active").contains("testing"))
-		model.addAttribute("recaptchaPublicKey",recaptchaPublicKey);
+		if (environment.getProperty("spring.profiles.active") != null
+				&& !environment.getProperty("spring.profiles.active").contains("testing"))
+			model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
 		userDTO.setEditable(true);
 
 		return "user/registration";
