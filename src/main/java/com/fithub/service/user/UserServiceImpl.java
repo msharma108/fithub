@@ -3,6 +3,7 @@
  */
 package com.fithub.service.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -154,5 +155,24 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public long countNumberOfUsersInDatabase() {
 		return userRepository.count();
+	}
+
+	@Override
+	public List<User> getUsersWithNameContainingUserSearchString(String userSearchString) {
+		LOG.debug("Attempting to find users matching searchString={}", userSearchString);
+		List<User> userList = new ArrayList<User>();
+
+		// Repository invocation based on passed in search strings
+		if (userSearchString.equals(""))
+			throw new IllegalArgumentException("Please provide search values for searching the user");
+
+		else
+			userList = userRepository.findByUserNameIgnoreCaseContaining(userSearchString);
+
+		if (!userList.isEmpty())
+			return userList;
+		else
+			throw new NoSuchElementException(
+					String.format("Users matching the searchString=%s not found", userSearchString));
 	}
 }

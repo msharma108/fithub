@@ -1,5 +1,7 @@
 package com.fithub.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -126,21 +128,20 @@ public class UserTasksController {
 	public String constructUrlForAdminUserTasks(@RequestParam(value = "userView", required = false) String userView,
 			@RequestParam(value = "userEdit", required = false) String userEdit,
 			@RequestParam(value = "userDelete", required = false) String userDelete,
-			@RequestParam(value = "userRoleChange", required = false) String userRoleChange, HttpServletRequest request,
+			@RequestParam(value = "userRoleChange", required = false) String userRoleChange,
+			@RequestParam(value = "searchUser", required = false) String searchUser, HttpServletRequest request,
 			Authentication authentication, Model model) {
 		LOG.debug("Reconstructing URL for user operations");
 		String userName = request.getParameter("userName");
 		String reconstructedUrl = "";
 
 		if (userView != null) {
-			// Request routing for user profile view based on the logged in
-			// user's role
 			LOG.debug("routing request to userView handler");
-			if (userTasksHelperService.isLoggedInUserAdmin(authentication))
-				reconstructedUrl = "/admin/viewUser/" + userName;
-			else
-				reconstructedUrl = "/viewUser/" + userName;
-
+			reconstructedUrl = "/admin/viewUser/" + userName;
+		} else if (searchUser != null) {
+			String userSearchString = request.getParameter("userSearchString");
+			LOG.debug("routing request to search User handler");
+			reconstructedUrl = "/admin/searchUser/" + userSearchString;
 		} else {
 			// Retrieve user by userName
 			User user = userService.getUserByUsername(userName);
@@ -384,4 +385,16 @@ public class UserTasksController {
 		}
 		return "user/home";
 	}
+
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/admin/searchUser/{userSearchString:.+}", params = "searchUser")
+	public String searchUser(Model model, @PathVariable("userSearchString") String userSearchString) {
+		LOG.debug("Attempting to search user based on search string ={}", userSearchString);
+		List<User> userList = new ArrayList<User>();
+		userList = userService.getUsersWithNameContainingUserSearchString(userSearchString);
+		model.addAttribute("allUsers", userList);
+		return "user/usersList";
+
+	}
+
 }

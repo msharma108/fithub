@@ -91,4 +91,13 @@ public interface UserService {
 	 */
 	long countNumberOfUsersInDatabase();
 
+	/**
+	 * Method gets the list of users matching the provided user search string
+	 * 
+	 * @param userSearchString
+	 *            The entered search string for user
+	 * @return The list of users containing the supplied search string
+	 */
+	List<User> getUsersWithNameContainingUserSearchString(String userSearchString);
+
 }

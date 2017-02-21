@@ -105,16 +105,16 @@
 
 		  </ul>
 		  <!-- Admin view user link creation -->
-		  <c:url var="adminViewUser" value="/admin/urlConstructionBasedOnOperation"/>
+		  <c:url var="adminSearchUser" value="/admin/adminOperation"/>
 		  <sec:authorize access="hasAuthority('ADMIN')">
         <div class="col-sm-3  pull-right">
-            <form class="navbar-form" role="search" action="${adminViewUser}"method="POST" >
+            <form class="navbar-form" role="search" action="${adminSearchUser}"method="POST" >
                 <div class="input-group">
-                    <input id="userNameId" type="text" name="userName" class="form-control form-field" placeholder="Enter UserName">
+                    <input id="userSearchStringId" type="text" name="userSearchString" class="form-control form-field" placeholder="Enter UserName">
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                     <div class="input-group-btn">
-                        <button class="btn btn-success submit-button" type="submit" name="userView">Search <i class="glyphicon glyphicon-search"></i></button>
+                        <button class="btn btn-success submit-button" type="submit" name="searchUser">Search <i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
             </form>
