@@ -22,6 +22,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 
+import com.fithub.domain.PasswordRetrievalDTO;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
@@ -200,9 +201,11 @@ public class UserServiceIntegrationTest extends AbstractFithubApplicationIntegra
 
 		String userName = "mohitshsh";
 		boolean expectedPasswordResetResult = true;
-		String resetPasswordString = "resetPassword";
+		PasswordRetrievalDTO passwordRetrievalDTO = new PasswordRetrievalDTO();
+		passwordRetrievalDTO.setSecurityAnswer("Delhi");
+		passwordRetrievalDTO.setZip("K1G3R4");
 		User user = userService.getUserByUsername(userName);
-		boolean actualPasswordResetResult = userService.resetPassword(user, resetPasswordString);
+		boolean actualPasswordResetResult = userService.resetPassword(user, passwordRetrievalDTO);
 
 		assertEquals("Password reset not successful", expectedPasswordResetResult, actualPasswordResetResult);
 
@@ -213,11 +216,11 @@ public class UserServiceIntegrationTest extends AbstractFithubApplicationIntegra
 		assertDatabaseStateConsistencyBeforeTest();
 
 		String userName = "userNameNotInDatabase";
-		String resetPasswordString = "resetPassword";
+		PasswordRetrievalDTO passwordRetrievalDTO = new PasswordRetrievalDTO();
 		User user = userService.getUserByUsername(userName);
 		expectedException.expect(NoSuchElementException.class);
 		expectedException.expectMessage("User not found");
-		userService.resetPassword(user, resetPasswordString);
+		userService.resetPassword(user, passwordRetrievalDTO);
 
 		fail("NoSuchElementException expected");
 
@@ -227,6 +230,32 @@ public class UserServiceIntegrationTest extends AbstractFithubApplicationIntegra
 	public void userServiceCountsNumberOfUsersInDatabase() {
 
 		assertDatabaseStateConsistencyBeforeTest();
+	}
+
+	@Test
+	public void userServiceGetsUsersWithNameContainingUserSearchStringIfUsersWithMatchingStringExistInDatabase() {
+		assertDatabaseStateConsistencyBeforeTest();
+
+		String userSearchString = "mohit";
+		String expectedSearchResult = "mohitshsh";
+		List<User> searchResultList = userService.getUsersWithNameContainingUserSearchString(userSearchString);
+		String actualSearchResult = searchResultList.get(0).getUserName();
+
+		assertEquals("User matching search string not found", expectedSearchResult, actualSearchResult);
+
+	}
+
+	@Test
+	public void userServiceThrowsNoSuchElementExceptionWhenSearchStringForGetUsersWithNameContainingUserSearchStringDoesNotMatchUsersInDatabase() {
+		assertDatabaseStateConsistencyBeforeTest();
+
+		String userSearchString = "userNotInDatabase";
+		expectedException.expect(NoSuchElementException.class);
+		expectedException
+				.expectMessage(String.format("Users matching the searchString=%s not found", userSearchString));
+		userService.getUsersWithNameContainingUserSearchString(userSearchString);
+		fail("NoSuchElementException expected");
+
 	}
 
 	private UserDTO prepareUserDTO(String userName) {

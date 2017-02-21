@@ -244,7 +244,7 @@ public class ProductServiceIntegrationTest extends AbstractFithubApplicationInte
 	}
 
 	@Test
-	public void productServiceThrowsIllegalArgumentExceptionIfSearchStringIsBlankForGetProductsContaingProductNameOrShortDescription() {
+	public void productServiceThrowsIllegalArgumentExceptionIfSearchStringIsBlankForGetProductsContainingProductNameOrShortDescription() {
 		assertDatabaseStateConsistencyBeforeTest();
 
 		String searchStringLikeProductName = "";
@@ -255,7 +255,7 @@ public class ProductServiceIntegrationTest extends AbstractFithubApplicationInte
 	}
 
 	@Test
-	public void productServiceThrowsNoSuchElementExceptionWhenSearchStringForGetProductsContaingProductNameOrShortDescriptionDoesNotMatchProductsInDatabase() {
+	public void productServiceThrowsNoSuchElementExceptionWhenSearchStringForGetProductsContainingProductNameOrShortDescriptionDoesNotMatchProductsInDatabase() {
 		assertDatabaseStateConsistencyBeforeTest();
 
 		String searchStringLikeProductName = "Jazz";

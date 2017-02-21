@@ -2,6 +2,7 @@ package com.fithub.service.user;
 
 import java.util.List;
 
+import com.fithub.domain.PasswordRetrievalDTO;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 
@@ -77,12 +78,13 @@ public interface UserService {
 	 * 
 	 * @param user
 	 *            User whose password is being reset
-	 * @param resetPassword
-	 *            : The new random string sent to user as password
+	 * @param passwordRetrievalDTO
+	 *            : The passwordRetrievalDTO object used for moving password
+	 *            related information between view and service layer
 	 * @return boolean true if the password reset was successful
 	 * 
 	 */
-	boolean resetPassword(User user, String resetPassword);
+	boolean resetPassword(User user, PasswordRetrievalDTO passwordRetrievalDTO);
 
 	/**
 	 * Method counts the number of users in the system\database

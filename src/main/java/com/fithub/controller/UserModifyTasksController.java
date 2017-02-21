@@ -1,17 +1,16 @@
 package com.fithub.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -22,152 +21,39 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.fithub.domain.PasswordRetrievalDTO;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
-import com.fithub.domain.UserRole;
 import com.fithub.mailclient.MailClient;
 import com.fithub.service.user.UserService;
 import com.fithub.service.user.UserTasksHelperService;
+import com.fithub.validator.user.UserValidator;
 
 @Controller
 @SessionAttributes("userDTO")
-public class UserTasksController {
+public class UserModifyTasksController {
 
 	private final UserService userService;
-	private final MailClient restMailClient;
 
-	private static final Logger LOG = LoggerFactory.getLogger(UserTasksController.class);
+	@Qualifier("userEditValidator")
+	private final UserValidator userEditValidator;
+	private static final Logger LOG = LoggerFactory.getLogger(UserModifyTasksController.class);
 	private final UserTasksHelperService userTasksHelperService;
+	private final Environment environment;
 
 	@Autowired
-	public UserTasksController(UserService userService, UserTasksHelperService userTasksHelperService,
-			MailClient restMailClient) {
+	public UserModifyTasksController(UserService userService, UserTasksHelperService userTasksHelperService,
+			MailClient restMailClient, UserValidator userEditValidator, Environment environment) {
 		this.userService = userService;
 		this.userTasksHelperService = userTasksHelperService;
-		this.restMailClient = restMailClient;
-	}
-
-	/**
-	 * Method handles requests for retrieving the list of all the users in the
-	 * system
-	 * 
-	 * @param model
-	 *            Spring Model object that can encompass request data
-	 * @return View that presents the list of all users
-	 */
-	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping(value = { "/admin/viewUsers" })
-	public String getAllUsersListPage(Model model) {
-		LOG.debug("Attempting to list all the users");
-		model.addAttribute("allUsers", userService.getAllUsers());
-		return "user/usersList";
-	}
-
-	/**
-	 * Method handles requests to retrieve a user's profile page
-	 * 
-	 * @param userName
-	 *            UserName of the user whose profile is to be retrieved
-	 * @param model
-	 *            Spring Model object that can encompass request data
-	 * @return View that presents the profile page of the user whose UserName
-	 *         was passed
-	 */
-	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
-	@RequestMapping(value = { "/viewUser/{userName:.+}", "/admin/viewUser/{userName:.+}" })
-	public String getUserProfilePage(@PathVariable("userName") String userName, Model model) {
-		LOG.debug("Retreiving the profile of user={}", userName);
-
-		User user = userService.getUserByUsername(userName);
-		if (user != null) {
-			UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
-			model.addAttribute("userDTO", userDTO);
-		}
-
-		else
-			throw new NoSuchElementException((String.format("Username=%s not found", userName)));
-		LOG.debug("Profile page to be invoked");
-		return "user/profile";
-	}
-
-	/**
-	 * Method acts as the initial entry point for filtering various ADMIN user
-	 * task requests. It retrieves the user profile and redirects request to the
-	 * appropriate controller method based on the user task
-	 * 
-	 * @param userView
-	 *            Request Parameter value passed from the user interface for
-	 *            ADMIN user task type - view user profile
-	 * @param userEdit
-	 *            Request Parameter value passed from the user interface for
-	 *            ADMIN user task type - edit user profile
-	 * @param userDelete
-	 *            Request Parameter value passed from the user interface for
-	 *            ADMIN user task type - delete user profile
-	 * @param userRoleChange
-	 *            Request Parameter value passed from the user interface for
-	 *            ADMIN user task type - change user role
-	 * @param request
-	 *            HttpServlet request object encapsulating hidden form
-	 *            parameters
-	 * @param authentication
-	 *            Spring Security core Authentication instance that comprises of
-	 *            the authenticated user's security details
-	 * @param model
-	 *            Spring Model object that can encompass request data
-	 * @return A Forward Request URI that is handled by ADMIN user task specific
-	 *         controllers
-	 */
-	@PostMapping(value = { "/admin/adminOperation" })
-	public String constructUrlForAdminUserTasks(@RequestParam(value = "userView", required = false) String userView,
-			@RequestParam(value = "userEdit", required = false) String userEdit,
-			@RequestParam(value = "userDelete", required = false) String userDelete,
-			@RequestParam(value = "userRoleChange", required = false) String userRoleChange,
-			@RequestParam(value = "searchUser", required = false) String searchUser, HttpServletRequest request,
-			Authentication authentication, Model model) {
-		LOG.debug("Reconstructing URL for user operations");
-		String userName = request.getParameter("userName");
-		String reconstructedUrl = "";
-
-		if (userView != null) {
-			LOG.debug("routing request to userView handler");
-			reconstructedUrl = "/admin/viewUser/" + userName;
-		} else if (searchUser != null) {
-			String userSearchString = request.getParameter("userSearchString");
-			LOG.debug("routing request to search User handler");
-			reconstructedUrl = "/admin/searchUser/" + userSearchString;
-		} else {
-			// Retrieve user by userName
-			User user = userService.getUserByUsername(userName);
-			if (user == null)
-				throw new NoSuchElementException((String.format("Username=%s not found", userName)));
-			else {
-				UserDTO userDTO = userTasksHelperService.populateUserDTOFromUser(user);
-				if (userEdit != null) {
-					LOG.debug("routing request to userEdit handler");
-					reconstructedUrl = "/admin/userEdit/" + userName;
-				}
-				if (userDelete != null) {
-					LOG.debug("routing request to userDelete handler");
-					reconstructedUrl = "/admin/userDelete/" + userName;
-				}
-				if (userRoleChange != null) {
-					LOG.debug("routing request to userRole change handler");
-					userDTO.setRole(UserRole.valueOf(request.getParameter("userRole")));
-					reconstructedUrl = "/admin/userRoleChange";
-				}
-				model.addAttribute("userDTO", userDTO);
-			}
-		}
-
-		LOG.debug("Reconstructed URL={}", reconstructedUrl);
-		return "forward:" + reconstructedUrl;
+		this.userEditValidator = userEditValidator;
+		this.environment = environment;
 	}
 
 	/**
@@ -244,34 +130,6 @@ public class UserTasksController {
 	}
 
 	/**
-	 * Method handles user task success requests and comprises of logic to
-	 * display success results on the UI just once thus preventing any issues
-	 * that could arise due to refresh
-	 * 
-	 * @param request
-	 *            HttpServlet request object encapsulating hidden form
-	 *            parameters
-	 * @return A user task success page or the home page in case of refresh on a
-	 *         user task execution completion
-	 */
-	@RequestMapping(value = { "/userTaskSuccess", "/admin/userTaskSuccess" })
-	public String getUserTaskSuccessPage(HttpServletRequest request) {
-
-		// Preventing problem with page refresh in case of flash attribute
-		// Reference:
-		// http://www.tikalk.com/redirectattributes-new-feature-spring-mvc-31/
-		LOG.debug("Getting Success Page");
-		Map<String, ?> checkMap = RequestContextUtils.getInputFlashMap(request);
-		if (checkMap != null)
-
-			// Success Page could be on registration itself
-			// Handles RegisterSuccess and UpdateSuccess
-			return "user/userTaskSuccess";
-		else
-			return "home";
-	}
-
-	/**
 	 * Method displays password retrieval page for the user
 	 * 
 	 * @return
@@ -329,7 +187,7 @@ public class UserTasksController {
 			RedirectAttributes redirectAttributes,
 			@Valid @ModelAttribute("passwordRetrievalDTO") PasswordRetrievalDTO passwordRetrievalDTO,
 			BindingResult result) {
-		LOG.debug("Attempting to handle display security question");
+		LOG.debug("Attempting to handle display of security question");
 
 		// Retrieve & display security question of the user
 		if (getSecurityChecks != null) {
@@ -365,35 +223,79 @@ public class UserTasksController {
 				return "user/passwordRetrieval";
 			}
 
-			LOG.debug("Checking provided security answer");
-			// Check if the answers are true
-			if (passwordRetrievalDTO.getSecurityAnswer().equals(user.getSecurityQuestionAnswer())
-					&& passwordRetrievalDTO.getZip().equals(user.getZipcode())) {
+			LOG.debug("Checking provided security answers");
 
-				// Generate a random String as password & update password
-				String resetPassword = RandomStringUtils.randomAlphanumeric(6);
-
-				userService.resetPassword(user, resetPassword);
-
-				// Email the user his new password
-				restMailClient.sendPasswordResetMail(user.getGivenName(), user.getEmail(), resetPassword);
-
+			// Check if the answers are true and reset in case of matching
+			// answers
+			if (userService.resetPassword(user, passwordRetrievalDTO)) {
 				redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 5);
 				return "redirect:/userTaskSuccess";
 			}
-
 		}
 		return "user/home";
+
 	}
 
-	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/admin/searchUser/{userSearchString:.+}", params = "searchUser")
-	public String searchUser(Model model, @PathVariable("userSearchString") String userSearchString) {
-		LOG.debug("Attempting to search user based on search string ={}", userSearchString);
-		List<User> userList = new ArrayList<User>();
-		userList = userService.getUsersWithNameContainingUserSearchString(userSearchString);
-		model.addAttribute("allUsers", userList);
-		return "user/usersList";
+	// On the userProfile page, there should be some buttons with form actions
+	// that will re-submit the JSPs model attribute to this controller method.
+	// params="editUser" in the RequestMapping allows one form with multiple
+	// submit buttons to be differentiated.params here would be the same as the
+	// name for the input buttons name attribute
+	// If this doesn't work then, I can have the request forwarded from a
+	// controller method that
+	// takes the username from userProfilePage as Post request with Username as
+	// a request.parameter of the form. That method then takes the username and
+	// modifies the url link and sends it to this method for admin/user in the
+	// required form /admin/userTask/{userName}. And the helper method of
+	// the controller will simply take the /admin/userTask as PostMapping.
+
+	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
+	@RequestMapping(value = { "/userEdit/{userName:.+}",
+			"/admin/userEdit/{userName:.+}" }, params = "userEdit", method = { RequestMethod.GET, RequestMethod.POST })
+
+	public String getUserEditPage(@PathVariable("userName") String userName, @ModelAttribute("userDTO") UserDTO userDTO,
+			Model model, Authentication authentication, @Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
+		LOG.debug("Getting editUserPage for user={}", userName);
+
+		userDTO.setLoggedInUserName(userTasksHelperService.getLoggedInUserName(authentication));
+		userDTO.setLoggedInUserUserRole(userTasksHelperService.getLoggedInUserUserRole(authentication));
+
+		// Add non-testing profile recaptcha key for user validation
+		if (environment.getProperty("spring.profiles.active") != null
+				&& !environment.getProperty("spring.profiles.active").contains("testing"))
+			model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
+		userDTO.setEditable(true);
+
+		return "user/registration";
+	}
+
+	// WORK ON THIS NEXT and abstract validator and implementation
+	// The register form will have a submit button with name =editUser but value
+	// as "update". This will only be shown in case of edit.
+	@PostMapping(value = { "/userSave", "/admin/userSave" }, params = "userUpdate")
+	public String submitUserEditPage(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
+			RedirectAttributes redirectAttributes, Authentication authentication, SessionStatus sessionStatus,
+			Model model, @Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
+		LOG.debug("Attempting to update profile of user={}", userDTO.getUserName());
+
+		// Invoking User Profile Edit in addition to JSR 303 validation
+		userEditValidator.validate(userDTO, result);
+
+		if (result.hasErrors()) {
+			LOG.debug("Errors in the submitted form");
+			model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
+			return "user/registration";
+		}
+		userService.updateUserProfile(userDTO);
+		LOG.debug("User={} profile update successful,profile", userDTO.getUserName());
+
+		// used to check update success on the canvas page
+		redirectAttributes.addFlashAttribute("userTaskTypeCompleted", 4);
+		sessionStatus.setComplete();
+		if (userTasksHelperService.isLoggedInUserAdmin(authentication))
+			return "redirect:/admin/userTaskSuccess";
+		else
+			return "redirect:/userTaskSuccess";
 
 	}
 

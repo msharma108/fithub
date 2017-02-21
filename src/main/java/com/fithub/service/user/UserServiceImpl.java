@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fithub.domain.PasswordRetrievalDTO;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
+import com.fithub.mailclient.MailClient;
 import com.fithub.repository.user.UserRepository;
 import com.fithub.service.time.TimeHelperService;
 
@@ -33,14 +36,16 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final UserTasksHelperService userTasksHelperService;
 	private final TimeHelperService timeHelperService;
+	private final MailClient restMailClient;
 
 	// Constructor dependency Injection for UserRepository
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository, UserTasksHelperService userTasksHelperService,
-			TimeHelperService timeHelperService) {
+			TimeHelperService timeHelperService, MailClient restMailClient) {
 		this.userRepository = userRepository;
 		this.userTasksHelperService = userTasksHelperService;
 		this.timeHelperService = timeHelperService;
+		this.restMailClient = restMailClient;
 	}
 
 	@Override
@@ -134,22 +139,33 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean resetPassword(User user, String resetPassword) {
-		LOG.debug("Preparing to reset password");
+	public boolean resetPassword(User user, PasswordRetrievalDTO passwordRetrievalDTO) {
+		LOG.debug("Inside reset password method");
 		if (user == null)
 			throw new NoSuchElementException("User not found");
 		else {
-			LOG.debug("Attempting to reset user password of user={} by user={}", user.getUserName(),
-					user.getUserName());
+			// Check security answers provided by the user
+			if (passwordRetrievalDTO.getSecurityAnswer().equals(user.getSecurityQuestionAnswer())
+					&& passwordRetrievalDTO.getZip().equals(user.getZipcode())) {
 
-			user.setPassword((new BCryptPasswordEncoder().encode(resetPassword)));
-			user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
-			user.setProfileEditedByUser(user.getUserName());
-			userRepository.save(user);
+				// Generate a random String as password & update password
+				String resetPassword = RandomStringUtils.randomAlphanumeric(6);
+				LOG.debug("Attempting to reset user password of user={} by user={}", user.getUserName(),
+						user.getUserName());
 
-			return true;
+				user.setPassword((new BCryptPasswordEncoder().encode(resetPassword)));
+				user.setProfileEditDate(timeHelperService.getCurrentTimeStamp());
+				user.setProfileEditedByUser(user.getUserName());
+				userRepository.save(user);
+
+				// Email the user his new password
+				restMailClient.sendPasswordResetMail(user.getGivenName(), user.getEmail(), resetPassword);
+
+				return true;
+			}
+			// Security answers entered by the user didn't match
+			return false;
 		}
-
 	}
 
 	@Override
@@ -162,12 +178,7 @@ public class UserServiceImpl implements UserService {
 		LOG.debug("Attempting to find users matching searchString={}", userSearchString);
 		List<User> userList = new ArrayList<User>();
 
-		// Repository invocation based on passed in search strings
-		if (userSearchString.equals(""))
-			throw new IllegalArgumentException("Please provide search values for searching the user");
-
-		else
-			userList = userRepository.findByUserNameIgnoreCaseContaining(userSearchString);
+		userList = userRepository.findByUserNameIgnoreCaseContaining(userSearchString);
 
 		if (!userList.isEmpty())
 			return userList;

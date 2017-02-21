@@ -379,7 +379,8 @@
                 <configuration>
                 <runOrder>reversealphabetical</runOrder>
                     <includes>
-                        <include>**/*JBehaveStoryRunner.java</include>
+                        <include>**/JBehaveStoryRunner.java</include>
+                         <include>**/Serenity*.java</include>
                         <include>**/*CucumberRunner.java</include>
                     </includes>
                     <reportsDirectory>target/surefire-reports</reportsDirectory>
