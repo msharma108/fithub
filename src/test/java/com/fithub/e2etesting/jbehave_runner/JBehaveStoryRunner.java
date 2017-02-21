@@ -39,7 +39,7 @@ import de.codecentric.jbehave.junit.monitoring.JUnitReportingRunner;
 public class JBehaveStoryRunner extends JUnitStories {
 
 	@Autowired
-	ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 
 	private static TestContextManager testContextManager;
 

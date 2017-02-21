@@ -30,7 +30,7 @@ import net.serenitybdd.jbehave.SerenityStories;
 public class SerenityJBehaveStoryRunner extends SerenityStories {
 
 	@Autowired
-	ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 
 	private static TestContextManager testContextManager;
 
@@ -58,7 +58,7 @@ public class SerenityJBehaveStoryRunner extends SerenityStories {
 		// Call after test class hook for TestExecutionListeners specifically
 		// DirtiesContextExecutionListener
 		try {
-			testContextManager.afterTestClass();
+			SerenityJBehaveStoryRunner.testContextManager.afterTestClass();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}

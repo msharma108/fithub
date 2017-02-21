@@ -276,18 +276,9 @@
           <groupId>xalan</groupId>
       <artifactId>serializer</artifactId>
     </exclusion>
-
-    <exclusion>
-    	<groupId>net.sourceforge.htmlunit</groupId>
-    	<artifactId>htmlunit</artifactId>
-    </exclusion>
     <exclusion>
     	<groupId>org.glassfish.web</groupId>
     	<artifactId>javax.el</artifactId>
-    </exclusion>
-    <exclusion>
-    	<groupId>org.seleniumhq.selenium</groupId>
-    	<artifactId>selenium-server</artifactId>
     </exclusion>
     <exclusion>
     	<groupId>javax.el</groupId>
@@ -296,10 +287,6 @@
     <exclusion>
     	<groupId>net.sourceforge.jexcelapi</groupId>
     	<artifactId>jxl</artifactId>
-    </exclusion>
-    <exclusion>
-    	<groupId>org.seleniumhq.selenium</groupId>
-    	<artifactId>htmlunit-driver</artifactId>
     </exclusion>
       </exclusions>
 
@@ -337,12 +324,14 @@
        			        <summaryFile>${project.build.directory}/failsafe-reports/TEST-IntegrationTestingResults.xml</summaryFile>
         			<includes>
                     <include>**/*IntegrationTest.java</include>
+                    <include>**/SerenityJBehaveStoryRunner.java</include>
                 </includes>
                 </configuration>
         <executions>
           <execution>
             <goals>
               <goal>integration-test</goal>
+              <goal>verify</goal>
             </goals>
           </execution>
         </executions>
@@ -380,7 +369,6 @@
                 <runOrder>reversealphabetical</runOrder>
                     <includes>
                         <include>**/JBehaveStoryRunner.java</include>
-                         <include>**/Serenity*.java</include>
                         <include>**/*CucumberRunner.java</include>
                     </includes>
                     <reportsDirectory>target/surefire-reports</reportsDirectory>
