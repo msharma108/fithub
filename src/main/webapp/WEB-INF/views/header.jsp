@@ -57,7 +57,7 @@
              </ul>
              </li>
 		   <li class="nav-item">
-			 <a class="nav-link" href="<c:url value="contactUs"/>"><span class="glyphicon glyphicon-envelope"></span> Contact us</a>
+			 <a class="nav-link" href="<c:url value="/contactUs"/>"><span class="glyphicon glyphicon-envelope"></span> Contact us</a>
 		   </li>
 		   <sec:authorize access="isAuthenticated()">
 		   	<li class="nav-item">

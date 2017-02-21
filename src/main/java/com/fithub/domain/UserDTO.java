@@ -3,6 +3,7 @@ package com.fithub.domain;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -31,6 +32,7 @@ public class UserDTO {
 	private String country;
 
 	@NotNull
+	@Past
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfBirth;
 
@@ -89,7 +91,7 @@ public class UserDTO {
 	@Size(min = 2, max = 45)
 	@NotEmpty
 	private String securityQuestionAnswer;
-	
+
 	@NotEmpty
 	private String recaptchaResponse;
 

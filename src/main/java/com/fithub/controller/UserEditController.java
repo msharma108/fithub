@@ -86,7 +86,8 @@ public class UserEditController {
 	// as "update". This will only be shown in case of edit.
 	@PostMapping(value = { "/userSave", "/admin/userSave" }, params = "userUpdate")
 	public String submitUserEditPage(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
-			RedirectAttributes redirectAttributes, Authentication authentication, SessionStatus sessionStatus) {
+			RedirectAttributes redirectAttributes, Authentication authentication, SessionStatus sessionStatus,
+			Model model, @Value("${recaptcha.publicKey}") String recaptchaPublicKey) {
 		LOG.debug("Attempting to update profile of user={}", userDTO.getUserName());
 
 		// Invoking User Profile Edit in addition to JSR 303 validation
@@ -94,9 +95,7 @@ public class UserEditController {
 
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
-			// return = forward him to the registration form page
-			// This can happen only in case of userUpdate as in userRoleChange,
-			// user's input is not involved
+			model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
 			return "user/registration";
 		}
 		userService.updateUserProfile(userDTO);
