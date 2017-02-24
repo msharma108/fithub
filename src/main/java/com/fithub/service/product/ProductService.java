@@ -97,7 +97,7 @@ public interface ProductService {
 	 *            The entered search string for product
 	 * @return The list of products containing the supplied search string
 	 */
-	List<Product> getProductsContaingProductNameOrShortDescription(String productSearchString);
+	List<Product> getProductsContainingProductNameOrShortDescription(String productSearchString);
 
 	/**
 	 * Method counts the number of products in the system\database

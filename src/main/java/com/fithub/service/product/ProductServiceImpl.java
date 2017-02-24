@@ -140,7 +140,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional
-	public List<Product> getProductsContaingProductNameOrShortDescription(String productSearchString) {
+	public List<Product> getProductsContainingProductNameOrShortDescription(String productSearchString) {
 		LOG.debug("Attempting to find products matching searchString={}", productSearchString);
 		List<Product> productList = new ArrayList<Product>();
 

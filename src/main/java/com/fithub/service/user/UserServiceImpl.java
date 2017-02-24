@@ -20,8 +20,8 @@ import com.fithub.domain.PasswordRetrievalDTO;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
 import com.fithub.domain.UserRole;
-import com.fithub.mailclient.MailClient;
 import com.fithub.repository.user.UserRepository;
+import com.fithub.service.email.MailServiceImpl;
 import com.fithub.service.time.TimeHelperService;
 
 /**
@@ -36,12 +36,12 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final UserTasksHelperService userTasksHelperService;
 	private final TimeHelperService timeHelperService;
-	private final MailClient restMailClient;
+	private final MailServiceImpl restMailClient;
 
 	// Constructor dependency Injection for UserRepository
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository, UserTasksHelperService userTasksHelperService,
-			TimeHelperService timeHelperService, MailClient restMailClient) {
+			TimeHelperService timeHelperService, MailServiceImpl restMailClient) {
 		this.userRepository = userRepository;
 		this.userTasksHelperService = userTasksHelperService;
 		this.timeHelperService = timeHelperService;

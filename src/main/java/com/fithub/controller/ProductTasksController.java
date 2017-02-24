@@ -253,7 +253,7 @@ public class ProductTasksController {
 	public String searchProduct(Model model, @RequestParam("productSearchString") String productSearchString) {
 		LOG.debug("Attempting to search product");
 		List<Product> productList = new ArrayList<Product>();
-		productList = productService.getProductsContaingProductNameOrShortDescription(productSearchString);
+		productList = productService.getProductsContainingProductNameOrShortDescription(productSearchString);
 		model = prepareProductsForDisplay(model, productList);
 
 		return "product/productList";

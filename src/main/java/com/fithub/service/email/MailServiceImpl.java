@@ -1,4 +1,4 @@
-package com.fithub.mailclient;
+package com.fithub.service.email;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.fithub.domain.SalesOrder;
 import com.sendgrid.Content;
@@ -22,15 +22,16 @@ import com.sendgrid.SendGrid;
  * 
  *
  */
-@Component
-public class MailClient {
+@Service
+public class MailServiceImpl implements MailService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MailClient.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MailServiceImpl.class);
 	private final String emailSenderAddress;
 	private final SendGrid sendGridClient;
+	private static final String MAIL_SEND_ENDPOINT = "mail/send";
 
 	@Autowired
-	public MailClient(@Value("${application.emailSenderAddress}") final String emailSenderAddress) {
+	public MailServiceImpl(@Value("${application.emailSenderAddress}") final String emailSenderAddress) {
 		this.emailSenderAddress = emailSenderAddress;
 		this.sendGridClient = new SendGrid(System.getenv("SENDGRID_API_KEY"));
 	}
@@ -40,11 +41,11 @@ public class MailClient {
 		// https://github.com/sendgrid/sendgrid-java
 
 		String orderReceiptTemplateID = "f458bc00-6465-4081-86d8-2393f8106754";
-		Email from = new Email(emailSenderAddress);
+		Email senderAddress = new Email(emailSenderAddress);
 		String subject = "Order Receipt";
-		Email to = new Email(salesOrder.getUser().getEmail());
+		Email receiverAddress = new Email(salesOrder.getUser().getEmail());
 		Content content = new Content("text/html", "Transactional Mail");
-		Mail mail = new Mail(from, subject, to, content);
+		Mail mail = new Mail(senderAddress, subject, receiverAddress, content);
 		mail.personalization.get(0).addSubstitution("-totalOrderCost-", salesOrder.getSalesOrderTotalCost().toString());
 		mail.personalization.get(0).addSubstitution("-orderId-", new Integer(salesOrder.getSalesOrderId()).toString());
 		mail.personalization.get(0).addSubstitution("-userName-", salesOrder.getUser().getGivenName());
@@ -53,21 +54,7 @@ public class MailClient {
 				salesOrder.getSalesOrderCreationDate().toString());
 		mail.setTemplateId(orderReceiptTemplateID);
 
-		Request request = new Request();
-		try {
-			request.method = Method.POST;
-			request.endpoint = "mail/send";
-			request.body = mail.build();
-			Response response = sendGridClient.api(request);
-			if (response.statusCode == 202)
-				LOG.debug("Order receipt sent successfully");
-			else
-				LOG.debug("Problems encountered with sending order receipt");
-		}
-
-		catch (IOException ex) {
-			LOG.error("errors", ex.toString());
-		}
+		sendEmail(mail, subject);
 
 	}
 
@@ -76,11 +63,11 @@ public class MailClient {
 		// https://github.com/sendgrid/sendgrid-java
 
 		String orderCancellationTemplateId = "30dd2f58-3c81-41e2-b2b2-79fe4fffeb12";
-		Email from = new Email(emailSenderAddress);
+		Email senderAddress = new Email(emailSenderAddress);
 		String subject = "Order Cancellation";
-		Email to = new Email(salesOrder.getUser().getEmail());
+		Email receiverAddress = new Email(salesOrder.getUser().getEmail());
 		Content content = new Content("text/html", "Transactional Mail");
-		Mail mail = new Mail(from, subject, to, content);
+		Mail mail = new Mail(senderAddress, subject, receiverAddress, content);
 		mail.personalization.get(0).addSubstitution("-totalOrderCost-", salesOrder.getSalesOrderTotalCost().toString());
 		mail.personalization.get(0).addSubstitution("-orderId-", new Integer(salesOrder.getSalesOrderId()).toString());
 		mail.personalization.get(0).addSubstitution("-userName-", salesOrder.getUser().getGivenName());
@@ -91,21 +78,7 @@ public class MailClient {
 		mail.personalization.get(0).addSubstitution("-refundId-", salesOrder.getStripeRefundId().toString());
 		mail.setTemplateId(orderCancellationTemplateId);
 
-		Request request = new Request();
-		try {
-			request.method = Method.POST;
-			request.endpoint = "mail/send";
-			request.body = mail.build();
-			Response response = sendGridClient.api(request);
-			if (response.statusCode == 202)
-				LOG.debug("Order cancellation mail sent successfully");
-			else
-				LOG.debug("Problems encountered with sending order cancellation mail");
-		}
-
-		catch (IOException ex) {
-			LOG.error("errors", ex.toString());
-		}
+		sendEmail(mail, subject);
 
 	}
 
@@ -123,21 +96,7 @@ public class MailClient {
 		mail.personalization.get(0).addSubstitution("-userName-", givenName);
 		mail.setTemplateId(welcomeMailTemplateId);
 
-		Request request = new Request();
-		try {
-			request.method = Method.POST;
-			request.endpoint = "mail/send";
-			request.body = mail.build();
-			Response response = sendGridClient.api(request);
-			if (response.statusCode == 202)
-				LOG.debug("User welcome mail sent successfully");
-			else
-				LOG.debug("Problems encountered with sending User welcome mail");
-		}
-
-		catch (IOException ex) {
-			LOG.error("errors", ex.toString());
-		}
+		sendEmail(mail, subject);
 	}
 
 	public void sendPasswordResetMail(String givenName, String email, String resetPassword) {
@@ -155,16 +114,29 @@ public class MailClient {
 		mail.personalization.get(0).addSubstitution("-resetPassword-", resetPassword);
 		mail.setTemplateId(resetPasswordMailTemplateId);
 
+		sendEmail(mail, subject);
+
+	}
+
+	/**
+	 * Method sends the mail to the destination
+	 * 
+	 * @param mail
+	 *            SendGrid mail object holding mail pertinent information
+	 * @param emailSubject
+	 *            Email Subject
+	 */
+	private void sendEmail(Mail mail, String emailSubject) {
 		Request request = new Request();
 		try {
 			request.method = Method.POST;
-			request.endpoint = "mail/send";
+			request.endpoint = MAIL_SEND_ENDPOINT;
 			request.body = mail.build();
 			Response response = sendGridClient.api(request);
 			if (response.statusCode == 202)
-				LOG.debug("Password reset mail sent successfully");
+				LOG.debug("{} email sent successfully", emailSubject);
 			else
-				LOG.debug("Problems encountered with sending Password reset mail");
+				LOG.debug("Problems encountered with sending {} email", emailSubject);
 		}
 
 		catch (IOException ex) {

@@ -30,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fithub.domain.PasswordRetrievalDTO;
 import com.fithub.domain.User;
 import com.fithub.domain.UserDTO;
-import com.fithub.mailclient.MailClient;
+import com.fithub.service.email.MailServiceImpl;
 import com.fithub.service.user.UserService;
 import com.fithub.service.user.UserTasksHelperService;
 import com.fithub.validator.user.UserValidator;
@@ -49,7 +49,7 @@ public class UserModifyTasksController {
 
 	@Autowired
 	public UserModifyTasksController(UserService userService, UserTasksHelperService userTasksHelperService,
-			MailClient restMailClient, UserValidator userEditValidator, Environment environment) {
+			MailServiceImpl restMailClient, UserValidator userEditValidator, Environment environment) {
 		this.userService = userService;
 		this.userTasksHelperService = userTasksHelperService;
 		this.userEditValidator = userEditValidator;

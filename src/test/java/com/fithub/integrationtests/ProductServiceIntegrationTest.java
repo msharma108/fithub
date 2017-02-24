@@ -238,7 +238,7 @@ public class ProductServiceIntegrationTest extends AbstractFithubApplicationInte
 		int expectedProductListSize = 3;
 
 		List<Product> productSearchResultList = productService
-				.getProductsContaingProductNameOrShortDescription(searchStringLikeProductName);
+				.getProductsContainingProductNameOrShortDescription(searchStringLikeProductName);
 		assertEquals("Problems with getProductsContaingProductNameOrShortDescription method", expectedProductListSize,
 				productSearchResultList.size());
 	}
@@ -250,7 +250,7 @@ public class ProductServiceIntegrationTest extends AbstractFithubApplicationInte
 		String searchStringLikeProductName = "";
 		expectedException.expect(IllegalArgumentException.class);
 		expectedException.expectMessage("Please provide search values for searching the product");
-		productService.getProductsContaingProductNameOrShortDescription(searchStringLikeProductName);
+		productService.getProductsContainingProductNameOrShortDescription(searchStringLikeProductName);
 		fail("IllegalArgumentException expected");
 	}
 
@@ -262,7 +262,7 @@ public class ProductServiceIntegrationTest extends AbstractFithubApplicationInte
 		expectedException.expect(NoSuchElementException.class);
 		expectedException.expectMessage(
 				String.format("Product matching the searchString=%s not found", searchStringLikeProductName));
-		productService.getProductsContaingProductNameOrShortDescription(searchStringLikeProductName);
+		productService.getProductsContainingProductNameOrShortDescription(searchStringLikeProductName);
 		fail("NoSuchElementException expected");
 	}
 
