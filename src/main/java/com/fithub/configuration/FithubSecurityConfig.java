@@ -44,11 +44,23 @@ public class FithubSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/", "/product/**", "/*/login", "/logout", "/userTaskSuccess", "/viewProducts/**",
 						"/userSave", "/home", "/shoppingCart/**", "/constructUrlForProductOperations/**",
 						"/searchProduct/**", "/contactUs")
-				.permitAll().antMatchers("/admin/***").hasAuthority("ADMIN").antMatchers("/userRegister").anonymous()
-				.antMatchers("/passwordRetrieval").anonymous().antMatchers("/admin/userRegister").hasRole("ADMIN")
-				.anyRequest().fullyAuthenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/")
-				.failureUrl("/login?failure").usernameParameter("userName").passwordParameter("password").permitAll()
-				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccess").permitAll();
+				.permitAll()
+				.antMatchers("/admin/***").hasAuthority("ADMIN")
+				.antMatchers("/userRegister").anonymous()
+				.antMatchers("/passwordRetrieval").anonymous()
+				.antMatchers("/admin/userRegister").hasRole("ADMIN")
+				.anyRequest().fullyAuthenticated()
+				.and().formLogin()
+				.loginPage("/login")
+				.defaultSuccessUrl("/")
+				.failureUrl("/login?failure")
+				.usernameParameter("userName")
+				.passwordParameter("password")
+				.permitAll()
+				.and().logout()
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/logoutSuccess")
+				.permitAll();
 		;
 	}
 

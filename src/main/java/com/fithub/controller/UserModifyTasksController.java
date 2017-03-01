@@ -283,7 +283,10 @@ public class UserModifyTasksController {
 
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
-			model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
+			// Add non-testing profile recaptcha key for user validation
+			if (environment.getProperty("spring.profiles.active") != null
+					&& !environment.getProperty("spring.profiles.active").contains("testing"))
+				model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
 			return "user/registration";
 		}
 		userService.updateUserProfile(userDTO);

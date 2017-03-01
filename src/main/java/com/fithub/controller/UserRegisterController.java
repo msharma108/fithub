@@ -94,7 +94,10 @@ public class UserRegisterController {
 		if (result.hasErrors()) {
 			LOG.debug("Errors in the submitted form");
 			// return = forward him to the registration form page
-			model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
+			// Add non-testing profile recaptcha key for user validation
+			if (environment.getProperty("spring.profiles.active") != null
+					&& !environment.getProperty("spring.profiles.active").contains("testing"))
+				model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
 			return "user/registration";
 		}
 		User user = userService.createUser(userDTO);
