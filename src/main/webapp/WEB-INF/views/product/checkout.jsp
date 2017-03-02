@@ -139,6 +139,7 @@
 <!-- contents start here -->
 <!-- http://bootsnipp.com/snippets/ypqoW -->
  <div class="container wrapper">
+ <a href="<c:url value="/shoppingCart/viewCart"/>" class="btn btn-primary"><span class="glyphicon glyphicon-backward"></span> Back to Cart</a>
   <c:url var="handleOrderCheckout" value="/handleOrderCheckout"/>
     <form:form modelAttribute="orderDTO" class="form-horizontal" action="${handleOrderCheckout}" method="POST" id="payment-form"> 
                     <!--REVIEW ORDER-->
@@ -151,7 +152,7 @@
 					<th style="width:20%" class="text-center">Subtotal</th>
 					<th style="width:10%"> <form action="/viewProducts" method="POST">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<button name="continueShopping" class="btn btn-primary"><span class="glyphicon glyphicon-backward"></span> Continue Shopping</button></form></th>
+							</form></th>
 				</tr>
 			</thead>
 			<tbody>

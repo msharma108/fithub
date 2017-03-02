@@ -54,7 +54,7 @@
                     </c:if>
                   </div>
 				  <div class="col-md-6">
-				    <form action="/shoppingCart/viewCart" method="POST">
+				    <form action="<c:url value="/shoppingCart/viewCart"/>" method="POST">
 				     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                       <button class="btn btn-danger btn-sm pull-right" type="submit" name="shoppingCart" id="shoppingCartId"  ><span class="glyphicon glyphicon-shopping-cart"></span> </button>
                     </form>
@@ -66,8 +66,8 @@
                <c:forEach items="${allProducts}" var="product" varStatus="status">
                    <!-- URL encoding -->
                    <!-- define variables -->
-	               <c:url var="formActionIndependentOfUserRole" value="/constructUrlForProductOperations/${product.productName}"/>
-	               <c:url var="formActionAdminRole" value="/admin/constructUrlForAdminProductOperations/${product.productName}"/>
+	               <c:url var="formActionIndependentOfUserRole" value="/productOperation/${product.productName}"/>
+	               <c:url var="formActionAdminRole" value="/admin/adminProductOperation/${product.productName}"/>
 	                     
 				        <div class="col-xs-18 col-sm-6 col-md-4">
 				          <div class="thumbnail">

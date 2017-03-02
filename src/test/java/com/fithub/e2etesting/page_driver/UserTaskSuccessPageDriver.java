@@ -26,7 +26,7 @@ public class UserTaskSuccessPageDriver extends HeaderPageDriver {
 	public boolean handleUserRegistrationTaskSuccess() {
 
 		// added explicit wait for user registration success modal
-		WebElement userRegistrationSuccessMessagePopupWebElement = (new WebDriverWait(driver, 3))
+		WebElement userRegistrationSuccessMessagePopupWebElement = (new WebDriverWait(driver, 5))
 				.until(ExpectedConditions.visibilityOf(userRegistrationSuccessMessagePopup));
 
 		boolean userRegistrationSuccess = userRegistrationSuccessMessagePopupWebElement.isDisplayed();

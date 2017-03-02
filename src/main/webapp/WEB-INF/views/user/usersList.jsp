@@ -68,7 +68,7 @@
                             
                             <!-- Url creation for Admin operations on usersList page  -->
                             
-                            <c:url var="adminOperation" value="/admin/adminOperation"/>
+                            <c:url var="adminOperation" value="/admin/adminUserOperation"/>
                              <form action="${adminOperation}" method="POST" >
                              <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                              <input type="hidden" name="userName" value="${user.userName}"/>

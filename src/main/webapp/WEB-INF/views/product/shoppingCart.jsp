@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
       <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
       <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 	  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
       <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -53,7 +54,7 @@
 							<c:out value="${exception }"/>
 							</c:if>
 					  <c:forEach items="${shoppingCart.cartProductList}" var="cartItem">
-					  <c:url var="cartOperation" value="/constructUrlForProductOperations/${cartItem.productName}"/>
+					  <c:url var="cartOperation" value="/productOperation/${cartItem.productName}"/>
 					  <form action="${cartOperation }" method="POST">
 						<tr>
 							<td data-th="Product">
@@ -96,9 +97,13 @@
 							<td colspan="2" class="hidden-xs"></td>
 							<td class="hidden-xs text-center"><strong>${shoppingCart.cartTotalCost } </strong></td>
 							
+							<fmt:parseNumber var="shoppingCartTotalCost" integerOnly="true" type="number" value="${shoppingCart.cartTotalCost}" />
+							<!-- Show checkout button only when there is an item in the cart -->		
+							<c:if test="${shoppingCartTotalCost != 0}">
 							<td> <form action="/orderCheckout" method="POST">
 							 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<button class="btn btn-success btn-block" id="checkoutId">Checkout <span class="glyphicon glyphicon-forward"></span></button></form></td>
+							</c:if>
 						</tr>
 					</tfoot>
 	</table>

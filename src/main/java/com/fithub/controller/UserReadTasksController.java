@@ -73,7 +73,7 @@ public class UserReadTasksController {
 	 * @return A Forward Request URI that is handled by ADMIN user task specific
 	 *         controllers
 	 */
-	@PostMapping(value = { "/admin/adminOperation" })
+	@PostMapping(value = { "/admin/adminUserOperation" })
 	public String constructUrlForAdminUserTasks(@RequestParam(value = "userView", required = false) String userView,
 			@RequestParam(value = "userEdit", required = false) String userEdit,
 			@RequestParam(value = "userDelete", required = false) String userDelete,
