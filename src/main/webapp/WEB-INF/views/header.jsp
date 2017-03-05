@@ -105,7 +105,7 @@
 
 		  </ul>
 		  <!-- Admin view user link creation -->
-		  <c:url var="adminSearchUser" value="/admin/adminOperation"/>
+		  <c:url var="adminSearchUser" value="/admin/adminUserOperation"/>
 		  <sec:authorize access="hasAuthority('ADMIN')">
         <div class="col-sm-3  pull-right">
             <form class="navbar-form" role="search" action="${adminSearchUser}"method="POST" >
