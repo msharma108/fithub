@@ -36,7 +36,7 @@ public class MailServiceImpl implements MailService {
 		this.sendGridClient = new SendGrid(System.getenv("SENDGRID_API_KEY"));
 	}
 
-	public void sendOrderReceiptMail(SalesOrder salesOrder) {
+	public int sendOrderReceiptMail(SalesOrder salesOrder) {
 		// Reference:
 		// https://github.com/sendgrid/sendgrid-java
 
@@ -54,11 +54,11 @@ public class MailServiceImpl implements MailService {
 				salesOrder.getSalesOrderCreationDate().toString());
 		mail.setTemplateId(orderReceiptTemplateID);
 
-		sendEmail(mail, subject);
+		return sendEmail(mail, subject);
 
 	}
 
-	public void sendOrderCancellationMail(SalesOrder salesOrder) {
+	public int sendOrderCancellationMail(SalesOrder salesOrder) {
 		// Reference:
 		// https://github.com/sendgrid/sendgrid-java
 
@@ -78,11 +78,11 @@ public class MailServiceImpl implements MailService {
 		mail.personalization.get(0).addSubstitution("-refundId-", salesOrder.getStripeRefundId().toString());
 		mail.setTemplateId(orderCancellationTemplateId);
 
-		sendEmail(mail, subject);
+		return sendEmail(mail, subject);
 
 	}
 
-	public void sendWelcomeMail(String givenName, String email) {
+	public int sendWelcomeMail(String givenName, String email) {
 		// Reference:
 		// https://github.com/sendgrid/sendgrid-java
 
@@ -96,10 +96,10 @@ public class MailServiceImpl implements MailService {
 		mail.personalization.get(0).addSubstitution("-userName-", givenName);
 		mail.setTemplateId(welcomeMailTemplateId);
 
-		sendEmail(mail, subject);
+		return sendEmail(mail, subject);
 	}
 
-	public void sendPasswordResetMail(String givenName, String email, String resetPassword) {
+	public int sendPasswordResetMail(String givenName, String email, String resetPassword) {
 		// Reference:
 		// https://github.com/sendgrid/sendgrid-java
 
@@ -114,7 +114,7 @@ public class MailServiceImpl implements MailService {
 		mail.personalization.get(0).addSubstitution("-resetPassword-", resetPassword);
 		mail.setTemplateId(resetPasswordMailTemplateId);
 
-		sendEmail(mail, subject);
+		return sendEmail(mail, subject);
 
 	}
 
@@ -125,24 +125,32 @@ public class MailServiceImpl implements MailService {
 	 *            SendGrid mail object holding mail pertinent information
 	 * @param emailSubject
 	 *            Email Subject
+	 * @return statusCode HttpStatusCode indicating success (StatusCode -202) or
+	 *         failure
 	 */
-	private void sendEmail(Mail mail, String emailSubject) {
+	private int sendEmail(Mail mail, String emailSubject) {
 		Request request = new Request();
+		int httpStatusCode = 0;
 		try {
 			request.method = Method.POST;
 			request.endpoint = MAIL_SEND_ENDPOINT;
 			request.body = mail.build();
 			Response response = sendGridClient.api(request);
-			if (response.statusCode == 202)
+			if (response.statusCode == 202) {
+				httpStatusCode = response.statusCode;
 				LOG.debug("{} email sent successfully", emailSubject);
-			else
+			}
+
+			else {
 				LOG.debug("Problems encountered with sending {} email", emailSubject);
+			}
+
 		}
 
 		catch (IOException ex) {
 			LOG.error("errors", ex.toString());
 		}
-
+		return httpStatusCode;
 	}
 
 }
