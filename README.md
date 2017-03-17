@@ -42,17 +42,21 @@ Following are the maven commands to perform the listed actions:-
  - **Package application as WAR and run:**
  
 
-	> mvn clean package -P war (run in directory containing pom.xml)
-	> cd target (to move to target directory)
-	> java -jar FitHub-0.0.1.war (can be executed)
-	> Or can be deployed to an application/web container like Tomcat
+	 - mvn clean package -P war (run in directory containing pom.xml)
+
+	 - cd target (to move to target directory)
+
+	 - java -jar FitHub-0.0.1.war (can be executed)
+
+	 - Or can be deployed to an application/web container like Tomcat
 
  - **Package application as JAR and run/deploy on cloud:**
  
+ 	 - mvn clean package (run in directory containing pom.xml)
 
-	> mvn clean package (run in directory containing pom.xml)
-	> cd target (to move to target directory)
-	> java -jar FitHub-0.0.1.jar 
+	 - cd target (to move to target directory)
+
+	 - java -jar FitHub-0.0.1.jar
 
  - **Run application:**
  
@@ -105,4 +109,3 @@ Following are the Heroku CLI commands to perform the listed actions:-
  
 
 	> heroku open
-
