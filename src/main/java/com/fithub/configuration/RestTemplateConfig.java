@@ -18,7 +18,7 @@ public class RestTemplateConfig {
 	 * @param builder
 	 *            Builder object for building rest template and can be
 	 *            configured as per needs
-	 * @return
+	 * @return Rest Template Bean for making Http requests
 	 */
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {

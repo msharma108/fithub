@@ -34,11 +34,33 @@ public class ShoppingCartController {
 	private static final Logger LOG = LoggerFactory.getLogger(ShoppingCartController.class);
 	private final ShoppingCartService shoppingCartService;
 
+	/**
+	 * Constructor for ShoppingCartController
+	 * 
+	 * @param shoppingCartService
+	 */
 	@Autowired
 	public ShoppingCartController(ShoppingCartService shoppingCartService) {
 		this.shoppingCartService = shoppingCartService;
 	}
 
+	/**
+	 * Method handles operation of type Add to cart
+	 * 
+	 * @param productDTO
+	 *            Data Transfer Object(DTO) for product that captures product
+	 *            related data from the UI and also presents it on the UI
+	 * @param productName
+	 *            Product name of the product being added to the cart
+	 * @param session
+	 *            Http session object
+	 * @param redirectAttributes
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * @return the shopping cart view displaying the updated cart
+	 */
 	@RequestMapping(value = "/addToCart/{productName:.+}")
 	public String handleAddToCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session,
@@ -61,6 +83,29 @@ public class ShoppingCartController {
 
 	}
 
+	/**
+	 * Method handles operation of type refresh cart which is triggered by the
+	 * refresh button in the cart on the UI
+	 * 
+	 * @param productDTO
+	 *            Data Transfer Object(DTO) for product that captures product
+	 *            related data from the UI and also presents it on the UI
+	 * @param productName
+	 *            Product name of the product being added to the cart
+	 * @param session
+	 *            Http session object
+	 * @param redirectAttributes
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 * @param cartUpdateParams
+	 *            Hashmap containing the updated product quantity and subtotal
+	 *            in cart
+	 * @return the shopping cart view displaying the updated cart
+	 */
 	@RequestMapping(value = "/refreshCart/{productName:.+}")
 	public String handleRefreshProductQuantityInCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
@@ -85,6 +130,30 @@ public class ShoppingCartController {
 
 	}
 
+	/**
+	 * Method handles operation of type remove from cart which is triggered by
+	 * the remove button in the cart on the UI
+	 * 
+	 * @param productDTO
+	 *            productDTO Data Transfer Object(DTO) for product that captures
+	 *            product related data from the UI and also presents it on the
+	 *            UI
+	 * @param productName
+	 *            Product name of the product being added to the cart
+	 * @param session
+	 *            Http session object
+	 * @param redirectAttributes
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 * @param cartUpdateParams
+	 *            cartUpdateParams Hashmap containing the product quantity and
+	 *            subtotal in cart
+	 * @return the shopping cart view displaying the updated cart
+	 */
 	@RequestMapping(value = "/removeFromCart/{productName:.+}")
 	public String handleRemoveFromCart(@ModelAttribute("productDTO") ProductDTO productDTO,
 			@PathVariable("productName") String productName, HttpSession session, RedirectAttributes redirectAttributes,
@@ -107,6 +176,11 @@ public class ShoppingCartController {
 
 	}
 
+	/**
+	 * Method returns the view displaying the current state of the shopping cart
+	 * 
+	 * @return view displaying the current state of the shopping cart
+	 */
 	@RequestMapping(value = "/viewCart", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getShoppingCartPage() {
 		LOG.debug("Getting ShoppingCart Page");

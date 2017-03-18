@@ -32,6 +32,12 @@ public class ProductRegisterController {
 	private final ProductService productService;
 	private final ProductDTOValidator productDTOValidator;
 
+	/**
+	 * Constructor for ProductRegisterController
+	 * 
+	 * @param productService
+	 * @param productDTOValidator
+	 */
 	@Autowired
 	public ProductRegisterController(ProductService productService, ProductDTOValidator productDTOValidator) {
 		this.productService = productService;

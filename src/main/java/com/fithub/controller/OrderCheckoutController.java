@@ -52,6 +52,13 @@ public class OrderCheckoutController {
 	private final MailServiceImpl restMailClient;
 	private final BigDecimal dollarToCents = new BigDecimal(100);
 
+	/**
+	 * Constructor for OrderCheckoutController
+	 * 
+	 * @param salesOrderService
+	 * @param restMailClient
+	 * @param salesOrderHelperService
+	 */
 	public OrderCheckoutController(SalesOrderService salesOrderService, MailServiceImpl restMailClient,
 			SalesOrderHelperService salesOrderHelperService) {
 		this.salesOrderService = salesOrderService;
@@ -59,6 +66,13 @@ public class OrderCheckoutController {
 		this.salesOrderHelperService = salesOrderHelperService;
 	}
 
+	/**
+	 * Method returns the order checkout page for display
+	 * 
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @return returns the order checkout page for display
+	 */
 	@RequestMapping(value = "/orderCheckout")
 	public String getOrderCheckoutPage(Model model) {
 
@@ -74,15 +88,27 @@ public class OrderCheckoutController {
 	 * of failure or success
 	 * 
 	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 *            parameters
 	 * @param session
+	 *            Http session object
 	 * @param orderDTO
+	 *            Data Transfer Object(DTO) for order that captures order
+	 *            related data from the UI and also presents it on the UI.
 	 * @param authentication
+	 *            Spring Security core Authentication instance that comprises of
+	 *            the authenticated user's security details
 	 * @return redirection to success or failure view based on the result
 	 * @throws AuthenticationException
+	 *             Stripe authentication exception
 	 * @throws InvalidRequestException
+	 *             Stripe invalid request exception
 	 * @throws APIConnectionException
+	 *             Stripe api connection exception
 	 * @throws CardException
+	 *             Stripe card exception
 	 * @throws APIException
+	 *             Stripe api exception
 	 */
 	@RequestMapping(value = "/handleOrderCheckout")
 	public String handleOrderCheckout(HttpServletRequest request, HttpSession session,
@@ -136,6 +162,24 @@ public class OrderCheckoutController {
 		return "redirect:/orderTaskSuccess";
 	}
 
+	/**
+	 * Method prepares the order data transfer object with the supplied details
+	 * 
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 * @param session
+	 *            Http session object
+	 * @param authentication
+	 *            Spring Security core Authentication instance that comprises of
+	 *            the authenticated user's security details
+	 * @param charge
+	 *            Stripe charge object for requesting charging the provided card
+	 *            with the order amount
+	 * @param orderDTO
+	 *            Data Transfer Object(DTO) for order that captures order
+	 *            related data from the UI and also presents it on the UI.
+	 * @return the OrderDTO object populated with the order details
+	 */
 	private OrderDTO prepareOrderDTO(HttpServletRequest request, HttpSession session, Authentication authentication,
 			Charge charge, OrderDTO orderDTO) {
 
@@ -155,6 +199,15 @@ public class OrderCheckoutController {
 
 	}
 
+	/**
+	 * Method returns an order success modal on a order task success page or
+	 * redirects the user to home in case of refresh
+	 * 
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 * @return returns an order success modal on a order task success page or
+	 *         redirects the user to home in case of refresh
+	 */
 	@RequestMapping(value = "/orderTaskSuccess")
 	public String getOrderBookingSuccessPage(HttpServletRequest request) {
 
@@ -172,6 +225,13 @@ public class OrderCheckoutController {
 			return "home";
 	}
 
+	/**
+	 * Method returns the orderList page for display for an admin
+	 * 
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @return the orderList page for display
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(value = { "/admin/viewAllOrders" })
 	public String getAllOrdersListPage(Model model) {
@@ -180,6 +240,19 @@ public class OrderCheckoutController {
 		return "order/orderList";
 	}
 
+	/**
+	 * Method returns the order details page for a specific order supplied for a
+	 * user
+	 * 
+	 * @param userName
+	 *            User Name of the user whose order is to be viewed either by
+	 *            the user themselves or an admin
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @param orderId
+	 *            Order Id whose details are to be viewed
+	 * @return the order details page for a specific order supplied for a user
+	 */
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
 	@RequestMapping(value = { "/viewOrder/{userName}/{orderId}", "/admin/viewOrder/{userName}/{orderId}" })
 	public String getOrderDetailsPage(@PathVariable("userName") String userName, Model model,
@@ -198,6 +271,17 @@ public class OrderCheckoutController {
 		return "order/orderDetails";
 	}
 
+	/**
+	 * Method returns the list of order details for a specific user viewed by
+	 * the user themselves or an admin
+	 * 
+	 * @param userName
+	 *            User name of the user whose order list is of interest
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @return the list of order details for a specific user viewed by the user
+	 *         themselves or an admin
+	 */
 	@PreAuthorize("@userTasksHelperServiceImpl.canAccessUser(principal, #userName)")
 	@RequestMapping(value = { "/viewUserAllOrders/{userName:.+}", "/admin/viewUserAllOrders/{userName:.+}" })
 	public String getUserOrdersListPage(@PathVariable("userName") String userName, Model model) {
@@ -215,6 +299,34 @@ public class OrderCheckoutController {
 		return "order/orderList";
 	}
 
+	/**
+	 * Method handles order cancellation and makes necessary refund as well as
+	 * updating the stock quantity
+	 * 
+	 * @param salesOrderId
+	 *            Sales order Id of the order which is being canceled
+	 * @param authentication
+	 *            Spring Security core Authentication instance that comprises of
+	 *            the authenticated user's security details
+	 * @param redirectAttribute
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * @return order task success page for display if the order cancellation was
+	 *         successful
+	 * @throws AuthenticationException
+	 *             Stripe authentication exception
+	 * @throws InvalidRequestException
+	 *             Stripe invalid request exception if the charge id for which
+	 *             refund is being requested is invalid
+	 * @throws APIConnectionException
+	 *             Stripe API connection exception
+	 * @throws CardException
+	 *             Stripe invalid card exception
+	 * @throws APIException
+	 *             Stripe API general exception
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = { "/admin/cancelOrder/{salesOrderId}" })
 	public String handleOrderCancellation(@PathVariable("salesOrderId") int salesOrderId, Authentication authentication,

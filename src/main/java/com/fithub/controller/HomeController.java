@@ -21,6 +21,14 @@ import com.fithub.shoppingcart.ShoppingCart;
 public class HomeController {
 	private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
+	/**
+	 * Method returns the home view for display and sets a shopping cart in the
+	 * session if it doesn't already exists
+	 * 
+	 * @param session
+	 *            Http session object
+	 * @return the home view for display
+	 */
 	@RequestMapping(value = { "/", "/home" })
 	public String displayHome(HttpSession session) {
 		LOG.debug("Retreive home page");

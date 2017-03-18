@@ -26,8 +26,8 @@ import com.fithub.service.product.ProductService;
 import com.fithub.validator.product.ProductDTOValidator;
 
 /**
- * Controller to handle product related tasks other than registration and
- * details update
+ * Controller to handle product related tasks that involve modification to the
+ * product data
  *
  */
 @Controller
@@ -38,11 +38,41 @@ public class ProductModifyTasksController {
 	private final ProductDTOValidator productDTOValidator;
 	private static final Logger LOG = LoggerFactory.getLogger(ProductModifyTasksController.class);
 
+	/**
+	 * Constructor for ProductModifyTasksController
+	 * 
+	 * @param productService
+	 * @param productDTOValidator
+	 */
 	public ProductModifyTasksController(ProductService productService, ProductDTOValidator productDTOValidator) {
 		this.productService = productService;
 		this.productDTOValidator = productDTOValidator;
 	}
 
+	/**
+	 * Method to handle deletion of product which involves marking the product
+	 * as deleted in the database rather than actually deleting it. As the
+	 * product details might be required for audit
+	 * 
+	 * @param productName
+	 *            The product being marked for deletion
+	 * @param productDTO
+	 *            Data Transfer Object(DTO) for product that captures product
+	 *            related data from the UI and also presents it on the UI.
+	 * @param redirectAttributes
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * @param authentication
+	 *            Spring Security core Authentication instance that comprises of
+	 *            the authenticated user's security details
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 * @return product task success view for display in case of success
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/admin/deleteProduct/{productName:.+}")
 	public String handleProductDelete(@PathVariable("productName") String productName,
@@ -64,6 +94,18 @@ public class ProductModifyTasksController {
 		return "redirect:/admin/productTaskSuccess";
 	}
 
+	/**
+	 * Method returns the product edit page for display
+	 * 
+	 * @param productName
+	 *            Product name of the product being edited
+	 * @param productDTO
+	 *            Data Transfer Object(DTO) for product that captures product
+	 *            related data from the UI and also presents it on the UI.
+	 * @param model
+	 *            Spring Model object that can encompass request data
+	 * @return product edit page for editing product details
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping(value = { "/admin/editProduct/{productName:.+}" }, params = "editProduct")
 	public String getProductEditPage(@PathVariable("productName") String productName,
@@ -75,6 +117,31 @@ public class ProductModifyTasksController {
 		return "product/productRegister";
 	}
 
+	/**
+	 * Method handles submission of product update details on the product edit
+	 * page
+	 * 
+	 * @param productDTO
+	 *            Data Transfer Object(DTO) for product that captures product
+	 *            related data from the UI and also presents it on the UI.
+	 * @param result
+	 *            product update details validation object that validates the
+	 *            updated data according to business logic
+	 * @param redirectAttributes
+	 *            Spring MVC RedirectAttribute instance which stores flash
+	 *            attribute for redirect requests. The flash attributes within
+	 *            the request attribute will have life span of just one redirect
+	 *            request
+	 * @param authentication
+	 *            Spring Security core Authentication instance that comprises of
+	 *            the authenticated user's security details
+	 * @param request
+	 *            HttpServlet request object encapsulating hidden form
+	 * @param thumbImage
+	 *            thumbnail of the product
+	 * @return product task success in case of successful updates or redirect to
+	 *         product edit page in case of validation failure
+	 */
 	@PostMapping(value = { "/admin/productSave" }, params = "editProduct")
 	public String submitProductEditPage(@Valid @ModelAttribute("productDTO") ProductDTO productDTO,
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication,

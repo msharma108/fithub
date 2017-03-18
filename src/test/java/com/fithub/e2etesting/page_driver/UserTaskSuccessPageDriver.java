@@ -5,8 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserTaskSuccessPageDriver extends HeaderPageDriver {
@@ -23,15 +21,10 @@ public class UserTaskSuccessPageDriver extends HeaderPageDriver {
 		PageFactory.initElements(driver, HeaderPageDriver.class);
 	}
 
-	public boolean handleUserRegistrationTaskSuccess() {
+	public boolean isUserRegistrationTaskSuccess() {
 
-		// added explicit wait for user registration success modal
-		WebElement userRegistrationSuccessMessagePopupWebElement = (new WebDriverWait(driver, 5))
-				.until(ExpectedConditions.visibilityOf(userRegistrationSuccessMessagePopup));
-
-		boolean userRegistrationSuccess = userRegistrationSuccessMessagePopupWebElement.isDisplayed();
-		userRegistrationSuccessMessagePopupWebElement.click();
-		return userRegistrationSuccess;
+		String userRegisterSuccesPageTitle = "UserTaskSuccess";
+		return driver.getTitle().equalsIgnoreCase(userRegisterSuccesPageTitle);
 
 	}
 

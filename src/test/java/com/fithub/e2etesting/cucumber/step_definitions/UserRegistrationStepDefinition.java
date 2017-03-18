@@ -49,7 +49,7 @@ public class UserRegistrationStepDefinition {
 	public void i_am_registered_successfully() throws Throwable {
 		boolean expectedUserRegistrationSuccess = true;
 
-		boolean actualUserRegistrationSuccess = userTaskSuccessPageDriver.handleUserRegistrationTaskSuccess();
+		boolean actualUserRegistrationSuccess = userTaskSuccessPageDriver.isUserRegistrationTaskSuccess();
 		assertEquals("Problems signing up user", expectedUserRegistrationSuccess, actualUserRegistrationSuccess);
 	}
 

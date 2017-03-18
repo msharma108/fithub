@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ContactInfoController {
 	private static final Logger LOG = LoggerFactory.getLogger(ContactInfoController.class);
 
+	/**
+	 * Method returns the contact view for display
+	 * 
+	 * @return contact view for display
+	 */
 	@RequestMapping(value = { "/contactUs" })
 	public String displayContactUsPage() {
 		LOG.debug("Retreive contact us page");
