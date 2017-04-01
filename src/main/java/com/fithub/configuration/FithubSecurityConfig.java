@@ -43,7 +43,7 @@ public class FithubSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/", "/product/**", "/*/login", "/logout", "/userTaskSuccess", "/viewProducts/**",
 						"/userSave", "/home", "/shoppingCart/**", "/productOperation/**",
-						"/searchProduct/**", "/contactUs")
+						"/searchProduct/**", "/contactUs", "/viewProduct/**")
 				.permitAll()
 				.antMatchers("/admin/***").hasAuthority("ADMIN")
 				.antMatchers("/userRegister").anonymous()

@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -171,8 +170,7 @@ public class ProductReadTasksController {
 	 * @return mappings for the different product tasks
 	 */
 	@PostMapping(value = { "/admin/adminProductOperation/{productName:.+}", "/productOperation/{productName:.+}" })
-	public String constructUrlForProductTasks(@RequestParam(value = "viewProduct", required = false) String viewProduct,
-			@RequestParam(value = "addToCart", required = false) String addToCart,
+	public String constructUrlForProductTasks(@RequestParam(value = "addToCart", required = false) String addToCart,
 			@RequestParam(value = "removeFromCart", required = false) String removeFromCart,
 			@RequestParam(value = "refreshCart", required = false) String refreshCart,
 			@RequestParam(value = "editProduct", required = false) String editProduct,
@@ -193,8 +191,6 @@ public class ProductReadTasksController {
 				ProductDTO productDTO = productTasksHelperService.populateProductDTOfromProduct(product);
 				productDTO.setBase64imageFile(base64imageFile);
 
-				if (viewProduct != null)
-					reconstructedUrl = "/viewProduct/" + productName;
 				if (addToCart != null)
 					reconstructedUrl = "/shoppingCart/addToCart/" + productName;
 
@@ -243,11 +239,24 @@ public class ProductReadTasksController {
 	 */
 	@RequestMapping(value = "/viewProduct/{productName:.+}")
 	public String getProductDetailsPage(@PathVariable("productName") String productName, Model model,
-			@ModelAttribute("productDTO") ProductDTO productDTO) {
-		LOG.debug("Retreiving product details of product={}", productDTO.getPrice());
+			HttpServletRequest request) {
+		LOG.debug("Retreiving product details of product");
 
-		model.addAttribute("productDTO", productDTO);
-		return "product/productDetails";
+		if (productName != null) {
+			Product product = productService.getProductByProductName(productName);
+
+			if (product != null) {
+				ProductDTO productDTO = new ProductDTO();
+				productDTO = productTasksHelperService.populateProductDTOfromProduct(product);
+				productDTO.setBase64imageFile(
+						"data:image/jpg;base64," + Base64.getEncoder().encodeToString(product.getThumbImage()));
+				model.addAttribute("productDTO", productDTO);
+				return "product/productDetails";
+			}
+
+		}
+		throw new NoSuchElementException("Product with the given name does not exist");
+
 	}
 
 	/**

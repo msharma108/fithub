@@ -68,7 +68,7 @@
                    <!-- define variables -->
 	               <c:url var="formActionIndependentOfUserRole" value="/productOperation/${product.productName}"/>
 	               <c:url var="formActionAdminRole" value="/admin/adminProductOperation/${product.productName}"/>
-	                     
+	               <c:url var="viewProduct" value="/viewProduct/${product.productName}"/>      
 				        <div class="col-xs-18 col-sm-6 col-md-4">
 				          <div class="thumbnail">
 				          
@@ -88,7 +88,7 @@
 				              <div class="overlay">
 				                 <h2><c:out value="${product.productDisplayName}"/></h2>
 				                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				                 <button class="info" type="submit" name="viewProduct" id="viewProductId">CLICK FOR MORE INFO</button>
+				                 <button class="info" type="submit" name="viewProduct" id="viewProductId" formaction="${viewProduct }">CLICK FOR MORE INFO</button>
 				              </div>
 				              </div>
 				              
