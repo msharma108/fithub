@@ -371,6 +371,7 @@
                         <include>**/JBehaveStoryRunner.java</include>
                         <include>**/*CucumberRunner.java</include>
                         <include>**/QuestionAnswerServiceForBotTest.java</include>
+                        <include>**/ShoppingCartServiceTest.java</include>
                     </includes>
                     <reportsDirectory>target/surefire-reports</reportsDirectory>
                     <printSummary>true</printSummary>
