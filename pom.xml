@@ -10,7 +10,7 @@
 <packaging>${packaging.type}</packaging>
 
 	<name>fithub</name>
-	<description>Spring Boot-fithub project</description>
+	<description>Spring Boot-FitHub project</description>
 	
 	<developers><developer><name>Mohit Sharma</name></developer></developers>
 
@@ -338,6 +338,7 @@
       </plugin>
       
       <!-- Serenity Reporting -->
+      <!-- Reference: http://thucydides.info/docs/serenity-staging/ -->
       <plugin>
                 <groupId>net.serenity-bdd.maven.plugins</groupId>       
                 <artifactId>serenity-maven-plugin</artifactId>

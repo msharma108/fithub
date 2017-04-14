@@ -1,5 +1,6 @@
 package com.fithub.e2etesting.page_driver;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -73,9 +74,12 @@ public class RegistrationPageDriver extends HeaderPageDriver {
 	@FindBy(how = How.ID, using = "userNameExistsErrorId")
 	WebElement userNameExistsErrorMessage;
 
+	private WebDriver driver;
+
 	@Autowired
 	public RegistrationPageDriver(WebDriver driver) {
 		super(driver);
+		this.driver = driver;
 		PageFactory.initElements(driver, HeaderPageDriver.class);
 	}
 
@@ -155,6 +159,11 @@ public class RegistrationPageDriver extends HeaderPageDriver {
 	}
 
 	public void selectRecaptcha() {
+
+		// Get the element in view
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("arguments[0].scrollIntoView()", recaptchaField);
+
 		recaptchaField.click();
 		try {
 			Thread.sleep(1500);
