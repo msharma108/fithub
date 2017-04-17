@@ -99,6 +99,13 @@ public class MailServiceImpl implements MailService {
 		return sendEmail(mail, subject);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fithub.service.email.MailService#sendPasswordResetMail(java.lang.
+	 * String, java.lang.String, java.lang.String)
+	 */
 	public int sendPasswordResetMail(String givenName, String email, String resetPassword) {
 		// Reference:
 		// https://github.com/sendgrid/sendgrid-java

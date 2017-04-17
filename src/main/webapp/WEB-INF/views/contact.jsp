@@ -30,7 +30,6 @@
     <![endif]-->
 
 <!-- Google maps -->
-
 <style>
       #map {
         height: 500px;
@@ -60,6 +59,7 @@
         infowindow.open(fitHubMap,marker);
         
       }
+      <!-- Google maps end -->  
       
       function loadChat() {
     	  document.getElementById("botChatId").src="https://webchat.botframework.com/embed/botmshar108?s=OzlIzALwm6s.cwA.weQ.mLTAK_B1xsVBkiN1NbFRriSxzA4-oeDV1gKnmsk_ZaI"; 
