@@ -64,10 +64,6 @@
 			 <a class="nav-link" href="<c:url value="/viewUserAllOrders/${loggedInUserName}"/>"><span class="glyphicon glyphicon-envelope"></span> My Orders</a>
 		   </li>
 		   </sec:authorize>
-		   <li class="nav-item">
-			 <a class="nav-link" href="#"><span class="glyphicon glyphicon-info-sign"></span> About us</a>
-		   </li>
-		   
 		   <sec:authorize access="hasAuthority('ADMIN')">
 		   <li class="dropdown">
              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Admin Menu

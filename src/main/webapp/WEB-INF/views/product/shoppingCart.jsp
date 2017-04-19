@@ -104,6 +104,9 @@
 							 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<button class="btn btn-success btn-block" id="checkoutId">Checkout <span class="glyphicon glyphicon-forward"></span></button></form></td>
 							</c:if>
+							<c:if test="${shoppingCartTotalCost == 0}">
+							<td> </td>
+							</c:if>
 						</tr>
 					</tfoot>
 	</table>
